@@ -4,6 +4,9 @@ dist/
 # generated types
 .astro/
 
+# ignore auto generated graphify output files
+graphify-out/
+
 # OG Image Caches
 /public/images/og/**/*.png
 # NOTE: .og-manifest.json is NOT ignored. Track it in Git to show OG updates in pull requests!
