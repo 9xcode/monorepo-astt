@@ -1,0 +1,167 @@
+---
+import "../styles/global.css";
+import { siteConfig } from "../config";
+import JsonLd from "../components/common/seo/JsonLd.astro";
+import { buildWebSiteSchema, buildOrganizationSchema } from "../components/common/seo";
+import HeadScripts from "../components/integrations/HeadScripts.astro";
+import BodyScripts from "../components/integrations/BodyScripts.astro";
+import FloatingActionDock from "../components/common/ui/floating-dock/FloatingActionDock.astro";
+import SearchDialog from "../components/common/dialogs/SearchDialog.svelte";
+import ShareDialog from "../components/common/dialogs/ShareDialog.svelte";
+import FeatureRequestDialog from "../components/common/dialogs/FeatureRequestDialog.svelte";
+import { replaceSeoPlaceholders } from "../utils/seo";
+
+// BaseLayout is a dumb receiver — it never computes canonical URLs.
+// Every parent page/layout is responsible for building and passing `canonicalURL`.
+interface Props {
+	title?: string;
+	/**
+	 * Optional override for og:title and twitter:title (social sharing).
+	 * When omitted, defaults to `${title} | ${siteConfig.name}` so social
+	 * previews always carry the brand name, while the SERP <title> stays clean.
+	 */
+	ogTitle?: string;
+	description?: string;
+	canonicalURL: string;
+	image?: string;
+	type?: string;
+	/** Set to true to emit `noindex, follow` — use for tag archives,
+	 *  pagination, and any other pages that should stay out of search results. */
+	noindex?: boolean;
+}
+
+const { title: rawTitle, ogTitle: rawOgTitle, description: rawDesc, canonicalURL, image, type, noindex = false } = Astro.props;
+const title = replaceSeoPlaceholders(rawTitle || `${siteConfig.name} - All your daily tools in one place`);
+const description = replaceSeoPlaceholders(rawDesc || siteConfig.seo.description);
+// Social title: caller can override; otherwise we append the brand so social shares always show it.
+// Note: this is intentionally different from <title> — og:title carries the brand, <title> does not.
+const socialTitle = rawOgTitle ? replaceSeoPlaceholders(rawOgTitle) : `${title} | ${siteConfig.name}`;
+const ogImageSrc = image || "/images/og-image.png";
+// Pin OG image to the production domain (siteConfig.url), never localhost.
+const ogImage = new URL(ogImageSrc, siteConfig.url).href;
+const pageType = type || "website";
+// og:locale must be in ll_CC format (e.g. en_US). HTML lang stays as short form (en).
+const ogLocale = siteConfig.seo.language.includes('_') ? siteConfig.seo.language : `${siteConfig.seo.language}_${siteConfig.seo.language.toUpperCase()}`;
+// Twitter expects @handle format — stored in siteConfig.seo.twitterHandle
+// Author-specific Twitter links live in the Content Collection (authors/abhishek.md etc.)
+const rawTwitterHandle = siteConfig.seo.twitterHandle || '';
+const twitterHandle = rawTwitterHandle.startsWith('@') ? rawTwitterHandle : (rawTwitterHandle ? `@${rawTwitterHandle}` : '');
+
+// Site-wide JSON-LD schemas (rendered on every page)
+const logoUrl = new URL("/images/logo.png", siteConfig.url).href;
+const webSiteSchema = buildWebSiteSchema({
+	name: siteConfig.name,
+	url: siteConfig.url,
+	description: siteConfig.seo.description,
+	publisherName: siteConfig.companyName,
+	publisherLogoUrl: logoUrl,
+});
+const orgSchema = buildOrganizationSchema({
+	name: siteConfig.companyName,
+	url: siteConfig.url,
+	logoUrl: logoUrl,
+	knowsAbout: siteConfig.seo.organization.knowsAbout,
+	contactEmail: siteConfig.contact.email,
+});
+---
+
+<html lang={siteConfig.seo.language}>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="canonical" href={canonicalURL} />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		{/* theme-color: Colors the browser chrome (address bar) on mobile to match */}
+		<meta name="theme-color" media="(prefers-color-scheme: light)" content="oklch(1 0 0)" />
+		<meta name="theme-color" media="(prefers-color-scheme: dark)" content="oklch(0.129 0.042 264.695)" />
+
+		{/*
+		  dns-prefetch: Tells the browser to resolve DNS for these external domains
+		  in the background — a free win when Google AdSense is enabled.
+		  Does nothing when ads are disabled, so safe to include unconditionally.
+		*/}
+		<link rel="dns-prefetch" href="//pagead2.googlesyndication.com" />
+		<link rel="dns-prefetch" href="//googleads.g.doubleclick.net" />
+		<title>{title}</title>
+		
+		{/* Primary Meta Tags */}
+		<meta name="title" content={title} />
+		<meta name="description" content={description} />
+		<meta name="author" content={siteConfig.companyName} />
+		
+		{/* Open Graph / Facebook */}
+		<meta property="og:type" content={pageType} />
+		<meta property="og:url" content={canonicalURL} />
+		<meta property="og:title" content={socialTitle} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={ogImage} />
+		<meta property="og:image:alt" content={socialTitle} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:site_name" content={siteConfig.name} />
+		<meta property="og:locale" content={ogLocale} />
+		
+		{/* Twitter */}
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:url" content={canonicalURL} />
+		<meta name="twitter:title" content={socialTitle} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImage} />
+		{twitterHandle && <meta name="twitter:site" content={twitterHandle} />}
+		{twitterHandle && <meta name="twitter:creator" content={twitterHandle} />}
+		
+		{/* Search Engine Crawling instructions */}
+		{noindex
+			? <meta name="robots" content="noindex, follow" />
+			: <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+		}
+
+        {/* Custom Head Integrations (Analytics, Verification, etc.) */}
+        <HeadScripts />
+
+		{/* Base Website + Organization JSON-LD */}
+		<JsonLd schema={webSiteSchema} />
+		<JsonLd schema={orgSchema} />
+
+		<script is:inline define:vars={{ prefix: siteConfig.localStoragePrefix, defaultMode: siteConfig.ui.theme.defaultMode }}>
+			const themeKey = prefix + 'theme';
+			const getThemePreference = () => {
+				if (typeof localStorage !== 'undefined' && localStorage.getItem(themeKey)) {
+					return localStorage.getItem(themeKey);
+				}
+				if (defaultMode === 'system') {
+					return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+				}
+				return defaultMode;
+			};
+			const isDark = getThemePreference() === 'dark';
+			document.documentElement.classList[isDark ? 'add' : 'remove']('dark');
+			
+			if (typeof localStorage !== 'undefined') {
+				// Watch the document element and persist user preference when it changes.
+				const observer = new MutationObserver(() => {
+					const isDark = document.documentElement.classList.contains('dark');
+					localStorage.setItem(themeKey, isDark ? 'dark' : 'light');
+				});
+				observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+			}
+		</script>
+		<slot name="head" />
+	</head>
+	<body class="bg-background text-foreground min-h-screen flex flex-col font-sans antialiased overflow-x-hidden">
+        {/* Custom Body Integrations */}
+        <BodyScripts />
+        
+		{/* Main Content */}
+		<slot />
+		
+		{/* Floating Action Dock (includes Search, Back to Top, etc) */}
+		<FloatingActionDock />
+		
+		{/* Global Dialog Singletons — lightweight shells, content lazy-loaded on first trigger */}
+		<SearchDialog client:idle />
+		<ShareDialog client:idle />
+		<FeatureRequestDialog client:idle />
+	</body>
+</html>

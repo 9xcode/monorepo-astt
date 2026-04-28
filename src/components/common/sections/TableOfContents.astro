@@ -1,0 +1,61 @@
+---
+export interface Heading {
+	depth: number;
+	slug: string;
+	text: string;
+}
+
+export interface Props {
+	headings: Heading[];
+	title?: string;
+}
+
+const { headings, title = "Table of Contents" } = Astro.props;
+
+import { List, ChevronDown } from '@lucide/svelte';
+
+// Calculate the shallowest depth so indentation is always relative (no leading indent on H2)
+const minDepth = headings.length > 0 ? Math.min(...headings.map(h => h.depth)) : 2;
+---
+
+{headings.length > 0 && (
+  <div id="toc-container" class="mb-8 mt-6 not-prose">
+    <details
+      class="group rounded-xl border border-border/60 bg-muted/20 open:bg-card/95 open:backdrop-blur-sm open:shadow-md transition-all duration-300 overflow-hidden"
+    >
+      <summary class="flex cursor-pointer list-none items-center justify-between p-5 font-bold text-foreground hover:bg-muted/40 transition-colors focus:outline-none focus-visible:bg-muted/40 select-none">
+        <div class="flex items-center gap-3">
+          <div class="flex items-center justify-center size-9 rounded-xl bg-primary/10 text-primary shadow-sm">
+            <List class="size-[18px] stroke-[2.5px]" />
+          </div>
+          <span class="text-base sm:text-lg tracking-tight">{title}</span>
+        </div>
+        <div class="flex items-center justify-center size-8 rounded-full border border-border/50 bg-background text-muted-foreground group-hover:border-primary/30 group-hover:text-primary transition-colors shadow-sm">
+          <ChevronDown class="size-4 transition-transform duration-300 group-open:rotate-180 stroke-[2.5px]" />
+        </div>
+      </summary>
+
+      <div class="p-5 pt-2 border-t border-border/40 bg-gradient-to-b from-transparent to-muted/5">
+        <nav aria-label="Table of Contents">
+          <ul class="mt-2 text-[14.5px] leading-relaxed md:columns-2 md:gap-x-12">
+            {headings.map((heading) => (
+              <li
+                class="break-inside-avoid relative"
+                style={`margin-left: ${(heading.depth - minDepth) * 1.5}rem; margin-bottom: 0.75rem;`}
+              >
+                <a
+                  href={`#${heading.slug}`}
+                  class="group/link flex items-start text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <span class="mr-2.5 mt-[0.4rem] opacity-30 group-hover/link:opacity-100 group-hover/link:bg-primary transition-all size-1.5 rounded-full bg-foreground inline-block shrink-0"></span>
+                  <span class="font-medium">{heading.text}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+    </details>
+  </div>
+)}
+

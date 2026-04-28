@@ -1,0 +1,150 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/common/sections/Header.astro";
+import Footer from "../components/common/sections/Footer.astro";
+import AdPlaceholder from "../components/common/ui/AdPlaceholder.astro";
+import FilterableToolGrid from "../components/workspace/FilterableToolGrid.svelte";
+import UserWorkspace from '../components/workspace/UserWorkspace.svelte';
+import WorkspaceSkeleton from "../components/common/ui/skeletons/WorkspaceSkeleton.astro";
+import ToolGridSkeleton from "../components/common/ui/skeletons/ToolGridSkeleton.astro";
+import HeroSection from "../components/home/sections/HeroSection.astro";
+import ToolWidgetSection from "../components/home/sections/ToolWidgetSection.astro";
+import FeaturedTools from "../components/home/sections/FeaturedTools.astro";
+import BottomCTA from "../components/home/sections/BottomCTA.astro";
+import ErrorBoundary from "../components/common/ui/ErrorBoundary.svelte";
+import { siteConfig } from "../config";
+import JsonLd from "../components/common/seo/JsonLd.astro";
+import { buildItemListSchema } from "../components/common/seo";
+import { getAllToolSummaries } from "../utils/tools";
+
+// getAllToolSummaries() returns sorted (order → alpha) draft-filtered lightweight data.
+const allTools = await getAllToolSummaries();
+
+/** For UserWorkspace (recents + favourites): slug + title only. The component reads slugs from localStorage, then looks up titles from allTools */
+const workspaceTools = allTools.map(t => ({
+  slug: t.slug,
+  data: { title: t.data.title },
+}));
+
+/** For FilterableToolGrid: slug, title, description, icon, category. */
+const gridTools = allTools.map(t => ({
+  slug: t.slug,
+  data: {
+    title:       t.data.title,
+    description: t.data.description,
+    icon:        t.data.icon,
+    category:    t.data.category,
+  },
+}));
+
+const categories = [...new Set(allTools.map(t => t.data.category))].sort();
+
+// Featured tools: already sorted by order → alpha via getAllToolSummaries(), just filter + slice.
+const featuredTools = allTools
+	.filter(t => t.data.featured === true)
+	.slice(0, siteConfig.features.homepage.featuredSection.maxTools)
+	.map(t => ({
+		slug: t.slug,
+		data: {
+			title:       t.data.title,
+			description: t.data.description,
+			icon:        t.data.icon,
+			category:    t.data.category,
+		},
+	}));
+
+const showFeatured = siteConfig.features.homepage.featuredSection.enabled && featuredTools.length > 0;
+const seoUrl = new URL(Astro.url.pathname, siteConfig.url).href;
+
+// Create an ItemList schema for the highlighted tools
+const itemListSchema = buildItemListSchema({
+	name: 'Featured Tools',
+	description: 'Our most popular and essential software tools.',
+	url: seoUrl,
+	items: featuredTools.map(tool => ({
+		name: tool.data.title,
+		url: new URL(`/tools/${tool.slug}`, siteConfig.url).href,
+		categoryMapping: siteConfig.seo.categoryMappings[tool.data.category] || { appCategory: "UtilitiesApplication" },
+		operatingSystem: siteConfig.seo.softwareApplication.operatingSystem || "Any",
+		priceCurrency: siteConfig.localization?.currencyCode || "USD",
+	})),
+});
+---
+
+<BaseLayout 
+	title={`${siteConfig.name} - Free Online Tools and Calculators`}
+	description={siteConfig.seo.description}
+	canonicalURL={seoUrl}
+>
+	<Fragment slot="head">
+		<JsonLd schema={itemListSchema} />
+	</Fragment>
+	<Header />
+	<main class="flex-1">
+		{/* Hero Section */}
+		<HeroSection />
+		
+		{/* Configurable Interactive Tool Widget Section */}
+		<ToolWidgetSection />
+		
+		{/* Featured Tools Section — shown only when enabled in siteConfig and at least one tool has featured: true */}
+		{showFeatured && (
+			<FeaturedTools featuredTools={featuredTools} />
+		)}
+
+		{/* User Workspace Section (Favourites & Recents) */}
+		{(siteConfig.features.recentTools?.enabled || siteConfig.features.favouriteTools?.enabled) && (
+			<ErrorBoundary client:load>
+				<UserWorkspace
+					client:only="svelte"
+					tools={workspaceTools}
+					recentEnabled={siteConfig.features.recentTools?.enabled ?? true}
+					recentStorageKey={siteConfig.features.recentTools?.storageKey ?? "recents"}
+					favouriteEnabled={siteConfig.features.favouriteTools?.enabled ?? true}
+					favouriteStorageKey={siteConfig.features.favouriteTools?.storageKey ?? "favourites"}
+				>
+					<WorkspaceSkeleton slot="fallback" />
+				</UserWorkspace>
+			</ErrorBoundary>
+		)}
+
+		{/* Hero Bottom Ad */}
+        {siteConfig.features.ads.enabled !== false && siteConfig.features.ads.slots["home-hero-bottom"] !== false && (
+		<section class="container mx-auto px-4 py-4 md:py-8">
+			<AdPlaceholder slotId="home-hero-bottom" label="Sponsored" className="min-h-[120px]" />
+		</section>
+        )}
+
+		{/* Tools Grid Section */}
+		<section class="py-16 px-4 bg-muted/30" id="tools-section">
+			<div class="container mx-auto space-y-8">
+				<ErrorBoundary client:load>
+					<FilterableToolGrid 
+						client:visible 
+						tools={gridTools}
+						{categories} 
+						initialDisplayCount={siteConfig.features.homepage.toolsDiscovery.initialDisplayCount}
+						sectionTitle="Discover Tools"
+						sectionSubtitle="Find the perfect tool for your needs"
+					>
+						<ToolGridSkeleton slot="fallback" />
+					</FilterableToolGrid>
+				</ErrorBoundary>
+                
+                {/* Multiplex Ad Grid */}
+                <AdPlaceholder slotId="home-grid-multiplex" label="Sponsored Links" className="min-h-[250px] mt-8" isMultiplex={true} />
+			</div>
+		</section>
+
+		{/* Community & App CTA Section */}
+		<BottomCTA />
+
+		{/* Bottom Ad — native optimization via content-visibility */}
+        {siteConfig.features.ads.enabled !== false && siteConfig.features.ads.slots["home-bottom"] !== false && (
+		<section class="container mx-auto px-4 py-12 border-t border-border/40 cv-auto cv-intrinsic-h200">
+			<AdPlaceholder slotId="home-bottom" label="Sponsored Content" className="min-h-[90px]" />
+		</section>
+        )}
+	</main>
+	<Footer />
+</BaseLayout>

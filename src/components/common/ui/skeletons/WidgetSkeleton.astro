@@ -1,0 +1,50 @@
+---
+/**
+ * WidgetSkeleton.astro
+ *
+ * Server-side rendered fallback for all 25 tool Widget.svelte components.
+ * Used via Astro's slot="fallback" on client:only islands.
+ *
+ * Generic 2-column layout: input fields left, result card right.
+ * Covers the majority of the tool widgets (calculator-style layout).
+ * Uses pure CSS classes — no Svelte runtime needed on the server.
+ */
+---
+
+<div class="grid gap-6 md:grid-cols-2" aria-hidden="true" aria-label="Loading tool...">
+
+  {/* Input card skeleton */}
+  <div class="rounded-xl border border-border/40 bg-card p-4 md:p-6 space-y-4">
+    <div class="sk h-5 w-36 rounded-md"></div>
+    <div class="space-y-1.5">
+      <div class="sk h-4 w-24 rounded-md"></div>
+      <div class="sk h-10 w-full rounded-md"></div>
+    </div>
+    <div class="space-y-1.5">
+      <div class="sk h-4 w-28 rounded-md"></div>
+      <div class="sk h-10 w-full rounded-md"></div>
+    </div>
+    <div class="space-y-1.5">
+      <div class="sk h-4 w-20 rounded-md"></div>
+      <div class="sk h-10 w-full rounded-md"></div>
+    </div>
+  </div>
+
+  {/* Result card skeleton */}
+  <div class="rounded-xl border border-border/40 bg-card p-4 md:p-6 space-y-5">
+    <div class="sk h-5 w-28 rounded-md"></div>
+    <div class="sk h-12 w-48 rounded-md"></div>
+    <div class="h-px bg-border/40 my-1"></div>
+    <div class="grid grid-cols-2 gap-4">
+      <div class="space-y-1.5">
+        <div class="sk h-3 w-20 rounded-md"></div>
+        <div class="sk h-6 w-24 rounded-md"></div>
+      </div>
+      <div class="space-y-1.5">
+        <div class="sk h-3 w-20 rounded-md"></div>
+        <div class="sk h-6 w-24 rounded-md"></div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,53 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/common/sections/Header.astro";
+import Footer from "../components/common/sections/Footer.astro";
+import { Button } from "$lib/components/ui/button";
+import { CopyX, House } from '@lucide/svelte';
+import { siteConfig } from "../config";
+
+const seoUrl = new URL('/500', siteConfig.url).href;
+
+interface Props {
+  error?: unknown;
+}
+
+const { error } = Astro.props;
+---
+
+<BaseLayout title={`500: Internal Server Error - ${siteConfig.name}`} canonicalURL={seoUrl} description="Something went wrong on our end. Please try again later." type="website">
+	<Fragment slot="head">
+		<meta name="robots" content="noindex, nofollow" />
+	</Fragment>
+	<Header />
+	<main class="flex-1 flex flex-col items-center justify-center p-4 min-h-[60vh] text-center space-y-8">
+		<div class="space-y-4 max-w-xl">
+			<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold bg-primary/10 text-primary border-primary/20 uppercase tracking-wider">
+                Error 500
+            </div>
+			<h1 class="text-5xl md:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
+				Internal Server Error.
+			</h1>
+			<p class="text-xl text-muted-foreground leading-relaxed">
+				Oops! Something unexpected happened on our end. Our engineers have been notified. Please try again in a few minutes.
+			</p>
+			
+			{error && import.meta.env.DEV && (
+				<div class="mt-8 text-left p-4 bg-muted/50 rounded-lg overflow-auto max-w-full font-mono text-sm">
+					<p class="text-destructive font-semibold mb-2">Development Only Error Output:</p>
+					<pre class="whitespace-pre-wrap">{error instanceof Error ? error.stack || error.message : String(error)}</pre>
+				</div>
+			)}
+		</div>
+		
+		<div class="flex flex-col sm:flex-row gap-4 pt-4">
+			<Button size="lg" href="/" class="gap-2 px-8 text-base shadow-lg">
+				<House class="size-5" /> Return Home
+			</Button>
+			<button onclick="window.location.reload()" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-11 gap-2 px-8 text-base cursor-pointer">
+				<CopyX class="size-5" /> Try Again
+			</button>
+		</div>
+	</main>
+	<Footer />
+</BaseLayout>

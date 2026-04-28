@@ -1,0 +1,27 @@
+---
+/**
+ * RelatedPosts — Grid of related blog articles.
+ * Displayed below the article content, not in sidebar.
+ * Uses category-first, tag-overlap-second matching.
+ */
+import { getRelatedPosts, getAllPosts } from '../../../utils/blog';
+import BlogPostCard from '../ui/BlogPostCard.astro';
+import type { BlogPost } from '../../../utils/blog';
+
+interface Props {
+  currentPost: BlogPost;
+}
+
+const { currentPost } = Astro.props;
+const allPosts = await getAllPosts();
+const related = getRelatedPosts(currentPost, allPosts, 3);
+---
+
+{related.length > 0 && (
+  <section class="mt-8 pt-4 border-border/40">
+    <h2 class="text-2xl font-bold mb-6">Related Articles</h2>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {related.map((post) => <BlogPostCard post={post} />)}
+    </div>
+  </section>
+)}

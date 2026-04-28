@@ -1,0 +1,15 @@
+---
+import { Search } from '@lucide/svelte';
+---
+<button
+  class="dock-action-btn group"
+  aria-label="Search tools"
+  onclick="window.dispatchEvent(new CustomEvent('open-search'))"
+>
+  <span class="dock-label whitespace-nowrap text-sm font-medium">
+    Search
+  </span>
+  <span class="dock-icon-wrap">
+    <Search class="size-[1.125rem]" aria-hidden="true" />
+  </span>
+</button>

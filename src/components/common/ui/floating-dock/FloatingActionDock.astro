@@ -1,0 +1,198 @@
+---
+/**
+ * FloatingActionDock — Scroll-triggered floating dock with expandable actions.
+ *
+ * Visibility: mirrors BackToTop — appears after 800px scroll, hides near footer.
+ * Toggle: Cog → X icon swap, actions slide-in above.
+ * State: persisted via localStorage (dock_open key).
+ */
+import { siteConfig } from "../../../../config";
+import { Settings, X } from '@lucide/svelte';
+import BackToTopAction from "./BackToTopAction.astro";
+import SearchAction from "./SearchAction.astro";
+import ShareAction from "./ShareAction.astro";
+import TocAction from "./TocAction.astro";
+
+const { enabled, showSearch, showBackToTop, showShare, showToc } = siteConfig.ui.floatingActions;
+
+if (!enabled) {
+  return;
+}
+---
+
+<div 
+  id="floating-action-dock" 
+  class="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-2 dock-root"
+>
+  {/* Actions: hidden by default, revealed when dock opens */}
+  <div 
+    id="floating-actions-container" 
+    class="flex flex-col items-end gap-2 dock-actions-container"
+    aria-hidden="true"
+  >
+    {showSearch && <SearchAction />}
+    {showToc && <TocAction />}
+    {showShare && <ShareAction />}
+    {showBackToTop && <BackToTopAction />}
+  </div>
+  
+  {/* Toggle Button */}
+  <button
+    id="floating-dock-toggle"
+    aria-label="Toggle quick actions"
+    aria-expanded="false"
+    class="dock-toggle-btn"
+  >
+    <span id="dock-icon-cog" class="dock-icon-cog">
+      <Settings class="size-5" aria-hidden="true" />
+    </span>
+    <span id="dock-icon-x" class="dock-icon-x">
+      <X class="size-5" aria-hidden="true" />
+    </span>
+  </button>
+</div>
+
+{/* Inline script to quickly set initial state before JS hydration */}
+<script is:inline define:vars={{ prefix: siteConfig.localStoragePrefix }}>
+  const stateKey = prefix + 'dock_open';
+  if (typeof localStorage !== 'undefined' && localStorage.getItem(stateKey) === 'true') {
+    // Note: dock root starts hidden, so just marking it "is-open" enables its children once visible
+    const dock = document.getElementById('floating-action-dock');
+    if (dock) dock.classList.add('is-open');
+    const container = document.getElementById('floating-actions-container');
+    if (container) container.setAttribute('aria-hidden', 'false');
+    const toggle = document.getElementById('floating-dock-toggle');
+    if (toggle) toggle.setAttribute('aria-expanded', 'true');
+  }
+</script>
+
+<script>
+  import { siteConfig } from "../../../../config";
+  const stateKey = siteConfig.localStoragePrefix + 'dock_open';
+
+  // ── State ──
+  let ticking = false;
+  let dock: HTMLElement | null = null;
+  let isOpen = false;
+  let isFooterVisible = false;
+  let footerObserver: IntersectionObserver | null = null;
+
+  // ── Helpers ──
+  function setDockVisibility(visible: boolean) {
+    if (!dock) return;
+    if (visible) {
+      dock.classList.add('is-visible');
+    } else {
+      dock.classList.remove('is-visible');
+    }
+  }
+
+  function setDockState(open: boolean) {
+    isOpen = open;
+    const container = document.getElementById('floating-actions-container');
+    const toggleBtn = document.getElementById('floating-dock-toggle');
+
+    if (dock) {
+      if (open) dock.classList.add('is-open');
+      else dock.classList.remove('is-open');
+    }
+    if (container) container.setAttribute('aria-hidden', open ? 'false' : 'true');
+    if (toggleBtn) toggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+
+    try {
+      localStorage.setItem(stateKey, open.toString());
+    } catch (e) {
+      // Ignore if localStorage unavailable
+    }
+  }
+
+  function openDock() {
+    setDockState(true);
+  }
+
+  function closeDock() {
+    setDockState(false);
+  }
+
+  function handleToggle() {
+    if (isOpen) closeDock();
+    else openDock();
+  }
+
+  // ── Scroll: show after 800px, hide near footer ──
+  function handleScroll() {
+    if (!ticking && dock) {
+      window.requestAnimationFrame(() => {
+        const shouldShow = window.scrollY > 800 && !isFooterVisible;
+        setDockVisibility(shouldShow);
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }
+
+  // ── Lifecycle ──
+  function setup() {
+    dock = document.getElementById('floating-action-dock');
+    const toggleBtn = document.getElementById('floating-dock-toggle');
+
+    if (!dock || !toggleBtn) return;
+
+    // Load initial state
+    try {
+      isOpen = localStorage.getItem(stateKey) === 'true';
+    } catch (e) {
+      isOpen = false;
+    }
+
+    // Sync elements without causing animation initially if possible
+    setDockState(isOpen);
+
+    // Remove any previous listener before reattaching
+    toggleBtn.removeEventListener('click', handleToggle);
+    toggleBtn.addEventListener('click', handleToggle);
+    
+    window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Footer awareness (IntersectionObserver — zero cost when not scrolled)
+    const footer = document.querySelector('footer');
+    if (footer) {
+      if (footerObserver) footerObserver.disconnect();
+      footerObserver = new IntersectionObserver(
+        (entries) => {
+          isFooterVisible = entries[0].isIntersecting;
+          handleScroll();
+        },
+        { rootMargin: '0px' }
+      );
+      footerObserver.observe(footer);
+    }
+
+    // Initial state check
+    handleScroll();
+  }
+
+  function teardown() {
+    window.removeEventListener('scroll', handleScroll);
+    if (footerObserver) {
+      footerObserver.disconnect();
+      footerObserver = null;
+    }
+    const toggleBtn = document.getElementById('floating-dock-toggle');
+    if (toggleBtn) {
+      toggleBtn.removeEventListener('click', handleToggle);
+    }
+    dock = null;
+  }
+
+  document.addEventListener('astro:page-load', setup);
+  document.addEventListener('astro:before-preparation', teardown);
+
+  // Fallback for non-View-Transitions initial load
+  if (document.readyState !== 'loading') {
+    setup();
+  } else {
+    document.addEventListener('DOMContentLoaded', setup);
+  }
+</script>

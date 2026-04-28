@@ -1,0 +1,152 @@
+{
+  "tools/auto-loan-calculator": {
+    "hash": "06330bd1271f733a14c106c357af9c2e",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/budget-planner": {
+    "hash": "6bc74dbf477a6a0412e3db8c6809a05e",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/cagr-calculator": {
+    "hash": "4cf6470ed310493855a7752694d477a5",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/college-savings-calculator": {
+    "hash": "906b655223b7fc79c0ba791bd3cf32f0",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/compound-interest-calculator": {
+    "hash": "cf08c151c13c88b4dadda8fd624efd11",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/credit-card-payoff-calculator": {
+    "hash": "d9f87ce50522b99745fb7f02aeec3aa1",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/currency-converter": {
+    "hash": "c12597bacc912dd758eb25705e611228",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/debt-payoff-calculator": {
+    "hash": "204b82a2da08926f8335b38b34fc0c7c",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/emergency-fund-calculator": {
+    "hash": "28557c9ec3b87600850740e67a3016d7",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/future-value-calculator": {
+    "hash": "674a3ef0f14bfe7703223ee13b87cc53",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/income-tax-calculator": {
+    "hash": "5fc8bb2301c84bfea6f489016bbdf874",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/inflation-calculator": {
+    "hash": "451b0fba8880eb11c646fbda4fd22852",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/interest-only-loan-calculator": {
+    "hash": "889e03d16a34bc08aac881608db633bd",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/investment-return-calculator": {
+    "hash": "3ee3accbad8eab9bda100165f4963381",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/loan-amortization-calculator": {
+    "hash": "f6dcf5d71a00966f5914f4f8c789283f",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/mortgage-calculator": {
+    "hash": "f6f65bafdcd375e3cfb4fe15db032a11",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/net-worth-calculator": {
+    "hash": "57caa8c3d34ec5b8fe3ace375eff7373",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/present-value-calculator": {
+    "hash": "6a5eb1ba360e356f7758164f39fa22e9",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/retirement-savings-calculator": {
+    "hash": "c9d37fe3751b5825a7ef543aeae3bd9a",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/salary-paycheck-calculator": {
+    "hash": "a65acf6eec3d22bb34bac39cf8a8b136",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/sales-tax-calculator": {
+    "hash": "275a3f24e2c9c91c72f7f9cd73702830",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/simple-interest-calculator": {
+    "hash": "8dddc0c7c30e112733fceedad702f95a",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/sip-calculator": {
+    "hash": "b952b9f8008f2d80d9f766caf411d562",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/word-counter": {
+    "hash": "38c6f987b23fe6c863d136c99801c6ae",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/systematic-investment-plan-calculator": {
+    "hash": "1cd26b6407968a9a0e692ad560099656",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "blog/getting-started-with-budgeting": {
+    "hash": "a3ccfe40efc7bf599c606ffe2f584e2b",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "blog/future-of-ai-finance": {
+    "hash": "36dcc2bc230ae1e2dbfeed2b03b85621",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "blog/retirement-savings-guide": {
+    "hash": "fadb9f635493295c1b8a2c0346277651",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "blog/tax-calculator-tutorial": {
+    "hash": "df067b47246235e8fa10ce4fdd0fac23",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "blog/top-10-finance-tips-2024": {
+    "hash": "36565ef35adedcd88ef2cd6f317a8bd5",
+    "version": "v1.0.0",
+    "locale": null
+  }
+}

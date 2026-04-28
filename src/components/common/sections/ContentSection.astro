@@ -1,0 +1,51 @@
+---
+/**
+ * ContentSection — Generic content container for both blogs and tools.
+ * Displays title, category, tags, and manages TOC wrapping.
+ */
+import TableOfContents from "./TableOfContents.astro";
+import { categoryToSlug } from "../../../utils/slug";
+
+type Heading = import('./TableOfContents.astro').Heading;
+
+interface Props {
+	title?: string;
+	category?: string;
+	tocHeadings?: Heading[];
+	tocTitle?: string;
+	tags?: readonly string[];
+}
+
+const { title, category, tocHeadings, tocTitle, tags } = Astro.props;
+---
+
+<div class="rounded-xl border border-border/60 p-5 md:p-6 bg-card shadow-sm">
+	
+	{(title || category) && (
+		<div class="flex items-center justify-between gap-4 mb-6 pb-4 border-b border-border/50 flex-wrap">
+			{title && <div class="text-2xl font-bold tracking-tight">{title}</div>}
+			{category && (
+				<a href={`/categories/${categoryToSlug(category)}`} class="inline-flex items-center rounded-full border border-border/60 px-3 py-1 text-xs font-bold bg-muted/50 text-muted-foreground uppercase tracking-widest hover:bg-primary/10 hover:text-primary transition-colors shrink-0">
+					{category}
+				</a>
+			)}
+		</div>
+	)}
+
+	{tocHeadings && tocHeadings.length > 0 && (
+		<TableOfContents headings={tocHeadings} title={tocTitle} />
+	)}
+	<slot />
+
+	{tags && tags.length > 0 && (
+		<div class="flex flex-wrap items-center gap-2 mt-6 pt-5 border-t border-border/40">
+			<span class="text-xs font-semibold text-muted-foreground uppercase tracking-wider mr-1">Topics:</span>
+			{tags.map(tag => (
+				<span class="inline-flex items-center rounded-full bg-secondary/60 px-3 py-1 text-xs font-medium text-secondary-foreground ring-1 ring-inset ring-border/50 capitalize">
+					{tag.replace(/-/g, ' ')}
+				</span>
+			))}
+		</div>
+	)}
+</div>
+

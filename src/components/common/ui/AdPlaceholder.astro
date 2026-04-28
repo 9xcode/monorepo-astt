@@ -1,0 +1,54 @@
+---
+import { siteConfig } from "../../../config";
+
+interface Props {
+  slotId?: string;       // Our internal siteConfig ID (e.g., 'home-hero-bottom')
+  adClient?: string;     // Google AdSense Publisher ID (e.g., 'ca-pub-123456789')
+  adSlot?: string;       // Google AdSense Ad Unit ID (e.g., '1234567890') for tracking separately
+  className?: string;    
+  label?: string;
+  isMultiplex?: boolean; // If true, styles the placeholder to look like a grid of ads
+}
+
+const { 
+  slotId = "default-ad-slot", 
+  adClient = "", 
+  adSlot = "", 
+  className = "", 
+  label = "Advertisement",
+  isMultiplex = false
+} = Astro.props;
+
+// Determine if ads are globally enabled and if this specific slot is enabled
+const isAdsEnabled = siteConfig.features.ads.enabled !== false;
+const isSlotEnabled = siteConfig.features.ads.slots[slotId] !== false;
+const shouldShowAd = isAdsEnabled && isSlotEnabled;
+
+// Prevent TS warnings for unused variables since we have the script tags commented out out for now
+void adClient;
+void adSlot;
+---
+
+{shouldShowAd && (
+<div class={`w-full bg-muted/30 border border-dashed border-border rounded-xl flex flex-col items-center justify-center p-4 min-h-[100px] overflow-hidden ${className}`}>
+  {/* If adClient and adSlot are provided, this is where the real Google <ins> tag would go */}
+  {/* <ins class="adsbygoogle" style="display:block" data-ad-client={adClient} data-ad-slot={adSlot} data-ad-format="auto" data-full-width-responsive="true"></ins> */}
+  {/* <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> */}
+  
+  <span class="text-xs font-medium text-muted-foreground uppercase tracking-widest mb-1">{label}</span>
+  <div class="text-sm text-muted-foreground/50 text-center">
+    Ad Space <br/>
+    <span class="text-xs font-mono opacity-50">({slotId})</span>
+    {adSlot && <span class="text-[10px] block mt-1">Unit: {adSlot}</span>}
+  </div>
+
+  {isMultiplex && (
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 w-full mt-4 opacity-40 pointer-events-none">
+      <div class="h-20 bg-muted rounded"></div>
+      <div class="h-20 bg-muted rounded"></div>
+      <div class="h-20 bg-muted rounded"></div>
+      <div class="h-20 bg-muted rounded"></div>
+    </div>
+  )}
+</div>
+)}

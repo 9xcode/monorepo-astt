@@ -1,0 +1,70 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/common/sections/Header.astro';
+import Footer from '../../../components/common/sections/Footer.astro';
+import BlogPostCard from '../../../components/blog/ui/BlogPostCard.astro';
+import { getAllPosts } from '../../../utils/blog';
+import { siteConfig } from '../../../config';
+
+export async function getStaticPaths() {
+  const allPosts = await getAllPosts();
+  const { postsPerPage } = siteConfig.features.blog;
+  const totalPages = Math.ceil(allPosts.length / postsPerPage);
+
+  // Page 1 is handled by /blog/index.astro — start from page 2
+  return Array.from({ length: Math.max(0, totalPages - 1) }, (_, i) => ({
+    params: { page: String(i + 2) },
+    props: {
+      posts: allPosts.slice((i + 1) * postsPerPage, (i + 2) * postsPerPage),
+      currentPage: i + 2,
+      totalPages,
+    },
+  }));
+}
+
+const { posts, currentPage, totalPages } = Astro.props;
+const seoUrl = new URL(`/blog/page/${currentPage}`, siteConfig.url).href;
+---
+
+<BaseLayout
+  title={`Blog Archive - Page ${currentPage} - ${siteConfig.name}`}
+  description={`Page ${currentPage} of the blog archive.`}
+  canonicalURL={seoUrl}
+  noindex={true}
+>
+  <Header />
+  <main class="flex-1">
+    <div class="container mx-auto px-4 py-12">
+      <h1 class="text-3xl font-bold mb-8">Blog Archive - Page {currentPage}</h1>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {posts.map((post) => (
+          <BlogPostCard post={post} />
+        ))}
+      </div>
+
+      <nav class="flex items-center justify-center gap-4 mt-12" aria-label="Pagination">
+        {currentPage > 1 && (
+          <a
+            href={currentPage === 2 ? '/blog' : `/blog/page/${currentPage - 1}`}
+            class="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-border hover:bg-accent transition-colors text-sm font-medium"
+          >
+            ← Newer Posts
+          </a>
+        )}
+        <span class="text-sm text-muted-foreground">
+          Page {currentPage} of {totalPages}
+        </span>
+        {currentPage < totalPages && (
+          <a
+            href={`/blog/page/${currentPage + 1}`}
+            class="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-border hover:bg-accent transition-colors text-sm font-medium"
+          >
+            Older Posts →
+          </a>
+        )}
+      </nav>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>

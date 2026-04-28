@@ -1,0 +1,37 @@
+---
+/**
+ * ToolSidebar — Sidebar with all-tools list, ad slots, mobile app card, and support card.
+ * Extracted from ToolLayout.astro (was duplicated 2× for fullWidth/normal modes).
+ */
+import AdPlaceholder from "../../common/ui/AdPlaceholder.astro";
+import SupportCard from "../../engagement/SupportCard.astro";
+import MobileAppCard from "./MobileAppCard.astro";
+import AllToolsList from "./AllToolsList.astro";
+
+type Tool = {
+	slug: string;
+	data: {
+		title: string;
+	};
+};
+
+interface Props {
+	tools: Tool[];
+	currentPath: string;
+	showAllTools?: boolean;
+	showAppCard?: boolean;
+	showSupportCard?: boolean;
+}
+
+const { tools, currentPath, showAllTools = true, showAppCard = true, showSupportCard = true } = Astro.props;
+---
+
+<aside aria-label="Sidebar" class="space-y-6 cv-auto cv-intrinsic-h600">
+	<div class="sticky top-24 space-y-8">
+		{showAllTools && <AllToolsList tools={tools} currentPath={currentPath} />}
+		<AdPlaceholder slotId="tool-sidebar" label="Ad" className="min-h-[250px]" />
+		{showAppCard && <MobileAppCard />}
+		{showSupportCard && <SupportCard />}
+		<AdPlaceholder slotId="tool-sidebar-bottom" label="Sponsored" className="min-h-[250px] mt-2" />
+	</div>
+</aside>

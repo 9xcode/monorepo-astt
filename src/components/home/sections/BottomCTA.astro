@@ -1,0 +1,82 @@
+---
+/**
+ * BottomCTA — Community & App CTA section with 3 cards:
+ * Mobile App, Feature Request, and Buy Me a Coffee.
+ * Extracted from pages/index.astro for maintainability.
+ */
+import { Button } from "$lib/components/ui/button";
+import { Download, Sparkles, Coffee, CirclePlus } from '@lucide/svelte';
+---
+
+<section class="py-20 px-4 relative overflow-hidden bg-background cv-auto cv-intrinsic-h300">
+    {/* Box Grid Background with Radial Fade */}
+    <div class="absolute inset-0 -z-20 h-full w-full grid-bg grid-mask-bottom-cta opacity-50"></div>
+    
+    <div class="container mx-auto max-w-6xl relative z-10">
+        {/* 3 Column Grid */}
+        <div class="grid md:grid-cols-3 gap-6">
+
+            {/* Mobile App Card */}
+            <div class="group relative overflow-hidden rounded-xl border border-border/50 bg-card/60 backdrop-blur-md p-8 shadow-lg hover:shadow-primary/5 hover:border-primary/30 transition-all text-center flex flex-col items-center justify-between min-h-[280px]">
+                <div class="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div class="size-16 rounded-xl bg-foreground text-background flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform duration-300">
+                    <Download class="size-8" />
+                </div>
+                <div class="space-y-3 z-10">
+                    <h3 class="text-2xl font-bold tracking-tight text-foreground">Mobile App</h3>
+                    <p class="text-muted-foreground text-sm leading-relaxed max-w-[200px] mx-auto">
+                        Fast, offline calculations natively on iOS & Android.
+                    </p>
+                </div>
+                <div class="mt-8 w-full z-10">
+                    <Button variant="default" size="lg" href="/mobile-app" class="w-full rounded-xl bg-foreground text-background hover:bg-foreground/90 font-semibold shadow-md">
+                        Download Free
+                    </Button>
+                </div>
+            </div>
+
+            {/* Feature Request Card */}
+            <div class="group relative overflow-hidden rounded-xl border border-border/50 bg-card/60 backdrop-blur-md p-8 shadow-lg hover:shadow-primary/5 hover:border-primary/30 transition-all text-center flex flex-col items-center justify-between min-h-[280px]">
+                <div class="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div class="size-16 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform duration-300 border border-primary/20">
+                    <Sparkles class="size-8 stroke-2" />
+                </div>
+                <div class="space-y-3 z-10">
+                    <h3 class="text-2xl font-bold tracking-tight text-foreground">Missing a Tool?</h3>
+                    <p class="text-muted-foreground text-sm leading-relaxed max-w-[200px] mx-auto">
+                        Tell us what to build next. We monitor community feedback.
+                    </p>
+                </div>
+                <div class="mt-8 w-full z-10">
+                    <button
+                      class="w-full rounded-xl shadow-sm font-semibold border border-input bg-background hover:bg-accent hover:text-accent-foreground h-11 inline-flex items-center justify-center text-sm transition-colors cursor-pointer"
+                      onclick="window.dispatchEvent(new CustomEvent('open-feature-request'))"
+                    >
+                      <CirclePlus class="size-4 mr-2" />
+                      Request Feature
+                    </button>
+                </div>
+            </div>
+
+            {/* Buy Me a Coffee Card */}
+            <div class="group relative overflow-hidden rounded-xl border border-border/50 bg-card/60 backdrop-blur-md p-8 shadow-lg hover:shadow-warning/5 hover:border-warning/30 transition-all text-center flex flex-col items-center justify-between min-h-[280px]">
+                <div class="absolute inset-0 bg-gradient-to-b from-warning/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div class="size-16 rounded-xl bg-warning/10 text-warning flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform duration-300 border border-warning/20">
+                    <Coffee class="size-8 stroke-2" />
+                </div>
+                <div class="space-y-3 z-10">
+                    <h3 class="text-2xl font-bold tracking-tight text-foreground">Support Us</h3>
+                    <p class="text-muted-foreground text-sm leading-relaxed max-w-[200px] mx-auto">
+                        Tools are built for free. Help fuel the developer with caffeine!
+                    </p>
+                </div>
+                <div class="mt-8 w-full z-10">
+                    <Button variant="outline" size="lg" class="w-full rounded-xl border border-input bg-background hover:border-warning/50 hover:bg-warning/10 hover:text-warning-foreground font-semibold shadow-sm transition-colors cursor-pointer">
+                        Buy me a Coffee
+                    </Button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

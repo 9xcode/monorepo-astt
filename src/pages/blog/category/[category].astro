@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/common/sections/Header.astro';
+import Footer from '../../../components/common/sections/Footer.astro';
+import BlogPostCard from '../../../components/blog/ui/BlogPostCard.astro';
+import { getPostsByCategory } from '../../../utils/blog';
+import { categoryToSlug } from '../../../utils/slug';
+import { BLOG_CATEGORIES } from '../../../content.config';
+import { siteConfig } from '../../../config';
+
+export async function getStaticPaths() {
+  return BLOG_CATEGORIES.map((category) => ({
+    params: { category: categoryToSlug(category) },
+    props: { category },
+  }));
+}
+
+const { category } = Astro.props;
+const posts = await getPostsByCategory(category);
+const categorySlug = categoryToSlug(category);
+const seoUrl = new URL(`/blog/category/${categorySlug}`, siteConfig.url).href;
+---
+
+<BaseLayout
+  title={`${category} Articles and Guides - ${siteConfig.name} Blog`}
+  description={`Browse all ${category.toLowerCase()} articles on ${siteConfig.name}.`}
+  canonicalURL={seoUrl}
+>
+  <Header />
+  <main class="flex-1">
+    <div class="container mx-auto px-4 py-12">
+      <h1 class="text-3xl font-bold mb-2">{category}</h1>
+      <p class="text-muted-foreground mb-8">
+        {posts.length} {posts.length === 1 ? 'article' : 'articles'} in this category
+      </p>
+
+      {posts.length === 0 ? (
+        <p class="text-muted-foreground py-16 text-center">No articles in this category yet.</p>
+      ) : (
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {posts.map((post) => <BlogPostCard post={post} />)}
+        </div>
+      )}
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>
