@@ -1,0 +1,61 @@
+
+		<!-- Useful FAQ Section -->
+		<section class="py-24 px-4 relative overflow-hidden bg-background cv-auto cv-intrinsic-h700">
+            <!-- Box Grid Background with Radial Fade -->
+            <div class="absolute inset-0 -z-20 h-full w-full bg-[linear-gradient(to_right,#8080801a_1px,transparent_1px),linear-gradient(to_bottom,#8080801a_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_70%_50%_at_50%_50%,#000_30%,transparent_100%)]"></div>
+			
+			<div class="container mx-auto max-w-5xl relative z-10">
+				<div class="rounded-[2.5rem] border border-border/50 bg-card/60 backdrop-blur-xl p-8 md:p-12 shadow-2xl relative overflow-hidden ring-1 ring-border/30">
+                    <!-- Subtle glow inside the card -->
+                    <div class="absolute -top-32 -left-32 w-[30rem] h-[30rem] bg-primary/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+					<div class="grid lg:grid-cols-[1fr_1.5fr] gap-12 items-start relative z-10">
+						<div class="space-y-6 lg:sticky lg:top-24">
+                            <div class="inline-flex items-center rounded-full border border-border/60 px-3 py-1 text-xs font-bold bg-muted/80 text-muted-foreground uppercase tracking-widest">Support & Info</div>
+							<h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-foreground">Frequently Asked<br class="hidden lg:block"/> Questions</h2>
+							<p class="text-lg text-muted-foreground leading-relaxed">
+								Everything you need to know about how {siteConfig.name} operates and protects your data.
+							</p>
+                            <div class="pt-2">
+                                <FeatureRequestDialog client:idle class="w-full sm:w-auto border border-border bg-background hover:bg-muted text-foreground shadow-sm px-6 font-semibold" />
+                            </div>
+						</div>
+
+						<div class="space-y-4">
+                            <!-- FAQ Item 1 -->
+                            <div class="rounded-2xl border border-border/50 bg-background/80 p-6 shadow-sm hover:border-primary/40 transition-colors">
+                                <h3 class="text-lg font-semibold text-foreground mb-2 flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+                                    Is my data really private?
+                                </h3>
+                                <p class="text-muted-foreground leading-relaxed">Yes. Every single calculation, formatting, and conversion happens entirely within your web browser. No files or text inputs are ever uploaded to our servers. Your data never leaves your device.</p>
+                            </div>
+                            <!-- FAQ Item 2 -->
+                            <div class="rounded-2xl border border-border/50 bg-background/80 p-6 shadow-sm hover:border-primary/40 transition-colors">
+                                <h3 class="text-lg font-semibold text-foreground mb-2 flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+                                    Are all tools completely free?
+                                </h3>
+                                <p class="text-muted-foreground leading-relaxed">Absolutely. {siteConfig.name} is supported by minimal, non-intrusive advertisements. We will never charge a subscription fee for our core utilities.</p>
+                            </div>
+                            <!-- FAQ Item 3 -->
+                            <div class="rounded-2xl border border-border/50 bg-background/80 p-6 shadow-sm hover:border-primary/40 transition-colors">
+                                <h3 class="text-lg font-semibold text-foreground mb-2 flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+                                    Can I request a new tool?
+                                </h3>
+                                <p class="text-muted-foreground leading-relaxed">Yes! If you're missing a specific calculator, string utility, or developer tool, use the "Feature Request" button. We actively prioritize and build new tools based entirely on community feedback.</p>
+                            </div>
+                            <!-- FAQ Item 4 -->
+                            <div class="rounded-2xl border border-border/50 bg-background/80 p-6 shadow-sm hover:border-primary/40 transition-colors">
+                                <h3 class="text-lg font-semibold text-foreground mb-2 flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="m2 22 20-20"/><path d="m2 2 20 20"/><path d="m14 2-3 3-3-3"/><path d="M14 22l-3-3-3 3"/></svg>
+                                    Does this work offline?
+                                </h3>
+                                <p class="text-muted-foreground leading-relaxed">Yes. Because our utilities rely on blazing-fast client-side Svelte architecture, many of our core tools function perfectly without an active internet connection once the page has initially loaded.</p>
+                            </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>

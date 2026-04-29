@@ -1,0 +1,45 @@
+
+		<!-- Discovery CTA / Browse Categories -->
+		<section class="py-24 px-4 relative overflow-hidden bg-background cv-auto cv-intrinsic-h700">
+            <!-- Box Grid Background with Radial Fade -->
+            <div class="absolute inset-0 -z-20 h-full w-full bg-[linear-gradient(to_right,#8080801a_1px,transparent_1px),linear-gradient(to_bottom,#8080801a_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_70%_50%_at_50%_50%,#000_30%,transparent_100%)]"></div>
+			
+			<div class="container mx-auto max-w-5xl relative z-10">
+				<div class="rounded-[2.5rem] border border-border/50 bg-card/60 backdrop-blur-xl p-8 md:p-12 shadow-2xl relative overflow-hidden ring-1 ring-border/30">
+                    <!-- Subtle glow inside the card -->
+                    <div class="absolute -top-32 -right-32 w-[30rem] h-[30rem] bg-primary/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+					<div class="grid lg:grid-cols-[1fr_1.2fr] gap-12 items-center relative z-10">
+						<div class="space-y-6">
+                            <div class="inline-flex items-center rounded-full border border-border/60 px-3 py-1 text-xs font-bold bg-muted/80 text-muted-foreground uppercase tracking-widest">Client-Side Architecture</div>
+							<h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-foreground">Need something specific?</h2>
+							<p class="text-lg text-muted-foreground leading-relaxed">
+								Browse our complete directory of specific tools. Keep in mind that every utility runs entirely within your browser so your data remains isolated and completely private.
+							</p>
+							<div class="flex flex-col sm:flex-row items-center gap-4 pt-4">
+                                <Button size="lg" href="/categories" class="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm group">
+                                    View Directory <ArrowRight class="size-4 ml-2 transition-transform group-hover:translate-x-1" />
+                                </Button>
+							</div>
+						</div>
+
+						<div class="grid grid-cols-2 gap-4">
+                            {categories.slice(0, 4).map((category) => (
+                                <a href={`/categories/${category.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`} class="group relative overflow-hidden rounded-2xl border border-border/50 bg-background/80 p-5 sm:p-6 transition-all hover:border-primary/40 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between min-h-[120px]">
+                                    <div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                    <h3 class="font-semibold text-foreground group-hover:text-primary transition-colors text-lg tracking-tight">{category}</h3>
+                                    <span class="text-sm font-medium text-primary/60 group-hover:text-primary transition-colors flex items-center mt-4">
+                                        Explore <ArrowRight class="size-3.5 ml-1.5 transition-transform group-hover:translate-x-1" />
+                                    </span>
+                                </a>
+                            ))}
+                            {categories.length > 4 && (
+                                <a href="/categories" class="col-span-2 group relative overflow-hidden rounded-xl border border-border/30 bg-muted/30 p-4 transition-all hover:border-border/60 hover:bg-muted/60 block text-center mt-2">
+                                    <span class="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">See all {categories.length} isolated categories &rarr;</span>
+                                </a>
+                            )}
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>

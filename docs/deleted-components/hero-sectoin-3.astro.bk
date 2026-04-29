@@ -1,0 +1,26 @@
+
+		<!-- Hero Section -->
+		<section class="relative pt-10 pb-6 md:pt-16 md:pb-8 px-4 text-center overflow-hidden">
+            <!-- Box Grid Background with Fade -->
+            <div class="absolute inset-0 -z-20 h-full w-full bg-background bg-[linear-gradient(to_right,#8080801a_1px,transparent_1px),linear-gradient(to_bottom,#8080801a_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_0%,#000_70%,transparent_100%)]"></div>
+            <!-- Subtle top glow -->
+			 <!-- Hide this below glow -->
+            <!-- <div class="absolute top-0 left-1/2 w-full -translate-x-1/2 -z-10 h-64 bg-primary/5 blur-[100px] rounded-full pointer-events-none"></div> -->
+			<div class="container mx-auto max-w-4xl relative z-10 antialiased">
+                <!-- Title -->
+                <h1 class="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight text-foreground leading-[1.15] md:leading-[1.1] mb-5">
+                    Faster than AI, <br class="hidden sm:block"/>
+                    Safer <span class="relative inline-block whitespace-nowrap">
+                        <span class="bg-gradient-to-br from-foreground to-muted-foreground bg-clip-text text-transparent italic pr-1">than Cloud</span>
+                        <!-- Stylish SVG Underline -->
+                        <svg class="absolute -bottom-1 md:-bottom-2 left-0 w-full h-3 md:h-4 text-primary" viewBox="0 0 100 15" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2,12 Q45,2 98,8" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+                        </svg>
+                    </span>
+                </h1>
+                <!-- Subtitle -->
+                <p class="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-4">
+                    Lightning-fast, free tools to edit, format, calculate, convert, and more
+                </p>
+			</div>
+		</section>

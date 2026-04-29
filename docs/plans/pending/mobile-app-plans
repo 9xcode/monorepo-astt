@@ -1,0 +1,37 @@
+Q2: Can the site work offline?
+Yes — with a PWA (Progressive Web App) Service Worker.
+
+Your stack (Astro + Vite) supports this cleanly via @vite-pwa/astro plugin.
+
+What it does:
+
+Caches pages, JS, CSS, fonts on first visit
+Next visits load from cache instantly — even with no internet
+Shows a fallback page when fully offline
+How it works with your site specifically:
+
+Static tool pages (all your calculator/converter tools) → fully cacheable → work offline
+Dynamic things like search (/api/search.json) → can also be cached on first fetch
+Form submissions (Feature Request) → need internet, but you can show a nice offline message
+Trade-off: Adds a service worker (~2KB) and a manifest file. The @vite-pwa/astro plugin handles everything automatically including cache invalidation on deploy.
+
+One-liner to add: npx astro add @vite-pwa/astro
+
+Q3: Can this site become a mobile app for Play Store / App Store?
+Two routes — you don't need to rewrite anything:
+
+Route A: PWA → App Store (Easiest, same codebase)
+Since your site is Astro (static output), it can be a PWA. A PWA can be:
+
+Published to Play Store via PWA Builder or Bubblewrap — wraps your PWA in a TWA (Trusted Web Activity). Google officially supports this. Zero new code.
+Published to App Store via PWA Builder as well, though Apple has stricter rules — needs offline support + specific manifest fields.
+This is the recommended path for your case because:
+
+Same codebase, zero duplication
+All your tools work as-is
+Offline support (from Q2) makes this even better
+Route B: Capacitor (Native wrapper, 2–3 days effort)
+Capacitor wraps your existing web app in a native shell and produces real .apk / .ipa files. Gives access to native APIs (camera, GPS, push notifications). Your tools don't need any of that, so Route A is better.
+
+Route C: React Native / Flutter (Scratch — not recommended)
+Complete rewrite, months of work, duplicate maintenance. Not justified for a tools site.
