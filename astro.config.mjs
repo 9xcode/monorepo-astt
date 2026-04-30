@@ -13,6 +13,7 @@ import rehypeKatex from 'rehype-katex';
 import { ogCache } from './integrations/og-cache/index.ts';
 import { toolsTemplate } from './src/og/templates/tools.ts';
 import { blogTemplate } from './src/og/templates/blog.ts';
+import { corePages } from './core/integrations/core-pages.ts';
 
 // Freeze the build time ONCE at the very start of the Astro build process.
 // This env var is inherited by all Astro worker processes, so every page’s
@@ -50,6 +51,8 @@ export default defineConfig({
     inlineStylesheets: 'auto', 
   },
   integrations: [
+    // Phase 6: core-pages wires the config-injector middleware (Astro.locals.siteConfig)
+    corePages(),
     ogCache({
       templateVersion: 'v1.0.0',
       forceRegenerate: false,
@@ -73,7 +76,23 @@ export default defineConfig({
   },
 
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [
+      tailwindcss(),
+      // Phase 6: virtual:site-config — makes siteConfig available to all components
+      // without prop drilling. Consumed by middleware/config-injector.ts and any
+      // component that imports from 'virtual:site-config' directly.
+      {
+        name: 'mtools-site-config',
+        resolveId(id) {
+          if (id === 'virtual:site-config') return '\0virtual:site-config';
+        },
+        load(id) {
+          if (id === '\0virtual:site-config') {
+            return `export const siteConfig = ${JSON.stringify(siteConfig)};`;
+          }
+        },
+      },
+    ],
     // Astro 6 uses Vite 7's Environment API. During the prerender phase, Node.js
     // tries to load @lucide/svelte, bits-ui, svelte-toolbelt, and runed directly
     // — but these contain raw .svelte / .svelte.js files that Node can't parse.
