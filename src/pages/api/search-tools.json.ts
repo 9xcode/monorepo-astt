@@ -1,19 +1,10 @@
 import type { APIRoute } from 'astro';
 import { siteConfig } from '../../config';
-import { getAllToolSummaries } from '../../utils/tools';
+import { getAllToolSummaries } from '@mtools/core/utils/tools';
+// Phase 10: SearchItem type moved to core; re-exported here for backwards compat.
+export type { SearchItem } from '@mtools/core/utils/search';
 
-export type SearchItem = {
-  type: 'tool' | 'blog';
-  slug: string;
-  href: string;
-  data: {
-    title: string;
-    description: string;
-    icon?: string;
-    category?: string;
-    tags?: readonly string[];
-  };
-};
+import type { SearchItem } from '@mtools/core/utils/search';
 
 export const GET: APIRoute = async () => {
   if (!siteConfig.features.search.enabled || !siteConfig.features.search.showTabs.tools) {

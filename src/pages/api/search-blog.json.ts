@@ -1,7 +1,9 @@
 import type { APIRoute } from 'astro';
 import { siteConfig } from '../../config';
-import type { SearchItem } from './search-tools.json';
-import { getAllPostSummaries } from '../../utils/blog';
+// Phase 10: both type and utility now come from core
+import type { SearchItem } from '@mtools/core/utils/search';
+import { getAllPostSummaries } from '@mtools/core/utils/blog';
+
 
 export const GET: APIRoute = async () => {
   if (!siteConfig.features.search.enabled || !siteConfig.features.search.showTabs.blog || !siteConfig.features.blog.enabled) {

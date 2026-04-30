@@ -26,6 +26,7 @@
     "./utils/tools": "./src/utils/tools.ts",
     "./utils/authors": "./src/utils/authors.ts",
     "./utils/searchStore": "./src/utils/searchStore.svelte.ts",
+    "./utils/search": "./src/utils/search.ts",
     "./seo": "./src/seo/index.ts",
     "./og/templates/tools": "./src/og/templates/tools.ts",
     "./og/templates/blog": "./src/og/templates/blog.ts",
