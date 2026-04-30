@@ -33,7 +33,9 @@ export function createAstroConfig(
   siteConfig: SiteConfig,
   overrides: Partial<AstroUserConfig> = {}
 ): ReturnType<typeof defineConfig> {
-  // Resolve core package root — used to build alias paths
+  // Resolve core package root — used to build alias paths.
+  // import.meta.url is the URL of THIS file (core/src/config/astro-config.ts).
+  // Three levels up: config/ → src/ → core/ → (core root)
   const coreRoot = fileURLToPath(new URL('../../..', import.meta.url));
 
   // ── Virtual module Vite plugin ──────────────────────────────────────────────
@@ -52,12 +54,7 @@ export function createAstroConfig(
     },
   };
 
-  // ── Lazy-import integrations ────────────────────────────────────────────────
-  // These are imported lazily so this file can be safely imported in non-Astro
-  // contexts (e.g. plain Node scripts) without side-effects.
-  // In Phase 6 the core-pages integration will be imported here too.
-  // For now (Phase 5) we keep the import list identical to the current astro.config.mjs.
-
+  // ── Build time freeze ───────────────────────────────────────────────────────
   // Freeze the build time ONCE at the very start of the Astro build process.
   // This env var is inherited by all Astro worker processes, so every page's
   // siteConfig.buildTime evaluates to this exact same frozen millisecond.
@@ -65,6 +62,28 @@ export function createAstroConfig(
     process.env['BUILD_TIME'] = new Date().toISOString().split('.')[0] + '+00:00';
     process.env['PUBLIC_BUILD_TIME'] = process.env['BUILD_TIME'];
   }
+
+  // ── Lazy-load integrations ──────────────────────────────────────────────────
+  // Imported lazily so this file can be safely imported in non-Astro contexts
+  // (e.g. plain Node scripts) without triggering side-effects.
+  // All imports are synchronous require() calls — safe at config evaluation time.
+
+  // svelte
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const svelte = require('@astrojs/svelte').default;
+
+  // sitemap
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const sitemap = require('@astrojs/sitemap').default;
+  const { sitemapConfig } = require('../config/sitemap.js');
+
+  // og-cache integration (from core/integrations/og-cache/)
+  const { ogCache } = require('../../integrations/og-cache/index.js');
+  const { toolsTemplate } = require('../og/templates/tools.js');
+  const { blogTemplate } = require('../og/templates/blog.js');
+
+  // core-pages integration (wires middleware + injected routes)
+  const { corePages } = require('../../integrations/core-pages.js');
 
   return defineConfig({
     site: siteConfig.url,
@@ -97,11 +116,26 @@ export function createAstroConfig(
       inlineStylesheets: 'auto',
     },
 
-    // Integrations are imported in the factory to avoid side-effects at module load.
-    // Sites can pass additional integrations via overrides.integrations.
-    // NOTE: ogCache + sitemap + core-pages will be wired here in Phase 6/12.
-    // For now this factory is used as a config bridge only.
     integrations: [
+      // Phase 13: all integrations wired into the factory.
+      // core-pages must come first — it registers the middleware.
+      corePages(),
+      ogCache({
+        templateVersion: 'v1.0.0',
+        forceRegenerate: false,
+        locales: [],
+        defaultLocale: 'en',
+        concurrency: 8,
+        siteConfig,
+        outputDir: './public/images/og',
+        collections: [
+          { name: 'tools', template: toolsTemplate },
+          { name: 'blog',  template: blogTemplate  },
+        ],
+      }),
+      svelte(),
+      sitemap(sitemapConfig),
+      // Site-specific integrations passed via overrides
       ...(overrides.integrations ?? []),
     ],
 

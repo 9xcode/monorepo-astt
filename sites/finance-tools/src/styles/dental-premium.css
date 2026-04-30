@@ -1,0 +1,91 @@
+/*
+  ── Dental Premium Theme ──
+  A professional medical/dental theme with calming blues and greens.
+  Primary: clinical blue · Secondary: healing teal · Clean surfaces.
+  Features: Custom shadow scale for elevated, premium card feel.
+*/
+
+@layer base {
+  :root {
+    --background: oklch(0.9913 0.0013 286.3756);
+    --foreground: oklch(0.3821 0.1320 264.9488);
+    --card: oklch(1.0000 0.0000 0.0000);
+    --card-foreground: oklch(0.0000 0.0000 0.0000);
+    --popover: oklch(1.0000 0.0000 0.0000);
+    --popover-foreground: oklch(0.0000 0.0000 0.0000);
+    --primary: oklch(0.4857 0.1377 262.3134);
+    --primary-foreground: oklch(1.0000 0.0000 0.0000);
+    --secondary: oklch(0.6717 0.0816 165.7822);
+    --secondary-foreground: oklch(0.0000 0.0000 0.0000);
+    --muted: oklch(0.9546 0.0087 264.5215);
+    --muted-foreground: oklch(0.5730 0.0175 269.8450);
+    --accent: oklch(0.7258 0.0744 265.4437);
+    --accent-foreground: oklch(0.0000 0.0000 0.0000);
+    --destructive: oklch(0.6498 0.0677 22.6544);
+    --destructive-foreground: oklch(0.0000 0.0000 0.0000);
+    --border: oklch(0.9222 0.0126 271.2786);
+    --input: oklch(0.8235 0.0116 269.5282);
+    --ring: oklch(0.5855 0.1378 262.4767);
+
+    --sidebar: oklch(0.9913 0.0013 286.3756);
+    --sidebar-foreground: oklch(0.0000 0.0000 0.0000);
+    --sidebar-primary: oklch(0.4857 0.1377 262.3134);
+    --sidebar-primary-foreground: oklch(1.0000 0.0000 0.0000);
+    --sidebar-accent: oklch(1.0000 0.0000 0.0000);
+    --sidebar-accent-foreground: oklch(0.0000 0.0000 0.0000);
+    --sidebar-border: oklch(0.9222 0.0126 271.2786);
+    --sidebar-ring: oklch(0.5855 0.1378 262.4767);
+
+    --chart-1: oklch(0.5688 0.1477 262.6367);
+    --chart-2: oklch(0.5547 0.1024 264.8183);
+    --chart-3: oklch(0.7372 0.1271 262.3606);
+    --chart-4: oklch(0.3821 0.1320 264.9488);
+    --chart-5: oklch(0.4000 0.1272 262.2800);
+
+    --radius: 8px;
+
+    /* Custom premium shadow scale for elevated card feel */
+    --shadow-sm: 0px 4px 16px 1px oklch(0 0 0 / 0.13), 0px 1px 2px 0px oklch(0 0 0 / 0.13);
+    --shadow: 0px 4px 16px 1px oklch(0 0 0 / 0.13), 0px 1px 2px 0px oklch(0 0 0 / 0.13);
+    --shadow-md: 0px 4px 16px 1px oklch(0 0 0 / 0.13), 0px 2px 4px 0px oklch(0 0 0 / 0.13);
+    --shadow-lg: 0px 4px 16px 1px oklch(0 0 0 / 0.13), 0px 4px 6px 0px oklch(0 0 0 / 0.13);
+    --shadow-xl: 0px 4px 16px 1px oklch(0 0 0 / 0.13), 0px 8px 10px 0px oklch(0 0 0 / 0.13);
+  }
+
+  .dark {
+    --background: oklch(0.2555 0.0268 274.9749);
+    --foreground: oklch(0.9913 0.0013 286.3756);
+    --card: oklch(0.2254 0.0258 274.1242);
+    --card-foreground: oklch(1.0000 0.0000 0.0000);
+    --popover: oklch(0.2254 0.0258 274.1242);
+    --popover-foreground: oklch(1.0000 0.0000 0.0000);
+    --primary: oklch(0.6545 0.1562 262.5018);
+    --primary-foreground: oklch(0.0000 0.0000 0.0000);
+    --secondary: oklch(0.7759 0.0862 165.5377);
+    --secondary-foreground: oklch(0.0000 0.0000 0.0000);
+    --muted: oklch(0.2290 0.0302 269.7541);
+    --muted-foreground: oklch(0.7325 0.0192 272.2274);
+    --accent: oklch(0.4643 0.0220 268.8230);
+    --accent-foreground: oklch(1.0000 0.0000 0.0000);
+    --destructive: oklch(0.7759 0.0862 165.5377);
+    --destructive-foreground: oklch(0.0000 0.0000 0.0000);
+    --border: oklch(0.3127 0.0370 271.2614);
+    --input: oklch(0.4127 0.0377 272.7846);
+    --ring: oklch(0.5545 0.1563 262.3472);
+
+    --sidebar: oklch(0.2555 0.0268 274.9749);
+    --sidebar-foreground: oklch(1.0000 0.0000 0.0000);
+    --sidebar-primary: oklch(0.6545 0.1562 262.5018);
+    --sidebar-primary-foreground: oklch(0.0000 0.0000 0.0000);
+    --sidebar-accent: oklch(0.2168 0.0260 274.0222);
+    --sidebar-accent-foreground: oklch(1.0000 0.0000 0.0000);
+    --sidebar-border: oklch(0.3127 0.0370 271.2614);
+    --sidebar-ring: oklch(0.5545 0.1563 262.3472);
+
+    --chart-1: oklch(0.6545 0.1562 263);
+    --chart-2: oklch(0.6000 0.1024 265);
+    --chart-3: oklch(0.7800 0.1271 262);
+    --chart-4: oklch(0.4500 0.1320 265);
+    --chart-5: oklch(0.5000 0.1272 262);
+  }
+}
