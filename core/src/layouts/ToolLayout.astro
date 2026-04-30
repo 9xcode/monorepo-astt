@@ -1,0 +1,285 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import Header from "../components/common/sections/Header.astro";
+import Footer from "../components/common/sections/Footer.astro";
+import AdPlaceholder from "../components/common/ui/AdPlaceholder.astro";
+import ErrorBoundary from "../components/common/ui/ErrorBoundary.svelte";
+import ToolActionTray from "../components/engagement/ToolActionTray.svelte";
+import ToolActionTraySkeleton from "../components/common/ui/skeletons/ToolActionTraySkeleton.astro";
+import RecentToolsTracker from "../components/workspace/RecentToolsTracker.svelte";
+import { siteConfig } from 'virtual:site-config';
+import { replaceSeoPlaceholders } from "../utils/seo";
+import { getStaticOgImage } from '@mtools/core/utils/og';
+import KaTexStyles from "../components/common/typography/KaTexStyles.astro";
+import Breadcrumb from "../components/common/ui/Breadcrumb.astro";
+import ContentSection from "../components/common/sections/ContentSection.astro";
+import ArticleProse from "../components/common/typography/ArticleProse.astro";
+import AuthorCard from "../components/authors/AuthorCard.astro";
+import RelatedTools from "../components/tool/sections/RelatedTools.astro";
+import ToolSidebar from "../components/tool/sidebar/ToolSidebar.astro";
+import ToolPageSchemas from "../components/common/seo/ToolPageSchemas.astro";
+import { categoryToSlug } from '@mtools/core/utils/slug';
+import { resolveAuthors } from "../utils/authors";
+import { getRelatedTools } from "../utils/tools";
+
+type Tool = {
+	slug: string;
+	data: {
+		title: string;
+		description: string;
+		shortDescription?: string;
+		icon?: string;
+		category: string;
+		order?: number;
+		tags?: string[];
+	};
+};
+
+const { title, toolTitle, category, description, pubDate, modDate, faqSchema, howToSchema, tools, canonical, tags, featureList, hasWidget, fullWidth, hasMath, tocHeadings, tocTitle } = Astro.props as {
+	title: string;
+	toolTitle: string;
+	category: string;
+	description: string;
+	/** Pre-resolved W3C date string from formatW3CDate(entry.data.pubDate, siteConfig.datePublished). */
+	pubDate: string;
+	modDate: string;
+	faqSchema?: any;
+	howToSchema?: any;
+	tools: Tool[];
+	canonical?: string;     // SEO canonical URL override (for alias tools)
+	tags?: readonly string[];  // Topic tags, displayed below the article
+	featureList?: string[]; // Specific SEO features for schema
+	widgetSlug?: string;    // Passed through for future modulepreload use
+	hasWidget?: boolean;    // If false, suppresses the widget card container
+	fullWidth?: boolean;    // If true, widget zone is full-width; article+sidebar below in 3-col grid
+	hasMath?: boolean;      // If true, conditionally loads KaTeX CSS
+	tocHeadings?: import('../components/common/sections/TableOfContents.astro').Heading[];
+	tocTitle?: string;
+	/** Optional raw author reference from entry.data.author.
+	 *  If provided, resolves to that author. If omitted, falls back to defaultAuthorSlug. */
+	authorRef?: { collection: string; id: string };
+	/** Optional co-author references from entry.data.coAuthors. */
+	coAuthorRefs?: { collection: string; id: string }[];
+};
+
+// Resolve all authors — primary + co-authors. Falls back to defaultAuthorSlug for primary.
+// authors[0] is always the primary author for SEO (Person schema, Article.author).
+const authors = await resolveAuthors(Astro.props.authorRef, Astro.props.coAuthorRefs);
+// seoUrl — the single source of truth for this tool page's absolute SEO URL.
+const seoUrl = canonical
+    ? (canonical.startsWith('http') ? canonical : new URL(canonical, siteConfig.url).href)
+    : new URL(Astro.url.pathname, siteConfig.url).href;
+
+const currentPath = Astro.url.pathname;
+const currentSlug = currentPath.split('/').filter(Boolean).pop() || '';
+
+const processedToolTitle = replaceSeoPlaceholders(toolTitle);
+const processedDesc = replaceSeoPlaceholders(description);
+
+// Fetch the static OG image path with manifest cache-busting from the registry
+const ogImagePath = getStaticOgImage('tools', currentSlug);
+const fullOgImageUrl = ogImagePath 
+    ? new URL(ogImagePath, siteConfig.url).href 
+    : new URL('/images/og-image.png', siteConfig.url).href;
+
+// Resolve tray config once — keeps template clean
+const trayConfig = siteConfig.features.toolActionTray;
+const trayEnabled = trayConfig?.enabled ?? false;
+const sidebarConfig = siteConfig.ui.sidebar;
+const showSidebarAllTools = sidebarConfig.showAllToolsList ?? true;
+const showSidebarAppCard = sidebarConfig.showMobileAppCard ?? true;
+const trayProps = {
+	slug: currentSlug,
+	toolTitle: processedToolTitle,
+	toolDescription: processedDesc,
+	toolUrl: seoUrl,
+	toolImageUrl: fullOgImageUrl,
+	showFavourite: (trayConfig?.showFavourite ?? true) && (siteConfig.features.favouriteTools?.enabled ?? true),
+	showShare: trayConfig?.showShare ?? true,
+	showSupport: (trayConfig?.showSupport ?? true) && !!(siteConfig.features.support?.url),
+	supportUrl: siteConfig.features.support?.url ?? "",
+	supportLabel: siteConfig.features.support?.label ?? "Support Us",
+	showFeedback: trayConfig?.showFeedback ?? true,
+	showGetApp: trayConfig?.showGetApp ?? true,
+	getAppHref: trayConfig?.getAppHref ?? "/mobile-app",
+	favouriteStorageKey: siteConfig.features.favouriteTools?.storageKey ?? "favourites",
+};
+
+// Related tools: seeded by slug → same-cat → shared-tags → any
+const relatedTools = getRelatedTools(currentSlug, category, tags ?? [], tools);
+
+const showSidebarSupportCard = siteConfig.ui.sidebar.showSupportCard !== false;
+---
+
+<BaseLayout title={title} description={description} canonicalURL={seoUrl} image={ogImagePath}>
+	{/* SEO: JSON-LD structured data */}
+	<Fragment slot="head">
+		<ToolPageSchemas
+			toolTitle={processedToolTitle}
+			description={processedDesc}
+			seoUrl={seoUrl}
+			ogImageUrl={fullOgImageUrl}
+			category={category}
+			rawToolTitle={toolTitle}
+			pubDate={pubDate}
+			modDate={modDate}
+			faqSchema={faqSchema}
+			howToSchema={howToSchema}
+			tocHeadings={tocHeadings}
+			tags={tags}
+			featureList={featureList}
+			author={authors[0]}
+		/>
+	</Fragment>
+
+	{hasMath && (
+		<Fragment slot="head">
+			<KaTexStyles />
+		</Fragment>
+	)}
+	<Header />
+	<main class="flex-1 container mx-auto px-4 py-8">
+        {/* Top Tool Ad */}
+        <AdPlaceholder slotId="tool-header-top" label="Sponsored" className="min-h-[90px] mb-8 hidden lg:flex" />
+
+		
+		{/* ============================================================
+		    FULL-WIDTH MODE  — fullWidth: true
+		    Zone 1: Breadcrumb + H1 + widget — spans full container width.
+		    Zone 2: Article (2 cols) + Sidebar (1 col), same grid as normal.
+		    Use for tools needing wide input areas (diff checker, etc.)
+		    ============================================================ */}
+		{fullWidth ? (
+			<div class="contents">
+				{/* Zone 1 — full width */}
+				<div class="space-y-6 mb-8">
+					<div class="space-y-4">
+						<Breadcrumb items={[
+							{ label: "Home", href: "/" },
+							{ label: "Tools", href: "/tools" },
+							{ label: category, href: `/categories/${categoryToSlug(category)}` },
+							{ label: toolTitle },
+						]} />
+						<h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-foreground">{toolTitle}</h1>
+						<div class="text-lg text-muted-foreground leading-relaxed">
+							<slot name="description" />
+						</div>
+					</div>
+					{hasWidget && (
+						<div class="rounded-xl border border-border/60 bg-card p-4 md:p-6 shadow-sm overflow-hidden">
+							<ErrorBoundary client:load>
+								<slot />
+							</ErrorBoundary>
+						</div>
+					)}
+					{trayEnabled && (
+						<ToolActionTray client:only="svelte" {...trayProps}>
+							<ToolActionTraySkeleton slot="fallback" />
+						</ToolActionTray>
+					)}
+					<AdPlaceholder slotId="tool-content-top" label="Sponsored" className="min-h-[100px]" />
+				</div>
+
+				{/* Zone 2 — 3-col grid: article + sidebar */}
+				<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+					<div class="lg:col-span-2 space-y-6">
+						<ContentSection title="About this Tool" category={category} tocHeadings={tocHeadings} tocTitle={tocTitle} tags={tags}>
+							<ArticleProse>
+								<slot name="content" />
+							</ArticleProse>
+						</ContentSection>
+
+						<AuthorCard authors={authors} />
+
+						<AdPlaceholder slotId="tool-content-middle" label="Sponsored" className="min-h-[100px] my-6" />
+
+						<RelatedTools relatedTools={relatedTools} category={category} />
+
+						<AdPlaceholder slotId="tool-content-bottom" label="Sponsored" className="min-h-[100px] mt-8" />
+					</div>
+
+					<ToolSidebar
+						tools={tools}
+						currentPath={currentPath}
+						showAllTools={showSidebarAllTools}
+						showAppCard={showSidebarAppCard}
+						showSupportCard={showSidebarSupportCard}
+					/>
+				</div>
+			</div>
+
+
+		) : (
+
+	
+
+		<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+			{/* Main Content — 2 cols */}
+			<div class="lg:col-span-2 space-y-6">
+				<div class="space-y-4">
+					<Breadcrumb items={[
+						{ label: "Home", href: "/" },
+						{ label: "Tools", href: "/tools" },
+						{ label: category, href: `/categories/${categoryToSlug(category)}` },
+						{ label: toolTitle },
+					]} />
+					<h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-foreground">{toolTitle}</h1>
+					<div class="text-lg text-muted-foreground leading-relaxed">
+						<slot name="description" />
+					</div>
+				</div>
+
+				{hasWidget && (
+					<div class="rounded-xl border border-border/60 bg-card p-4 md:p-6 shadow-sm overflow-hidden">
+						<ErrorBoundary client:load>
+							<slot />
+						</ErrorBoundary>
+					</div>
+				)}
+
+				{trayEnabled && (
+					<ToolActionTray client:only="svelte" {...trayProps}>
+						<ToolActionTraySkeleton slot="fallback" />
+					</ToolActionTray>
+				)}
+
+				<AdPlaceholder slotId="tool-content-top" label="Sponsored" className="min-h-[100px]" />
+
+				<ContentSection title="About this Tool" category={category} tocHeadings={tocHeadings} tocTitle={tocTitle} tags={tags}>
+					<ArticleProse>
+						<slot name="content" />
+					</ArticleProse>
+				</ContentSection>
+
+				<AuthorCard authors={authors} />
+
+				<AdPlaceholder slotId="tool-content-middle" label="Sponsored" className="min-h-[100px] my-6" />
+
+				<RelatedTools relatedTools={relatedTools} category={category} />
+
+				<AdPlaceholder slotId="tool-content-bottom" label="Sponsored" className="min-h-[100px] mt-8" />
+			</div>
+
+			{/* Sidebar — 1 col */}
+			<ToolSidebar
+				tools={tools}
+				currentPath={currentPath}
+				showAllTools={showSidebarAllTools}
+				showAppCard={showSidebarAppCard}
+				showSupportCard={showSidebarSupportCard}
+			/>
+		</div>
+		)}
+	</main>
+
+	{/* Invisible tracker — writes current tool slug to localStorage for "Recently Used" feature */}
+	{siteConfig.features.recentTools?.enabled && (
+		<RecentToolsTracker
+			client:only="svelte"
+			slug={currentSlug}
+			storageKey={siteConfig.features.recentTools.storageKey}
+			maxItems={siteConfig.features.recentTools.maxItems}
+		/>
+	)}
+	<Footer />
+</BaseLayout>

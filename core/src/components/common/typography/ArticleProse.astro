@@ -1,0 +1,28 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"div"> {
+  class?: string;
+}
+
+const { class: className = "", ...rest } = Astro.props;
+
+/* 
+  AVAILABLE PROSE COLOR PALETTES IN TAILWIND:
+  If you change the site theme (e.g. to a blue theme) and want the typography 
+  to match better, you can change `prose-neutral` below to:
+  - prose-slate: A slightly bluish, cool gray
+  - prose-gray: A standard, slightly cool gray
+  - prose-zinc: A very neutral, slightly warm gray (This is Shadcn's default)
+  - prose-neutral: A pure, dead-center gray
+  - prose-stone: A warmer, slightly brownish gray
+  
+*/
+---
+
+<div 
+  class={`prose prose-slate dark:prose-invert max-w-none prose-headings:scroll-mt-24 prose-headings:font-bold prose-headings:tracking-tight prose-h2:text-xl prose-h3:text-lg prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl prose-img:border prose-img:border-border/50 ${className}`}
+  {...rest}
+>
+  <slot />
+</div>

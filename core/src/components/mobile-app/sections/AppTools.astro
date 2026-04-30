@@ -1,0 +1,65 @@
+---
+/**
+ * AppTools — Available tools grid section for mobile app page.
+ */
+import { MoveRight, Calculator, ChartPie, Activity, FileText } from '@lucide/svelte';
+---
+
+<section class="py-24 px-4 bg-muted/30 border-y border-border/50 cv-auto cv-intrinsic-h400">
+	<div class="container mx-auto">
+		<div class="text-center max-w-2xl mx-auto mb-16 space-y-4">
+			<h2 class="text-3xl md:text-4xl font-bold tracking-tight">Everything You Need, In One App</h2>
+			<p class="text-lg text-muted-foreground">Access over 50+ financial, mathematical, and everyday tools directly from your pocket.</p>
+		</div>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div class="p-6 rounded-xl bg-card border border-border/60 hover:shadow-md transition-all flex flex-col items-center text-center gap-4 group cursor-pointer hover:border-primary/50">
+                <div class="size-12 rounded-full bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <ChartPie class="size-6" />
+                </div>
+                <span class="font-medium">SIP Calculator</span>
+            </div>
+            <div class="p-6 rounded-xl bg-card border border-border/60 hover:shadow-md transition-all flex flex-col items-center text-center gap-4 group cursor-pointer hover:border-primary/50">
+                <div class="size-12 rounded-full bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Calculator class="size-6" />
+                </div>
+                <span class="font-medium">EMI Calculator</span>
+            </div>
+            <div class="p-6 rounded-xl bg-card border border-border/60 hover:shadow-md transition-all flex flex-col items-center text-center gap-4 group cursor-pointer hover:border-primary/50">
+                <div class="size-12 rounded-full bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <FileText class="size-6" />
+                </div>
+                <span class="font-medium">GST & Tax Tools</span>
+            </div>
+            <div class="p-6 rounded-xl bg-card border border-border/60 hover:shadow-md transition-all flex flex-col items-center text-center gap-4 group cursor-pointer hover:border-primary/50">
+                <div class="size-12 rounded-full bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Activity class="size-6" />
+                </div>
+                <span class="font-medium">Health & BMI</span>
+            </div>
+            <div class="p-6 rounded-xl bg-card border border-border/60 hover:shadow-md transition-all flex flex-col items-center text-center gap-4 group cursor-pointer hover:border-primary/50">
+                <div class="size-12 rounded-full bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Calculator class="size-6" />
+                </div>
+                <span class="font-medium">Age Calculator</span>
+            </div>
+            <div class="p-6 rounded-xl bg-card border border-border/60 hover:shadow-md transition-all flex flex-col items-center text-center gap-4 group cursor-pointer hover:border-primary/50">
+                <div class="size-12 rounded-full bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <ChartPie class="size-6" />
+                </div>
+                <span class="font-medium">Percentage Tools</span>
+            </div>
+            <div class="p-6 rounded-xl bg-card border border-border/60 hover:shadow-md transition-all flex flex-col items-center text-center gap-4 group cursor-pointer hover:border-primary/50">
+                <div class="size-12 rounded-full bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <FileText class="size-6" />
+                </div>
+                <span class="font-medium">Discount Tools</span>
+            </div>
+            <div class="p-6 rounded-xl bg-primary text-primary-foreground border border-primary hover:shadow-md transition-all flex flex-col items-center text-center gap-4 group cursor-pointer">
+                <div class="size-12 rounded-full bg-primary-foreground/20 text-primary-foreground flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <MoveRight class="size-6" />
+                </div>
+                <span class="font-medium">And 40+ More</span>
+            </div>
+        </div>
+	</div>
+</section>

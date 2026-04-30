@@ -1,0 +1,26 @@
+---
+import { getAllToolSummaries } from '../../utils/tools';
+import ToolCard from './ToolCard.svelte';
+
+interface Props {
+    category?: string;
+    maxItems?: number;
+}
+const { category, maxItems } = Astro.props;
+
+// getAllToolSummaries() returns sorted (order → alpha) draft-filtered tools.
+let tools = await getAllToolSummaries();
+
+if (category) {
+    tools = tools.filter(t => t.data.category === category);
+}
+if (maxItems) {
+    tools = tools.slice(0, maxItems);
+}
+---
+
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
+    {tools.map((tool) => (
+        <ToolCard tool={tool} />
+    ))}
+</div>

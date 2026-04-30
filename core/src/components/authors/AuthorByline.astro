@@ -1,0 +1,57 @@
+---
+/**
+ * AuthorByline — Inline "By {Author}" byline for blog post and tool headers.
+ *
+ * Accepts one or more authors. When multiple authors are provided, names are
+ * joined in natural language: "Alice", "Alice & Bob", "Alice, Bob & Carol".
+ * Each name optionally links to their individual profile page.
+ *
+ * Usage:
+ *   <AuthorByline authors={authors} />
+ *   <AuthorByline authors={authors} showAvatar linkToProfile />
+ *   <AuthorByline authors={authors} showAvatar={false} linkToProfile={false} />
+ */
+import type { AuthorEntry } from '../../utils/authors';
+import { getAuthorUrl } from '../../utils/authors';
+import AuthorAvatar from './AuthorAvatar.astro';
+
+interface Props {
+  authors: AuthorEntry[];
+  /** Show the small avatar icon next to the first author's name. Default: false. */
+  showAvatar?: boolean;
+  /** Link each author name to their profile page. Default: true. */
+  linkToProfile?: boolean;
+}
+
+const { authors, showAvatar = false, linkToProfile = true } = Astro.props;
+
+// resolveAuthors() always returns at least one entry, but guard defensively
+// against an empty array to avoid rendering a broken byline
+if (authors.length === 0) return;
+
+
+---
+
+<span class="inline-flex items-center gap-3 flex-wrap">
+  {authors.map((author) => {
+    const profileUrl = getAuthorUrl(author.id);
+    return (
+      <span class="inline-flex items-center gap-1.5">
+        {showAvatar && (
+          <AuthorAvatar author={author} size="sm" />
+        )}
+        {linkToProfile ? (
+          <a
+            href={profileUrl}
+            class="font-medium text-foreground hover:text-primary transition-colors"
+            rel="author"
+          >
+            {author.data.name}
+          </a>
+        ) : (
+          <span class="font-medium text-foreground">{author.data.name}</span>
+        )}
+      </span>
+    );
+  })}
+</span>

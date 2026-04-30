@@ -1,0 +1,46 @@
+---
+/**
+ * BlogPostCard — Reusable card for blog index grids and RelatedPosts.
+ * Renders cover image, category badge, title, description, date, and read time.
+ */
+import type { BlogPost } from '../../../utils/blog';
+import { getBlogSlug } from '../../../utils/blog';
+import { formatW3CDate } from '@mtools/core/utils/w3c-date';
+import { categoryToSlug } from '@mtools/core/utils/slug';
+import { siteConfig } from 'virtual:site-config';
+
+interface Props {
+  post: BlogPost;
+  /** When true, card spans 2 columns (for the first/featured post) */
+  featured?: boolean;
+}
+
+const { post, featured = false } = Astro.props;
+const { title, description, pubDate, category } = post.data;
+const slug = getBlogSlug(post);
+const categorySlug = categoryToSlug(category);
+// Resolve pubDate to a Date for display; formatW3CDate handles string|Date|undefined
+const resolvedPubDate = new Date(formatW3CDate(pubDate, siteConfig.datePublished));
+---
+
+<article class:list={['group flex flex-col h-full border rounded-xl hover:shadow-md transition-shadow bg-card', featured && 'sm:col-span-2']}>
+  <div class="p-6 flex flex-col h-full">
+    <h2 class="text-xl font-bold mb-3 leading-snug">
+      <a href={`/blog/${slug}`} class="hover:underline group-hover:text-primary transition-colors">{title}</a>
+    </h2>
+
+    <p class="text-muted-foreground line-clamp-3 mb-6 flex-grow">{description}</p>
+
+    <div class="flex items-center justify-between text-sm text-muted-foreground pt-4 border-t border-border/50">
+      <time datetime={resolvedPubDate.toISOString()}>
+        {resolvedPubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+      </time>
+      <a
+        href={`/blog/category/${categorySlug}`}
+        class="font-semibold text-primary hover:underline uppercase tracking-wider text-xs"
+      >
+        {category}
+      </a>
+    </div>
+  </div>
+</article>

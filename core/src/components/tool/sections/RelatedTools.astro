@@ -1,0 +1,46 @@
+---
+/**
+ * RelatedTools — Grid of related tool cards.
+ * Extracted from ToolLayout.astro (was duplicated 2× for fullWidth/normal modes).
+ */
+import { iconMap, Calculator } from "$lib/icons";
+import { categoryToSlug } from "@mtools/core/utils/slug";
+
+type Tool = {
+	slug: string;
+	data: {
+		title: string;
+		description: string; // pre-resolved (shortDescription || description) from [tool].astro
+		icon?: string;
+		category: string;
+	};
+};
+
+interface Props {
+	relatedTools: Tool[];
+	category: string;
+}
+
+const { relatedTools, category } = Astro.props;
+---
+
+<div class="space-y-6 pt-6 mt-8 border-t border-border/50 cv-auto cv-intrinsic-h600">
+	<div class="flex items-center justify-between">
+		<h3 class="text-2xl font-bold tracking-tight">Related Tools</h3>
+		{category && (<a href={`/categories/${categoryToSlug(category)}`} class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3">View all {category} tools &rarr;</a>)}
+	</div>
+	<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+		{relatedTools.map(tool => {
+			const Icon = tool.data.icon ? iconMap[tool.data.icon] : Calculator;
+			return (
+				<a href={`/tools/${tool.slug}`} class="group flex items-start gap-4 p-5 bg-card border border-border/60 rounded-xl hover:border-primary/50 hover:shadow-md transition-all duration-200">
+					<div class="p-3 bg-primary/10 rounded-xl text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors shrink-0">{Icon ? <Icon class="size-6" /> : <Calculator class="size-6" />}</div>
+					<div class="flex flex-col flex-1 min-w-0 justify-center">
+						<span class="font-bold text-base text-foreground group-hover:text-primary transition-colors truncate">{tool.data.title}</span>
+						<span class="text-sm text-muted-foreground line-clamp-2 mt-1 leading-relaxed">{tool.data.description}</span>
+					</div>
+				</a>
+			);
+		})}
+	</div>
+</div>

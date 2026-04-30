@@ -1,0 +1,51 @@
+---
+/**
+ * FeaturedTools — Displays a grid of featured tool cards on the homepage.
+ * Extracted from pages/index.astro for maintainability.
+ */
+import { iconMap, Calculator } from "$lib/icons";
+
+interface Tool {
+	slug: string;
+	data: {
+		title: string;
+		description: string;
+		icon?: string;
+		category: string;
+	};
+}
+
+interface Props {
+	featuredTools: Tool[];
+}
+
+const { featuredTools } = Astro.props;
+---
+
+<section class="py-8 px-4">
+	<div class="container mx-auto space-y-7">
+		<div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+			{featuredTools.map(tool => {
+				const Icon = tool.data.icon ? iconMap[tool.data.icon] : Calculator;
+				return (
+					<a href={`/tools/${tool.slug}`} class="group relative flex flex-col gap-4 rounded-xl border border-border/60 bg-card p-6 hover:border-primary/50 hover:shadow-lg transition-all duration-200 overflow-hidden">
+						{/* Decorative glow blob */}
+						<div class="absolute -top-6 -right-6 size-28 bg-primary/10 rounded-full blur-2xl pointer-events-none group-hover:bg-primary/20 transition-colors duration-300" />
+						<div class="relative z-10 flex items-start justify-between">
+							<div class="p-3 bg-primary/10 rounded-xl text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors shrink-0">
+								{Icon ? <Icon class="size-6" /> : <Calculator class="size-6" />}
+							</div>
+							<span class="inline-flex items-center rounded-full border border-border/60 px-2.5 py-0.5 text-xs font-semibold bg-muted/50 text-muted-foreground uppercase tracking-widest shrink-0">
+								{tool.data.category}
+							</span>
+						</div>
+						<div class="relative z-10 flex flex-col flex-1 gap-1.5">
+							<h3 class="text-lg font-bold text-foreground group-hover:text-primary transition-colors">{tool.data.title}</h3>
+							<p class="text-sm text-muted-foreground leading-relaxed flex-1 line-clamp-2">{tool.data.description}</p>
+						</div>
+					</a>
+				);
+			})}
+		</div>
+	</div>
+</section>
