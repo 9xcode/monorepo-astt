@@ -15,6 +15,28 @@
 //   features     — Opt-in functional capabilities grouped by page/scope
 // ────────────────────────────────────────────────────────────────────────────
 
+// Phase 5: Types now live in @mtools/core. Re-exported here so all existing
+// relative imports (e.g. `import type { NavItem } from '../config'`) continue
+// to work without changes during the transition. This file moves to
+// sites/finance-tools/src/config.ts in Phase 13 — at that point these
+// re-exports become permanent.
+export type {
+  SiteConfig,
+  NavItem,
+  SeoConfig,
+  NavigationConfig,
+  SidebarConfig,
+  FloatingActionsConfig,
+  ThemeConfig,
+  UiConfig,
+  AdsConfig,
+  SupportConfig,
+  TocConfig,
+  BlogConfig,
+  SearchConfig,
+  FeaturesConfig,
+} from '@mtools/core/config/types';
+
 // ── Shared primitive types ───────────────────────────────────────────────────
 
 /** A single navigation link entry — children are one level deep max */
