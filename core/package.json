@@ -1,0 +1,45 @@
+{
+  "name": "@mtools/core",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./config/types": "./src/config/types.ts",
+    "./config/defaults": "./src/config/defaults.ts",
+    "./config/factory": "./src/config/factory.ts",
+    "./config/astro-config": "./src/config/astro-config.ts",
+    "./config/sitemap": "./src/config/sitemap.ts",
+    "./content-schemas": "./src/content-schemas/index.ts",
+    "./content-schemas/tools": "./src/content-schemas/tools.ts",
+    "./content-schemas/blog": "./src/content-schemas/blog.ts",
+    "./content-schemas/authors": "./src/content-schemas/authors.ts",
+    "./middleware/config-injector": "./src/middleware/config-injector.ts",
+    "./integrations/core-pages": "./integrations/core-pages.ts",
+    "./integrations/og-cache": "./integrations/og-cache/index.ts",
+    "./utils/slug": "./src/utils/slug.ts",
+    "./utils/prng": "./src/utils/prng.ts",
+    "./utils/w3c-date": "./src/utils/w3c-date.ts",
+    "./utils/og": "./src/utils/og.ts",
+    "./utils/seo": "./src/utils/seo.ts",
+    "./utils/content": "./src/utils/content.ts",
+    "./utils/blog": "./src/utils/blog.ts",
+    "./utils/tools": "./src/utils/tools.ts",
+    "./utils/authors": "./src/utils/authors.ts",
+    "./utils/searchStore": "./src/utils/searchStore.svelte.ts",
+    "./seo": "./src/seo/index.ts",
+    "./og/templates/tools": "./src/og/templates/tools.ts",
+    "./og/templates/blog": "./src/og/templates/blog.ts",
+    "./lib/utils": "./src/lib/utils.ts",
+    "./lib/icons": "./src/lib/icons.ts"
+  },
+  "bin": {
+    "generate-widget-map": "./scripts/generate-widget-map.mjs"
+  },
+  "dependencies": {
+    "zod": "^3.25.20"
+  },
+  "peerDependencies": {
+    "astro": "^6.1.5",
+    "svelte": "^5.55.3"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "$lib": ["./src/lib"],
+      "$lib/*": ["./src/lib/*"],
+      "virtual:site-config": ["./src/virtual-site-config.d.ts"]
+    }
+  },
+  "include": ["src/**/*", "integrations/**/*", "scripts/**/*"],
+  "exclude": ["node_modules"]
+}
