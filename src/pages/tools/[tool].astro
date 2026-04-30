@@ -4,7 +4,7 @@ import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { siteConfig } from '../../config';
 import { parseFaqSchema, parseHowToSchema, parseFeatureList } from '../../components/common/seo/parsers';
-import { formatW3CDate } from '../../utils/w3c-date';
+import { formatW3CDate } from '@mtools/core/utils/w3c-date';
 import { filterTocHeadings } from '../../utils/content';
 import { getAllTools, getAllToolSummaries, getToolSlug } from '../../utils/tools';
 import { buildToolTitle } from '../../utils/seo';

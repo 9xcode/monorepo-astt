@@ -11,7 +11,7 @@
 import { siteConfig } from '../../../config';
 import { getAllPosts, getBlogSlug } from '../../../utils/blog';
 import { getAllTools, getToolSlug } from '../../../utils/tools';
-import { formatW3CDate } from '../../../utils/w3c-date';
+import { formatW3CDate } from '@mtools/core/utils/w3c-date';
 
 /**
  * Builds the full LLM reference document as a plain text string.

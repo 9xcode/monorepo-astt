@@ -9,7 +9,7 @@ import ToolActionTraySkeleton from "../components/common/ui/skeletons/ToolAction
 import RecentToolsTracker from "../components/workspace/RecentToolsTracker.svelte";
 import { siteConfig } from "../config";
 import { replaceSeoPlaceholders } from "../utils/seo";
-import { getStaticOgImage } from "../utils/og";
+import { getStaticOgImage } from '@mtools/core/utils/og';
 import KaTexStyles from "../components/common/typography/KaTexStyles.astro";
 import Breadcrumb from "../components/common/ui/Breadcrumb.astro";
 import ContentSection from "../components/common/sections/ContentSection.astro";
@@ -18,7 +18,7 @@ import AuthorCard from "../components/authors/AuthorCard.astro";
 import RelatedTools from "../components/tool/sections/RelatedTools.astro";
 import ToolSidebar from "../components/tool/sidebar/ToolSidebar.astro";
 import ToolPageSchemas from "../components/common/seo/ToolPageSchemas.astro";
-import { categoryToSlug } from "../utils/slug";
+import { categoryToSlug } from '@mtools/core/utils/slug';
 import { resolveAuthors } from "../utils/authors";
 import { getRelatedTools } from "../utils/tools";
 

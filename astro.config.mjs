@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import { fileURLToPath } from 'node:url';
 import { siteConfig } from './src/config.ts';
 import { sitemapConfig } from './src/config/sitemap.ts';
 
@@ -80,9 +81,13 @@ export default defineConfig({
     // instead of deferring to Node's native ESM loader.
     resolve: {
       alias: {
+        // Phase 4 bridge: @mtools/core resolves to ./core until pnpm workspace links it
+        '@mtools/core': fileURLToPath(new URL('./core', import.meta.url)),
+        // Phase 4: $lib now points to core/src/lib (moved from src/lib)
+        '$lib': fileURLToPath(new URL('./core/src/lib', import.meta.url)),
         '@active-theme': new URL(`./src/styles/themes/${siteConfig.ui.theme.name}.css`, import.meta.url).pathname
       },
-      noExternal: ['@lucide/svelte', 'bits-ui', 'svelte-toolbelt', 'runed']
+      noExternal: ['@lucide/svelte', 'bits-ui', 'svelte-toolbelt', 'runed', '@mtools/core']
     },
     build: {
       minify: 'esbuild', // Explicitly enable JS minification using esbuild

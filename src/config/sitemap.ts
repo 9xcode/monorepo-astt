@@ -35,8 +35,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { ChangeFreqEnum } from '@astrojs/sitemap';
 import { siteConfig } from '../config.ts';
-import { formatW3CDate } from '../utils/w3c-date.ts';
-import { getStaticOgImage } from '../utils/og.ts';
+import { formatW3CDate } from '@mtools/core/utils/w3c-date';
+import { getStaticOgImage } from '@mtools/core/utils/og';
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
