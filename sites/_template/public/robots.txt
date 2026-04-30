@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Replace PLACEHOLDER_DOMAIN with your actual domain before launch.
+Sitemap: https://PLACEHOLDER_DOMAIN/sitemap-index.xml
