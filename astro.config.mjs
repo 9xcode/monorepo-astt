@@ -2,7 +2,9 @@
 import { defineConfig } from 'astro/config';
 import { fileURLToPath } from 'node:url';
 import { siteConfig } from './src/config.ts';
-import { sitemapConfig } from './src/config/sitemap.ts';
+// Phase 9: sitemapConfig moved to @mtools/core
+import { sitemapConfig } from './core/src/config/sitemap.ts';
+
 
 import svelte from '@astrojs/svelte';
 import tailwindcss from '@tailwindcss/vite';
