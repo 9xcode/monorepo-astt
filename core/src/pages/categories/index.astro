@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/common/sections/Header.astro';
+import Footer from '../../components/common/sections/Footer.astro';
+import ToolGrid from '../../components/tools-grid/ToolGrid.astro';
+import CategoryHeroSection from '../../components/common/sections/CategoryHeroSection.astro';
+import { siteConfig } from 'virtual:site-config';
+import { categoryToSlug } from '@mtools/core/utils/slug';
+import { FolderOpen } from '@lucide/svelte';
+import JsonLd from '../../components/common/seo/JsonLd.astro';
+import { buildWebPageSchema } from '../../components/common/seo';
+import { getAllToolSummaries } from '../../utils/tools';
+
+const allTools = await getAllToolSummaries();
+const categories = [...new Set(allTools.map(t => t.data.category))].sort();
+const seoUrl = new URL(Astro.url.pathname, siteConfig.url).href;
+const pageSchema = buildWebPageSchema({
+	type: 'CollectionPage',
+	name: `All Tool Categories - Free Calculators & Converters`,
+	description: 'Browse all our tool categories to find the perfect calculator or utility for your needs.',
+	url: seoUrl,
+});
+
+---
+<BaseLayout title={`All Tool Categories - Free Calculators & Converters`} canonicalURL={seoUrl} description="Browse all our tool categories to find the perfect calculator or utility for your needs.">
+  <Fragment slot="head">
+    <JsonLd schema={pageSchema} />
+  </Fragment>
+  <Header />
+  <main class="flex-1">
+    <CategoryHeroSection
+      badge="All Utilities Directory"
+      title="Browse by Category"
+      subtitle="Explore our complete directory of free, private, and fast tools organized by category."
+    />
+
+    <div class="container mx-auto px-4 py-16 space-y-24">
+      {categories.map((category) => (
+        <section class="space-y-8">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-4">
+                <div class="space-y-1">
+                    <h2 class="text-3xl font-bold tracking-tight flex items-center gap-3">
+                        <FolderOpen class="text-primary size-6" />
+                        {category}
+                    </h2>
+                </div>
+                <a href={`/categories/${categoryToSlug(category)}`} class="hidden sm:inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+                    View all {category} tools &rarr;
+                </a>
+            </div>
+            
+            <ToolGrid category={category} maxItems={4} />
+
+            <div class="sm:hidden pt-4 flex justify-center border-t border-border/30">
+                <a href={`/categories/${categoryToSlug(category)}`} class="inline-flex w-full items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-11 px-8 py-2">
+                    View all {category} tools &rarr;
+                </a>
+            </div>
+        </section>
+      ))}
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>

@@ -1,0 +1,96 @@
+---
+import { render } from 'astro:content';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import { siteConfig } from 'virtual:site-config';
+import { parseFaqSchema, parseHowToSchema, parseFeatureList } from '../../components/common/seo/parsers';
+import { formatW3CDate } from '@mtools/core/utils/w3c-date';
+import { filterTocHeadings } from '../../utils/content';
+import { getAllTools, getAllToolSummaries, getToolSlug } from '../../utils/tools';
+import { buildToolTitle } from '../../utils/seo';
+import ToolLayout from '../../layouts/ToolLayout.astro';
+// WidgetRenderer is an auto-generated component created by scripts/generate-widget-map.mjs.
+// It contains static imports for all Svelte widgets, allowing Astro's client:load to work.
+import WidgetRenderer from '../../generated/WidgetRenderer.astro';
+
+export async function getStaticPaths() {
+  const tools = await getAllTools();
+  return tools.map(entry => ({
+    params: { tool: getToolSlug(entry) },
+    props: { entry, slug: getToolSlug(entry) },
+  }));
+}
+
+const { entry, slug } = Astro.props;
+const { Content, headings } = await render(entry);
+
+// TOC: frontmatter `toc` overrides site global; filterTocHeadings handles all threshold logic.
+const tocHeadings = filterTocHeadings(headings, entry.data.toc);
+const tocTitle    = siteConfig.features.toolPage.toc?.title ?? 'On this page';
+
+// getAllToolSummaries() returns sorted (order → alpha) draft-filtered lightweight tool data.
+// Astro caches getCollection() across the build pass — zero extra I/O overhead.
+const allTools = await getAllToolSummaries();
+
+// If widgetSlug is set in frontmatter, use that tool's widget instead of this page's own.
+// This allows multiple content pages (SEO aliases) to share one Svelte widget.
+// E.g. systematic-investment-plan-calculator reuses the sip-calculator widget.
+const effectiveWidgetSlug = entry.data.widgetSlug ?? slug;
+
+// Check server-side whether a Widget.svelte exists for this tool.
+// Used to conditionally render the tool container card — no empty box for article-only tools.
+const widgetPath = join(process.cwd(), 'src', 'features', effectiveWidgetSlug, 'Widget.svelte');
+const hasWidget = existsSync(widgetPath);
+
+
+// The dateModified is generated exactly when the Astro build runs, 
+// unless explicitly overridden in the frontmatter by lastModified.
+
+const modDate = formatW3CDate(entry.data.lastModified);
+const pubDate = formatW3CDate(entry.data.pubDate, siteConfig.datePublished);
+
+// Parse FAQ, HowTo schemas and Features list from markdown body using shared utilities
+const faqSchema = parseFaqSchema(entry.body);
+const howToSchema = parseHowToSchema(entry.body, entry.data.title, entry.data.description);
+const parsedFeatureList = parseFeatureList(entry.body, entry.data.title);
+
+---
+
+<ToolLayout 
+	title={buildToolTitle(entry.data.title, entry.data.seoTitle, entry.data.category)} 
+	toolTitle={entry.data.title} 
+	category={entry.data.category}
+	description={entry.data.description}
+	pubDate={pubDate}
+	faqSchema={faqSchema}
+	howToSchema={howToSchema}
+	modDate={modDate}
+	tools={allTools}
+	canonical={entry.data.canonical}
+	tags={entry.data.tags}
+	featureList={parsedFeatureList ?? undefined}
+	widgetSlug={effectiveWidgetSlug}
+	hasWidget={hasWidget}
+	fullWidth={entry.data.fullWidth}
+	hasMath={entry.data.hasMath}
+	tocHeadings={tocHeadings}
+	tocTitle={tocTitle}
+	authorRef={entry.data.author}
+	coAuthorRefs={entry.data.coAuthors}
+>
+
+    <Fragment slot="description">{entry.data.description}</Fragment>
+
+    {/* 
+        Widget container: only rendered when a Widget.svelte exists for this tool.
+        If the tool is article-only (no widget), this block is completely suppressed
+        so no empty card appears on the page.
+    */}
+    {hasWidget && (
+        <WidgetRenderer slug={effectiveWidgetSlug} />
+    )}
+
+
+    {/* The Markdown Content */}
+    <Fragment slot="content"><Content /></Fragment>
+</ToolLayout>

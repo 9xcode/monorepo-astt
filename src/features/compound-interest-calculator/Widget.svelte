@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { siteConfig } from "../../config";
+    import { siteConfig } from 'virtual:site-config';
     import { Input } from "$lib/components/ui/input";
     import { Label } from "$lib/components/ui/label";
     import { Select, SelectContent, SelectItem, SelectTrigger } from "$lib/components/ui/select";

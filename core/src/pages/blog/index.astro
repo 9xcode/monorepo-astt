@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/common/sections/Header.astro';
+import Footer from '../../components/common/sections/Footer.astro';
+import BlogPostCard from '../../components/blog/ui/BlogPostCard.astro';
+import { getAllPosts } from '../../utils/blog';
+import { siteConfig } from 'virtual:site-config';
+
+const allPosts = await getAllPosts();
+const { postsPerPage } = siteConfig.features.blog;
+const posts = allPosts.slice(0, postsPerPage);
+const totalPages = Math.ceil(allPosts.length / postsPerPage);
+const hasNextPage = totalPages > 1;
+const seoUrl = new URL('/blog', siteConfig.url).href;
+---
+
+<BaseLayout
+  title={`Free Tool Guides and Tutorials - ${siteConfig.name} Blog`}
+  description="Articles, guides, and updates."
+  canonicalURL={seoUrl}
+>
+  <Header />
+  <main class="flex-1">
+    <div class="container mx-auto px-4 py-12">
+      <h1 class="text-4xl font-bold mb-4">Blog</h1>
+      <p class="text-muted-foreground mb-10 text-lg max-w-2xl">
+        Guides, tips, and tutorials.
+      </p>
+
+      {posts.length === 0 ? (
+        <p class="text-muted-foreground py-16 text-center">No posts yet. Check back soon!</p>
+      ) : (
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {posts.map((post, i) => (
+            <BlogPostCard post={post} featured={i === 0} />
+          ))}
+        </div>
+      )}
+
+      {hasNextPage && (
+        <div class="flex justify-center mt-12">
+          <a href="/blog/page/2" class="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-border hover:bg-accent transition-colors text-sm font-medium">
+            Older Posts →
+          </a>
+        </div>
+      )}
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>
