@@ -7,10 +7,14 @@
     "dev": "generate-widget-map && astro dev",
     "build": "generate-widget-map && astro build",
     "preview": "astro preview",
+    "astro": "astro",
     "check": "astro check",
     "check:astro": "astro check",
     "check:svelte": "svelte-check --tsconfig ./tsconfig.json",
-    "check:tsc": "tsc --noEmit"
+    "check:tsc": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "validate": "pnpm run lint && pnpm run check:astro && pnpm run check:svelte && pnpm run check:tsc && pnpm run build"
   },
   "dependencies": {
     "@mtools/core": "workspace:*",

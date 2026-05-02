@@ -1,22 +1,22 @@
-import { z } from 'zod';
-
 /**
  * Tool content schema factory.
  *
- * Why a factory? Because `reference('authors')` comes from `astro:content` —
- * a module that only exists inside an Astro project, not in a standalone package.
- * By accepting `reference` as a parameter, this schema can live in @mtools/core
- * without an `astro:content` import, while the CALLING site's content.config.ts
- * passes in its own `reference` function.
+ * Why a factory? Two Astro-specific things can't live in a standalone package:
+ *   1. `reference('authors')` — from `astro:content`
+ *   2. `z`  — must be Astro's own Zod v4 instance (not core's bundled Zod v3)
  *
- * Usage in sites/finance-tools/src/content.config.ts:
+ * Both are accepted as parameters so this file stays importable from core
+ * without pulling in astro:content or causing a Zod version mismatch.
  *
+ * Usage in sites/<site>/src/content.config.ts:
+ *
+ *   import { z } from 'astro:content';
  *   import { reference } from 'astro:content';
- *   import { makeToolSchema, TOOL_CATEGORIES, TOOL_TAGS } from '@mtools/core/content-schemas/tools';
+ *   import { makeToolSchema } from '../../../core/src/content-schemas/tools.ts';
  *
  *   const toolsCollection = defineCollection({
  *     loader: glob({ pattern: '**\/*.md', base: './src/content/tools' }),
- *     schema: makeToolSchema(reference),
+ *     schema: makeToolSchema(z, reference),
  *   });
  */
 
@@ -41,11 +41,13 @@ export type ToolCategory = typeof TOOL_CATEGORIES[number];
 /**
  * Creates the Zod schema for the tools collection.
  *
- * @param reference  The `reference` function from `astro:content`.
- *                   Pass it directly: `makeToolSchema(reference)`
- * @returns A Zod object schema suitable for use in defineCollection({ schema: ... })
+ * @param z          Astro's re-exported Zod instance (from `astro:content`)
+ * @param reference  The `reference` function from `astro:content`
  */
-export function makeToolSchema(reference: (collection: string) => z.ZodTypeAny) {
+export function makeToolSchema(
+  z: any,
+  reference: (collection: string) => any,
+) {
   return z.object({
     title: z.string(),
     seoTitle: z.string().optional(),

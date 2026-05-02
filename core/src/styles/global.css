@@ -14,11 +14,11 @@
 
    Do NOT add @source directives pointing at sites/ — that would be backwards.
 */
-@source "../../components";
-@source "../../layouts";
-@source "../../lib";
-@source "../../pages";
-@source "../../og";
+@source "../components";
+@source "../layouts";
+@source "../lib";
+@source "../pages";
+@source "../og";
 
 @import "./common.css";
 

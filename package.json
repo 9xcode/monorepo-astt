@@ -5,8 +5,14 @@
   "scripts": {
     "dev": "turbo dev",
     "build": "turbo build",
+    "preview": "turbo preview",
     "check": "turbo check",
-    "lint": "eslint ."
+    "check:astro": "turbo check:astro",
+    "check:svelte": "turbo check:svelte",
+    "check:tsc": "turbo check:tsc",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "validate": "pnpm run lint && turbo check && turbo build"
   },
   "devDependencies": {
     "eslint": "^10.2.0",

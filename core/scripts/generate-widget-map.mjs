@@ -170,7 +170,7 @@ for (const { slug, widgetSlug, priority } of toolInfos) {
 
   // Paths from the widgets/ dir
   const importPath  = `../../features/${widgetSlug}/Widget.svelte`;
-  const skeletonPath = `../../components/common/ui/skeletons/WidgetSkeleton.astro`;
+  const skeletonPath = `@mtools/core/components/common/ui/skeletons/WidgetSkeleton.astro`;
 
   // Only inject skeleton fallback for client:only directives (slot="fallback" is unsupported on client:load/idle/visible)
   const supportsSlotFallback = directive === 'client:only="svelte"';

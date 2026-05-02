@@ -1,16 +1,26 @@
 import { defineConfig } from 'astro/config';
 import { fileURLToPath } from 'node:url';
-import { createRequire } from 'node:module';
-import type { AstroUserConfig } from 'astro/config';
+type AstroUserConfig = Parameters<typeof defineConfig>[0];
 import type { SiteConfig } from './types.ts';
 
-const require = createRequire(import.meta.url);
+// Direct ESM imports — Vite/Astro handles TypeScript natively.
+// No require() needed; .ts extensions are resolved by Vite's transformer.
+import svelte from '@astrojs/svelte';
+import sitemap from '@astrojs/sitemap';
+import tailwindcss from '@tailwindcss/vite';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+
+import { makeSitemapConfig } from './sitemap.ts';
+import { ogCache } from '../../integrations/og-cache/index.ts';
+import { toolsTemplate } from '../og/templates/tools.ts';
+import { blogTemplate } from '../og/templates/blog.ts';
+import { corePages } from '../../integrations/core-pages.ts';
 
 /**
  * createAstroConfig — Astro config factory for @mtools sites.
  *
- * Encapsulates all shared Astro/Vite configuration so each site's
- * astro.config.mjs is a thin one-liner:
+ * Each site's astro.config.mjs is a one-liner:
  *
  *   import { createAstroConfig } from '@mtools/core/config/astro-config';
  *   import { siteConfig } from './src/config.ts';
@@ -19,11 +29,11 @@ const require = createRequire(import.meta.url);
  * What this factory provides:
  *   1. virtual:site-config Vite plugin — makes siteConfig available to ALL
  *      components (Astro + Svelte) without prop drilling
- *   2. $lib alias → core/src/lib (shadcn-svelte primitives, utils, icons)
- *   3. @active-theme alias → correct theme CSS file for this site
- *   4. @mtools/core alias → resolves the package itself (workspace link)
+ *   2. @widget-renderer alias → site's src/generated/WidgetRenderer.astro
+ *   3. $lib alias → core/src/lib (shadcn-svelte primitives, utils, icons)
+ *   4. @active-theme alias → correct theme CSS file for this site
  *   5. noExternal list for Svelte SSR compatibility
- *   6. All standard integrations: svelte, tailwind, sitemap, ogCache, corePages
+ *   6. All integrations: corePages, ogCache, svelte, sitemap
  *   7. Standard build options, prefetch, markdown (KaTeX), HTML compression
  *
  * @param siteConfig  The site's fully-resolved config object
@@ -33,15 +43,23 @@ export function createAstroConfig(
   siteConfig: SiteConfig,
   overrides: Partial<AstroUserConfig> = {}
 ): ReturnType<typeof defineConfig> {
-  // Resolve core package root — used to build alias paths.
-  // import.meta.url is the URL of THIS file (core/src/config/astro-config.ts).
-  // Three levels up: config/ → src/ → core/ → (core root)
-  const coreRoot = fileURLToPath(new URL('../../..', import.meta.url));
+  // Resolve core package root from this file's location.
+  // This file: core/src/config/astro-config.ts
+  // ../.. → core/src/config → core/src → core
+  const coreRoot = fileURLToPath(new URL('../..', import.meta.url));
 
-  // ── Virtual module Vite plugin ──────────────────────────────────────────────
-  // Registers `virtual:site-config` so any file can do:
-  //   import { siteConfig } from 'virtual:site-config'
-  // The config is serialized at build time — no runtime overhead.
+  // ── Build time freeze ───────────────────────────────────────────────────────
+  // Freeze the build time ONCE at the very start of the Astro build process.
+  // This env var is inherited by all Astro worker processes so every page's
+  // siteConfig.buildTime evaluates to the same frozen millisecond.
+  if (!process.env['BUILD_TIME']) {
+    process.env['BUILD_TIME'] = new Date().toISOString().split('.')[0] + '+00:00';
+    process.env['PUBLIC_BUILD_TIME'] = process.env['BUILD_TIME'];
+  }
+
+  // ── virtual:site-config Vite plugin ────────────────────────────────────────
+  // Serialises siteConfig at build time into a virtual module.
+  // Any file can then: import { siteConfig } from 'virtual:site-config'
   const virtualSiteConfigPlugin = {
     name: 'mtools-site-config',
     resolveId(id: string) {
@@ -53,37 +71,6 @@ export function createAstroConfig(
       }
     },
   };
-
-  // ── Build time freeze ───────────────────────────────────────────────────────
-  // Freeze the build time ONCE at the very start of the Astro build process.
-  // This env var is inherited by all Astro worker processes, so every page's
-  // siteConfig.buildTime evaluates to this exact same frozen millisecond.
-  if (!process.env['BUILD_TIME']) {
-    process.env['BUILD_TIME'] = new Date().toISOString().split('.')[0] + '+00:00';
-    process.env['PUBLIC_BUILD_TIME'] = process.env['BUILD_TIME'];
-  }
-
-  // ── Lazy-load integrations ──────────────────────────────────────────────────
-  // Imported lazily so this file can be safely imported in non-Astro contexts
-  // (e.g. plain Node scripts) without triggering side-effects.
-  // All imports are synchronous require() calls — safe at config evaluation time.
-
-  // svelte
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const svelte = require('@astrojs/svelte').default;
-
-  // sitemap
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const sitemap = require('@astrojs/sitemap').default;
-  const { sitemapConfig } = require('../config/sitemap.js');
-
-  // og-cache integration (from core/integrations/og-cache/)
-  const { ogCache } = require('../../integrations/og-cache/index.js');
-  const { toolsTemplate } = require('../og/templates/tools.js');
-  const { blogTemplate } = require('../og/templates/blog.js');
-
-  // core-pages integration (wires middleware + injected routes)
-  const { corePages } = require('../../integrations/core-pages.js');
 
   return defineConfig({
     site: siteConfig.url,
@@ -97,12 +84,10 @@ export function createAstroConfig(
 
     markdown: {
       remarkPlugins: [
-        // @ts-expect-error — remark-math has no types bundled, safe at runtime
-        [require('remark-math'), { singleDollarTextMath: false }],
+        [remarkMath, { singleDollarTextMath: false }],
       ],
       rehypePlugins: [
-        // @ts-expect-error — rehype-katex has no types bundled, safe at runtime
-        [require('rehype-katex'), {
+        [rehypeKatex, {
           strict: false,
           throwOnError: false,
           errorColor: '#cc0000',
@@ -117,8 +102,7 @@ export function createAstroConfig(
     },
 
     integrations: [
-      // Phase 13: all integrations wired into the factory.
-      // core-pages must come first — it registers the middleware.
+      // corePages must be first — it registers middleware + injectRoute + @widget-renderer alias
       corePages(),
       ogCache({
         templateVersion: 'v1.0.0',
@@ -134,7 +118,7 @@ export function createAstroConfig(
         ],
       }),
       svelte(),
-      sitemap(sitemapConfig),
+      sitemap(makeSitemapConfig(siteConfig)),
       // Site-specific integrations passed via overrides
       ...(overrides.integrations ?? []),
     ],
@@ -146,20 +130,26 @@ export function createAstroConfig(
 
     vite: {
       plugins: [
-        // @ts-expect-error — @tailwindcss/vite is not typed as a Vite plugin
-        require('@tailwindcss/vite')(),
+        tailwindcss(),
         virtualSiteConfigPlugin,
       ],
       resolve: {
         alias: {
-          // @mtools/core resolves to the package itself (workspace symlink or alias)
-          '@mtools/core': coreRoot,
+          // @mtools/core/* → core/src/* (Vite handles .ts transform)
+          // e.g. @mtools/core/config/factory → <coreRoot>/src/config/factory.ts
+          // IMPORTANT: must point to src/, not the package root, because the
+          // package exports map (package.json "exports") points to .ts files and
+          // Node's native ESM loader can't process those — Vite must intercept first.
+          '@mtools/core': fileURLToPath(new URL('src', `file://${coreRoot}/`)),
           // $lib → core's shadcn-svelte primitives, icons, and utils
           '$lib': fileURLToPath(new URL('src/lib', `file://${coreRoot}/`)),
-          // @active-theme → the site's active Tailwind theme CSS
+          // @active-theme → the site's active Tailwind theme CSS file
           '@active-theme': fileURLToPath(
             new URL(`src/styles/themes/${siteConfig.ui.theme.name}.css`, `file://${coreRoot}/`)
           ),
+          // NOTE: @widget-renderer, @head-scripts, @body-scripts are set by
+          // the corePages() integration, pointing to site's src/generated/ and
+          // src/components/integrations/ files.
         },
         noExternal: ['@lucide/svelte', 'bits-ui', 'svelte-toolbelt', 'runed', '@mtools/core'],
       },

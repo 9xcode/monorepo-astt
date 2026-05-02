@@ -7,7 +7,9 @@
 // All type-only exports re-exported from core — no duplicate type definitions.
 // Documentation: see @mtools/core/config/types for the full SiteConfig shape.
 // ────────────────────────────────────────────────────────────────────────────
-import { createSiteConfig } from '@mtools/core/config/factory';
+// Relative path — the @mtools/core package exports map points to .ts files.
+// Node's native ESM loader can't process .ts; relative paths go through Vite.
+import { createSiteConfig } from '../../../core/src/config/factory.ts';
 
 // Re-export all types so site-level code that imports from './config'
 // (e.g. Astro pages, layouts) continues to work without changes.
@@ -26,7 +28,7 @@ export type {
   BlogConfig,
   SearchConfig,
   FeaturesConfig,
-} from '@mtools/core/config/types';
+} from '../../../core/src/config/types.ts';
 
 export const siteConfig = createSiteConfig({
 

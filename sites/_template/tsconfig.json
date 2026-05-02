@@ -4,7 +4,8 @@
     "baseUrl": ".",
     "paths": {
       "$lib": ["../../core/src/lib"],
-      "$lib/*": ["../../core/src/lib/*"]
+      "$lib/*": ["../../core/src/lib/*"],
+      "@mtools/core/*": ["../../core/src/*"]
     }
   },
   "include": [".astro/types.d.ts", "**/*"],

@@ -4,7 +4,7 @@ import Header from '../../../components/common/sections/Header.astro';
 import Footer from '../../../components/common/sections/Footer.astro';
 import BlogPostCard from '../../../components/blog/ui/BlogPostCard.astro';
 import { getPostsByTag } from '../../../utils/blog';
-import { BLOG_TAGS } from '../../../content.config';
+import { BLOG_TAGS } from '@mtools/core/content-schemas';
 import { siteConfig } from 'virtual:site-config';
 
 export async function getStaticPaths() {

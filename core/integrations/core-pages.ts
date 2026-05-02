@@ -1,40 +1,132 @@
 import type { AstroIntegration } from 'astro';
+import { fileURLToPath } from 'node:url';
+
+// Resolve core package root from this file's location.
+// This file: core/integrations/core-pages.ts → one level up = core/
+const coreDir = fileURLToPath(new URL('..', import.meta.url));
+const pagesDir = `${coreDir}/src/pages`;
+
+/**
+ * All routes provided by @mtools/core.
+ *
+ * Each entry maps a URL pattern to an absolute entrypoint path.
+ * The patterns use Astro's [param] syntax for dynamic segments.
+ * Injected routes have lower priority than any file the site adds
+ * to its own src/pages/ — so sites can always override individual pages.
+ */
+const CORE_ROUTES = [
+  // ── Static pages ──────────────────────────────────────────────────────────
+  { pattern: '/',               entrypoint: `${pagesDir}/index.astro`        },
+  { pattern: '/about',          entrypoint: `${pagesDir}/about.astro`         },
+  { pattern: '/contact',        entrypoint: `${pagesDir}/contact.astro`       },
+  { pattern: '/privacy',        entrypoint: `${pagesDir}/privacy.astro`       },
+  { pattern: '/terms',          entrypoint: `${pagesDir}/terms.astro`         },
+  { pattern: '/disclaimer',     entrypoint: `${pagesDir}/disclaimer.astro`    },
+  { pattern: '/support',        entrypoint: `${pagesDir}/support.astro`       },
+  { pattern: '/mobile-app',     entrypoint: `${pagesDir}/mobile-app.astro`    },
+  { pattern: '/404',            entrypoint: `${pagesDir}/404.astro`           },
+  { pattern: '/500',            entrypoint: `${pagesDir}/500.astro`           },
+  { pattern: '/llms-full.txt',  entrypoint: `${pagesDir}/llms-full.txt.ts`   },
+
+  // ── Tools ─────────────────────────────────────────────────────────────────
+  { pattern: '/tools',          entrypoint: `${pagesDir}/tools/index.astro`   },
+  { pattern: '/tools/[tool]',   entrypoint: `${pagesDir}/tools/[tool].astro`  },
+
+  // ── Categories ────────────────────────────────────────────────────────────
+  { pattern: '/categories',              entrypoint: `${pagesDir}/categories/index.astro`        },
+  { pattern: '/categories/[category]',   entrypoint: `${pagesDir}/categories/[category].astro`   },
+
+  // ── Blog ──────────────────────────────────────────────────────────────────
+  { pattern: '/blog',                    entrypoint: `${pagesDir}/blog/index.astro`               },
+  { pattern: '/blog/[post]',             entrypoint: `${pagesDir}/blog/[post].astro`              },
+  { pattern: '/blog/page/[page]',        entrypoint: `${pagesDir}/blog/page/[page].astro`         },
+  { pattern: '/blog/category/[category]',entrypoint: `${pagesDir}/blog/category/[category].astro`},
+  { pattern: '/blog/tag/[tag]',          entrypoint: `${pagesDir}/blog/tag/[tag].astro`           },
+
+  // ── Authors ───────────────────────────────────────────────────────────────
+  { pattern: '/authors/[author]',        entrypoint: `${pagesDir}/authors/[author].astro`         },
+
+  // ── API endpoints ─────────────────────────────────────────────────────────
+  { pattern: '/api/search-tools.json',   entrypoint: `${pagesDir}/api/search-tools.json.ts`      },
+  { pattern: '/api/search-blog.json',    entrypoint: `${pagesDir}/api/search-blog.json.ts`       },
+] as const;
 
 /**
  * core-pages — Astro integration that wires @mtools/core into every site.
  *
- * Currently provides:
- *   1. Middleware injection: config-injector runs pre-request so Astro.locals.siteConfig
- *      is always populated.
+ * Provides:
+ *   1. Vite alias: @widget-renderer → <site-root>/src/generated/WidgetRenderer.astro
+ *      This makes the auto-generated widget router resolvable from core/src/pages/tools/[tool].astro
+ *      regardless of where the core package is located in the monorepo.
  *
- * Future phases will extend this integration to also inject shared routes:
- *   Phase 7+: injectRoute() for every page in core/src/pages/
+ *   2. Middleware injection: config-injector runs pre-request so Astro.locals.siteConfig
+ *      is populated for every page, layout, and component.
  *
- * Usage in a site's astro.config.mjs:
+ *   3. Route injection: all shared pages from core/src/pages/ are registered as
+ *      Astro routes. Site-level pages/[slug].astro always override these if the
+ *      pattern matches — so individual pages can be customised per site.
+ *
+ * Usage (automatic via createAstroConfig — sites don't need to add this manually):
  *
  *   import { corePages } from '@mtools/core/integrations/core-pages';
- *
- *   export default defineConfig({
- *     integrations: [corePages(), ...otherIntegrations],
- *   });
- *
- * Note: `createAstroConfig()` already calls corePages() automatically — sites
- * using that factory do NOT need to add it manually.
+ *   export default defineConfig({ integrations: [corePages()] });
  */
 export function corePages(): AstroIntegration {
   return {
     name: '@mtools/core-pages',
     hooks: {
-      'astro:config:setup': ({ addMiddleware, logger }) => {
-        // Wire the config-injector middleware at the highest priority ('pre')
-        // so siteConfig is available in Astro.locals for every page, layout,
-        // and component that runs during a request.
+      'astro:config:setup': ({ addMiddleware, injectRoute, updateConfig, config, logger }) => {
+
+        // ── 1. @widget-renderer alias ────────────────────────────────────────
+        // core/src/pages/tools/[tool].astro imports from '@widget-renderer'.
+        // This alias points to the SITE's generated WidgetRenderer — never core's.
+        // config.root is the site root URL (e.g. file:///path/to/sites/finance-tools/).
+        const widgetRendererPath = fileURLToPath(
+          new URL('src/generated/WidgetRenderer.astro', config.root)
+        );
+        const headScriptsPath = fileURLToPath(
+          new URL('src/components/integrations/HeadScripts.astro', config.root)
+        );
+        const bodyScriptsPath = fileURLToPath(
+          new URL('src/components/integrations/BodyScripts.astro', config.root)
+        );
+        updateConfig({
+          vite: {
+            resolve: {
+              alias: {
+                '@widget-renderer': widgetRendererPath,
+                '@head-scripts':    headScriptsPath,
+                '@body-scripts':    bodyScriptsPath,
+              },
+            },
+          },
+        });
+        logger.debug(`@mtools/core-pages: @widget-renderer → ${widgetRendererPath}`);
+        logger.debug(`@mtools/core-pages: @head-scripts → ${headScriptsPath}`);
+        logger.debug(`@mtools/core-pages: @body-scripts → ${bodyScriptsPath}`);
+
+        // ── 2. Middleware ────────────────────────────────────────────────────
+        // Runs at 'pre' priority so siteConfig is available before any page logic.
+        // Use the absolute file:// path — NOT the package export '@mtools/core/middleware/...'
+        // because the package exports map points to .ts files. When Astro resolves
+        // a package export string, Node's native ESM loader reads it directly,
+        // bypassing Vite's TypeScript transform. The file:// URL forces Vite to handle it.
+        const configInjectorPath = fileURLToPath(
+          new URL('../src/middleware/config-injector.ts', import.meta.url)
+        );
         addMiddleware({
-          entrypoint: '@mtools/core/middleware/config-injector',
+          entrypoint: configInjectorPath,
           order: 'pre',
         });
+        logger.debug(`@mtools/core-pages: config-injector middleware → ${configInjectorPath}`);
 
-        logger.debug('@mtools/core-pages: config-injector middleware registered');
+        // ── 3. Inject shared routes ──────────────────────────────────────────
+        // Lower priority than site-level pages — sites can override any route
+        // by adding their own file at the same pattern in src/pages/.
+        for (const route of CORE_ROUTES) {
+          injectRoute(route);
+        }
+        logger.debug(`@mtools/core-pages: injected ${CORE_ROUTES.length} core routes`);
       },
     },
   };

@@ -41,8 +41,7 @@ References:
 import fs from 'node:fs';
 import path from 'node:path';
 import { ChangeFreqEnum } from '@astrojs/sitemap';
-// Phase 9: replaced `import { siteConfig } from '../config.ts'`
-import { siteConfig } from 'virtual:site-config';
+import type { SiteConfig } from './types.ts';
 import { formatW3CDate } from '../utils/w3c-date';
 import { getStaticOgImage } from '../utils/og';
 
@@ -110,147 +109,136 @@ function readFrontmatterDate(
   return buildTime;
 }
 
-// ── URL classification helpers ────────────────────────────────────────────────
+// ── URL classification helpers ─────────────────────────────────────────────────
+// These are returned as closures from makeSitemapConfig() so they capture
+// the siteConfig passed in — no global state, no virtual:site-config dependency.
 
-const isHomepage    = (url: string) => url === siteConfig.url || url === `${siteConfig.url}/`;
-/** /tools/[slug] — an individual tool detail page (has real frontmatter dates) */
-const isToolPage    = (url: string) => /\/tools\/[^/]+\/?$/.test(url);
-/** /tools  — the static tools index / listing page */
-const isToolsIndex  = (url: string) => url === new URL('/tools', siteConfig.url).href;
-const isBlogIndex   = (url: string) => url === new URL('/blog', siteConfig.url).href;
-/** /blog/[slug] — an individual blog post (has real frontmatter dates) */
-const isBlogPost    = (url: string) => /\/blog\/[^/]+\/?$/.test(url) && !isBlogCategoryArchive(url) && !isBlogTagArchive(url);
-const isBlogCategoryArchive = (url: string) => url.includes('/blog/category/');
-const isBlogTagArchive      = (url: string) => url.includes('/blog/tag/');
-const isBlogPagination      = (url: string) => url.includes('/blog/page/');
-const isCategoryIndex       = (url: string) => url === new URL('/categories', siteConfig.url).href;
-const isCategoryPage        = (url: string) => /\/categories\/[^/]+\/?$/.test(url);
-const isAuthorPage          = (url: string) => /\/authors\/[^/]+\/?$/.test(url);
-const isLegalPage           = (url: string) => /\/(privacy|terms|disclaimer|dmca|gdpr|cookie)/.test(url);
-const isErrorPage           = (url: string) => /\/(404|500)\/?$/.test(url);
-
-// ── Priority table ────────────────────────────────────────────────────────────
-
-function getPriority(url: string): number {
-  if (isHomepage(url))           return 1.0;
-  if (isToolPage(url))           return 0.9;
-  if (isCategoryIndex(url))      return 0.8;
-  if (isCategoryPage(url))       return 0.8;
-  if (isBlogIndex(url))          return 0.8;
-  if (isBlogPost(url))           return 0.7;
-  if (isAuthorPage(url))         return 0.6;
-  if (/\/(support|contact|mobile-app)/.test(url)) return 0.6;
-  if (isBlogCategoryArchive(url)) return 0.5;
-  if (isLegalPage(url))          return 0.3;
-  return 0.5; // /about and any future pages
+function makeClassifiers(siteUrl: string) {
+  const isHomepage    = (url: string) => url === siteUrl || url === `${siteUrl}/`;
+  /** /tools/[slug] — an individual tool detail page (has real frontmatter dates) */
+  const isToolPage    = (url: string) => /\/tools\/[^/]+\/?$/.test(url);
+  /** /tools  — the static tools index / listing page */
+  const isToolsIndex  = (url: string) => url === new URL('/tools', siteUrl).href;
+  const isBlogIndex   = (url: string) => url === new URL('/blog', siteUrl).href;
+  /** /blog/[slug] — an individual blog post (has real frontmatter dates) */
+  const isBlogPost    = (url: string) => /\/blog\/[^/]+\/?$/.test(url) && !isBlogCategoryArchive(url) && !isBlogTagArchive(url);
+  const isBlogCategoryArchive = (url: string) => url.includes('/blog/category/');
+  const isBlogTagArchive      = (url: string) => url.includes('/blog/tag/');
+  const isBlogPagination      = (url: string) => url.includes('/blog/page/');
+  const isCategoryIndex       = (url: string) => url === new URL('/categories', siteUrl).href;
+  const isCategoryPage        = (url: string) => /\/categories\/[^/]+\/?$/.test(url);
+  const isAuthorPage          = (url: string) => /\/authors\/[^/]+\/?$/.test(url);
+  const isLegalPage           = (url: string) => /\/(privacy|terms|disclaimer|dmca|gdpr|cookie)/.test(url);
+  const isErrorPage           = (url: string) => /\/(404|500)\/?$/.test(url);
+  return { isHomepage, isToolPage, isToolsIndex, isBlogIndex, isBlogPost,
+           isBlogCategoryArchive, isBlogTagArchive, isBlogPagination,
+           isCategoryIndex, isCategoryPage, isAuthorPage, isLegalPage, isErrorPage };
 }
 
-// ── Changefreq table ──────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+// makeSitemapConfig — factory that returns the sitemap config object.
+//
+// Receives siteConfig as a plain value (not via virtual:site-config) so it can
+// be called safely from astro-config.ts during Astro's config loading phase —
+// before Vite's plugin system is initialised.
+// ═══════════════════════════════════════════════════════════════════════════════
 
-function getChangefreq(url: string): ChangeFreqEnum {
-  if (isLegalPage(url)) return ChangeFreqEnum.YEARLY;
-  if (isAuthorPage(url) || isBlogCategoryArchive(url)) return ChangeFreqEnum.MONTHLY;
-  if (/\/(support|contact|mobile-app|about)/.test(url)) return ChangeFreqEnum.MONTHLY;
-  return ChangeFreqEnum.WEEKLY; // homepage, tools, categories, blog
-}
+export function makeSitemapConfig(siteConfig: SiteConfig) {
+  const c = makeClassifiers(siteConfig.url);
 
-// ── OG image injection ────────────────────────────────────────────────────────
-
-function injectOgImage(
-  item: Record<string, unknown>,
-  collection: 'tools' | 'blog',
-  slug: string,
-): void {
-  const ogUrl = getStaticOgImage(collection, slug);
-  if (ogUrl) {
-    // @ts-ignore — @astrojs/sitemap supports img[] via the sitemap package extension
-    item.img = [{
-      url: new URL(ogUrl.split('?')[0], siteConfig.url).href,
-      title: `${slug.replace(/-/g, ' ')} - ${siteConfig.name}`,
-    }];
+  // ── Priority table ──────────────────────────────────────────────────────────
+  function getPriority(url: string): number {
+    if (c.isHomepage(url))            return 1.0;
+    if (c.isToolPage(url))            return 0.9;
+    if (c.isCategoryIndex(url))       return 0.8;
+    if (c.isCategoryPage(url))        return 0.8;
+    if (c.isBlogIndex(url))           return 0.8;
+    if (c.isBlogPost(url))            return 0.7;
+    if (c.isAuthorPage(url))          return 0.6;
+    if (/\/(support|contact|mobile-app)/.test(url)) return 0.6;
+    if (c.isBlogCategoryArchive(url)) return 0.5;
+    if (c.isLegalPage(url))           return 0.3;
+    return 0.5; // /about and any future pages
   }
-}
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// The config object — passed directly to sitemap() in astro.config.mjs
-// ═══════════════════════════════════════════════════════════════════════════════
+  // ── Changefreq table ────────────────────────────────────────────────────────
+  function getChangefreq(url: string): ChangeFreqEnum {
+    if (c.isLegalPage(url)) return ChangeFreqEnum.YEARLY;
+    if (c.isAuthorPage(url) || c.isBlogCategoryArchive(url)) return ChangeFreqEnum.MONTHLY;
+    if (/\/(support|contact|mobile-app|about)/.test(url)) return ChangeFreqEnum.MONTHLY;
+    return ChangeFreqEnum.WEEKLY;
+  }
 
-export const sitemapConfig = {
+  // ── OG image injection ──────────────────────────────────────────────────────
+  function injectOgImage(
+    item: Record<string, unknown>,
+    collection: 'tools' | 'blog',
+    slug: string,
+  ): void {
+    const ogUrl = getStaticOgImage(collection, slug);
+    if (ogUrl) {
+      // @ts-ignore — @astrojs/sitemap supports img[] via the sitemap package extension
+      item.img = [{
+        url: new URL(ogUrl.split('?')[0], siteConfig.url).href,
+        title: `${slug.replace(/-/g, ' ')} - ${siteConfig.name}`,
+      }];
+    }
+  }
 
-  // ── Filter ──────────────────────────────────────────────────────────────────
-  // Returning false removes the page from the sitemap entirely.
-  filter(page: string): boolean {
-    // Blog guard — skip all /blog/* when blog is disabled
-    if (!siteConfig.features.blog?.enabled && page.includes('/blog')) return false;
-
-    // Hard exclusions
-    if (isErrorPage(page))     return false; // 404, 500
-    if (isBlogTagArchive(page)) return false; // /blog/tag/* — thin content duplicates
-    if (isBlogPagination(page)) return false; // /blog/page/* — Google says don't include
-
-    // Blog category archives: exclude if too few posts (thin content)
-    if (isBlogCategoryArchive(page)) {
-      const catMatch = page.match(/\/blog\/category\/([^/]+)\/?$/);
-      if (catMatch) {
-        const postCount = countPostsInBlogCategory(catMatch[1]);
-        if (postCount < MIN_POSTS_FOR_CATEGORY) return false;
+  return {
+    // ── Filter ────────────────────────────────────────────────────────────────
+    filter(page: string): boolean {
+      if (!siteConfig.features.blog?.enabled && page.includes('/blog')) return false;
+      if (c.isErrorPage(page))          return false;
+      if (c.isBlogTagArchive(page))     return false;
+      if (c.isBlogPagination(page))     return false;
+      if (c.isBlogCategoryArchive(page)) {
+        const catMatch = page.match(/\/blog\/category\/([^/]+)\/?$/);
+        if (catMatch) {
+          const postCount = countPostsInBlogCategory(catMatch[1]);
+          if (postCount < MIN_POSTS_FOR_CATEGORY) return false;
+        }
       }
-    }
+      return true;
+    },
 
-    return true;
-  },
+    // ── Serialize ─────────────────────────────────────────────────────────────
+    serialize(item: Record<string, unknown> & { url: string }) {
+      const { url } = item;
+      const buildTime = process.env['BUILD_TIME'] || siteConfig.buildTime;
 
-  // ── Serialize ───────────────────────────────────────────────────────────────
-  // Enriches each URL entry with priority, changefreq, lastmod, and OG images.
-  //
-  // lastmod is set ONLY for pages with real, trustworthy content dates:
-  //   • /tools/[slug]  — lastModified or pubDate from frontmatter
-  //   • /blog/[slug]   — lastModified or pubDate from frontmatter
-  //
-  // Every other page (hub pages, indexes, legal, authors, etc.) has lastmod
-  // deleted.  A missing lastmod is always better than a fake build timestamp.
-  serialize(item: Record<string, unknown> & { url: string }) {
-    const { url } = item;
-    const buildTime = process.env.BUILD_TIME || siteConfig.buildTime;
+      item.priority   = getPriority(url);
+      item.changefreq = getChangefreq(url);
 
-    // 1. Priority & changefreq (always set)
-    item.priority   = getPriority(url);
-    item.changefreq = getChangefreq(url);
-
-    // 2. /tools/[slug] — individual tool detail page
-    //    Real lastmod sourced from frontmatter; also inject OG image.
-    const toolMatch = url.match(/\/tools\/([^/]+)\/?$/);
-    if (toolMatch && !isToolsIndex(url)) {
-      const slug = toolMatch[1];
-      const mdPath = path.resolve(process.cwd(), `src/content/tools/${slug}/index.md`);
-      item.lastmod = readFrontmatterDate(mdPath, 'lastModified', buildTime)
-        || readFrontmatterDate(mdPath, 'pubDate', buildTime)
-        || buildTime;
-      injectOgImage(item, 'tools', slug);
-      return item;
-    }
-
-    // 3. /blog/[slug] — individual blog post
-    //    Real lastmod sourced from frontmatter; also inject OG image.
-    if (isBlogPost(url)) {
-      const blogMatch = url.match(/\/blog\/([^/]+)\/?$/);
-      if (blogMatch) {
-        const slug = blogMatch[1];
-        const mdPath = path.resolve(process.cwd(), `src/content/blog/${slug}/index.md`);
+      // /tools/[slug] — real lastmod from frontmatter
+      const toolMatch = url.match(/\/tools\/([^/]+)\/?$/);
+      if (toolMatch && !c.isToolsIndex(url)) {
+        const slug = toolMatch[1];
+        const mdPath = path.resolve(process.cwd(), `src/content/tools/${slug}/index.md`);
         item.lastmod = readFrontmatterDate(mdPath, 'lastModified', buildTime)
           || readFrontmatterDate(mdPath, 'pubDate', buildTime)
           || buildTime;
-        injectOgImage(item, 'blog', slug);
+        injectOgImage(item, 'tools', slug);
         return item;
       }
-    }
 
-    // 4. Everything else — no lastmod.
-    //    Covers: homepage, /tools (index), /categories, /categories/[cat],
-    //    /blog (index), /blog/category/[cat], /authors/[slug],
-    //    /about, /contact, /support, /mobile-app,
-    //    /privacy, /terms, /disclaimer, and any future static pages.
-    delete item.lastmod;
-    return item;
-  },
-};
+      // /blog/[slug] — real lastmod from frontmatter
+      if (c.isBlogPost(url)) {
+        const blogMatch = url.match(/\/blog\/([^/]+)\/?$/);
+        if (blogMatch) {
+          const slug = blogMatch[1];
+          const mdPath = path.resolve(process.cwd(), `src/content/blog/${slug}/index.md`);
+          item.lastmod = readFrontmatterDate(mdPath, 'lastModified', buildTime)
+            || readFrontmatterDate(mdPath, 'pubDate', buildTime)
+            || buildTime;
+          injectOgImage(item, 'blog', slug);
+          return item;
+        }
+      }
+
+      // Everything else — no lastmod (don't fake build timestamps)
+      delete item.lastmod;
+      return item;
+    },
+  };
+}

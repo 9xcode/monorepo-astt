@@ -21,7 +21,8 @@ export default [
       // "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-unused-vars": ["warn", { 
         "argsIgnorePattern": "^_",
-        "varsIgnorePattern": "^_"
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
       }]
     }
   },
@@ -60,6 +61,6 @@ export default [
   },
   // Ignore
   {
-    ignores: ["dist/**", "node_modules/**", ".astro/**", ".planning/**"]
+    ignores: ["**/dist/**", "**/node_modules/**", "**/.astro/**", "**/.planning/**"]
   }
 ];

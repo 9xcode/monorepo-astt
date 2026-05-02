@@ -1,4 +1,5 @@
 import { defineCollection, reference } from 'astro:content';
+import { z } from 'zod';
 import { glob } from 'astro/loaders';
 
 // Schema factories from @mtools/core — Astro-specific helpers are passed
@@ -7,7 +8,7 @@ import {
   makeToolSchema,
   makeBlogSchema,
   makeAuthorsSchema,
-} from '@mtools/core/content-schemas';
+} from '../../../core/src/content-schemas/index.ts';
 
 // Re-export all constants and types so site-level code that imports from
 // './content.config.ts' (e.g. BLOG_CATEGORIES, TOOL_TAGS) continues to work.
@@ -20,25 +21,25 @@ export {
   BLOG_TAGS,
   type BlogCategory,
   type BlogTag,
-} from '@mtools/core/content-schemas';
+} from '../../../core/src/content-schemas/index.ts';
 
 // ── Collections ──────────────────────────────────────────────────────────────
 
 const toolsCollection = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/tools' }),
-  schema: makeToolSchema(reference),
+  schema: makeToolSchema(z, reference),
 });
 
 const blogCollection = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
-  schema: makeBlogSchema(reference),
+  schema: makeBlogSchema(z, reference),
 });
 
 // Authors uses the factory form because image() is only available inside
 // the schema factory callback context (Astro requirement).
 const authorsCollection = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/authors' }),
-  schema: ({ image }) => makeAuthorsSchema(image),
+  schema: ({ image }) => makeAuthorsSchema(z, image),
 });
 
 export const collections = {

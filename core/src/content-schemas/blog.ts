@@ -1,19 +1,19 @@
-import { z } from 'zod';
-
 /**
  * Blog content schema factory.
  *
- * Accepts `reference` as a parameter (from `astro:content`) to avoid
- * importing that Astro-specific module from within the core package.
+ * Accepts `z` and `reference` as parameters to avoid:
+ *   1. Importing `astro:content` (not available in a standalone package)
+ *   2. Zod version mismatch — Astro v6 uses Zod v4; passing z from the
+ *      caller ensures only one Zod instance is used for validation.
  *
- * Usage in sites/finance-tools/src/content.config.ts:
+ * Usage in sites/<site>/src/content.config.ts:
  *
- *   import { reference } from 'astro:content';
- *   import { makeBlogSchema, BLOG_CATEGORIES, BLOG_TAGS } from '@mtools/core/content-schemas/blog';
+ *   import { z, reference } from 'astro:content';
+ *   import { makeBlogSchema } from '../../../core/src/content-schemas/blog.ts';
  *
  *   const blogCollection = defineCollection({
  *     loader: glob({ pattern: '**\/*.md', base: './src/content/blog' }),
- *     schema: makeBlogSchema(reference),
+ *     schema: makeBlogSchema(z, reference),
  *   });
  */
 
@@ -47,11 +47,13 @@ export type BlogTag = (typeof BLOG_TAGS)[number];
 /**
  * Creates the Zod schema for the blog collection.
  *
- * @param reference  The `reference` function from `astro:content`.
- *                   Pass it directly: `makeBlogSchema(reference)`
- * @returns A Zod object schema suitable for use in defineCollection({ schema: ... })
+ * @param z          Astro's re-exported Zod instance (from `astro:content`)
+ * @param reference  The `reference` function from `astro:content`
  */
-export function makeBlogSchema(reference: (collection: string) => z.ZodTypeAny) {
+export function makeBlogSchema(
+  z: any,
+  reference: (collection: string) => any,
+) {
   return z.object({
     title: z.string(),
     seoTitle: z.string().optional(),

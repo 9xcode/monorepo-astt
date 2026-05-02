@@ -101,7 +101,7 @@ if (!enabled) {
 
     try {
       localStorage.setItem(stateKey, open.toString());
-    } catch (e) {
+    } catch (_e) {
       // Ignore if localStorage unavailable
     }
   }
@@ -141,7 +141,7 @@ if (!enabled) {
     // Load initial state
     try {
       isOpen = localStorage.getItem(stateKey) === 'true';
-    } catch (e) {
+    } catch (_e) {
       isOpen = false;
     }
 

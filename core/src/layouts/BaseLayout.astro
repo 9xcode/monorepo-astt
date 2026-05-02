@@ -3,8 +3,10 @@ import "../styles/global.css";
 import { siteConfig } from 'virtual:site-config';
 import JsonLd from "../components/common/seo/JsonLd.astro";
 import { buildWebSiteSchema, buildOrganizationSchema } from "../components/common/seo";
-import HeadScripts from "../components/integrations/HeadScripts.astro";
-import BodyScripts from "../components/integrations/BodyScripts.astro";
+// @head-scripts and @body-scripts are Vite aliases registered by core-pages.ts,
+// pointing to each site's src/components/integrations/{Head,Body}Scripts.astro.
+import HeadScripts from '@head-scripts';
+import BodyScripts from '@body-scripts';
 import FloatingActionDock from "../components/common/ui/floating-dock/FloatingActionDock.astro";
 import SearchDialog from "../components/common/dialogs/SearchDialog.svelte";
 import ShareDialog from "../components/common/dialogs/ShareDialog.svelte";

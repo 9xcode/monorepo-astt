@@ -5,7 +5,7 @@ import Footer from '../../../components/common/sections/Footer.astro';
 import BlogPostCard from '../../../components/blog/ui/BlogPostCard.astro';
 import { getPostsByCategory } from '../../../utils/blog';
 import { categoryToSlug } from '@mtools/core/utils/slug';
-import { BLOG_CATEGORIES } from '../../../content.config';
+import { BLOG_CATEGORIES } from '@mtools/core/content-schemas';
 import { siteConfig } from 'virtual:site-config';
 
 export async function getStaticPaths() {

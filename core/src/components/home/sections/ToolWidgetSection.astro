@@ -1,7 +1,7 @@
 ---
 import { siteConfig } from 'virtual:site-config';
 import { getAllToolSummaries } from "../../../utils/tools";
-import WidgetRenderer from "../../../generated/WidgetRenderer.astro";
+import WidgetRenderer from "@widget-renderer";
 
 const { enabled, toolSlug } = siteConfig.features.homepage.toolWidgetSection;
 const supportUrl = siteConfig.features.support.url;
