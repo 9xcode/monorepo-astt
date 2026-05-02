@@ -20,11 +20,6 @@ IMPORTANT: Do not Read this file and do not choose any task or feature from the 
 
 
 
-- [] remove unnesessory dependencies or move dev dependencies to dev section
-- [] Anything that only runs during the build (like @astrojs/check, typescript, @astrojs/rss, fast-glob, gray-matter) should technically be in devDependencies
-- Remove tw-animate-css: Svelte has a built-in transition engine (import { fade } from 'svelte/transition') that is smoother and doesn't require a CSS library.
-
-
 letter do ad this : https://www.google.com/preferences/source?q=https://redeemcodetoday.com  (just like levelgeeks did)
 
 ==============
