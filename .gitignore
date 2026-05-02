@@ -24,6 +24,8 @@ sites/*/src/generated/
 # dependencies
 node_modules/
 **/node_modules/
+# pnpm parks packages installed by other package managers here
+node_modules/.ignored/
 
 # file for temporary use
 tmp.md
