@@ -1,5 +1,5 @@
 import { defineCollection, reference } from 'astro:content';
-import { z } from 'astro:schema';
+import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
 
 // Schema factories from @mtools/core — Astro-specific helpers are passed
