@@ -13,7 +13,9 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "validate": "pnpm run lint && turbo check && turbo build",
-    "preinstall": "npx only-allow pnpm"
+    "preinstall": "npx only-allow pnpm",
+    "nuke": "./scripts/nuke.sh",
+    "reinstall": "./scripts/nuke.sh && pnpm install"
   },
   "devDependencies": {
     "eslint": "^10.2.0",
