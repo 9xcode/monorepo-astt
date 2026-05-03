@@ -12,7 +12,8 @@
     "check:tsc": "turbo check:tsc",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "validate": "pnpm run lint && turbo check && turbo build"
+    "validate": "pnpm run lint && turbo check && turbo build",
+    "preinstall": "npx only-allow pnpm"
   },
   "devDependencies": {
     "eslint": "^10.2.0",

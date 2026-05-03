@@ -1,5 +1,5 @@
 import { defineCollection, reference } from 'astro:content';
-import { z } from 'zod';
+import { z } from 'astro:schema';
 import { glob } from 'astro/loaders';
 
 // Use relative paths — content.config.ts is processed by Astro's content layer
