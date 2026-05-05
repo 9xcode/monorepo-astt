@@ -23,22 +23,22 @@
   },
   "dependencies": {
     "@mtools/core": "workspace:*",
-    "astro": "^6.1.5",
-    "@astrojs/svelte": "^7.0.0",
-    "@astrojs/sitemap": "^3.0.0",
-    "svelte": "^5.55.3",
-    "@lucide/svelte": "^1.8.0",
-    "bits-ui": "^2.17.3",
-    "clsx": "^2.1.1",
-    "tailwind-merge": "^3.5.0"
+    "astro": "catalog:",
+    "@astrojs/svelte": "catalog:",
+    "@astrojs/sitemap": "catalog:",
+    "svelte": "catalog:",
+    "@lucide/svelte": "catalog:",
+    "bits-ui": "catalog:",
+    "clsx": "catalog:",
+    "tailwind-merge": "catalog:"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.9",
-    "@tailwindcss/vite": "^4.2.4",
-    "rehype-katex": "^7.0.1",
-    "remark-math": "^6.0.0",
-    "svelte-check": "^4.4.6",
-    "tailwindcss": "^4.2.4",
-    "typescript": "^5.9.3"
+    "@astrojs/check": "catalog:",
+    "@tailwindcss/vite": "catalog:",
+    "rehype-katex": "catalog:",
+    "remark-math": "catalog:",
+    "svelte-check": "catalog:",
+    "tailwindcss": "catalog:",
+    "typescript": "catalog:"
   }
 }

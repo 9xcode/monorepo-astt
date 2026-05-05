@@ -42,28 +42,28 @@
     "generate-widget-map": "./scripts/generate-widget-map.mjs"
   },
   "dependencies": {
-    "@lucide/svelte": "^1.8.0",
-    "bits-ui": "^2.17.3",
-    "clsx": "^2.1.1",
-    "tailwind-merge": "^3.5.0",
+    "@lucide/svelte": "catalog:",
+    "bits-ui": "catalog:",
+    "clsx": "catalog:",
+    "tailwind-merge": "catalog:",
     "tailwind-variants": "^3.2.2"
   },
   "devDependencies": {
-    "@tailwindcss/vite": "^4.2.4",
-    "tailwindcss": "^4.2.4",
+    "@tailwindcss/vite": "catalog:",
+    "tailwindcss": "catalog:",
     "@tailwindcss/typography": "^0.5.19",
-    "remark-math": "^6.0.0",
-    "rehype-katex": "^7.0.0",
-    "satori": "^0.26.0",
-    "satori-html": "^0.3.2",
-    "@resvg/resvg-js": "^2.6.2",
-    "@astrojs/svelte": "^7.0.0",
-    "@astrojs/sitemap": "^3.0.0",
+    "remark-math": "catalog:",
+    "rehype-katex": "catalog:",
+    "satori": "catalog:",
+    "satori-html": "catalog:",
+    "@resvg/resvg-js": "catalog:",
+    "@astrojs/svelte": "catalog:",
+    "@astrojs/sitemap": "catalog:",
     "fast-glob": "^3.3.2",
     "gray-matter": "^4.0.3"
   },
   "peerDependencies": {
-    "astro": "^6.1.5",
-    "svelte": "^5.55.3"
+    "astro": "catalog:",
+    "svelte": "catalog:"
   }
 }
