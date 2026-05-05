@@ -39,8 +39,8 @@ catalog:
   "@resvg/resvg-js": ^2.6.2
 
   # UI / component libraries
-  "@lucide/svelte": ^1.8.0
-  bits-ui: ^2.17.3
+  "@lucide/svelte": ^1.14.0
+  bits-ui: ^2.18.1
   clsx: ^2.1.1
   tailwind-merge: ^3.5.0
 
