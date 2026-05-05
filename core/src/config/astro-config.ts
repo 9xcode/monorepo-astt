@@ -151,7 +151,15 @@ export function createAstroConfig(
           // the corePages() integration, pointing to site's src/generated/ and
           // src/components/integrations/ files.
         },
+        // Keep resolve.noExternal for standard package-level bundling
         noExternal: ['@lucide/svelte', 'bits-ui', 'svelte-toolbelt', 'runed', '@mtools/core'],
+      },
+      ssr: {
+        // Packages that ship raw .svelte files internally (e.g. @lucide/svelte ships
+        // dist/icons/*.svelte that import ../Icon.svelte via relative path).
+        // String-based noExternal only matches top-level imports; this regex also
+        // catches internal relative imports so Node's ESM loader never sees .svelte files.
+        noExternal: [/@lucide\/svelte/, /bits-ui/, /svelte-toolbelt/, /runed/],
       },
       build: {
         minify: 'esbuild',
