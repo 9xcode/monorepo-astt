@@ -97,14 +97,7 @@ json
 
 
 ----
- MEDIUM-2: OG Image Dependencies Duplicated at Root and Core
-satori, satori-html, @resvg/resvg-js appear in both root and core package.json:
 
-root/package.json devDeps: satori, satori-html, @resvg/resvg-js
-core/package.json devDeps: satori, satori-html, @resvg/resvg-js
-These are only used by core/integrations/og-cache/generator.ts. They should be exclusively in core/package.json. Root-level copies are redundant and create potential version drift.
-
-Fix: Remove satori, satori-html, @resvg/resvg-js from root package.json.
 -----------
  MEDIUM-3: core Package Has No build/check Scripts
 core/package.json has no scripts field. Turborepo's "dependsOn": ["^build"] means "build workspace dependencies first" — but since core has no build script, Turborepo silently skips the core build step. This undermines the incremental rebuild guarantee for core changes.

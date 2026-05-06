@@ -33,11 +33,6 @@ catalog:
   remark-math: ^6.0.0
   rehype-katex: ^7.0.1
 
-  # OG image generation (core only — catalog to de-dupe root + core)
-  satori: ^0.26.0
-  satori-html: ^0.3.2
-  "@resvg/resvg-js": ^2.6.2
-
   # UI / component libraries
   "@lucide/svelte": ^1.14.0
   bits-ui: ^2.18.1
