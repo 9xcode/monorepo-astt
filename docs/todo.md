@@ -81,25 +81,6 @@ OR delete core/src/seo/ barrel and update core/package.json exports to point at 
 
 
 
-Is the core/package.json Exports Map Correct?
-Mostly yes, but has one problem.
-
-The exports map is the "public API" of @mtools/core — it controls which internal paths sites can import. What's there is fine, but there are missing entries:
-
-json
-// What's missing:
-"./components/common/ui/skeletons/WidgetSkeleton.astro"
-// ↑ Generated widget wrappers import this directly via the @mtools/core alias,
-// but it's NOT in the exports map. It works only because of the Vite alias
-// (not via Node module resolution). This is a fragile implicit dependency.
-Also ./seo re-exports from ../components/common/seo/ but the exports map doesn't expose any ./components/common/seo/* paths — which is fine architecturally, but the SEO duplication issue I flagged earlier is still the root cause of confusion here.
-
-The exports map could also benefit from wildcard entries once you're on Node 12.7+ (which you are) to avoid adding every new util file manually:
-
-json
-"./utils/*": "./src/utils/*.ts"  // not yet done
-
-
 ----
 
 -----------

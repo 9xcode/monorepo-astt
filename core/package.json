@@ -35,7 +35,8 @@
     "./og/templates/tools": "./src/og/templates/tools.ts",
     "./og/templates/blog": "./src/og/templates/blog.ts",
     "./lib/utils": "./src/lib/utils.ts",
-    "./lib/icons": "./src/lib/icons.ts"
+    "./lib/icons": "./src/lib/icons.ts",
+    "./components/common/ui/skeletons/WidgetSkeleton.astro": "./src/components/common/ui/skeletons/WidgetSkeleton.astro"
   },
   "scripts": {
     "build": "echo '@mtools/core has no compiled output — type-checked via sites'",
