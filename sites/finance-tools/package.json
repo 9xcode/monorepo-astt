@@ -13,13 +13,13 @@
     "build": "generate-widget-map && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "check": "astro check",
+    "check": "astro check && svelte-check --tsconfig ./tsconfig.json && tsc --noEmit",
     "check:astro": "astro check",
     "check:svelte": "svelte-check --tsconfig ./tsconfig.json",
     "check:tsc": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "validate": "pnpm run lint && pnpm run check:astro && pnpm run check:svelte && pnpm run check:tsc && pnpm run build"
+    "validate": "eslint . && astro check && svelte-check --tsconfig ./tsconfig.json && tsc --noEmit && astro build"
   },
   "dependencies": {
     "@mtools/core": "workspace:*",

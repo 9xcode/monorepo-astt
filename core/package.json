@@ -38,6 +38,13 @@
     "./lib/utils": "./src/lib/utils.ts",
     "./lib/icons": "./src/lib/icons.ts"
   },
+  "scripts": {
+    "build": "echo '@mtools/core has no compiled output — type-checked via sites'",
+    "check": "astro check && svelte-check --tsconfig ./tsconfig.json && tsc --noEmit",
+    "check:astro": "astro check",
+    "check:svelte": "svelte-check --tsconfig ./tsconfig.json",
+    "check:tsc": "tsc --noEmit"
+  },
   "bin": {
     "generate-widget-map": "./scripts/generate-widget-map.mjs"
   },
@@ -59,6 +66,8 @@
     "@resvg/resvg-js": "^2.6.2",
     "@astrojs/svelte": "catalog:",
     "@astrojs/sitemap": "catalog:",
+    "@astrojs/check": "catalog:",
+    "svelte-check": "catalog:",
     "fast-glob": "^3.3.2",
     "gray-matter": "^4.0.3"
   },

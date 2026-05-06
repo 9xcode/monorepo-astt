@@ -3,8 +3,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".astro/**"],
-      "inputs": ["src/**", "public/**", "astro.config.*", "package.json"]
+      "outputs": ["dist/**", ".astro/**"]
     },
     "dev": {
       "cache": false,

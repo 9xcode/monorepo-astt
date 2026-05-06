@@ -47,6 +47,10 @@ letter do ad this : https://www.google.com/preferences/source?q=https://redeemco
 - core have author image in assets but i think its site specific
 
 - theme styles also found in evey site but its core feature and we can change theme from the config so i don't think that we still need styles in evey sites 
+🔵 LOW-3: sites/finance-tools/src/styles/ May Contain Stale Theme Files
+The site's src/styles/ contains 10 theme CSS files. These should have been moved entirely to core/src/styles/themes/ (which also has 10 theme files). Since @active-theme alias points to core, the site-level copies are unreferenced.
+Action: Verify they are identical. If so, delete sites/finance-tools/src/styles/ to remove dead CSS.
+
 
 - fonts in public folder of sites, but that is not related to site, its core feature for the og image generation 
 
@@ -99,17 +103,7 @@ json
 ----
 
 -----------
- MEDIUM-3: core Package Has No build/check Scripts
-core/package.json has no scripts field. Turborepo's "dependsOn": ["^build"] means "build workspace dependencies first" — but since core has no build script, Turborepo silently skips the core build step. This undermines the incremental rebuild guarantee for core changes.
 
-Fix — add to core/package.json:
-
-json
-"scripts": {
-  "build": "echo '@mtools/core has no compiled output — type-checked via sites'",
-  "check": "tsc --noEmit",
-  "check:tsc": "tsc --noEmit"
-}
 -------
 MEDIUM-4: configDefaults is Dead Code
 core/src/config/defaults.ts defines configDefaults as a comprehensive object with sensible defaults, but factory.ts never imports or uses it:
@@ -133,20 +127,14 @@ Works correctly but inconsistent — the plan's exported @mtools/core/seo patter
 🔵 LOW-2: Root tsconfig.json Does Not Extend tsconfig.base.json
 Root tsconfig.json extends astro/tsconfigs/strict. Sites also extend astro/tsconfigs/strict. tsconfig.base.json is only extended by core/tsconfig.json, making it effectively a single-use file rather than a true shared base. Minor but inconsistent with the plan.
 
-🔵 LOW-3: sites/finance-tools/src/styles/ May Contain Stale Theme Files
-The site's src/styles/ contains 10 theme CSS files. These should have been moved entirely to core/src/styles/themes/ (which also has 10 theme files). Since @active-theme alias points to core, the site-level copies are unreferenced.
 
-Action: Verify they are identical. If so, delete sites/finance-tools/src/styles/ to remove dead CSS.
 
 🔵 LOW-4: CI Workflow Intentionally Disabled
 .github/workflows-disabled/ci.yml is well-written with Turborepo-aware builds and three deployment provider options (Vercel, Netlify, Cloudflare). Kept disabled pending hosting decision.
 
 Action: When hosting is decided, move to .github/workflows/ci.yml and uncomment the appropriate provider block.
 
-🔵 LOW-5: sharp Only in Root package.json, Not Core
-sharp is a root-level devDep but core/integrations/og-cache/ may need it. Currently works due to hoist=true in .npmrc, but it's not explicit in core's declared dependencies. Could break if hoisting is changed.
 
-Action: Verify sharp usage in core. If used, add to core/package.json devDeps.
 ---------
 Improvement Suggestions
 💡 1. Fix turbo.json Inputs to Track Core Changes
