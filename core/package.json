@@ -10,8 +10,6 @@
   },
   "exports": {
     "./config/types": "./src/config/types.ts",
-    "./config/defaults": "./src/config/defaults.ts",
-    "./config/factory": "./src/config/factory.ts",
     "./config/astro-config": "./src/config/astro-config.ts",
     "./config/sitemap": "./src/config/sitemap.ts",
     "./content-schemas": "./src/content-schemas/index.ts",
@@ -23,6 +21,7 @@
     "./integrations/og-cache": "./integrations/og-cache/index.ts",
     "./utils/slug": "./src/utils/slug.ts",
     "./utils/prng": "./src/utils/prng.ts",
+    "./utils/build-time": "./src/utils/build-time.ts",
     "./utils/w3c-date": "./src/utils/w3c-date.ts",
     "./utils/og": "./src/utils/og.ts",
     "./utils/seo": "./src/utils/seo.ts",

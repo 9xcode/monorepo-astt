@@ -105,18 +105,7 @@ json
 -----------
 
 -------
-MEDIUM-4: configDefaults is Dead Code
-core/src/config/defaults.ts defines configDefaults as a comprehensive object with sensible defaults, but factory.ts never imports or uses it:
 
-ts
-// factory.ts — current implementation
-export function createSiteConfig(config: SiteConfig): SiteConfig {
-  return { ...config, buildTime, copyrightYear };
-  // configDefaults is never touched!
-}
-The plan intended createSiteConfig() to deep-merge defaults + site overrides so new sites only need to provide their unique values. Currently sites must provide every field.
-
-Fix: Either implement the deep-merge in factory.ts, or delete defaults.ts to avoid confusion.
 ----------
 🔵 LOW-1: llms-full.txt.ts Imports From Old components/common/seo Path
 ts

@@ -4,10 +4,10 @@
 // Replace all PLACEHOLDER_ values before launching a new site.
 // See docs/project/creating-new-site.md for the full setup guide.
 // ────────────────────────────────────────────────────────────────────────────
-import { createSiteConfig } from '@mtools/core/config/factory';
+import { getBuildTime, getCopyrightYear } from '@mtools/core/utils/build-time';
 
 // Re-export all types so site-level code imports from './config' as normal.
-export type {
+import type {
   SiteConfig,
   NavItem,
   SeoConfig,
@@ -24,7 +24,24 @@ export type {
   FeaturesConfig,
 } from '@mtools/core/config/types';
 
-export const siteConfig = createSiteConfig({
+export type {
+  SiteConfig,
+  NavItem,
+  SeoConfig,
+  NavigationConfig,
+  SidebarConfig,
+  FloatingActionsConfig,
+  ThemeConfig,
+  UiConfig,
+  AdsConfig,
+  SupportConfig,
+  TocConfig,
+  BlogConfig,
+  SearchConfig,
+  FeaturesConfig,
+};
+
+export const siteConfig: SiteConfig = {
 
   // ─── Core Identity ──────────────────────────────────────────────────────
   name: "PLACEHOLDER_SITE_NAME",          // e.g. "PDF Tools"
@@ -47,12 +64,12 @@ export const siteConfig = createSiteConfig({
 
   // ─── Legal ──────────────────────────────────────────────────────────────
   companyName: "PLACEHOLDER_COMPANY",
-  copyrightYear: new Date().getFullYear(),
+  copyrightYear: getCopyrightYear(),
 
   // ─── Temporal ───────────────────────────────────────────────────────────
   defaultTimezone: "UTC",
   datePublished: "2026-01-01T00:00:00Z",  // Replace with actual launch date
-  buildTime: "",                           // Resolved automatically by createSiteConfig()
+  buildTime: getBuildTime(),
 
   // ─── Contact ────────────────────────────────────────────────────────────
   contact: {
@@ -224,4 +241,4 @@ export const siteConfig = createSiteConfig({
       postsPerPage: 12,
     },
   },
-});
+};

@@ -9,11 +9,11 @@
 // ────────────────────────────────────────────────────────────────────────────
 // Relative path — the @mtools/core package exports map points to .ts files.
 // Node's native ESM loader can't process .ts; relative paths go through Vite.
-import { createSiteConfig } from '../../../core/src/config/factory.ts';
+import { getBuildTime, getCopyrightYear } from '../../../core/src/utils/build-time.ts';
 
 // Re-export all types so site-level code that imports from './config'
 // (e.g. Astro pages, layouts) continues to work without changes.
-export type {
+import type {
   SiteConfig,
   NavItem,
   SeoConfig,
@@ -30,7 +30,24 @@ export type {
   FeaturesConfig,
 } from '../../../core/src/config/types.ts';
 
-export const siteConfig = createSiteConfig({
+export type {
+  SiteConfig,
+  NavItem,
+  SeoConfig,
+  NavigationConfig,
+  SidebarConfig,
+  FloatingActionsConfig,
+  ThemeConfig,
+  UiConfig,
+  AdsConfig,
+  SupportConfig,
+  TocConfig,
+  BlogConfig,
+  SearchConfig,
+  FeaturesConfig,
+};
+
+export const siteConfig: SiteConfig = {
 
   // ─── Core Identity ──────────────────────────────────────────────────────
   name: "MultiTools",
@@ -54,14 +71,14 @@ export const siteConfig = createSiteConfig({
 
   // ─── Legal ──────────────────────────────────────────────────────────────
   companyName: "MultiTools",
-  // copyrightYear resolved automatically by createSiteConfig() from buildTime
-  copyrightYear: new Date().getFullYear(),
+  // copyrightYear resolved automatically to match the frozen build environment
+  copyrightYear: getCopyrightYear(),
 
   // ─── Temporal ───────────────────────────────────────────────────────────
   defaultTimezone: "UTC",
   datePublished: "2026-03-08T12:00:00Z",
-  // buildTime resolved automatically by createSiteConfig() from process.env.BUILD_TIME
-  buildTime: "",
+  // buildTime resolved automatically to freeze the timestamp across the build
+  buildTime: getBuildTime(),
 
   // ─── Contact ────────────────────────────────────────────────────────────
   contact: {
@@ -262,4 +279,4 @@ export const siteConfig = createSiteConfig({
       postsPerPage: 12,
     },
   },
-});
+};
