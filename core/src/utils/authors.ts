@@ -34,7 +34,7 @@ export type AuthorEntry = CollectionEntry<'authors'>;
  */
 export async function getAllAuthors(): Promise<AuthorEntry[]> {
   const authors = await getCollection('authors');
-  return authors.sort((a, b) => a.data.name.localeCompare(b.data.name));
+  return authors.sort((a: AuthorEntry, b: AuthorEntry) => a.data.name.localeCompare(b.data.name));
 }
 
 /**
@@ -119,11 +119,11 @@ export async function getContentByAuthor(slug: string): Promise<{
   tools: CollectionEntry<'tools'>[];
 }> {
   const [allPosts, allTools] = await Promise.all([
-    getCollection('blog', ({ data }) => {
+    getCollection('blog', ({ data }: CollectionEntry<'blog'>) => {
       if (import.meta.env.PROD && data.isDraft) return false;
       return true;
     }),
-    getCollection('tools', ({ data }) => {
+    getCollection('tools', ({ data }: CollectionEntry<'tools'>) => {
       if (import.meta.env.PROD && data.isDraft) return false;
       return true;
     }),
@@ -135,7 +135,7 @@ export async function getContentByAuthor(slug: string): Promise<{
   const isDefaultAuthor = slug === defaultSlug;
 
   const blogPosts = allPosts
-    .filter((post) => {
+    .filter((post: CollectionEntry<'blog'>) => {
       if (post.data.author) {
         if (post.data.author.id === slug) return true;
       } else if (isDefaultAuthor) {
@@ -145,14 +145,14 @@ export async function getContentByAuthor(slug: string): Promise<{
       // Also include posts where this author is listed as a co-author
       return post.data.coAuthors?.some((ref: { id: string }) => ref.id === slug) ?? false;
     })
-    .sort((a, b) => {
+    .sort((a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) => {
       const dateA = new Date(formatW3CDate(a.data.pubDate, siteConfig.datePublished)).valueOf();
       const dateB = new Date(formatW3CDate(b.data.pubDate, siteConfig.datePublished)).valueOf();
       return dateB - dateA; // newest first
     });
 
   const tools = allTools
-    .filter((tool) => {
+    .filter((tool: CollectionEntry<'tools'>) => {
       if (tool.data.author) {
         if (tool.data.author.id === slug) return true;
       } else if (isDefaultAuthor) {
@@ -160,7 +160,7 @@ export async function getContentByAuthor(slug: string): Promise<{
       }
       return tool.data.coAuthors?.some((ref: { id: string }) => ref.id === slug) ?? false;
     })
-    .sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999));
+    .sort((a: CollectionEntry<'tools'>, b: CollectionEntry<'tools'>) => (a.data.order ?? 999) - (b.data.order ?? 999));
 
   return { blogPosts, tools };
 }

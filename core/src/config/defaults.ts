@@ -12,6 +12,7 @@ export const configDefaults = {
   version: '1.0.0',
 
   brand: {
+    shortName: '',
     tagline: '',
   },
 
@@ -23,10 +24,13 @@ export const configDefaults = {
   defaultTimezone: 'UTC',
 
   contact: {
+    email: '',
     location: '',
   },
 
   seo: {
+    description: '',
+    defaultAuthorSlug: '',
     language: 'en',
     defaultKeywords: ['tools', 'utilities', 'free tools'],
     twitterHandle: undefined,
@@ -46,6 +50,11 @@ export const configDefaults = {
   },
 
   ui: {
+    navigation: {
+      header: [],
+      footer: [],
+      mobile: [],
+    },
     sidebar: {
       showAllToolsList: true,
       showMobileAppCard: false,

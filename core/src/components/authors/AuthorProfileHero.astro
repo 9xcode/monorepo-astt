@@ -37,7 +37,7 @@ const { name, role, shortBio, knowsAbout, socials } = author.data;
     {/* Expertise tag badges */}
     {knowsAbout && knowsAbout.length > 0 && (
       <div class="flex flex-wrap justify-center sm:justify-start gap-2">
-        {knowsAbout.map(topic => (
+        {knowsAbout.map((topic: string) => (
           <span class="inline-flex items-center rounded-full bg-primary/10 text-primary px-3 py-1 text-xs font-medium">
             {topic}
           </span>

@@ -80,7 +80,7 @@ function countPostsInBlogCategory(categorySlug: string): number {
     // The URL slug is kebab-cased (e.g. "guides") so we normalise both sides.
     const catMatch = content.match(/^category:\s*['"']?([^'"'\r\n]+)['"']?/m);
     if (catMatch) {
-      const postCategorySlug = catMatch[1].trim().toLowerCase().replace(/\s+/g, '-');
+      const postCategorySlug = catMatch[1]!.trim().toLowerCase().replace(/\s+/g, '-');
       if (postCategorySlug === categorySlug) count++;
     }
   }
@@ -179,7 +179,7 @@ export function makeSitemapConfig(siteConfig: SiteConfig) {
     if (ogUrl) {
       // @ts-ignore — @astrojs/sitemap supports img[] via the sitemap package extension
       item.img = [{
-        url: new URL(ogUrl.split('?')[0], siteConfig.url).href,
+        url: new URL(ogUrl.split('?')[0]!, siteConfig.url).href,
         title: `${slug.replace(/-/g, ' ')} - ${siteConfig.name}`,
       }];
     }
@@ -195,7 +195,7 @@ export function makeSitemapConfig(siteConfig: SiteConfig) {
       if (c.isBlogCategoryArchive(page)) {
         const catMatch = page.match(/\/blog\/category\/([^/]+)\/?$/);
         if (catMatch) {
-          const postCount = countPostsInBlogCategory(catMatch[1]);
+          const postCount = countPostsInBlogCategory(catMatch[1]!);
           if (postCount < MIN_POSTS_FOR_CATEGORY) return false;
         }
       }
@@ -213,7 +213,7 @@ export function makeSitemapConfig(siteConfig: SiteConfig) {
       // /tools/[slug] — real lastmod from frontmatter
       const toolMatch = url.match(/\/tools\/([^/]+)\/?$/);
       if (toolMatch && !c.isToolsIndex(url)) {
-        const slug = toolMatch[1];
+        const slug = toolMatch[1]!;
         const mdPath = path.resolve(process.cwd(), `src/content/tools/${slug}/index.md`);
         item.lastmod = readFrontmatterDate(mdPath, 'lastModified', buildTime)
           || readFrontmatterDate(mdPath, 'pubDate', buildTime)
@@ -226,7 +226,7 @@ export function makeSitemapConfig(siteConfig: SiteConfig) {
       if (c.isBlogPost(url)) {
         const blogMatch = url.match(/\/blog\/([^/]+)\/?$/);
         if (blogMatch) {
-          const slug = blogMatch[1];
+          const slug = blogMatch[1]!;
           const mdPath = path.resolve(process.cwd(), `src/content/blog/${slug}/index.md`);
           item.lastmod = readFrontmatterDate(mdPath, 'lastModified', buildTime)
             || readFrontmatterDate(mdPath, 'pubDate', buildTime)

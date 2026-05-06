@@ -57,12 +57,12 @@ function resolvePubDate(post: BlogPost): number {
  * In production, isDraft posts are excluded. In dev, all posts are returned.
  */
 export async function getAllPosts(): Promise<BlogPost[]> {
-  const posts = await getCollection('blog', ({ data }) => {
+  const posts = await getCollection('blog', ({ data }: BlogPost) => {
     if (import.meta.env.PROD && data.isDraft) return false;
     return true;
   });
   return posts.sort(
-    (a, b) => resolvePubDate(b) - resolvePubDate(a)
+    (a: BlogPost, b: BlogPost) => resolvePubDate(b) - resolvePubDate(a)
   );
 }
 
@@ -116,7 +116,7 @@ export function getRelatedPosts(
       )
       .map(p => ({
         post: p,
-        overlap: p.data.tags.filter(t => current.data.tags.includes(t)).length,
+        overlap: p.data.tags.filter((t: string) => current.data.tags.includes(t)).length,
       }))
       .filter(x => x.overlap > 0)
       .sort((a, b) => b.overlap - a.overlap)

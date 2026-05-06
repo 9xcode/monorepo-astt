@@ -58,12 +58,13 @@ export function parseFaqSchema(body: string | undefined): FaqSchema | null {
 
     // Stop at the next ## heading (end of FAQ section)
     const sectionContent = faqSection.split(/\n## /)[0];
+    if (!sectionContent) return null;
 
     const faqBlocks = sectionContent.split('### ').slice(1);
     const faqItems: FaqItem[] = faqBlocks
         .map(block => {
             const lines = block.split('\n');
-            const question = lines[0].replace(/[*_~`"]/g, '').trim();
+            const question = lines[0]?.replace(/[*_~`"]/g, '').trim() ?? '';
             const answer = lines.slice(1).join('\n').replace(/[*_~`"]/g, '').trim();
             if (question && answer) {
                 return {
@@ -111,6 +112,7 @@ export function parseHowToSchema(
 
     // Stop at the next ## heading
     const sectionContent = howToSection.split(/\n## /)[0];
+    if (!sectionContent) return null;
 
     // Strip out all markdown formatting BEFORE parsing so that bold tags
     // around the colon (e.g. `**Step:**`) don't break the regex separator matcher.
@@ -122,7 +124,7 @@ export function parseHowToSchema(
     const steps: { name: string; text: string }[] = [];
     let match;
     while ((match = stepRegex.exec(cleanContent)) !== null) {
-        steps.push({ name: match[1].trim(), text: match[2].trim() });
+        steps.push({ name: match[1]!.trim(), text: match[2]!.trim() });
     }
 
     if (steps.length === 0) return null;
@@ -162,6 +164,7 @@ export function parseFeatureList(body: string | undefined, toolTitle?: string): 
 
     // Stop at the next ## or ### heading
     const sectionContent = featuresSection.split(/\n(?:##|###) /)[0];
+    if (!sectionContent) return null;
 
     // Extract bullet points (- or *) or numbered items (1.)
     const bulletRegex = /^(?:\d+\.|-|\*)\s+(.+)$/gm;
@@ -170,7 +173,7 @@ export function parseFeatureList(body: string | undefined, toolTitle?: string): 
 
     while ((match = bulletRegex.exec(sectionContent)) !== null) {
         // Strip markdown formatting like bold, italic, code from the feature text
-        const cleanText = match[1].replace(/[*_~`"]/g, '').trim();
+        const cleanText = match[1]!.replace(/[*_~`"]/g, '').trim();
         if (cleanText) {
             features.push(cleanText);
         }

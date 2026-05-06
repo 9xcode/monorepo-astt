@@ -46,7 +46,7 @@ import { ChevronUp } from '@lucide/svelte';
 			const footer = document.querySelector('footer');
 			if (footer) {
 				footerObserver = new IntersectionObserver((entries) => {
-					isFooterVisible = entries[0].isIntersecting;
+					isFooterVisible = entries[0]?.isIntersecting ?? false;
 					handleScroll();
 				}, { rootMargin: '0px' });
 				footerObserver.observe(footer);

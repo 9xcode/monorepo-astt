@@ -99,7 +99,7 @@ function toSummary(entry: Tool): ToolSummary {
 export async function getAllTools(): Promise<Tool[]> {
     const raw = await getCollection('tools');
     return raw
-        .filter(t => !(import.meta.env.PROD && t.data.isDraft))
+        .filter((t: Tool) => !(import.meta.env.PROD && t.data.isDraft))
         .sort(toolSortComparator);
 }
 
