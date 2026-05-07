@@ -44,9 +44,6 @@ letter do ad this : https://www.google.com/preferences/source?q=https://redeemco
 
 - [] change support page completley
 
-- core have author image in assets but i think its site specific
-
-- user images in evey site assets folder but i don't know where it should be, in evey site or in core so tell me ?
 
 - i think core also should have integration component ? what you think ?
 
