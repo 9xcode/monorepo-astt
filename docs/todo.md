@@ -46,13 +46,8 @@ letter do ad this : https://www.google.com/preferences/source?q=https://redeemco
 
 - core have author image in assets but i think its site specific
 
-- theme styles also found in evey site but its core feature and we can change theme from the config so i don't think that we still need styles in evey sites 
-🔵 LOW-3: sites/finance-tools/src/styles/ May Contain Stale Theme Files
-The site's src/styles/ contains 10 theme CSS files. These should have been moved entirely to core/src/styles/themes/ (which also has 10 theme files). Since @active-theme alias points to core, the site-level copies are unreferenced.
-Action: Verify they are identical. If so, delete sites/finance-tools/src/styles/ to remove dead CSS.
 
-
-- fonts in public folder of sites, but that is not related to site, its core feature for the og image generation 
+- fonts in public folder of sites, but that is not related to site, make sure its not used in site, its core feature for the og image generation and used in og images fonts (build time generation), am i right ?
 
 - user images in evey site assets folder but i don't know where it should be, in evey site or in core so tell me ?
 

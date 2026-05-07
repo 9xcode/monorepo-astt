@@ -152,7 +152,7 @@ export const siteConfig: SiteConfig = {
 
     theme: {
       defaultMode: "system",
-      name: "slate",  // Must match a file in src/styles/<name>.css
+      name: "slate",  // Must match a file in core/src/styles/themes/<name>.css
     },
   },
 
