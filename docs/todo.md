@@ -36,7 +36,7 @@ letter do ad this : https://www.google.com/preferences/source?q=https://redeemco
 
 - Segregate the code and complete project structure
 - Improve and combine the documentation
-
+- can we make widgetgenerator script which we are right now runnign from package json build commnad, can we do semothign that we have done for the og image generation, which also run script but its not part of the build process, something similar for the widget generator.
 
 =========
 
@@ -68,41 +68,6 @@ Action: Verify they are identical. If so, delete sites/finance-tools/src/styles/
 
 ### ⚠️ Real Gaps (Evidence-Based)
 
-**1. `JsonLd.astro` renders unescaped HTML via `set:html`**
-
-```astro
-<script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
-```
-
-`JSON.stringify` does **not** escape `</script>` sequences. If any schema field contains the string `</script>` (e.g., a tool description), it will break the JSON-LD block and potentially the page. The fix is one line:
-
-```ts
-JSON.stringify(schema).replace(/<\/script>/gi, '<\\/script>')
-```
-
-This is a real XSS-class bug, low probability but real.
-
----
-
-**2. `WebPageSchema` is incomplete — missing `isPartOf` and `breadcrumb`**
-
-Your `buildWebPageSchema()` returns only `name`, `description`, `url`. Google's [WebPage documentation](https://schema.org/WebPage) expects `isPartOf` linking back to the WebSite entity and ideally a `breadcrumb`. This matters for the static pages (about, privacy, terms, contact, disclaimer, support). These pages get no breadcrumb JSON-LD at all currently.
-
----
-
-**3. `buildOrganizationSchema` uses a bare string for `logo`, inconsistent with other schemas**
-
-```ts
-// site.ts — standalone Organization
-logo: input.logoUrl,   // plain string
-
-// primitives.ts — publisher in Article
-logo: { "@type": "ImageObject", url: input.logoUrl }  // ImageObject
-```
-
-The comment in `site.ts` line 43 acknowledges this. Google's structured data [requires `ImageObject` for `logo`](https://developers.google.com/search/docs/appearance/structured-data/logo) — the plain string variant may not get recognized. Both should use `ImageObject`.
-
----
 
 **4. `WebSiteSchema` is missing `potentialAction` (Sitelinks Searchbox)**
 

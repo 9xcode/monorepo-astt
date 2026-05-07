@@ -12,7 +12,7 @@
     "check:tsc": "turbo check:tsc",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "validate": "eslint . && turbo check:astro check:svelte check:tsc && turbo build",
+    "validate": "eslint . && echo '─── CHECKS ───' && turbo check:astro check:svelte check:tsc && echo '─── BUILD ───' && turbo build",
     "preinstall": "npx only-allow pnpm",
     "nuke": "./scripts/nuke.sh",
     "reinstall": "./scripts/nuke.sh && pnpm install"

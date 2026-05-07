@@ -10,21 +10,12 @@
       "persistent": true
     },
     "preview": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["build"],
       "cache": false,
       "persistent": true
     },
-    "check": {
-      "dependsOn": ["^build"]
-    },
-    "check:astro": {
-      "dependsOn": ["^build"]
-    },
-    "check:svelte": {
-      "dependsOn": ["^build"]
-    },
-    "check:tsc": {
-      "dependsOn": ["^build"]
-    }
+    "check:astro": {},
+    "check:svelte": {},
+    "check:tsc": {}
   }
 }

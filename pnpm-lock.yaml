@@ -35,7 +35,7 @@ catalogs:
       version: 4.2.4
     astro:
       specifier: ^6.1.5
-      version: 6.3.0
+      version: 6.3.1
     bits-ui:
       specifier: ^2.18.1
       version: 2.18.1
@@ -106,7 +106,7 @@ importers:
         version: 1.14.0(svelte@5.55.5(@typescript-eslint/types@8.59.2))
       astro:
         specifier: 'catalog:'
-        version: 6.3.0(@types/node@25.6.1)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.60.3)(yaml@2.8.4)
+        version: 6.3.1(@types/node@25.6.1)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.60.3)(yaml@2.8.4)
       bits-ui:
         specifier: 'catalog:'
         version: 2.18.1(@internationalized/date@3.12.1)(svelte@5.55.5(@typescript-eslint/types@8.59.2))
@@ -131,7 +131,7 @@ importers:
         version: 3.7.2
       '@astrojs/svelte':
         specifier: 'catalog:'
-        version: 8.1.0(@types/node@25.6.1)(astro@6.3.0(@types/node@25.6.1)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.60.3)(yaml@2.8.4))(jiti@2.7.0)(lightningcss@1.32.0)(svelte@5.55.5(@typescript-eslint/types@8.59.2))(typescript@5.9.3)(yaml@2.8.4)
+        version: 8.1.0(@types/node@25.6.1)(astro@6.3.1(@types/node@25.6.1)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.60.3)(yaml@2.8.4))(jiti@2.7.0)(lightningcss@1.32.0)(svelte@5.55.5(@typescript-eslint/types@8.59.2))(typescript@5.9.3)(yaml@2.8.4)
       '@resvg/resvg-js':
         specifier: ^2.6.2
         version: 2.6.2
@@ -227,7 +227,7 @@ importers:
         version: 3.7.2
       '@astrojs/svelte':
         specifier: 'catalog:'
-        version: 8.1.0(@types/node@25.6.1)(astro@6.3.0(@types/node@25.6.1)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.60.3)(yaml@2.8.4))(jiti@2.7.0)(lightningcss@1.32.0)(svelte@5.55.5(@typescript-eslint/types@8.59.2))(typescript@5.9.3)(yaml@2.8.4)
+        version: 8.1.0(@types/node@25.6.1)(astro@6.3.1(@types/node@25.6.1)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.60.3)(yaml@2.8.4))(jiti@2.7.0)(lightningcss@1.32.0)(svelte@5.55.5(@typescript-eslint/types@8.59.2))(typescript@5.9.3)(yaml@2.8.4)
       '@lucide/svelte':
         specifier: 'catalog:'
         version: 1.14.0(svelte@5.55.5(@typescript-eslint/types@8.59.2))
@@ -236,7 +236,7 @@ importers:
         version: link:../../core
       astro:
         specifier: 'catalog:'
-        version: 6.3.0(@types/node@25.6.1)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.60.3)(yaml@2.8.4)
+        version: 6.3.1(@types/node@25.6.1)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.60.3)(yaml@2.8.4)
       bits-ui:
         specifier: 'catalog:'
         version: 2.18.1(@internationalized/date@3.12.1)(svelte@5.55.5(@typescript-eslint/types@8.59.2))
@@ -279,7 +279,7 @@ importers:
         version: 3.7.2
       '@astrojs/svelte':
         specifier: 'catalog:'
-        version: 8.1.0(@types/node@25.6.1)(astro@6.3.0(@types/node@25.6.1)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.60.3)(yaml@2.8.4))(jiti@2.7.0)(lightningcss@1.32.0)(svelte@5.55.5(@typescript-eslint/types@8.59.2))(typescript@5.9.3)(yaml@2.8.4)
+        version: 8.1.0(@types/node@25.6.1)(astro@6.3.1(@types/node@25.6.1)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.60.3)(yaml@2.8.4))(jiti@2.7.0)(lightningcss@1.32.0)(svelte@5.55.5(@typescript-eslint/types@8.59.2))(typescript@5.9.3)(yaml@2.8.4)
       '@lucide/svelte':
         specifier: 'catalog:'
         version: 1.14.0(svelte@5.55.5(@typescript-eslint/types@8.59.2))
@@ -288,7 +288,7 @@ importers:
         version: link:../../core
       astro:
         specifier: 'catalog:'
-        version: 6.3.0(@types/node@25.6.1)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.60.3)(yaml@2.8.4)
+        version: 6.3.1(@types/node@25.6.1)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.60.3)(yaml@2.8.4)
       bits-ui:
         specifier: 'catalog:'
         version: 2.18.1(@internationalized/date@3.12.1)(svelte@5.55.5(@typescript-eslint/types@8.59.2))
@@ -1521,8 +1521,8 @@ packages:
     resolution: {integrity: sha512-+QDcgc7e+au6EZ0YjMmRRjNoQo5bDMlaR45aWDoFsuxQTCM9qmCHRoiKJPELgckJ8Wmr7vcfpa9eCDHBFh6G4w==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  astro@6.3.0:
-    resolution: {integrity: sha512-yhDelVblNzQE4mjS0s27T9BZuAlfRCy+qHk6IlMgSr+ADG5QNpyPkroJAVCFRH08Nf2VhDM5dz6n4GWiTB9TlQ==}
+  astro@6.3.1:
+    resolution: {integrity: sha512-atz6dmkE3Gu24bDgb7g2RE/BYnKqPYIHd6hTUM1UXvu/i7qNZOKLAqEHvgYpv9PQVcgWsXpk4/OOXZ0E/FzvSQ==}
     engines: {node: '>=22.12.0', npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
 
@@ -3526,10 +3526,10 @@ snapshots:
       stream-replace-string: 2.0.0
       zod: 4.4.3
 
-  '@astrojs/svelte@8.1.0(@types/node@25.6.1)(astro@6.3.0(@types/node@25.6.1)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.60.3)(yaml@2.8.4))(jiti@2.7.0)(lightningcss@1.32.0)(svelte@5.55.5(@typescript-eslint/types@8.59.2))(typescript@5.9.3)(yaml@2.8.4)':
+  '@astrojs/svelte@8.1.0(@types/node@25.6.1)(astro@6.3.1(@types/node@25.6.1)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.60.3)(yaml@2.8.4))(jiti@2.7.0)(lightningcss@1.32.0)(svelte@5.55.5(@typescript-eslint/types@8.59.2))(typescript@5.9.3)(yaml@2.8.4)':
     dependencies:
       '@sveltejs/vite-plugin-svelte': 6.2.4(svelte@5.55.5(@typescript-eslint/types@8.59.2))(vite@7.3.3(@types/node@25.6.1)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.4))
-      astro: 6.3.0(@types/node@25.6.1)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.60.3)(yaml@2.8.4)
+      astro: 6.3.1(@types/node@25.6.1)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.60.3)(yaml@2.8.4)
       svelte: 5.55.5(@typescript-eslint/types@8.59.2)
       svelte2tsx: 0.7.55(svelte@5.55.5(@typescript-eslint/types@8.59.2))(typescript@5.9.3)
       typescript: 5.9.3
@@ -4563,7 +4563,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  astro@6.3.0(@types/node@25.6.1)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.60.3)(yaml@2.8.4):
+  astro@6.3.1(@types/node@25.6.1)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.60.3)(yaml@2.8.4):
     dependencies:
       '@astrojs/compiler': 4.0.0
       '@astrojs/internal-helpers': 0.9.0
