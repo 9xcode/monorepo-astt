@@ -58,7 +58,7 @@ Action: Verify they are identical. If so, delete sites/finance-tools/src/styles/
 
 - i think core also should have integration component ? what you think ?
 
-- is there any way that we can do with the content.config.ts and categories and tas are defind inside core but its site specific! right ?
+- is there any way that we can do with the content.config.ts and categories and tags are defind inside core but its site specific! right ?
 
 - other files like tsconfig, astro config, svelte config and etc are correctly managed or we can do more that can make it more global like 
 
@@ -86,11 +86,3 @@ ts
 import { buildLlmsFullContent } from '../components/common/seo/llms-generator';
 Works correctly but inconsistent — the plan's exported @mtools/core/seo pattern would expect this to be at core/src/seo/. This will be resolved when the duplicate SEO issue (MEDIUM-1) is fixed.
 
-
----------
-
-
-💡 3. Enable Turborepo Remote Cache When CI is Activated
-CI workflow already has TURBO_TOKEN and TURBO_TEAM placeholder env vars. Enables cache sharing across runs and developers. Dramatically speeds up CI when multiple sites exist.
-
------

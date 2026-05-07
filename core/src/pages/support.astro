@@ -5,8 +5,8 @@ import Footer from "../components/common/sections/Footer.astro";
 import StandardProse from "../components/common/typography/StandardProse.astro";
 import { siteConfig } from 'virtual:site-config';
 import { Coffee, Share2 } from '@lucide/svelte';
-import JsonLd from "../components/common/seo/JsonLd.astro";
-import { buildWebPageSchema } from "../components/common/seo";
+import JsonLd from "../seo/JsonLd.astro";
+import { buildWebPageSchema } from "../seo";
 
 const supportUrl = siteConfig.features.support?.url || "/support";
 const seoUrl = new URL('/support', siteConfig.url).href;

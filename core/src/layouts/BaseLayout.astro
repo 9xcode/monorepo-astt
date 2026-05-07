@@ -1,8 +1,8 @@
 ---
 import "../styles/global.css";
 import { siteConfig } from 'virtual:site-config';
-import JsonLd from "../components/common/seo/JsonLd.astro";
-import { buildWebSiteSchema, buildOrganizationSchema } from "../components/common/seo";
+import JsonLd from "../seo/JsonLd.astro";
+import { buildWebSiteSchema, buildOrganizationSchema } from "../seo";
 // @head-scripts and @body-scripts are Vite aliases registered by core-pages.ts,
 // pointing to each site's src/components/integrations/{Head,Body}Scripts.astro.
 import HeadScripts from '@head-scripts';

@@ -4,10 +4,10 @@
  * Central export point for all SEO schema builders, types, and utilities.
  * Import from this file to access any schema builder:
  *
- *   import { buildArticleSchema, buildBreadcrumbSchema } from '../components/common/seo';
+ *   import { buildArticleSchema, buildBreadcrumbSchema } from '../seo';
  *
  * The JsonLd.astro renderer must be imported directly:
- *   import JsonLd from '../components/common/seo/JsonLd.astro';
+ *   import JsonLd from '../seo/JsonLd.astro';
  */
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -52,3 +52,7 @@ export { buildItemListSchema } from "./item-list";
 export { buildSoftwareAppSchema } from "./software-app";
 export { buildFaqPageSchema } from "./faq";
 export { buildHowToSchema } from "./howto";
+
+// ── Parsers ──────────────────────────────────────────────────────────────────
+
+export { parseFaqSchema, parseHowToSchema, parseFeatureList } from "./parsers";

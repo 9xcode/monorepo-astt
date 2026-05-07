@@ -15,8 +15,8 @@ import CategoryHeroSection from '../../components/common/sections/CategoryHeroSe
 import { siteConfig } from 'virtual:site-config';
 import { categoryToSlug } from '@mtools/core/utils/slug';
 import { FolderOpen } from '@lucide/svelte';
-import JsonLd from '../../components/common/seo/JsonLd.astro';
-import { buildWebPageSchema, buildItemListSchema } from '../../components/common/seo';
+import JsonLd from '../../seo/JsonLd.astro';
+import { buildWebPageSchema, buildItemListSchema } from '../../seo';
 import { getAllToolSummaries } from '../../utils/tools';
 
 // getAllToolSummaries() returns sorted (order → alpha) draft-filtered lightweight data.

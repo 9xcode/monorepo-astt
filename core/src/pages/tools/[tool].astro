@@ -3,7 +3,7 @@ import { render } from 'astro:content';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { siteConfig } from 'virtual:site-config';
-import { parseFaqSchema, parseHowToSchema, parseFeatureList } from '../../components/common/seo/parsers';
+import { parseFaqSchema, parseHowToSchema, parseFeatureList } from '../../seo/parsers';
 import { formatW3CDate } from '@mtools/core/utils/w3c-date';
 import { filterTocHeadings } from '../../utils/content';
 import { getAllTools, getAllToolSummaries, getToolSlug } from '../../utils/tools';

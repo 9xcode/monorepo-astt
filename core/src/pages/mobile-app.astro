@@ -12,8 +12,8 @@ import AppFAQ from "../components/mobile-app/sections/AppFAQ.astro";
 import AppBottomCTA from "../components/mobile-app/sections/AppBottomCTA.astro";
 
 import { siteConfig } from 'virtual:site-config';
-import JsonLd from "../components/common/seo/JsonLd.astro";
-import { buildSoftwareAppSchema } from "../components/common/seo";
+import JsonLd from "../seo/JsonLd.astro";
+import { buildSoftwareAppSchema } from "../seo";
 
 const seoUrl = new URL('/mobile-app', siteConfig.url).href;
 
