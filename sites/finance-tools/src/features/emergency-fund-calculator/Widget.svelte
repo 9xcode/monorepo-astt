@@ -10,7 +10,7 @@
     let months = $state([6]); // Slider returns array
     let currentSavings = $state(50000);
 
-    let result = $derived(calculateEmergencyFund(monthlyExpenses, months[0], currentSavings));
+    let result = $derived(calculateEmergencyFund(monthlyExpenses, months[0] ?? 6, currentSavings));
 </script>
 
 <div class="space-y-8">

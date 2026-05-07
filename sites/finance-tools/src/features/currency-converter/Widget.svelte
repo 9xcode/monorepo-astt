@@ -18,7 +18,7 @@
         AUD: 1.52,
     };
 
-    let result = $derived((amount * (rates[toCurrency] / rates[fromCurrency])).toFixed(2));
+    let result = $derived((amount * ((rates[toCurrency] ?? 1) / (rates[fromCurrency] ?? 1))).toFixed(2));
 
     function swapCurrencies() {
         const temp = fromCurrency;

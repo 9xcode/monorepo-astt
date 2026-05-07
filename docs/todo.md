@@ -94,8 +94,6 @@ ts
 import { buildLlmsFullContent } from '../components/common/seo/llms-generator';
 Works correctly but inconsistent — the plan's exported @mtools/core/seo pattern would expect this to be at core/src/seo/. This will be resolved when the duplicate SEO issue (MEDIUM-1) is fixed.
 
-🔵 LOW-2: Root tsconfig.json Does Not Extend tsconfig.base.json
-Root tsconfig.json extends astro/tsconfigs/strict. Sites also extend astro/tsconfigs/strict. tsconfig.base.json is only extended by core/tsconfig.json, making it effectively a single-use file rather than a true shared base. Minor but inconsistent with the plan.
 
 
 

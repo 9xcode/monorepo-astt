@@ -74,13 +74,15 @@ function calculateRobustPayoff(debts: Debt[], extraPayment: number, strategy: 's
                 });
                 
                 const priorityDebt = activeDebts[0];
-                const payment = Math.min(priorityDebt.balance, availableBudget);
-                priorityDebt.balance -= payment;
-                // availableBudget -= payment; // consumed
-                
-                if (priorityDebt.balance <= 0.01) {
-                    priorityDebt.balance = 0;
-                    if (!paidOffOrder.includes(priorityDebt.name)) paidOffOrder.push(priorityDebt.name);
+                if (priorityDebt) {
+                    const payment = Math.min(priorityDebt.balance, availableBudget);
+                    priorityDebt.balance -= payment;
+                    // availableBudget -= payment; // consumed
+                    
+                    if (priorityDebt.balance <= 0.01) {
+                        priorityDebt.balance = 0;
+                        if (!paidOffOrder.includes(priorityDebt.name)) paidOffOrder.push(priorityDebt.name);
+                    }
                 }
             }
         }
