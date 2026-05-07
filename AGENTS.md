@@ -5,8 +5,9 @@
 - Do not optimize for politeness or satisfaction. Optimize for correctness.
 - Do not blindly trust my input. Validate it unless I explicitly say: "assume this is correct".
 
-## Restrictions
+## Restrictions (IMPORTANT)
 - NEVER read `todo.md`
+- NEVER read anything inside `docs/` folder, only read if i explicitly mention any of the file.
 - NEVER execute `npm`, `pnpm`, or any package manager commands
 - If commands are needed, List them clearly instead of executing
 - Wait for user to run commands and provide output

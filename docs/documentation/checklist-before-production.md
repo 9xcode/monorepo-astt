@@ -8,6 +8,9 @@
 
 - update ad code, search console code, indexnow api key, etc.
 
+- CI-Workflow: When hosting is decided, move `.github/workflows-disabled/ci.yml` to `.github/workflows/ci.yml` and uncomment the appropriate provider block.
+
+
 - update fevicon
 
 - add pintrest meta tags

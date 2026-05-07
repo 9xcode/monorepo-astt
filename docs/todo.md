@@ -79,14 +79,6 @@ Fix options:
 Move actual files to core/src/seo/ and update all internal imports in core/src/pages/ (preferred)
 OR delete core/src/seo/ barrel and update core/package.json exports to point at core/src/components/common/seo/index.ts directly
 
-
-
-----
-
------------
-
--------
-
 ----------
 🔵 LOW-1: llms-full.txt.ts Imports From Old components/common/seo Path
 ts
@@ -95,25 +87,10 @@ import { buildLlmsFullContent } from '../components/common/seo/llms-generator';
 Works correctly but inconsistent — the plan's exported @mtools/core/seo pattern would expect this to be at core/src/seo/. This will be resolved when the duplicate SEO issue (MEDIUM-1) is fixed.
 
 
-
-
-🔵 LOW-4: CI Workflow Intentionally Disabled
-.github/workflows-disabled/ci.yml is well-written with Turborepo-aware builds and three deployment provider options (Vercel, Netlify, Cloudflare). Kept disabled pending hosting decision.
-
-Action: When hosting is decided, move to .github/workflows/ci.yml and uncomment the appropriate provider block.
-
-
 ---------
-Improvement Suggestions
-💡 1. Fix turbo.json Inputs to Track Core Changes
-Current "inputs" only track site-level files. A change in core/src/ won't trigger a Turborepo cache invalidation. After adding core build scripts (MEDIUM-3 fix), this becomes automatic via dependsOn. No additional inputs change needed once core has scripts.
 
-💡 2. Fix createSiteConfig() Deep-Merge (or delete defaults.ts)
-Either implement the deep-merge that defaults.ts was created for, or delete it. The current state (defaults exist but are never applied) is misleading for future site authors.
 
 💡 3. Enable Turborepo Remote Cache When CI is Activated
 CI workflow already has TURBO_TOKEN and TURBO_TEAM placeholder env vars. Enables cache sharing across runs and developers. Dramatically speeds up CI when multiple sites exist.
 
-💡 4. Add mobile/* Workspace Placeholder
-pnpm-workspace.yaml includes 'mobile/*' but no mobile/ directory exists. Add a mobile/.gitkeep or a brief README.md so the Capacitor mobile plan is documented and the workspace glob doesn't cause confusion.
 -----
