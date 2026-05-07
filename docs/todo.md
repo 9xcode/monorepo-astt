@@ -46,9 +46,6 @@ letter do ad this : https://www.google.com/preferences/source?q=https://redeemco
 
 - core have author image in assets but i think its site specific
 
-
-- fonts in public folder of sites, but that is not related to site, make sure its not used in site, its core feature for the og image generation and used in og images fonts (build time generation), am i right ?
-
 - user images in evey site assets folder but i don't know where it should be, in evey site or in core so tell me ?
 
 - i think core also should have integration component ? what you think ?

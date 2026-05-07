@@ -29,8 +29,8 @@ export async function generateOgImage(
   outputPath: string
 ): Promise<void> {
   if (!fontData) {
-    const fontPath = path.resolve(process.cwd(), './public/fonts/Roboto-Bold.ttf');
-    fontData = fs.readFileSync(fontPath);
+    // Font lives alongside the generator — never shipped to the browser, never dependent on a per-site public/fonts/ copy.
+    fontData = fs.readFileSync(new URL('./fonts/Roboto-Bold.ttf', import.meta.url));
   }
   
   if (!faviconUrl) {
