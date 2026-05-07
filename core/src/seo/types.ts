@@ -74,6 +74,8 @@ export interface WebPageSchemaInput {
 	name: string;
 	description: string;
 	url: string;
+	/** Website root URL — when provided, emits `isPartOf` to link the page to the WebSite entity */
+	websiteUrl?: string;
 }
 
 /** Input for buildArticleSchema() */

@@ -14,6 +14,7 @@ const aboutSchema = buildWebPageSchema({
 	name: `About Us - ${siteConfig.name}`,
 	description: `Learn more about ${siteConfig.name}, our mission, and our commitment to privacy and providing top-tier free tools and calculators for everyone.`,
 	url: seoUrl,
+	websiteUrl: siteConfig.url,
 });
 ---
 <BaseLayout title={`About Us - ${siteConfig.name}`} canonicalURL={seoUrl} description={`Learn more about ${siteConfig.name}, our mission, and our commitment to privacy and providing top-tier free tools and calculators for everyone.`}>

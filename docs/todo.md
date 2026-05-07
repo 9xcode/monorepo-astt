@@ -63,26 +63,104 @@ Action: Verify they are identical. If so, delete sites/finance-tools/src/styles/
 - other files like tsconfig, astro config, svelte config and etc are correctly managed or we can do more that can make it more global like 
 
 
+===============
+## Fixes
+
+### ⚠️ Real Gaps (Evidence-Based)
+
+**1. `JsonLd.astro` renders unescaped HTML via `set:html`**
+
+```astro
+<script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
+```
+
+`JSON.stringify` does **not** escape `</script>` sequences. If any schema field contains the string `</script>` (e.g., a tool description), it will break the JSON-LD block and potentially the page. The fix is one line:
+
+```ts
+JSON.stringify(schema).replace(/<\/script>/gi, '<\\/script>')
+```
+
+This is a real XSS-class bug, low probability but real.
 
 ---
-MEDIUM-1: Duplicate SEO Components in Two Locations
-SEO files exist in two separate locations inside core:
 
-core/src/seo/ — barrel file only (index.ts that re-exports from location 2)
-core/src/components/common/seo/ — where the actual files live
-Pages in core/src/pages/ import directly from ../../components/common/seo/.... The export @mtools/core/seo → core/src/seo/index.ts → re-exports from ../components/common/seo/. So SEO was never actually moved to core/src/seo/ — only a forwarding barrel was added.
+**2. `WebPageSchema` is incomplete — missing `isPartOf` and `breadcrumb`**
 
-Impact: Confusing directory layout; the core/src/seo/ directory misleads future developers.
+Your `buildWebPageSchema()` returns only `name`, `description`, `url`. Google's [WebPage documentation](https://schema.org/WebPage) expects `isPartOf` linking back to the WebSite entity and ideally a `breadcrumb`. This matters for the static pages (about, privacy, terms, contact, disclaimer, support). These pages get no breadcrumb JSON-LD at all currently.
 
-Fix options:
+---
 
-Move actual files to core/src/seo/ and update all internal imports in core/src/pages/ (preferred)
-OR delete core/src/seo/ barrel and update core/package.json exports to point at core/src/components/common/seo/index.ts directly
+**3. `buildOrganizationSchema` uses a bare string for `logo`, inconsistent with other schemas**
 
-----------
-🔵 LOW-1: llms-full.txt.ts Imports From Old components/common/seo Path
-ts
-// core/src/pages/llms-full.txt.ts
-import { buildLlmsFullContent } from '../components/common/seo/llms-generator';
-Works correctly but inconsistent — the plan's exported @mtools/core/seo pattern would expect this to be at core/src/seo/. This will be resolved when the duplicate SEO issue (MEDIUM-1) is fixed.
+```ts
+// site.ts — standalone Organization
+logo: input.logoUrl,   // plain string
 
+// primitives.ts — publisher in Article
+logo: { "@type": "ImageObject", url: input.logoUrl }  // ImageObject
+```
+
+The comment in `site.ts` line 43 acknowledges this. Google's structured data [requires `ImageObject` for `logo`](https://developers.google.com/search/docs/appearance/structured-data/logo) — the plain string variant may not get recognized. Both should use `ImageObject`.
+
+---
+
+**4. `WebSiteSchema` is missing `potentialAction` (Sitelinks Searchbox)**
+
+```ts
+// site.ts — current
+export function buildWebSiteSchema(...)  {
+  return { "@type": "WebSite", name, url, description, publisher }
+  // ← no potentialAction
+}
+```
+
+If you have a search feature (`features.search.enabled`), you're missing the Sitelinks Searchbox signal:
+
+```json
+"potentialAction": {
+  "@type": "SearchAction",
+  "target": { "@type": "EntryPoint", "urlTemplate": "https://yourdomain.com/?q={search_term_string}" },
+  "query-input": "required name=search_term_string"
+}
+```
+
+This is conditional — only emit when search is enabled.
+
+---
+
+**5. `SoftwareAppSchema` (mobile-app page) is missing `url`-level `offers` clarity**
+
+```ts
+// software-app.ts
+offers: buildOfferSchema({ priceCurrency: input.priceCurrency }),
+// missing: availability, url pointing to app store listing
+```
+
+Minor, but the `offers` for a mobile app should ideally include `"availability": "https://schema.org/InStock"` so it validates cleanly in Google's Rich Results Test.
+
+---
+
+**6. `WebApplicationSchemaInput.datePublished` is missing**
+
+```ts
+// types.ts — WebApplicationSchemaInput
+dateModified: string;   // ✅ present
+// datePublished: string  ← MISSING
+```
+
+`WebApplication` schema should have both `datePublished` and `dateModified`. You pass `datePublished` to the Article schema co-located on tool pages, but not to the WebApplication schema itself. Google [recommends both](https://developers.google.com/search/docs/appearance/structured-data/software-app).
+
+---
+
+**7. Static pages have duplicate `description` — defined twice, no single source**
+
+In `about.astro`:
+```astro
+// line 15 — in buildWebPageSchema()
+description: `Learn more about ${siteConfig.name}, our mission...`
+
+// line 19 — in BaseLayout description prop
+description={`Learn more about ${siteConfig.name}, our mission...`}
+```
+
+Same string literal written twice. If someone updates one, the other becomes stale. Should be extracted to a `const`.

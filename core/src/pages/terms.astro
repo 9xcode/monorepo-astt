@@ -13,6 +13,7 @@ const pageSchema = buildWebPageSchema({
 	name: `Terms & Conditions - ${siteConfig.name}`,
 	description: `Terms and conditions for using ${siteConfig.name}.`,
 	url: seoUrl,
+	websiteUrl: siteConfig.url,
 });
 ---
 <BaseLayout title={`Terms & Conditions - ${siteConfig.name}`} canonicalURL={seoUrl} description={`Terms and conditions for using ${siteConfig.name}.`}>

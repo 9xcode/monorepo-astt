@@ -39,10 +39,6 @@ export function buildWebSiteSchema(
  * and a customer support contact point.
  *
  * Previously inline in BaseLayout.astro L106-118.
- *
- * Note: The `logo` field here is a plain URL string (not an ImageObject)
- * to match the original output exactly. The publisher sub-objects in
- * WebSite and Article schemas use ImageObject format instead.
  */
 export function buildOrganizationSchema(
 	input: OrganizationSchemaInput
@@ -52,7 +48,10 @@ export function buildOrganizationSchema(
 		"@type": "Organization",
 		name: input.name,
 		url: input.url,
-		logo: input.logoUrl,
+		logo: {
+			"@type": "ImageObject",
+			url: input.logoUrl,
+		},
 		knowsAbout: input.knowsAbout,
 		contactPoint: {
 			"@type": "ContactPoint",

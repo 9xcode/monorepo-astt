@@ -18,15 +18,24 @@ import type { WebPageSchemaInput } from "./types";
  * - "AboutPage"      — about page
  * - "ContactPage"    — contact page
  * - "CollectionPage" — categories index page
+ *
+ * Pass `websiteUrl` (siteConfig.url) to emit an `isPartOf` link back to the
+ * WebSite entity — recommended by Google for entity graph clarity.
  */
 export function buildWebPageSchema(
 	input: WebPageSchemaInput
 ): Record<string, unknown> {
-	return {
+	const schema: Record<string, unknown> = {
 		"@context": "https://schema.org",
 		"@type": input.type,
 		name: input.name,
 		description: input.description,
 		url: input.url,
 	};
+
+	if (input.websiteUrl) {
+		schema["isPartOf"] = { "@type": "WebSite", url: input.websiteUrl };
+	}
+
+	return schema;
 }

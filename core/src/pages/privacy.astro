@@ -13,6 +13,7 @@ const pageSchema = buildWebPageSchema({
 	name: `Privacy Policy - ${siteConfig.name}`,
 	description: `Privacy Policy for ${siteConfig.name}. We believe in absolute privacy.`,
 	url: seoUrl,
+	websiteUrl: siteConfig.url,
 });
 ---
 <BaseLayout title={`Privacy Policy - ${siteConfig.name}`} canonicalURL={seoUrl} description={`Privacy Policy for ${siteConfig.name}. We believe in absolute privacy.`}>

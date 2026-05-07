@@ -13,6 +13,7 @@ const pageSchema = buildWebPageSchema({
 	name: `Disclaimer - ${siteConfig.name}`,
 	description: `Disclaimer regarding the use of ${siteConfig.name} financial calculators and utility tools.`,
 	url: seoUrl,
+	websiteUrl: siteConfig.url,
 });
 ---
 <BaseLayout title={`Disclaimer - ${siteConfig.name}`} canonicalURL={seoUrl} description={`Disclaimer regarding the use of ${siteConfig.name} financial calculators and utility tools.`}>

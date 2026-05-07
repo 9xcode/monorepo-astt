@@ -16,6 +16,7 @@ const contactSchema = buildWebPageSchema({
 	name: `Contact Us - ${siteConfig.name}`,
 	description: `Get in touch with the ${siteConfig.name} team.`,
 	url: seoUrl,
+	websiteUrl: siteConfig.url,
 });
 ---
 <BaseLayout title={`Contact Us - ${siteConfig.name}`} canonicalURL={seoUrl} description={`Get in touch with the ${siteConfig.name} team.`}>
