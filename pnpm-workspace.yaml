@@ -1,7 +1,7 @@
 packages:
   - 'core'
   - 'sites/*'
-  - 'mobile/*'
+  - 'mobile-apps/*'
 
 # Enforce catalog usage — pnpm will error if a cataloged dep is declared
 # with a hardcoded version instead of "catalog:" in any package.json.
@@ -41,3 +41,9 @@ catalog:
 
   # TypeScript
   typescript: ^5.9.3
+
+  # Mobile / Capacitor
+  "@capacitor/core": ^8.3.1
+  "@capacitor/cli": ^8.3.1
+  "@capacitor/android": ^8.3.1
+  "@capacitor/ios": ^8.3.1

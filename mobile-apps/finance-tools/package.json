@@ -1,0 +1,20 @@
+{
+  "name": "@mtools/finance-app",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "sync": "cap sync",
+    "add:android": "cap add android",
+    "add:ios": "cap add ios"
+  },
+  "dependencies": {
+    "@capacitor/core": "catalog:",
+    "@capacitor/android": "catalog:",
+    "@capacitor/ios": "catalog:"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "catalog:",
+    "@mtools/finance-tools": "workspace:*",
+    "typescript": "catalog:"
+  }
+}
