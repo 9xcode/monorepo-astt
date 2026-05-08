@@ -1,5 +1,6 @@
 import type { AstroIntegration } from 'astro';
 import { fileURLToPath } from 'node:url';
+import { getGeneratedDir } from './widget-map/index.ts';
 
 // Resolve core package root from this file's location.
 // This file: core/integrations/core-pages.ts → one level up = core/
@@ -80,10 +81,10 @@ export function corePages(): AstroIntegration {
         // ── 1. @widget-renderer alias ────────────────────────────────────────
         // core/src/pages/tools/[tool].astro imports from '@widget-renderer'.
         // This alias points to the SITE's generated WidgetRenderer — never core's.
+        // Path is derived from getGeneratedDir() — shared with widgetMap() integration
+        // so both always agree on where src/generated/WidgetRenderer.astro lives.
         // config.root is the site root URL (e.g. file:///path/to/sites/finance-tools/).
-        const widgetRendererPath = fileURLToPath(
-          new URL('src/generated/WidgetRenderer.astro', config.root)
-        );
+        const widgetRendererPath = getGeneratedDir(config.root) + '/WidgetRenderer.astro';
         const headScriptsPath = fileURLToPath(
           new URL('src/components/integrations/HeadScripts.astro', config.root)
         );

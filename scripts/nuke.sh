@@ -77,7 +77,10 @@ list_and_delete "Svelte Cache (.svelte-kit)" ".svelte-kit"
 # 3. OG Images
 list_and_delete "OG Image Cache (public/.../og)" "*/public/*/og" "" "true"
 
-# 4. Lockfile (Special Case)
+# 4. Auto-generated Widgets (src/generated)
+list_and_delete "Generated Widget Map (src/generated)" "*/src/generated" "" "true"
+
+# 5. Lockfile (Special Case)
 if [ -f "$ROOT_DIR/pnpm-lock.yaml" ]; then
     echo "🔍 Found pnpm-lock.yaml"
     if confirm "Delete pnpm-lock.yaml?"; then

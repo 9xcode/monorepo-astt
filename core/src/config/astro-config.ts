@@ -16,6 +16,7 @@ import { ogCache } from '../../integrations/og-cache/index.ts';
 import { toolsTemplate } from '../og/templates/tools.ts';
 import { blogTemplate } from '../og/templates/blog.ts';
 import { corePages } from '../../integrations/core-pages.ts';
+import { widgetMap } from '../../integrations/widget-map/index.ts';
 
 /**
  * createAstroConfig — Astro config factory for @mtools sites.
@@ -102,7 +103,10 @@ export function createAstroConfig(
     },
 
     integrations: [
-      // corePages must be first — it registers middleware + injectRoute + @widget-renderer alias
+      // widgetMap MUST be first: it generates src/generated/*.astro before
+      // corePages() sets the @widget-renderer alias and before Vite starts.
+      widgetMap(),
+      // corePages must be second — it registers middleware + injectRoute + @widget-renderer alias
       corePages(),
       ogCache({
         templateVersion: 'v1.0.0',

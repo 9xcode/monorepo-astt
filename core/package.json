@@ -19,6 +19,7 @@
     "./middleware/config-injector": "./src/middleware/config-injector.ts",
     "./integrations/core-pages": "./integrations/core-pages.ts",
     "./integrations/og-cache": "./integrations/og-cache/index.ts",
+    "./integrations/widget-map": "./integrations/widget-map/index.ts",
     "./utils/slug": "./src/utils/slug.ts",
     "./utils/prng": "./src/utils/prng.ts",
     "./utils/build-time": "./src/utils/build-time.ts",
@@ -45,9 +46,7 @@
     "check:svelte": "svelte-check --tsconfig ./tsconfig.json",
     "check:tsc": "tsc --noEmit"
   },
-  "bin": {
-    "generate-widget-map": "./scripts/generate-widget-map.mjs"
-  },
+
   "dependencies": {
     "@lucide/svelte": "catalog:",
     "bits-ui": "catalog:",

@@ -9,8 +9,8 @@
     "pnpm": ">=10"
   },
   "scripts": {
-    "dev": "generate-widget-map && astro dev",
-    "build": "generate-widget-map && astro build",
+    "dev": "astro dev",
+    "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check && svelte-check --tsconfig ./tsconfig.json && tsc --noEmit",
