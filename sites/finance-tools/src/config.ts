@@ -88,7 +88,7 @@ export const siteConfig: SiteConfig = {
 
   // ─── API Keys ───────────────────────────────────────────────────────────
   apiKeys: {
-    web3Forms: import.meta.env.PUBLIC_WEB3FORMS_KEY,
+    web3Forms: import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY,
     web3FormsEndpoint: "https://api.web3forms.com/submit",
   },
 

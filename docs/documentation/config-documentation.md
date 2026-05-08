@@ -67,7 +67,7 @@ The primary author configuration has been migrated to Astro Content Collections 
 * **`seo.twitterHandle`**: The site-wide Twitter handle (e.g., "@multitools") used for the `twitter:site` meta tag and social sharing.
 
 ## 10. API Keys and Endpoints
-* **`apiKeys.web3Forms`**: Uses environment variables (`import.meta.env.PUBLIC_WEB3FORMS_KEY`) to securely manage the key for the Contact Form.
+* **`apiKeys.web3Forms`**: Uses environment variables (`import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY`) to securely manage the key for the Contact Form.
 * **`apiKeys.web3FormsEndpoint`**: The API destination URL for form submissions.
 
 ## 11. Advertisement Configuration (`features.ads`)
