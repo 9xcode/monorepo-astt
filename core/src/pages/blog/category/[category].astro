@@ -3,13 +3,13 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Header from '../../../components/common/sections/Header.astro';
 import Footer from '../../../components/common/sections/Footer.astro';
 import BlogPostCard from '../../../components/blog/ui/BlogPostCard.astro';
-import { getPostsByCategory } from '../../../utils/blog';
+import { getAllPostCategories, getPostsByCategory } from '../../../utils/blog';
 import { categoryToSlug } from '@mtools/core/utils/slug';
-import { BLOG_CATEGORIES } from '@mtools/core/content-schemas';
 import { siteConfig } from 'virtual:site-config';
 
 export async function getStaticPaths() {
-  return BLOG_CATEGORIES.map((category) => ({
+  const categories = await getAllPostCategories();
+  return categories.map((category) => ({
     params: { category: categoryToSlug(category) },
     props: { category },
   }));

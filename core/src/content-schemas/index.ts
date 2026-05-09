@@ -1,27 +1,13 @@
 /**
  * @mtools/core — Content Schemas barrel
  *
- * Re-exports all schema factories and associated constants/types.
+ * Exports schema factory functions only. Enum data (tags, categories)
+ * is site-specific and lives in each site's content.config.ts.
+ *
  * Import from this barrel for convenience, or import directly from
  * the specific schema file for tree-shaking.
  */
 
-export {
-  makeToolSchema,
-  TOOL_TAGS,
-  TOOL_CATEGORIES,
-  type ToolTag,
-  type ToolCategory,
-} from './tools.ts';
-
-export {
-  makeBlogSchema,
-  BLOG_CATEGORIES,
-  BLOG_TAGS,
-  type BlogCategory,
-  type BlogTag,
-} from './blog.ts';
-
-export {
-  makeAuthorsSchema,
-} from './authors.ts';
+export { makeToolSchema } from './tools.ts';
+export { makeBlogSchema } from './blog.ts';
+export { makeAuthorsSchema } from './authors.ts';

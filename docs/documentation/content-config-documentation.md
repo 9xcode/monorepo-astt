@@ -1,15 +1,15 @@
 # Content Configuration Documentation
 
-This document explicitly defines the schema properties, validation rules, and taxonomies defined in `/src/content.config.ts` for Astro Content Collections. By keeping documentation here, our configuration file remains clean and terse.
+This document explicitly defines the schema properties, validation rules, and taxonomies defined in `src/content.config.ts` and `src/content-enums.ts` for Astro Content Collections. By keeping documentation here, our configuration files remain clean and terse.
 
-Whenever you update or modify taxonomies, logic, or fields in `content.config.ts`, **please ensure you apply those changes to this documentation doc as well**.
+Whenever you update or modify taxonomies, logic, or fields in `content.config.ts` or `content-enums.ts`, **please ensure you apply those changes to this documentation doc as well**.
 
 ---
 
 ## 1. Tool Taxonomy & Configuration
 
 ### Valid (`TOOL_CATEGORIES`) and (`TOOL_TAGS`)
-The central category & tag registry is the ONLY place to define valid categories & tags. Adding new categories or tags to tools requires updating the `TOOL_CATEGORIES` and `TOOL_TAGS` array. If a content file uses an unlisted category or tag, `astro check` will fail at build time.
+The site-specific category & tag registry (`src/content-enums.ts`) is the ONLY place to define valid categories & tags for your site. Adding new categories or tags to tools requires updating the `TOOL_CATEGORIES` and `TOOL_TAGS` arrays in that file. If a content file uses an unlisted category or tag, `astro check` will fail at build time.
 
 ### Tools Collection Schema Properties
 
@@ -44,7 +44,7 @@ The central category & tag registry is the ONLY place to define valid categories
 ## 2. Blog Taxonomy & Configuration
 
 ### Valid (`BLOG_CATEGORIES`) and (`BLOG_TAGS`)
-The central category & tag registry is the ONLY place to define valid categories & tags.
+The site-specific category & tag registry (`src/content-enums.ts`) is the ONLY place to define valid categories & tags for your site.
 
 ### Blog Collection Schema Properties
 

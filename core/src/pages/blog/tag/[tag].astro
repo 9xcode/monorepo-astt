@@ -3,12 +3,12 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Header from '../../../components/common/sections/Header.astro';
 import Footer from '../../../components/common/sections/Footer.astro';
 import BlogPostCard from '../../../components/blog/ui/BlogPostCard.astro';
-import { getPostsByTag } from '../../../utils/blog';
-import { BLOG_TAGS } from '@mtools/core/content-schemas';
+import { getAllPostTags, getPostsByTag } from '../../../utils/blog';
 import { siteConfig } from 'virtual:site-config';
 
 export async function getStaticPaths() {
-  return BLOG_TAGS.map((tag) => ({
+  const tags = await getAllPostTags();
+  return tags.map((tag) => ({
     params: { tag },
     props: { tag },
   }));

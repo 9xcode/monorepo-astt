@@ -1,3 +1,5 @@
+import type { z as ZodNS } from 'astro/zod';
+
 /**
  * Authors content schema factory.
  *
@@ -18,9 +20,19 @@
  *     schema: ({ image }) => makeAuthorsSchema(z, image),
  *   });
  */
+
+type Z = typeof ZodNS;
+type ImageFn = () => ZodNS.ZodTypeAny;
+
+/**
+ * Creates the Zod schema for the authors collection.
+ *
+ * @param z      Astro's re-exported Zod instance (from `astro:content`)
+ * @param image  The `image` helper from Astro's schema factory callback
+ */
 export function makeAuthorsSchema(
-  z: any,
-  image: () => any,
+  z: Z,
+  image: ImageFn,
 ) {
   return z.object({
     name: z.string(),

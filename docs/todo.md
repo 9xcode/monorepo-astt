@@ -44,18 +44,8 @@ letter do ad this : https://www.google.com/preferences/source?q=https://redeemco
 
 - [] change support page completley
 
-- is there any way that we can do with the content.config.ts and categories and tags are defind inside core but its site specific! right ?
-
 - other files like tsconfig, astro config, svelte config and etc are correctly managed or we can do more that can make it more global like 
 
-
-
-What is its correct place to live?
-Currently, it lives in core/integrations/core-pages.ts.
-
-Recommendation: To maintain consistency with the rest of your core package (where almost everything lives in src/), it should ideally be moved to: core/src/integrations/core-pages.ts
-
-Similarly, the og-cache folder should move to core/src/integrations/og-cache/.
 
 ===============
 ## Fixes

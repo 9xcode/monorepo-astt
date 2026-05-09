@@ -79,6 +79,26 @@ export async function getPostsByTag(tag: string): Promise<BlogPost[]> {
 }
 
 /**
+ * All unique category values across published posts.
+ * Mirrors the pattern used by the tools category page — page calls this in
+ * getStaticPaths() to derive routes, then calls getPostsByCategory() in body.
+ */
+export async function getAllPostCategories(): Promise<string[]> {
+  const posts = await getAllPosts();
+  return [...new Set(posts.map((p) => p.data.category))];
+}
+
+/**
+ * All unique tag values across published posts.
+ * Mirrors the pattern used by the tools tag page — page calls this in
+ * getStaticPaths() to derive routes, then calls getPostsByTag() in body.
+ */
+export async function getAllPostTags(): Promise<string[]> {
+  const posts = await getAllPosts();
+  return [...new Set(posts.flatMap((p) => [...p.data.tags]))];
+}
+
+/**
  * Related posts: same category first (seeded-shuffled), then tag overlap,
  * then any remaining posts as a Tier-3 fallback.
  *

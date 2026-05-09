@@ -54,7 +54,7 @@ Every markdown file in `src/content/` begins with YAML frontmatter. To avoid dup
 
 ## 2. Taxonomy & Allowed Values
 
-Defined in src/content.config.ts
+Defined in `src/content-enums.ts`
 ---
 
 ## 3. SEO, Markdown Rules & Background Parsers
