@@ -108,6 +108,7 @@ export function createAstroConfig(
       widgetMap(),
       // corePages must be second — it registers middleware + injectRoute + @widget-renderer alias
       corePages(),
+      // og image generation
       ogCache({
         templateVersion: 'v1.0.0',
         forceRegenerate: false,
@@ -121,7 +122,9 @@ export function createAstroConfig(
           { name: 'blog',  template: blogTemplate  },
         ],
       }),
+
       svelte(),
+
       sitemap(makeSitemapConfig(siteConfig)),
       // Site-specific integrations passed via overrides
       ...(overrides.integrations ?? []),

@@ -37,6 +37,7 @@ letter do ad this : https://www.google.com/preferences/source?q=https://redeemco
 - Segregate the code and complete project structure
 - Improve and combine the documentation
 
+- add feature so that evey site will have option so that we can define redirects or check if this feature is aready implmented ?
 
 =========
 
@@ -44,7 +45,7 @@ letter do ad this : https://www.google.com/preferences/source?q=https://redeemco
 
 - [] change support page completley
 
-- other files like tsconfig, astro config, svelte config and etc are correctly managed or we can do more that can make it more global like 
+- other files like tsconfig, astro config, svelte config and etc are correctly managed or we can do more that can make it more global like
 
 
 ===============
