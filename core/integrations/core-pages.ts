@@ -60,12 +60,12 @@ const CORE_ROUTES = [
  *      This makes the auto-generated widget router resolvable from core/src/pages/tools/[tool].astro
  *      regardless of where the core package is located in the monorepo.
  *
- *   2. Middleware injection: config-injector runs pre-request so Astro.locals.siteConfig
- *      is populated for every page, layout, and component.
- *
- *   3. Route injection: all shared pages from core/src/pages/ are registered as
+ *   2. Route injection: all shared pages from core/src/pages/ are registered as
  *      Astro routes. Site-level pages/[slug].astro always override these if the
  *      pattern matches — so individual pages can be customised per site.
+ *
+ *   Note: siteConfig is accessed via `import { siteConfig } from 'virtual:site-config'`
+ *   everywhere — no middleware required.
  *
  * Usage (automatic via createAstroConfig — sites don't need to add this manually):
  *
@@ -76,7 +76,7 @@ export function corePages(): AstroIntegration {
   return {
     name: '@mtools/core-pages',
     hooks: {
-      'astro:config:setup': ({ addMiddleware, injectRoute, updateConfig, config, logger }) => {
+      'astro:config:setup': ({ injectRoute, updateConfig, config, logger }) => {
 
         // ── 1. @widget-renderer alias ────────────────────────────────────────
         // core/src/pages/tools/[tool].astro imports from '@widget-renderer'.
@@ -106,22 +106,7 @@ export function corePages(): AstroIntegration {
         logger.debug(`@mtools/core-pages: @head-scripts → ${headScriptsPath}`);
         logger.debug(`@mtools/core-pages: @body-scripts → ${bodyScriptsPath}`);
 
-        // ── 2. Middleware ────────────────────────────────────────────────────
-        // Runs at 'pre' priority so siteConfig is available before any page logic.
-        // Use the absolute file:// path — NOT the package export '@mtools/core/middleware/...'
-        // because the package exports map points to .ts files. When Astro resolves
-        // a package export string, Node's native ESM loader reads it directly,
-        // bypassing Vite's TypeScript transform. The file:// URL forces Vite to handle it.
-        const configInjectorPath = fileURLToPath(
-          new URL('../src/middleware/config-injector.ts', import.meta.url)
-        );
-        addMiddleware({
-          entrypoint: configInjectorPath,
-          order: 'pre',
-        });
-        logger.debug(`@mtools/core-pages: config-injector middleware → ${configInjectorPath}`);
-
-        // ── 3. Inject shared routes ──────────────────────────────────────────
+        // ── 2. Inject shared routes ──────────────────────────────────────────
         // Lower priority than site-level pages — sites can override any route
         // by adding their own file at the same pattern in src/pages/.
         for (const route of CORE_ROUTES) {

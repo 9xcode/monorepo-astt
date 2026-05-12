@@ -180,7 +180,7 @@
                 <div class="absolute -right-6 -top-6 size-20 bg-primary/20 rounded-full blur-2xl"></div>
                 <div class="p-4 relative z-10">
                   <h5 class="text-sm font-bold text-foreground mb-1">Get the App</h5>
-                  <p class="text-[11px] text-muted-foreground mb-2.5 leading-relaxed">Experience MultiTools offline.</p>
+                  <p class="text-[11px] text-muted-foreground mb-2.5 leading-relaxed">Experience {siteConfig.brand.shortName} offline.</p>
                   <Button href="/mobile-app" size="sm" class="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm font-medium justify-center gap-2 h-8">
                       <Smartphone class="size-3.5" /> Download App
                   </Button>

@@ -15,12 +15,11 @@ monorepo-astt/
 │   │   ├── seo/              # Schema.org builders (JSON-LD)
 │   │   ├── config/           # SiteConfig types, factory, Astro config factory
 │   │   ├── content-schemas/  # Zod schema factories for Astro content collections
-│   │   ├── middleware/       # config-injector (populates Astro.locals.siteConfig)
 │   │   ├── og/templates/     # OG image template functions
 │   │   ├── styles/           # global.css, common.css, themes/
 │   │   └── lib/              # shadcn-svelte components, Lucide icons, utils
 │   ├── integrations/
-│   │   ├── core-pages.ts     # Astro integration: middleware + injectRoute + aliases
+│   │   ├── core-pages.ts     # Astro integration: injectRoute + Vite aliases
 │   │   ├── og-cache/         # OG image generation integration
 │   │   └── widget-map/       # Widget map generation integration
 │   └── scripts/

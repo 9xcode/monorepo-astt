@@ -7,9 +7,8 @@
 // All type-only exports re-exported from core — no duplicate type definitions.
 // Documentation: see @mtools/core/config/types for the full SiteConfig shape.
 // ────────────────────────────────────────────────────────────────────────────
-// Relative path — the @mtools/core package exports map points to .ts files.
-// Node's native ESM loader can't process .ts; relative paths go through Vite.
-import { getBuildTime, getCopyrightYear } from '../../../core/src/utils/build-time.ts';
+// Package path — resolved by the @mtools/core alias in astro-config.ts.
+import { getBuildTime, getCopyrightYear } from '@mtools/core/utils/build-time';
 
 // Re-export all types so site-level code that imports from './config'
 // (e.g. Astro pages, layouts) continues to work without changes.
@@ -28,7 +27,7 @@ import type {
   BlogConfig,
   SearchConfig,
   FeaturesConfig,
-} from '../../../core/src/config/types.ts';
+} from '@mtools/core/config/types';
 
 export type {
   SiteConfig,

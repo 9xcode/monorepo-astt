@@ -1,5 +1,5 @@
 // @ts-check
-// Finance-Tools — Astro configuration
+// Site — Astro configuration
 //
 // This is intentionally thin. All shared Astro/Vite config lives in the
 // createAstroConfig factory in @mtools/core/config/astro-config.

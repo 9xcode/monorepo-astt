@@ -16,7 +16,6 @@
     "./content-schemas/tools": "./src/content-schemas/tools.ts",
     "./content-schemas/blog": "./src/content-schemas/blog.ts",
     "./content-schemas/authors": "./src/content-schemas/authors.ts",
-    "./middleware/config-injector": "./src/middleware/config-injector.ts",
     "./integrations/core-pages": "./integrations/core-pages.ts",
     "./integrations/og-cache": "./integrations/og-cache/index.ts",
     "./integrations/widget-map": "./integrations/widget-map/index.ts",

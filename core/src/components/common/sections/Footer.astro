@@ -1,5 +1,6 @@
 ---
 import { siteConfig } from 'virtual:site-config';
+import type { NavItem } from '../../../config/types.ts';
 ---
 
 <footer class="border-t py-6 md:py-0">
@@ -8,7 +9,7 @@ import { siteConfig } from 'virtual:site-config';
 			&copy; {siteConfig.copyrightYear} {siteConfig.companyName}. All rights reserved.
 		</p>
 		<div class="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-			{siteConfig.ui.navigation.footer.map((item) => (
+			{siteConfig.ui.navigation.footer.map((item: NavItem) => (
 				<a href={item.href} class="hover:text-foreground transition-colors">{item.label}</a>
 			))}
 		</div>
