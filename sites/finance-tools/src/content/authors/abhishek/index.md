@@ -7,7 +7,8 @@ knowsAbout:
   - "Taxation"
   - "Investment Strategies"
   - "Software Development"
-avatar: "../../assets/images/authors/abhishek.webp"
+# avatar: "../../assets/images/authors/abhishek.webp"
+avatar: "./abhishek.webp"
 avatarAlt: "Abhishek — Financial Technology Analyst"
 socials:
   github: ""

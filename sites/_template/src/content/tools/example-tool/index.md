@@ -1,24 +1,24 @@
 ---
-title: "Dummy Example Tool"
-description: "A comprehensive dummy tool demonstrating all available frontmatter features, options, and layouts in the Astro application."
-shortDescription: "A demo tool to test options and layouts of the app"
-icon: "Wrench"
-category: "Dummy"
-widgetSlug: "dummy-widget"
-canonical: "/tools/dummy-example-tool"
+title: "Example Tool"
+seoTitle: "Best Example [month_year]"
+description: "A comprehensive example tool demonstrating all available frontmatter features, options, and layouts in the Astro application."
+shortDescription: "A example tool to test options and layouts of the app"
+category: "General"
 tags: ["utility", "text"]
-author: demo
-coAuthors: ["abhishek"]
-order: 99
-featured: true
-loadPriority: "visible"
-isDraft: true
-seoTitle: "Best Dummy Example [month_year]"
+icon: "Wrench"
 pubDate: "2026-02-08T08:00:00"
 lastModified: 2026-02-15T14:24:33
-fullWidth: true
-hasMath: true
+author: example-author
+coAuthors: ["example-author-2", "example-author-3"]
+# widgetSlug: "example-tool-widget"
+canonical: "/tools/example-tool"
 toc: true
+hasMath: true
+isDraft: true
+fullWidth: true
+featured: true
+order: 99
+loadPriority: "visible"
 ---
 
 ## All Markdown Syntax is supported

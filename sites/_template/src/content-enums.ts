@@ -19,7 +19,7 @@ export const TOOL_CATEGORIES = [
 export type ToolCategory = typeof TOOL_CATEGORIES[number];
 
 export const TOOL_TAGS = [
-  'utility',        // Replace with real tags for your site
+  'utility', 'text',        // Replace with real tags for your site
 ] as const;
 
 export type ToolTag = typeof TOOL_TAGS[number];

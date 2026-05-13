@@ -80,6 +80,6 @@ The authors collection uses the Astro factory schema method `({ image }) => z.ob
 - **`role`** (string): Role or job title (maps to Schema.org `jobTitle`).
 - **`shortBio`** (string): A short, one-sentence biography used in the Author Card and hover popups.
 - **`knowsAbout`** (array of strings, default: `[]`): Expertise tags rendered as badges and passed to Schema.org `knowsAbout`.
-- **`avatar`** (image()): A relative path to the author's avatar image within the `src/assets/images/authors/` directory. Optimized automatically by Astro during build.
+- **`avatar`** (image()): A relative path to the author's avatar image. We recommend **Colocation Strategy** (placing the image in the same folder as the author's markdown file, e.g., `./avatar.png`), but it also supports **Centralized Assets Strategy** ( placing images in `src/assets/images/authors/avatar.png`). All images are optimized automatically by Astro during build.
 - **`avatarAlt`** (string, optional): Alt text for the avatar image. Defaults gracefully to the author's name and role if omitted.
 - **`socials`** (object, optional): Links to social profiles. Contains `github`, `twitter`, `linkedin`, and `facebook`. Leave as empty string `""` to hide the icon. Defaults to all empty strings.

@@ -1,24 +1,24 @@
 ---
-# ──────────────────────────────────────────────────────────────────────────────
-# DEMO AUTHOR — Template Reference File
-# ──────────────────────────────────────────────────────────────────────────────
+# ──
+# EXAMPLE AUTHOR — Template Reference File
+# 
 # This file exists purely as a template reference showing every available field
 # in the author schema. It is NOT used in real content.
 #
 # To assign this author to a blog post or tool, add to its frontmatter:
-#   author: demo
+#   author: example-author
 #
-# To create a real author, copy this file, rename it (e.g. priya.md),
-# and fill in the real details. The filename slug (without .md) is the author ID.
+# To create a real author, copy this file, rename it (e.g. firstname-lastname.md or create folder with theat name and put the content in index.md),
+# and fill in the real details. The filename/foldername slug (without .md) is the author ID.
 # ──────────────────────────────────────────────────────────────────────────────
 
 # REQUIRED — Display name shown in AuthorCard, AuthorByline, and profile page.
-name: "Demo Author"
+name: "Example Author"
 
 # REQUIRED — Role / job title shown below the name in AuthorCard and ProfileHero.
 # Use role, not literal job title — covers "Guest Contributor", "Community Author", etc.
 # Maps to Schema.org Person.jobTitle in JSON-LD output.
-role: "Template Reference Author"
+role: "Full Stack Developer"
 
 # REQUIRED — One-sentence bio shown in AuthorCard and hover popover.
 # Keep it under 160 characters for clean truncation.
@@ -27,6 +27,7 @@ shortBio: "A demonstration author profile that showcases every available field i
 # REQUIRED — Expertise tags. Rendered as badge chips in AuthorCard and ProfileHero.
 # Maps to Schema.org Person.knowsAbout in JSON-LD output.
 # Can be empty array [] if the author has no listed expertise.
+# we can also use like this : knowsAbout: ["Personal Finance", "Taxation", "Investment Strategies"]
 knowsAbout:
   - "Personal Finance"
   - "Taxation"
@@ -38,11 +39,12 @@ knowsAbout:
 # REQUIRED — Avatar image. Must be a path relative to THIS file (content/authors/).
 # Image lives in src/assets/ so Astro's <Image> component can optimise it.
 # Supported formats: .webp, .png, .jpg, .avif
-avatar: "../../assets/images/authors/demo.png"
+# eg.: avatar: "../../assets/images/authors/demo.png"
+avatar: "./example-author-avatar.png"  
 
 # OPTIONAL — Alt text for the avatar image. Defaults gracefully if omitted.
 # Include the author's name and role for accessibility.
-avatarAlt: "Demo Author — Template Reference Author"
+avatarAlt: "Example Author — Template Reference Author"
 
 # OPTIONAL — Social profile URLs. Leave as empty string "" to hide that icon.
 # All four slots are available: github, twitter, linkedin, facebook.
@@ -82,11 +84,12 @@ If no `author` field is set, the site falls back to `siteConfig.seo.defaultAutho
 
 ## Adding a New Author
 
-1. Copy this file to `src/content/authors/your-slug.md`.
-2. Replace all placeholder values with real data.
-3. Add the author's avatar image to `src/assets/images/authors/`.
-4. Update the `avatar` path in the frontmatter.
-5. That's it — the author page at `/authors/your-slug` is created automatically.
+1. Create a new folder in `src/content/authors/` named after the author (e.g., `firstname-lastname/`).
+2. Create an `index.md` file inside that folder.
+3. Place the author's avatar image (e.g., `avatar.png`) directly in that same folder.
+4. Fill in the frontmatter details, using `avatar: "./avatar.png"` for the image path.
+5. That's it — the author page at `/authors/firstname-lastname` is created automatically.
+6. To assign the author to a post, use the folder name as the ID: `author: "firstname-lastname"`.
 
 ## Available Fields Reference
 
