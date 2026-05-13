@@ -51,6 +51,15 @@ letter do ad this : https://www.google.com/preferences/source?q=https://redeemco
 ===============
 ## Fixes
 
+
+Shared Environment Variables (env.d.ts)
+Each site currently has its own env.d.ts which manually declares virtual:site-config and references the .astro/types.d.ts. Improvement: You could move the virtual:site-config module declaration into core/src/virtual-site-config.d.ts and simply ensure core types are exposed. However, your current implementation works perfectly and doesn't explicitly violate DRY principles enough to mandate a change.
+
+C. Glob Loader Empty Directories Warnings
+In the _template site, astro check can throw warnings like [WARN] [glob-loader] No files found matching "**/*.md" in directory "src/content/tools" because the directories are completely empty. Improvement: Adding a .gitkeep or a README.md to these template directories explains their purpose to future developers while simultaneously silencing Astro glob-loader warnings.
+
+
+
 ### ⚠️ Real Gaps (Evidence-Based)
 
 

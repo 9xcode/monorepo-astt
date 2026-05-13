@@ -176,12 +176,18 @@ export function generateWidgetMap(
 
       const hasWidget = widgetSlugs.has(widgetSlug);
 
-      // Warn if a widgetSlug alias points to a non-existent widget
-      if (fm['widgetSlug'] && !hasWidget) {
-        logger.warn(
-          `Tool '${slug}' uses widgetSlug '${fm['widgetSlug']}', ` +
-          `but 'src/features/${fm['widgetSlug']}/Widget.svelte' is missing.`
-        );
+      // Warn if the mapped widget does not exist or an explicit widgetSlug points to nowhere
+      if (!hasWidget) {
+        if (fm['widgetSlug']) {
+          logger.warn(
+            `Tool '${slug}' uses widgetSlug '${fm['widgetSlug']}', ` +
+            `but 'src/features/${fm['widgetSlug']}/Widget.svelte' is missing.`
+          );
+        } else {
+          logger.warn(
+            `Tool '${slug}' implicitly looks for widget at 'src/features/${slug}/Widget.svelte', but it is missing.`
+          );
+        }
       }
 
       const rawPriority = fm['loadPriority']?.trim() ?? 'load';
