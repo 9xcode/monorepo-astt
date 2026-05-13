@@ -4,6 +4,9 @@ IMPORTANT: Do not Read this file and do not choose any task or feature from the 
 
 
 ==== FUTURE TASK ======
+
+- [ ] Create tsconfig.sites.json at the root and shrink each site's tsconfig.json to a single extends line. read plan [tsconfig-files-centralization-plan](tsconfig-files-centralization-plan.md)
+
 - [ ] Add sitemap: false/true feature in content/tools/.../index.md frontmatter so that page will be included or excluded from sitemap.xml
 
 - [ ] Add Robots index management feature in content/tools/.../index.md frontmatter so that we can manage index/noindex etc
@@ -37,27 +40,14 @@ letter do ad this : https://www.google.com/preferences/source?q=https://redeemco
 - Segregate the code and complete project structure
 - Improve and combine the documentation
 
-- add feature so that evey site will have option so that we can define redirects or check if this feature is aready implmented ?
-
 =========
 
 ## Fix (I will tell you what to fix, don't choose by yourself)
 
 - [] change support page completley
 
-- other files like tsconfig, astro config, svelte config and etc are correctly managed or we can do more that can make it more global like
-
-
 ===============
 ## Fixes
-
-
-Shared Environment Variables (env.d.ts)
-Each site currently has its own env.d.ts which manually declares virtual:site-config and references the .astro/types.d.ts. Improvement: You could move the virtual:site-config module declaration into core/src/virtual-site-config.d.ts and simply ensure core types are exposed. However, your current implementation works perfectly and doesn't explicitly violate DRY principles enough to mandate a change.
-
-C. Glob Loader Empty Directories Warnings
-In the _template site, astro check can throw warnings like [WARN] [glob-loader] No files found matching "**/*.md" in directory "src/content/tools" because the directories are completely empty. Improvement: Adding a .gitkeep or a README.md to these template directories explains their purpose to future developers while simultaneously silencing Astro glob-loader warnings.
-
 
 
 ### ⚠️ Real Gaps (Evidence-Based)

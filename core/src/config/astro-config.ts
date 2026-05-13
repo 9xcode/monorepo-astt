@@ -131,6 +131,7 @@ export function createAstroConfig(
     ],
 
     redirects: {
+      // This applies to ALL sites
       '/category': '/categories',
       ...(overrides.redirects ?? {}),
     },
