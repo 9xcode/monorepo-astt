@@ -80,3 +80,127 @@ Do not define paths to app icons in `capacitor.config.ts`. Instead, use the `@ca
 1. Place an `icon.png` (1024x1024) and `splash.png` (2732x2732) inside an `assets/` directory in the mobile app folder.
 2. Run `npx @capacitor/assets generate`.
 3. The CLI will automatically resize and distribute the icons into the correct Xcode and Android Studio project folders.
+
+---
+
+## How to Run and Build
+
+**You work from inside the mobile app directory — not from root.**
+
+Capacitor CLI is not a build tool. It's a native sync tool. Here is the exact command order:
+
+### Step 1 — Build the web site (run from **root**):
+```bash
+pnpm --filter @mtools/finance-tools build
+```
+This runs Astro build and produces `sites/finance-tools/dist/`. Capacitor reads from there.
+
+### Step 2 — Add native platforms (run **once**, from inside the mobile app):
+```bash
+cd mobile/finance-tools
+pnpm run add:android
+pnpm run add:ios     # only if you're on macOS
+```
+This creates the `android/` and `ios/` folders (which are gitignored).
+
+### Step 3 — Sync web assets into native projects (from inside the mobile app):
+```bash
+# still inside mobile/finance-tools/
+pnpm run sync
+```
+This runs `cap sync` — copies `dist/` into the Android/iOS project and links plugins.
+
+### Step 4 — Open in Android Studio / Xcode:
+```bash
+npx cap open android
+npx cap open ios
+```
+Then build and run from the IDE.
+
+---
+
+**Summary of where commands run:**
+
+| Command | Where |
+|---|---|
+| `pnpm --filter @mtools/finance-tools build` | **Monorepo root** |
+| `pnpm run add:android` / `add:ios` | **Inside `mobile/finance-tools/`** |
+| `pnpm run sync` | **Inside `mobile/finance-tools/`** |
+| `npx cap open android` | **Inside `mobile/finance-tools/`** |
+
+-----
+
+## Building on Linux without Android Studio or Mac
+
+**For Android** — Android Studio is not required on Linux. Two real options:
+
+**Option A: Android command-line tools only (no IDE)**
+Install just the SDK, build tools, and `gradle` — no IDE needed:
+```bash
+# Install JDK 17 (required for Android builds)
+sudo apt install openjdk-17-jdk
+
+# Download Android command-line tools from:
+# https://developer.android.com/studio#command-line-tools-only
+# Then set ANDROID_HOME and add to PATH
+export ANDROID_HOME=~/android-sdk
+export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
+
+# Then inside mobile/finance-tools:
+pnpm run add:android
+pnpm run sync
+cd android && ./gradlew assembleDebug   # Produces APK
+```
+
+**Option B: Ionic Appflow (cloud build, zero local SDKs needed)**
+Ionic runs the Android/iOS build in the cloud and gives you the APK/IPA back. Paid service but has a free tier. No SDK installation, no Mac required for iOS builds either.
+→ `https://ionic.io/appflow`
+
+**For iOS** — You **cannot build an iOS IPA on Linux**, period. It requires Xcode, which only runs on macOS. The only Linux-friendly options are:
+- **Appflow** (cloud) 
+- A GitHub Actions macOS runner
+
+For now, since you're on Linux, focus on Android only. iOS can be handled via CI or Appflow when needed.
+
+
+## Complete quick guide
+```
+  # Before any Android build, switch to JDK 21
+  setjdk /opt/java/jdk-21-temurin
+
+  # Build the web site (for eg, this command can be change or package too)
+  pnpm --filter @mtools/finance-tools build 
+  
+  # Add native platforms (run **once**, from inside the mobile app project folder)
+  cd mobile/finance-tools
+  pnpm run add:android
+  pnpm run add:ios
+  # This creates the `android/` and `ios/` folders (which are gitignored).
+  
+  # Sync Capacitor (Sync web assets into native projects)
+  npx cap sync
+
+  # Build debug APK
+  cd android && ./gradlew assembleDebug
+
+  # Install on connected device
+  adb install app/build/outputs/apk/debug/app-debug.apk
+  
+  # Build release APK (unsigned):
+  ./gradlew assembleRelease
+
+  # Update all SDK packages
+  sdkmanager --update
+
+  # List installed packages
+  sdkmanager --list_installed
+
+  # List all available packages
+  sdkmanager --list
+
+  ```
+
+### View preview of App in browser
+- Keep your phone connected via USB with the app open.
+- Open Chrome on your computer and type `chrome://inspect/#devices` in the URL bar.
+- You will see your device and the Capacitor app listed. Click "Inspect".

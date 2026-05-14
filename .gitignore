@@ -57,3 +57,7 @@ pnpm-debug.log*
 .idea/
 # Uncomment below if you don't want to share VS Code settings with the team:
 .vscode/
+
+# Capacitor native platform projects
+mobile/*/android/
+mobile/*/ios/

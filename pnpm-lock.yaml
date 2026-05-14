@@ -166,7 +166,7 @@ importers:
         specifier: 'catalog:'
         version: 4.3.0
 
-  mobile-apps/_template:
+  mobile/_template:
     dependencies:
       '@capacitor/android':
         specifier: 'catalog:'
@@ -188,7 +188,7 @@ importers:
         specifier: 'catalog:'
         version: 5.9.3
 
-  mobile-apps/finance-tools:
+  mobile/finance-tools:
     dependencies:
       '@capacitor/android':
         specifier: 'catalog:'
@@ -210,11 +210,7 @@ importers:
         specifier: 'catalog:'
         version: 5.9.3
 
-  mobile-apps/shared:
-    dependencies:
-      '@mtools/core':
-        specifier: workspace:*
-        version: link:../../core
+  mobile/shared:
     devDependencies:
       typescript:
         specifier: 'catalog:'
@@ -1346,6 +1342,9 @@ packages:
 
   '@types/nlcst@2.0.3':
     resolution: {integrity: sha512-vSYNSDe6Ix3q+6Z7ri9lyWqgGhJTmzRjZRqyq15N0Z/1/UnVsno9G/N40NBijoYx2seFDIl0+B2mgAb9mezUCA==}
+
+  '@types/node@22.19.19':
+    resolution: {integrity: sha512-dyh/xO2Fh5bYrfWaaqGrRQQGkNdmYw6AmaAUvYeUMNTWQtvb796ikLdmTchRmOlOiIJ1TDXfWgVx1QkUlQ6Hew==}
 
   '@types/node@24.12.4':
     resolution: {integrity: sha512-GUUEShf+PBCGW2KaXwcIt3Yk+e3pkKwWKb9GSyM9WQVE+ep2jzmHdGsHzu4wgcZy5fN9FBdVzjpBQsYlpfpgLA==}
@@ -3079,6 +3078,9 @@ packages:
   uncrypto@0.1.3:
     resolution: {integrity: sha512-Ql87qFHB3s/De2ClA9e0gsnS6zXG27SkTiSJwjCc9MebbfapQfuPzumMIUMi38ezPZVNFcHI9sUIepeQfw8J8Q==}
 
+  undici-types@6.21.0:
+    resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
+
   undici-types@7.16.0:
     resolution: {integrity: sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==}
 
@@ -4312,7 +4314,7 @@ snapshots:
 
   '@types/fs-extra@8.1.5':
     dependencies:
-      '@types/node': 25.7.0
+      '@types/node': 22.19.19
 
   '@types/hast@3.0.4':
     dependencies:
@@ -4332,6 +4334,10 @@ snapshots:
     dependencies:
       '@types/unist': 3.0.3
 
+  '@types/node@22.19.19':
+    dependencies:
+      undici-types: 6.21.0
+
   '@types/node@24.12.4':
     dependencies:
       undici-types: 7.16.0
@@ -4342,7 +4348,7 @@ snapshots:
 
   '@types/sax@1.2.7':
     dependencies:
-      '@types/node': 24.12.4
+      '@types/node': 25.7.0
 
   '@types/slice-ansi@4.0.0': {}
 
@@ -6515,6 +6521,8 @@ snapshots:
   ultrahtml@1.6.0: {}
 
   uncrypto@0.1.3: {}
+
+  undici-types@6.21.0: {}
 
   undici-types@7.16.0: {}
 

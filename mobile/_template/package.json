@@ -1,7 +1,12 @@
 {
-  "name": "@mtools/finance-app",
+  "name": "@mtools/mobile-SITE_NAME",
   "version": "1.0.0",
   "private": true,
+  "packageManager": "pnpm@10.33.2",
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=10"
+  },
   "scripts": {
     "sync": "cap sync",
     "add:android": "cap add android",
@@ -14,7 +19,7 @@
   },
   "devDependencies": {
     "@capacitor/cli": "catalog:",
-    "@mtools/finance-tools": "workspace:*",
+    "@mtools/SITE_NAME": "workspace:*",
     "typescript": "catalog:"
   }
 }

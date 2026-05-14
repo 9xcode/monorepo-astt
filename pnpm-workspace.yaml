@@ -1,7 +1,7 @@
 packages:
   - 'core'
   - 'sites/*'
-  - 'mobile-apps/*'
+  - 'mobile/*'
 
 # Enforce catalog usage — pnpm will error if a cataloged dep is declared
 # with a hardcoded version instead of "catalog:" in any package.json.
