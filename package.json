@@ -1,50 +1,40 @@
 {
-  "name": "multitools-astssl-1",
+  "name": "monorepo-astt",
+  "private": true,
   "type": "module",
-  "version": "0.0.1",
   "scripts": {
-    "dev": "node scripts/generate-widget-map.mjs && astro dev",
-    "build": "node scripts/generate-widget-map.mjs && astro build",
-    "preview": "astro preview",
-    "astro": "astro",
-    "check:astro": "astro check",
-    "check:svelte": "svelte-check",
-    "check:tsc": "tsc --noEmit",
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "preview": "turbo preview",
+    "check": "turbo check:astro check:svelte check:tsc",
+    "check:astro": "turbo check:astro",
+    "check:svelte": "turbo check:svelte",
+    "check:tsc": "turbo check:tsc",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "validate": "npm run lint && astro check && svelte-check && tsc --noEmit && npm run build"
-  },
-  "dependencies": {
-    "@astrojs/check": "^0.9.8",
-    "@astrojs/sitemap": "^3.7.2",
-    "@astrojs/svelte": "^8.0.4",
-    "@lucide/svelte": "^1.8.0",
-    "@resvg/resvg-js": "^2.6.2",
-    "@tailwindcss/vite": "^4.2.2",
-    "astro": "^6.1.5",
-    "bits-ui": "^2.17.3",
-    "clsx": "^2.1.1",
-    "rehype-katex": "^7.0.1",
-    "remark-math": "^6.0.0",
-    "satori": "^0.26.0",
-    "satori-html": "^0.3.2",
-    "svelte": "^5.55.3",
-    "tailwind-merge": "^3.5.0",
-    "tailwind-variants": "^3.2.2",
-    "tailwindcss": "^4.2.2",
-    "tw-animate-css": "^1.4.0",
-    "typescript": "^5.9.3"
+    "validate": "eslint . && echo '─── CHECKS ───' && turbo check:astro check:svelte check:tsc && echo '─── BUILD ───' && turbo build",
+    "preinstall": "npx only-allow pnpm",
+    "nuke": "./scripts/nuke.sh",
+    "reinstall": "./scripts/nuke.sh && pnpm install"
   },
   "devDependencies": {
-    "@tailwindcss/typography": "^0.5.19",
-    "@typescript-eslint/eslint-plugin": "^8.58.1",
-    "@typescript-eslint/parser": "^8.58.1",
+    "typescript": "catalog:",
     "eslint": "^10.2.0",
+    "turbo": "^2.9.9",
+    "sharp": "^0.34.5",
+    "astro-eslint-parser": "^1.4.0",
     "eslint-plugin-astro": "^1.7.0",
     "eslint-plugin-svelte": "^3.17.0",
-    "fast-glob": "^3.3.3",
-    "gray-matter": "^4.0.3",
-    "svelte-check": "^4.4.6",
-    "svelte-eslint-parser": "^1.6.0"
-  }
+    "svelte-eslint-parser": "^1.6.0",
+    "@typescript-eslint/parser": "^8.58.1",
+    "@typescript-eslint/eslint-plugin": "^8.58.1"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild", "sharp"]
+  },
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=10"
+  },
+  "packageManager": "pnpm@10.33.2+sha512.a90faf6feeab71ad6c6e57f94e0fe1a12f5dcc22cd754db40ae9593eb6a3e0b6b12e3540218bb37ae083404b1f2ce6db2a4121e979829b4aff94b99f49da1cf8"
 }

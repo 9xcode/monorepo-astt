@@ -28,25 +28,25 @@ Every markdown file in `src/content/` begins with YAML frontmatter. To avoid dup
 | `icon` | **T** | No | `icon: "Calculator"` |
 | `pubDate` | **T, B** | No | `pubDate: "2026-02-08T08:00:00"` |
 | `lastModified` | **T, B** | No | `lastModified: 2026-03-22T14:30:00Z` |
-| `isDraft` | **T, B** | No | `isDraft: true` |
-| `canonical` | **T, B** | No | `canonical: "/tools/sip-calculator"` |
-| `widgetSlug` | **T** | No | `widgetSlug: "loan-amortization-calculator"` |
-| `fullWidth` | **T** | No | `fullWidth: true` |
-| `hasMath` | **T, B** | No | `hasMath: true` |
-| `toc` | **T, B** | No | `toc: false` |
-| `order` | **T, B** | No | `order: 10` |
-| `featured` | **T, B** | No | `featured: true` |
-| `loadPriority` | **T** | No | `loadPriority: "idle"` |
 | `author` | **T, B** | No | `author: "demo"` |
 | `coAuthors` | **T, B** | No | `coAuthors: ["demo", "abhishek"]` |
 | `coverImage` | **B** | No | `coverImage: "/images/blog/my-post.jpg"` |
 | `coverImageAlt`| **B** | No | `coverImageAlt: "A graph showing compound growth"` |
+| `widgetSlug` | **T** | No | `widgetSlug: "loan-amortization-calculator"` |
+| `canonical` | **T, B** | No | `canonical: "/tools/sip-calculator"` |
+| `toc` | **T, B** | No | `toc: false` |
+| `hasMath` | **T, B** | No | `hasMath: true` |
+| `isDraft` | **T, B** | No | `isDraft: true` |
 | `noindex` | **B** | No | `noindex: true` |
+| `fullWidth` | **T** | No | `fullWidth: true` |
+| `featured` | **T, B** | No | `featured: true` |
+| `order` | **T, B** | No | `order: 10` |
+| `loadPriority` | **T** | No | `loadPriority: "idle"` |
 | `name` | **A** | Yes | `name: "Demo Author"` |
 | `role` | **A** | Yes | `role: "Template Reference Author"` |
 | `shortBio` | **A** | Yes | `shortBio: "A demonstration author profile..."` |
 | `knowsAbout` | **A** | No | `knowsAbout: ["Personal Finance"]` |
-| `avatar` | **A** | Yes | `avatar: "../../assets/images/authors/demo.png"` |
+| `avatar` | **A** | Yes | `avatar: "./avatar.png"` and `avatar: "../../assets/images/authors/avatar.png"`  |
 | `avatarAlt` | **A** | No | `avatarAlt: "Demo Author — Reference Author"` |
 | `socials` | **A** | No | `socials:` (nested object for github, etc.) |
 
@@ -54,7 +54,7 @@ Every markdown file in `src/content/` begins with YAML frontmatter. To avoid dup
 
 ## 2. Taxonomy & Allowed Values
 
-Defined in src/content.config.ts
+Defined in `src/content-enums.ts`
 ---
 
 ## 3. SEO, Markdown Rules & Background Parsers
@@ -69,14 +69,14 @@ Our codebase utilizes multiple background Markdown parsers during the build phas
 - **Trigger Heading:** Must contain `"FAQ"` or `"Frequently Asked Questions"`.
 - **Formatting Lock:**
   - Every individual question **MUST** be an `###` (H3) heading.
-  - The answer **MUST** immediately follow that heading as standard paragraph text. 
+  - The answer **MUST** immediately follow that heading as standard paragraph text.
   - Do NOT split your answers with nested subheadings.
 
 ### 3.3. The "How To" Parser
 - **Trigger Heading:** `## How to Use` or `## How to use [Tool Name]`.
 - **Formatting Lock:**
   - Must be a numbered list (`1.`, `2.`).
-  - Separator logic supports colons (`:`) or hyphens (`-`). 
+  - Separator logic supports colons (`:`) or hyphens (`-`).
   - (e.g. `1. **Input**: Type your text here.`)
 
 ### 3.4. The Direct Answer Parser
@@ -85,7 +85,7 @@ Our codebase utilizes multiple background Markdown parsers during the build phas
 ### 3.5. KaTeX Mathematical Formulas
 If `hasMath: true` is active in the tools or blog frontmatter:
 - **Use Double Dollars (`$$`)**: Mathematical formulas should reside inside double dollars `$$F = ma$$`.
-- **Single Dollar Disabled**: We intentionally configured `singleDollarText: false` across the Astro build so writing values like `$200 per week` does not break the renderer. 
+- **Single Dollar Disabled**: We intentionally configured `singleDollarText: false` across the Astro build so writing values like `$200 per week` does not break the renderer.
 - **Block Layouts**: When requiring multi-line calculus, use:
   ```markdown
   $$
@@ -114,18 +114,18 @@ tags: ["tag-1", "tag-2"]
 ---
 
 ## What is a [Tool Concept]?
-[Direct Answer]: A [Tool Concept] is a [clear, factual definition in 30-80 words]. 
+[Direct Answer]: A [Tool Concept] is a [clear, factual definition in 30-80 words].
 [Add 1-2 additional context paragraphs conceptually.]
 
 ## How to Use This Tool
 1. **[Step 1 Input]:** Enter your baseline data.
 2. **[Step 2 Select]:** Identify parameter limits.
 3. **[Step 3 Compute]:** Wait for the automatic results output.
- 
+
 ## Essential Features
 - Lightweight & private (client-side processing)
 - Instantly exportable PDF results
-- Generates amortization schedules 
+- Generates amortization schedules
 
 ## Mathematical Logic Behind It
 The underlying formula processing this data runs efficiently below the hood:

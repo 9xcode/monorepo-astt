@@ -1,15 +1,15 @@
 # Content Configuration Documentation
 
-This document explicitly defines the schema properties, validation rules, and taxonomies defined in `/src/content.config.ts` for Astro Content Collections. By keeping documentation here, our configuration file remains clean and terse.
+This document explicitly defines the schema properties, validation rules, and taxonomies defined in `src/content.config.ts` and `src/content-enums.ts` for Astro Content Collections. By keeping documentation here, our configuration files remain clean and terse.
 
-Whenever you update or modify taxonomies, logic, or fields in `content.config.ts`, **please ensure you apply those changes to this documentation doc as well**.
+Whenever you update or modify taxonomies, logic, or fields in `content.config.ts` or `content-enums.ts`, **please ensure you apply those changes to this documentation doc as well**.
 
 ---
 
 ## 1. Tool Taxonomy & Configuration
 
 ### Valid (`TOOL_CATEGORIES`) and (`TOOL_TAGS`)
-The central category & tag registry is the ONLY place to define valid categories & tags. Adding new categories or tags to tools requires updating the `TOOL_CATEGORIES` and `TOOL_TAGS` array. If a content file uses an unlisted category or tag, `astro check` will fail at build time.
+The site-specific category & tag registry (`src/content-enums.ts`) is the ONLY place to define valid categories & tags for your site. Adding new categories or tags to tools requires updating the `TOOL_CATEGORIES` and `TOOL_TAGS` arrays in that file. If a content file uses an unlisted category or tag, `astro check` will fail at build time.
 
 ### Tools Collection Schema Properties
 
@@ -44,7 +44,7 @@ The central category & tag registry is the ONLY place to define valid categories
 ## 2. Blog Taxonomy & Configuration
 
 ### Valid (`BLOG_CATEGORIES`) and (`BLOG_TAGS`)
-The central category & tag registry is the ONLY place to define valid categories & tags.
+The site-specific category & tag registry (`src/content-enums.ts`) is the ONLY place to define valid categories & tags for your site.
 
 ### Blog Collection Schema Properties
 
@@ -80,6 +80,6 @@ The authors collection uses the Astro factory schema method `({ image }) => z.ob
 - **`role`** (string): Role or job title (maps to Schema.org `jobTitle`).
 - **`shortBio`** (string): A short, one-sentence biography used in the Author Card and hover popups.
 - **`knowsAbout`** (array of strings, default: `[]`): Expertise tags rendered as badges and passed to Schema.org `knowsAbout`.
-- **`avatar`** (image()): A relative path to the author's avatar image within the `src/assets/images/authors/` directory. Optimized automatically by Astro during build.
+- **`avatar`** (image()): A relative path to the author's avatar image. We recommend **Colocation Strategy** (placing the image in the same folder as the author's markdown file, e.g., `./avatar.png`), but it also supports **Centralized Assets Strategy** ( placing images in `src/assets/images/authors/avatar.png`). All images are optimized automatically by Astro during build.
 - **`avatarAlt`** (string, optional): Alt text for the avatar image. Defaults gracefully to the author's name and role if omitted.
 - **`socials`** (object, optional): Links to social profiles. Contains `github`, `twitter`, `linkedin`, and `facebook`. Leave as empty string `""` to hide the icon. Defaults to all empty strings.

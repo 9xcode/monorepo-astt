@@ -1,0 +1,357 @@
+@import "tailwindcss";
+
+/* ── Tailwind v4 Monorepo Source Scanning ────────────────────────────────────
+   Tailwind v4 auto-scans from the PROJECT ROOT (where @tailwindcss/vite runs).
+   That means: when building sites/finance-tools/, it scans sites/finance-tools/src/**
+   automatically — but NOT core/src/, which is outside the project root.
+
+   These @source directives tell Tailwind to also scan core's component and layout
+   directories. Paths are relative to THIS CSS FILE (core/src/styles/).
+   So ../../components → core/src/components, etc.
+
+   Sites' own src/features/ and src/content/ are auto-scanned (inside project root).
+   Only core dirs need explicit @source here.
+
+   Do NOT add @source directives pointing at sites/ — that would be backwards.
+*/
+@source "../components";
+@source "../layouts";
+@source "../lib";
+@source "../pages";
+@source "../og";
+
+@import "./common.css";
+
+/* ── Theme Selection ──────────────────────────────────────────────────────────
+   The active theme is configured per-site in siteConfig.ui.theme.name.
+   createAstroConfig() maps it to the @active-theme Vite alias, which resolves
+   to the correct theme CSS file at build time.
+   The alias: '@active-theme' → core/src/styles/themes/<name>.css
+*/
+@import "@active-theme";
+
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@layer base {
+  * {
+    @apply border-border;
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklch, var(--muted-foreground) 50%, transparent) var(--secondary);
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Prevent iOS auto-zoom on focus by ensuring font-size is at least 16px */
+  input, select, textarea {
+    font-size: 16px;
+  }
+
+  /* Hide number input spin buttons globally for cleaner UI */
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--secondary);
+    border-radius: var(--radius);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: color-mix(in oklch, var(--muted-foreground) 50%, transparent);
+    border-radius: var(--radius);
+    border: 2px solid var(--secondary);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in oklch, var(--muted-foreground) 80%, transparent);
+  }
+
+  /* Custom scrollbar class used in sidebars */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: var(--radius);
+  }
+
+  /* Utility to hide scrollbars while keeping functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+  }
+}
+
+/* ── Skeleton shimmer utility ────────────────────────────────────────────────
+   Used by all Astro skeleton fallback components (WidgetSkeleton, ToolGridSkeleton,
+   WorkspaceSkeleton, ToolActionTraySkeleton). Matches what shadcn-svelte Skeleton.svelte
+   does internally — bg-muted + animate-pulse — so Svelte and Astro skeletons are visually identical.
+   Defined ONCE here. Never inline custom animate-pulse divs in component code.
+*/
+@layer base {
+  .sk {
+    background-color: var(--muted);
+    border-radius: var(--radius-md, 0.375rem);
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
+
+/* Lazy rendering utilities for performance */
+@utility cv-auto {
+  content-visibility: auto;
+}
+@utility cv-intrinsic-h700 { contain-intrinsic-size: auto 700px; }
+@utility cv-intrinsic-h600 { contain-intrinsic-size: auto 600px; }
+@utility cv-intrinsic-h500 { contain-intrinsic-size: auto 500px; }
+@utility cv-intrinsic-h400 { contain-intrinsic-size: auto 400px; }
+@utility cv-intrinsic-h300 { contain-intrinsic-size: auto 300px; }
+@utility cv-intrinsic-h200 { contain-intrinsic-size: auto 200px; }
+@utility cv-intrinsic-w0-h600 { contain-intrinsic-size: 0 600px; }
+
+/* Glassmorphism Utilities */
+@utility glass-backdrop {
+  background: color-mix(in oklch, var(--background) 60%, transparent);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+@utility glass-panel {
+  background: var(--card);
+  border: 1px solid color-mix(in oklch, var(--border) 80%, transparent);
+  border-radius: 1.25rem;
+  box-shadow: 0 20px 40px -8px color-mix(in oklch, var(--foreground) 15%, transparent), 0 0 0 1px color-mix(in oklch, var(--border) 50%, transparent);
+}
+
+/* Grid background patterns — uses --grid-line from theme/common */
+@utility grid-bg {
+  background-image:
+    linear-gradient(to right, color-mix(in oklch, var(--grid-line) 10%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklch, var(--grid-line) 10%, transparent) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Mask variants for different section positions */
+@utility grid-mask-hero-top {
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, black 40%, transparent 100%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, black 40%, transparent 100%);
+}
+
+@utility grid-mask-category-top {
+  -webkit-mask-image: radial-gradient(ellipse 60% 50% at 50% 0%, black 70%, transparent 100%);
+  mask-image: radial-gradient(ellipse 60% 50% at 50% 0%, black 70%, transparent 100%);
+}
+
+@utility grid-mask-bottom-cta {
+  -webkit-mask-image: radial-gradient(ellipse 70% 20% at 50% 100%, black 10%, transparent 100%);
+  mask-image: radial-gradient(ellipse 70% 20% at 50% 100%, black 10%, transparent 100%);
+}
+
+/* ── Floating Action Dock shared styles ──────────────────────────────────────
+   .dock-action-btn  — the pill button shell (starts as a circle, expands on hover)
+   .dock-label       — the text label that slides in from the left
+   .dock-icon-wrap   — fixed-size icon container (the "circle" part)
+   All motion respects prefers-reduced-motion.
+*/
+@layer components {
+  .dock-action-btn {
+    background-color: var(--card);
+    color: var(--card-foreground);
+    cursor: pointer;
+    will-change: transform;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 2.5rem;
+    @media (min-width: 768px) {
+      height: 2.75rem;
+    }
+    border-radius: 9999px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid color-mix(in oklch, var(--border) 60%, transparent);
+    transition-property: all;
+    transition-duration: 300ms;
+    overflow: hidden;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
+  
+  .dock-action-btn:focus-visible {
+    box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--ring);
+  }
+  
+  .dock-action-btn:hover {
+    transform: scale(1.05);
+  }
+  
+  .dock-action-btn:active {
+    transform: scale(0.95);
+  }
+
+  .dock-toggle-btn {
+    position: relative;
+    width: 2.5rem;
+    height: 2.5rem;
+    @media (min-width: 768px) {
+      width: 2.75rem;
+      height: 2.75rem;
+    }
+    border-radius: 9999px;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid color-mix(in oklch, var(--border) 60%, transparent);
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
+
+  .dock-toggle-btn:focus-visible {
+    box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--ring);
+  }
+
+  .dock-toggle-btn:hover {
+    transform: scale(1.05);
+  }
+
+  .dock-toggle-btn:active {
+    transform: scale(0.95);
+  }
+
+  .dock-root {
+    opacity: 0;
+    transform: translateY(1rem);
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .dock-root.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .dock-actions-container {
+    opacity: 0;
+    transform: translateY(0.5rem);
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+  
+  .dock-root.is-visible.is-open .dock-actions-container {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .dock-icon-cog,
+  .dock-icon-x {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .dock-icon-x {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.5);
+  }
+
+  .dock-root.is-open .dock-icon-cog {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.5);
+  }
+
+  .dock-root.is-open .dock-icon-x {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+
+  /* The label starts invisible and at zero width; slides in on hover */
+  .dock-label {
+    max-width: 0;
+    opacity: 0;
+    overflow: hidden;
+    padding-left: 0;
+    padding-right: 0;
+    transition: max-width 0.3s ease, opacity 0.25s ease, padding 0.3s ease;
+  }
+
+  .dock-action-btn:hover .dock-label,
+  .dock-action-btn:focus-visible .dock-label {
+    max-width: 9rem;
+    opacity: 1;
+    padding-left: 0.875rem;
+    padding-right: 0.25rem;
+  }
+
+  /* The icon wrapper is always a fixed-size circle */
+  .dock-icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;  /* 40px */
+    height: 2.5rem;
+    @media (min-width: 768px) {
+      width: 2.75rem;  /* 44px */
+      height: 2.75rem;
+    }
+    flex-shrink: 0;
+    color: var(--muted-foreground);
+    transition: color 0.2s ease;
+  }
+
+  .dock-action-btn:hover .dock-icon-wrap,
+  .dock-action-btn:focus-visible .dock-icon-wrap {
+    color: var(--foreground);
+  }
+
+  /* Kill all animations for users who prefer reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .dock-action-btn,
+    .dock-toggle-btn,
+    .dock-label,
+    .dock-icon-wrap,
+    .dock-root,
+    .dock-actions-container,
+    .dock-icon-cog,
+    .dock-icon-x {
+      transition: none !important;
+    }
+  }
+}

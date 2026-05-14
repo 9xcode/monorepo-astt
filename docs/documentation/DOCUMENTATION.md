@@ -197,7 +197,7 @@ Before deploying, ensure you have configured your environment variables in your 
 *   **Production:** You must add the same keys in Vercel/Cloudflare settings.
 
 **Required Variables:**
-*   `PUBLIC_WEB3FORMS_KEY`: The access key for your contact form (web3forms.com).
+*   `PUBLIC_WEB3FORMS_ACCESS_KEY`: The access key for your contact form (web3forms.com).
 
 ### Cloudflare Pages / Netlify / GitHub Pages
 Because the output is purely static HTML/CSS/JS in the `dist/` directory, you can deploy it to any of these providers using their standard Astro templates. Ensure you set the environment variables mentioned above in their respective CI/CD dashboards.

@@ -1,0 +1,49 @@
+packages:
+  - 'core'
+  - 'sites/*'
+  - 'mobile/*'
+
+# Enforce catalog usage — pnpm will error if a cataloged dep is declared
+# with a hardcoded version instead of "catalog:" in any package.json.
+catalogMode: strict
+
+# ─── Catalog ─────
+# Single source for all shared dependency versions.
+# Reference with "catalog:" in any package.json in this workspace.
+# To upgrade a shared dep across ALL packages: change it here, run pnpm install.
+# ───────
+catalog:
+  # Framework
+  astro: ^6.1.5
+  svelte: ^5.55.3
+
+  # Astro integrations (used in core + every site)
+  "@astrojs/svelte": ^8.1.0
+  "@astrojs/sitemap": ^3.7.2
+  "@astrojs/check": ^0.9.9
+
+  # Svelte tooling
+  svelte-check: ^4.4.6
+
+  # Styling
+  tailwindcss: ^4.2.4
+  "@tailwindcss/vite": ^4.2.4
+
+  # Markdown / MDX plugins
+  remark-math: ^6.0.0
+  rehype-katex: ^7.0.1
+
+  # UI / component libraries
+  "@lucide/svelte": ^1.14.0
+  bits-ui: ^2.18.1
+  clsx: ^2.1.1
+  tailwind-merge: ^3.5.0
+
+  # TypeScript
+  typescript: ^5.9.3
+
+  # Mobile / Capacitor
+  "@capacitor/core": ^8.3.1
+  "@capacitor/cli": ^8.3.1
+  "@capacitor/android": ^8.3.1
+  "@capacitor/ios": ^8.3.1

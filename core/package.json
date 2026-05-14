@@ -1,0 +1,76 @@
+{
+  "name": "@mtools/core",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "packageManager": "pnpm@10.33.2",
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=10"
+  },
+  "exports": {
+    "./config/types": "./src/config/types.ts",
+    "./config/astro-config": "./src/config/astro-config.ts",
+    "./config/sitemap": "./src/config/sitemap.ts",
+    "./content-schemas": "./src/content-schemas/index.ts",
+    "./content-schemas/tools": "./src/content-schemas/tools.ts",
+    "./content-schemas/blog": "./src/content-schemas/blog.ts",
+    "./content-schemas/authors": "./src/content-schemas/authors.ts",
+    "./integrations/core-pages": "./integrations/core-pages.ts",
+    "./integrations/og-cache": "./integrations/og-cache/index.ts",
+    "./integrations/widget-map": "./integrations/widget-map/index.ts",
+    "./utils/slug": "./src/utils/slug.ts",
+    "./utils/prng": "./src/utils/prng.ts",
+    "./utils/build-time": "./src/utils/build-time.ts",
+    "./utils/w3c-date": "./src/utils/w3c-date.ts",
+    "./utils/og": "./src/utils/og.ts",
+    "./utils/seo": "./src/utils/seo.ts",
+    "./utils/content": "./src/utils/content.ts",
+    "./utils/blog": "./src/utils/blog.ts",
+    "./utils/tools": "./src/utils/tools.ts",
+    "./utils/authors": "./src/utils/authors.ts",
+    "./utils/searchStore": "./src/utils/searchStore.svelte.ts",
+    "./utils/search": "./src/utils/search.ts",
+    "./seo": "./src/seo/index.ts",
+    "./og/templates/tools": "./src/og/templates/tools.ts",
+    "./og/templates/blog": "./src/og/templates/blog.ts",
+    "./lib/utils": "./src/lib/utils.ts",
+    "./lib/icons": "./src/lib/icons.ts",
+    "./components/common/ui/skeletons/WidgetSkeleton.astro": "./src/components/common/ui/skeletons/WidgetSkeleton.astro"
+  },
+  "scripts": {
+    "build": "echo '@mtools/core has no compiled output — type-checked via sites'",
+    "check": "astro check && svelte-check --tsconfig ./tsconfig.json && tsc --noEmit",
+    "check:astro": "astro check",
+    "check:svelte": "svelte-check --tsconfig ./tsconfig.json",
+    "check:tsc": "tsc --noEmit"
+  },
+
+  "dependencies": {
+    "@lucide/svelte": "catalog:",
+    "bits-ui": "catalog:",
+    "clsx": "catalog:",
+    "tailwind-merge": "catalog:",
+    "tailwind-variants": "^3.2.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "catalog:",
+    "tailwindcss": "catalog:",
+    "@tailwindcss/typography": "^0.5.19",
+    "remark-math": "catalog:",
+    "rehype-katex": "catalog:",
+    "satori": "^0.26.0",
+    "satori-html": "^0.3.2",
+    "@resvg/resvg-js": "^2.6.2",
+    "@astrojs/svelte": "catalog:",
+    "@astrojs/sitemap": "catalog:",
+    "@astrojs/check": "catalog:",
+    "svelte-check": "catalog:",
+    "fast-glob": "^3.3.2",
+    "gray-matter": "^4.0.3"
+  },
+  "peerDependencies": {
+    "astro": "catalog:",
+    "svelte": "catalog:"
+  }
+}

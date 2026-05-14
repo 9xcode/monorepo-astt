@@ -1,0 +1,82 @@
+---
+/**
+ * BlogPageSchemas — Composition component for blog post JSON-LD schemas.
+ *
+ * Composes the following schemas for each blog post page:
+ *   1. Article (with author, publisher, optional TOC hasPart)
+ *   2. BreadcrumbList (4-level: Home → Blog → Category → Post Title)
+ *   3. FAQPage (optional — if the post contains a FAQ section)
+ *
+ * Phase 9: siteConfig now comes from virtual:site-config (build-time constant).
+ */
+// Phase 9: replaced `import { siteConfig } from '../../../config'`
+import { siteConfig } from 'virtual:site-config';
+import JsonLd from './JsonLd.astro';
+import { buildArticleSchema, buildBreadcrumbSchema } from './index';
+import type { Heading } from './types';
+import type { AuthorEntry } from '../utils/authors';
+import { toPersonSchemaInput } from '../utils/authors';
+
+interface Props {
+	postTitle: string;
+	description: string;
+	seoUrl: string;
+	ogImageUrl: string;
+	/** Pre-resolved W3C date string — always provided by the page layer via formatW3CDate(). */
+	pubDate: string;
+	modDate: string;
+	faqSchema?: any;
+	tocHeadings?: Heading[];
+	/** Category display name — used for the 4th breadcrumb level in JSON-LD. */
+	category: string;
+	/** URL-safe category slug — matches the /blog/category/[slug] route. */
+	categorySlug: string;
+	/** Resolved author entry — use resolveAuthor() in the page layer before passing here. */
+	author: AuthorEntry;
+}
+
+const {
+	postTitle,
+	description,
+	seoUrl,
+	ogImageUrl,
+	pubDate,
+	modDate,
+	faqSchema,
+	tocHeadings,
+	category,
+	categorySlug,
+	author,
+} = Astro.props;
+
+// --- Article Schema ---
+const articleSchema = buildArticleSchema({
+	headline: postTitle,
+	description,
+	imageUrl: ogImageUrl,
+	datePublished: pubDate,
+	dateModified: modDate,
+	author: toPersonSchemaInput(author, siteConfig.url),
+	publisher: {
+		name: siteConfig.companyName,
+		url: siteConfig.url,
+		knowsAbout: siteConfig.seo.organization.knowsAbout,
+		logoUrl: new URL("/images/logo.png", siteConfig.url).href,
+	},
+	tocHeadings,
+	pageUrl: seoUrl,
+});
+
+// --- BreadcrumbList Schema (4-level for blog — matches BlogHero visual breadcrumb) ---
+const breadcrumbSchema = buildBreadcrumbSchema([
+	{ name: "Home",    url: siteConfig.url },
+	{ name: "Blog",    url: new URL("/blog", siteConfig.url).href },
+	{ name: category,  url: new URL(`/blog/category/${categorySlug}`, siteConfig.url).href },
+	{ name: postTitle, url: seoUrl },
+]);
+---
+
+{/* Blog post JSON-LD structured data */}
+<JsonLd schema={articleSchema} />
+<JsonLd schema={breadcrumbSchema} />
+{faqSchema && <JsonLd schema={faqSchema} />}

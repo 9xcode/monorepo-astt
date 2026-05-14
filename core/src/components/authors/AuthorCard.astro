@@ -1,0 +1,106 @@
+---
+/**
+ * AuthorCard — Author bio block with avatar, social links, and expertise tags.
+ *
+ * MOVED from src/components/common/sections/AuthorCard.astro (now deleted).
+ *
+ * Accepts an array of authors (primary + any co-authors). When only one author
+ * is passed the existing single-author layout is used. When multiple authors
+ * are passed they are rendered as a stacked list under a single "Created by" header.
+ *
+ * Fully prop-driven — no siteConfig import, no hardcoded data.
+ *
+ * Usage:
+ *   import { resolveAuthors } from '../../utils/authors';
+ *   import AuthorCard from '../components/authors/AuthorCard.astro';
+ *   const authors = await resolveAuthors(post.data.author, post.data.coAuthors);
+ *
+ *   <AuthorCard authors={authors} />
+ *   <AuthorCard authors={authors} linkToProfile={false} />
+ */
+import type { AuthorEntry } from '../../utils/authors';
+import { getAuthorUrl } from '../../utils/authors';
+import AuthorAvatar from './AuthorAvatar.astro';
+import AuthorSocialLinks from './AuthorSocialLinks.astro';
+
+interface Props {
+  authors: AuthorEntry[];
+  /** Link card name/avatar to the full author profile page. Default: true. */
+  linkToProfile?: boolean;
+}
+
+const { authors, linkToProfile = true } = Astro.props;
+const isMultiple = authors.length > 1;
+---
+
+<div class="mt-8 rounded-xl border bg-card text-card-foreground p-5 sm:p-6 relative overflow-hidden shadow-sm">
+  <p class="absolute top-3 right-4 sm:top-2 sm:right-5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
+    {isMultiple ? 'Authors' : 'Author'}
+  </p>
+
+  <div class={isMultiple ? 'flex flex-col divide-y divide-border/60' : 'contents'}>
+    {authors.map((author) => {
+      const profileUrl = getAuthorUrl(author.id);
+      const { name, role, shortBio, knowsAbout, socials } = author.data;
+      return (
+        <div class={`flex flex-col md:flex-row gap-6 ${isMultiple ? 'py-5 first:pt-0 last:pb-0' : ''}`}>
+          <div class="relative z-10 flex-1">
+            <div class="grid grid-cols-[80px_1fr] gap-x-4 sm:gap-x-6 gap-y-4 sm:gap-y-2">
+
+              {/* Avatar */}
+              <div class="col-span-1 row-span-1 sm:row-span-2 self-center sm:self-start">
+                {linkToProfile ? (
+                  <a href={profileUrl} aria-label={`View ${name}'s profile`}>
+                    <AuthorAvatar author={author} size="lg" />
+                  </a>
+                ) : (
+                  <AuthorAvatar author={author} size="lg" />
+                )}
+              </div>
+
+              {/* Name + role + social links */}
+              <div class="col-span-1 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3 self-center sm:self-start sm:mt-1">
+                <div class="min-w-0">
+                  <h3 class="text-lg sm:text-lg font-bold text-foreground truncate">
+                    {linkToProfile ? (
+                      <a href={profileUrl} class="hover:text-primary transition-colors">{name}</a>
+                    ) : (
+                      name
+                    )}
+                  </h3>
+                  <p class="text-xs sm:text-sm text-muted-foreground mt-0.5 truncate">{role}</p>
+                </div>
+
+                {/* Social icons + optional profile link */}
+                <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap sm:flex-nowrap">
+                  <AuthorSocialLinks 
+                    socials={socials} 
+                    name={name} 
+                    size="sm" 
+                    profileUrl={linkToProfile ? profileUrl : undefined} 
+                  />
+                </div>
+              </div>
+
+              {/* Bio + expertise tags */}
+              <div class="col-span-2 sm:col-span-1">
+                <p class="text-[13px] sm:text-sm text-foreground/80 leading-relaxed max-w-2xl mt-1">{shortBio}</p>
+                {knowsAbout && knowsAbout.length > 0 && (
+                  <div class="flex flex-wrap gap-1.5 sm:gap-2 mt-4">
+                    <span class="text-xs font-medium text-muted-foreground mr-1 flex items-center">Expertise:</span>
+                    {knowsAbout.map((topic: string) => (
+                      <span class="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-[10px] sm:text-xs font-medium text-muted-foreground">
+                        {topic}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+            </div>
+          </div>
+        </div>
+      );
+    })}
+  </div>
+</div>

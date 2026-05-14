@@ -1,0 +1,17 @@
+{
+  "tools/demo-tool": {
+    "hash": "d4a51a376419ae7a289fc6bfd5e29e52",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "blog/demo-post": {
+    "hash": "97cd592860c9690f37b130b456ee4c12",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "blog/example-post": {
+    "hash": "4d576cc9c40d0feb51e615f956a7ac4c",
+    "version": "v1.0.0",
+    "locale": null
+  }
+}

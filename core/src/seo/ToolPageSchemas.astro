@@ -1,0 +1,128 @@
+---
+/**
+ * ToolPageSchemas — Composition component for tool page JSON-LD schemas.
+ *
+ * Composes the following schemas for each tool page:
+ *   1. WebApplication (with category mapping, keywords, features)
+ *   2. BreadcrumbList (4-level: Home → Tools → Category → Tool)
+ *   3. Article (with author, publisher, optional TOC hasPart)
+ *   4. FAQPage (optional, parsed from markdown)
+ *   5. HowTo (optional, parsed from markdown)
+ *
+ * Uses centralized schema builders instead of inline JSON-LD construction.
+ * Props interface is identical to the original ToolSEOSchemas.astro.
+ *
+ * Phase 9: siteConfig now comes from virtual:site-config (build-time constant).
+ */
+// Phase 9: replaced `import { siteConfig } from '../../../config'` 
+import { siteConfig } from 'virtual:site-config';
+import { categoryToSlug } from '../utils/slug';
+import JsonLd from './JsonLd.astro';
+import {
+	buildWebApplicationSchema,
+	buildArticleSchema,
+	buildBreadcrumbSchema,
+} from './index';
+
+import type { Heading } from './types';
+import type { AuthorEntry } from '../utils/authors';
+import { toPersonSchemaInput } from '../utils/authors';
+
+interface Props {
+	toolTitle: string;
+	description: string;
+	seoUrl: string;
+	ogImageUrl: string;
+	category: string;
+	rawToolTitle: string;  // unprocessed toolTitle for breadcrumb display
+	/** Pre-resolved W3C date string — always provided by the page layer via formatW3CDate(). */
+	pubDate: string;
+	modDate: string;
+	faqSchema?: any;
+	howToSchema?: any;
+	tocHeadings?: Heading[];
+	tags?: readonly string[];
+	featureList?: string[];
+	/** Resolved author entry — use resolveAuthor() in the layout layer before passing here. */
+	author: AuthorEntry;
+}
+
+const {
+	toolTitle,
+	description,
+	seoUrl,
+	ogImageUrl,
+	category,
+	rawToolTitle,
+	pubDate,
+	modDate,
+	faqSchema,
+	howToSchema,
+	tocHeadings,
+	tags,
+	featureList,
+	author,
+} = Astro.props;
+
+// --- WebApplication Schema ---
+const categoryMapping = siteConfig.seo.categoryMappings[category] || { appCategory: "UtilitiesApplication" };
+
+const toolSchema = buildWebApplicationSchema({
+	name: toolTitle,
+	url: seoUrl,
+	description: description || `Use the ${toolTitle} to quickly calculate or convert values online.`,
+	screenshotUrl: ogImageUrl,
+	dateModified: modDate,
+	categoryMapping,
+	operatingSystem: siteConfig.seo.softwareApplication.operatingSystem,
+	browserRequirements: siteConfig.seo.softwareApplication.browserRequirements,
+	isAccessibleForFree: siteConfig.seo.softwareApplication.isAccessibleForFree,
+	softwareVersion: siteConfig.version || "1.0.0",
+	creator: {
+		name: siteConfig.companyName,
+		url: siteConfig.url,
+		knowsAbout: siteConfig.seo.organization.knowsAbout,
+	},
+	priceCurrency: siteConfig.localization.currencyCode || "USD",
+	tags,
+	featureList,
+	defaultKeywords: siteConfig.seo.defaultKeywords,
+	toolTitle,
+	category,
+});
+
+// --- Article Schema ---
+const articleHeadline = `${toolTitle.endsWith('Calculator') ? toolTitle : `${toolTitle} Calculator`} Guide`;
+
+const articleSchema = buildArticleSchema({
+	headline: articleHeadline,
+	description: description || `Use the ${toolTitle} to quickly calculate or convert values online.`,
+	imageUrl: ogImageUrl,
+	datePublished: pubDate,
+	dateModified: modDate,
+	author: toPersonSchemaInput(author, siteConfig.url),
+	publisher: {
+		name: siteConfig.companyName,
+		url: siteConfig.url,
+		knowsAbout: siteConfig.seo.organization.knowsAbout,
+		logoUrl: new URL("/images/logo.png", siteConfig.url).href,
+	},
+	tocHeadings,
+	pageUrl: seoUrl,
+});
+
+// --- BreadcrumbList Schema ---
+const breadcrumbSchema = buildBreadcrumbSchema([
+	{ name: "Home", url: siteConfig.url },
+	{ name: "Tools", url: new URL("/tools", siteConfig.url).href },
+	{ name: category, url: new URL(`/categories/${categoryToSlug(category)}`, siteConfig.url).href },
+	{ name: rawToolTitle, url: seoUrl },
+]);
+---
+
+{/* Tool page JSON-LD structured data */}
+<JsonLd schema={toolSchema} />
+<JsonLd schema={breadcrumbSchema} />
+<JsonLd schema={articleSchema} />
+{faqSchema && <JsonLd schema={faqSchema} />}
+{howToSchema && <JsonLd schema={howToSchema} />}

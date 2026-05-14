@@ -30,7 +30,7 @@ blog: {
 ```
 
 ### 3. Data & Taxonomy
-Posts use strict Zod validation defined in `src/content.config.ts`. Categories and Tags are centrally predefined to avoid taxonomy sprawl.
+Posts use strict Zod validation defined by core schema factories. Categories and Tags are centrally predefined in each site's `src/content-enums.ts` to avoid taxonomy sprawl.
 ```yaml
 ---
 title: "How to Start Budgeting in 2024"

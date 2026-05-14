@@ -1,0 +1,78 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/common/sections/Header.astro";
+import Footer from "../components/common/sections/Footer.astro";
+import StandardProse from "../components/common/typography/StandardProse.astro";
+import { siteConfig } from 'virtual:site-config';
+import { Coffee, Share2 } from '@lucide/svelte';
+import JsonLd from "../seo/JsonLd.astro";
+import { buildWebPageSchema } from "../seo";
+
+const supportUrl = siteConfig.features.support?.url || "/support";
+const seoUrl = new URL('/support', siteConfig.url).href;
+
+const supportSchema = buildWebPageSchema({
+	type: 'WebPage',
+	name: `Support ${siteConfig.name}`,
+	description: `Learn how you can support ${siteConfig.name} and keep our tools free for everyone.`,
+	url: seoUrl,
+	websiteUrl: siteConfig.url,
+});
+---
+<BaseLayout title={`Support Us - ${siteConfig.name}`} canonicalURL={seoUrl} description={`Learn how you can support ${siteConfig.name} and keep our tools free for everyone.`}>
+	<Fragment slot="head">
+		<JsonLd schema={supportSchema} />
+	</Fragment>
+	
+	<Header />
+	
+	<main class="flex-1 container mx-auto px-4 py-16 max-w-4xl min-h-[70vh]">
+		{/* Clean straightforward header */}
+		<StandardProse class="text-center mb-12">
+			<h1 class="mb-4">Support {siteConfig.name}</h1>
+			<p class="lead max-w-2xl mx-auto">
+				We are dedicated to building the best collection of online tools. While we utilize non-intrusive ads to help cover our server costs, our tools are 100% free for everyone to use globally. If you find value in our work, here are a few ways you can support us.
+			</p>
+		</StandardProse>
+
+		{/* Simple Dual Grid */}
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+			
+			{/* Buy Me a Coffee */}
+			<a href={supportUrl} target="_blank" rel="noopener noreferrer" class="flex flex-col items-center text-center p-8 rounded-xl border border-border bg-card hover:bg-muted/50 transition-colors shadow-sm">
+				<div class="w-16 h-16 rounded-full bg-warning/10 text-warning flex items-center justify-center mb-4">
+					<Coffee strokeWidth={2} class="w-8 h-8" />
+				</div>
+				<h2 class="text-xl font-bold mb-2 text-foreground">Buy Us a Coffee</h2>
+				<p class="text-muted-foreground text-sm flex-1 leading-relaxed">
+					A simple donation helps us pay for hosting, domain renewals, and secures dedicated development time to build even more free tools.
+				</p>
+			</a>
+
+			{/* Spread the Word */}
+			<div class="flex flex-col items-center text-center p-8 rounded-xl border border-border bg-card hover:bg-muted/50 transition-colors shadow-sm">
+				<div class="w-16 h-16 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-4">
+					<Share2 strokeWidth={2} class="w-8 h-8" />
+				</div>
+				<h2 class="text-xl font-bold mb-2 text-foreground">Spread the Word</h2>
+				<p class="text-muted-foreground text-sm flex-1 leading-relaxed mb-6">
+					If you can't donate, simply sharing our site with your friends, colleagues, or on social media is incredibly valuable to our growth.
+				</p>
+				<button onclick="const b=this; navigator.clipboard.writeText(window.location.origin).then(()=>{const t=b.innerText; b.innerText='Copied!'; setTimeout(()=>b.innerText=t, 2000)})" class="px-6 py-2.5 bg-primary text-primary-foreground rounded-xl text-sm font-semibold hover:bg-primary/90 transition-colors">
+					Copy Website Link
+				</button>
+			</div>
+		</div>
+
+		<StandardProse class="mt-16 max-w-2xl mx-auto border-t border-border pt-12">
+			<h3>Is this site really free?</h3>
+			<p>Absolutely. There are no premium features hidden behind frustrating paywalls, no forced account creations, and no sneaky subscriptions. Everyone gets full access to every single tool. Our modest ads help fund our cloud infrastructure directly.</p>
+			
+			<h3>Provide Feedback</h3>
+			<p>Another fantastic way to support us is by providing feedback! Tell us what new tools you want built next, what bugs you've spotted, or how a specific calculator could be improved. You can reach out directly via our <a href="/contact">Contact Page</a> or use the Feedback button on any individual tool page.</p>
+		</StandardProse>
+
+	</main>
+
+	<Footer />
+</BaseLayout>

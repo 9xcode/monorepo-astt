@@ -1,0 +1,25 @@
+{
+  "name": "@mtools/mobile-SITE_NAME",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "pnpm@10.33.2",
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=10"
+  },
+  "scripts": {
+    "sync": "cap sync",
+    "add:android": "cap add android",
+    "add:ios": "cap add ios"
+  },
+  "dependencies": {
+    "@capacitor/core": "catalog:",
+    "@capacitor/android": "catalog:",
+    "@capacitor/ios": "catalog:"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "catalog:",
+    "@mtools/SITE_NAME": "workspace:*",
+    "typescript": "catalog:"
+  }
+}
