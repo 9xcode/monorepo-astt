@@ -10,16 +10,18 @@ import { buildWebPageSchema } from "../seo";
 
 const supportUrl = siteConfig.features.support?.url || "/support";
 const seoUrl = new URL('/support', siteConfig.url).href;
+const pageTitle = `Support Us - ${siteConfig.name}`;
+const pageDescription = `Learn how you can support ${siteConfig.name} and keep our tools free for everyone.`;
 
 const supportSchema = buildWebPageSchema({
 	type: 'WebPage',
-	name: `Support ${siteConfig.name}`,
-	description: `Learn how you can support ${siteConfig.name} and keep our tools free for everyone.`,
+	name: pageTitle,
+	description: pageDescription,
 	url: seoUrl,
 	websiteUrl: siteConfig.url,
 });
 ---
-<BaseLayout title={`Support Us - ${siteConfig.name}`} canonicalURL={seoUrl} description={`Learn how you can support ${siteConfig.name} and keep our tools free for everyone.`}>
+<BaseLayout title={pageTitle} canonicalURL={seoUrl} description={pageDescription}>
 	<Fragment slot="head">
 		<JsonLd schema={supportSchema} />
 	</Fragment>

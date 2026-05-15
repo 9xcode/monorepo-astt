@@ -69,7 +69,7 @@ const fullOgImageUrl = ogImagePath
 // Pre-resolve dates to W3C format for schemas.
 // pubDate is optional (string | Date | undefined) — mirrors the tools schema.
 const w3cPubDate = formatW3CDate(pubDate, siteConfig.datePublished);
-const w3cModDate = formatW3CDate(lastModified);
+const w3cModDate = formatW3CDate(lastModified, siteConfig.buildTime);
 
 // TOC: post.data.toc overrides site global. filterTocHeadings handles all
 // depth/threshold logic — same function as [tool].astro uses.

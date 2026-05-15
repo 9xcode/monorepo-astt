@@ -57,6 +57,9 @@ export function buildWebApplicationSchema(
 			"@type": "UseAction",
 			target: input.url,
 		},
+		// datePublished signals the tool's original release to Google.
+		// Falls back to dateModified when not explicitly provided.
+		datePublished: input.datePublished ?? input.dateModified,
 		dateModified: input.dateModified,
 	};
 

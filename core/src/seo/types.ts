@@ -103,6 +103,8 @@ export interface WebApplicationSchemaInput {
 	url: string;
 	description: string;
 	screenshotUrl: string;
+	/** The original publication date of the tool. Optional — falls back to dateModified in the builder. */
+	datePublished?: string;
 	dateModified: string;
 	categoryMapping: CategoryMapping;
 	operatingSystem: string;

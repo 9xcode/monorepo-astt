@@ -10,16 +10,18 @@ import JsonLd from "../seo/JsonLd.astro";
 import { buildWebPageSchema } from "../seo";
 
 const seoUrl = new URL('/contact', siteConfig.url).href;
+const pageTitle = `Contact Us - ${siteConfig.name}`;
+const pageDescription = `Get in touch with the ${siteConfig.name} team.`;
 
 const contactSchema = buildWebPageSchema({
 	type: 'ContactPage',
-	name: `Contact Us - ${siteConfig.name}`,
-	description: `Get in touch with the ${siteConfig.name} team.`,
+	name: pageTitle,
+	description: pageDescription,
 	url: seoUrl,
 	websiteUrl: siteConfig.url,
 });
 ---
-<BaseLayout title={`Contact Us - ${siteConfig.name}`} canonicalURL={seoUrl} description={`Get in touch with the ${siteConfig.name} team.`}>
+<BaseLayout title={pageTitle} canonicalURL={seoUrl} description={pageDescription}>
 	<Fragment slot="head">
 		<JsonLd schema={contactSchema} />
 	</Fragment>

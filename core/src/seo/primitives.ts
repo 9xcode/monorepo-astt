@@ -84,6 +84,9 @@ export function buildOfferSchema(
 		"@type": "Offer",
 		price: input?.price ?? "0",
 		priceCurrency: input?.priceCurrency ?? "USD",
+		// Required by Google's Rich Results Test for SoftwareApplication validation.
+		// Use the full URI form — schema.org/InStock is the correct enumeration value.
+		availability: "https://schema.org/InStock",
 	};
 }
 

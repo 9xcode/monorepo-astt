@@ -46,70 +46,10 @@ letter do ad this : https://www.google.com/preferences/source?q=https://redeemco
 
 - [] change support page completley
 
+- [ ] **Mobile App Issue**: Capacitor's internal web server is not as smart as a cloud server (like Vercel). When Astro generates your web app, it creates folders with index.html files inside (e.g., dist/tools/sip-calculator/index.html). On the web, if you visit /tools/sip-calculator, Vercel is smart enough to serve the index.html file silently. However, Capacitor's local Android server strictly maps URLs to literal files. When it receives a request for /tools/sip-calculator, it looks for a file named exactly sip-calculator. When it doesn't find it, it 404s, and its built-in SPA-fallback mechanism reloads the homepage index.html instead.
+  - (Side note: The Javascript interceptor I gave you failed because Svelte/UI frameworks use event delegation that stops the click event before it reaches the document. While fixable with { capture: true }, you are completely right—we should use a proper architectural solution that natively handles all links like about, privacy, etc.)
+
+
 ===============
 ## Fixes
 
-
-### ⚠️ Real Gaps (Evidence-Based)
-
-
-**4. `WebSiteSchema` is missing `potentialAction` (Sitelinks Searchbox)**
-
-```ts
-// site.ts — current
-export function buildWebSiteSchema(...)  {
-  return { "@type": "WebSite", name, url, description, publisher }
-  // ← no potentialAction
-}
-```
-
-If you have a search feature (`features.search.enabled`), you're missing the Sitelinks Searchbox signal:
-
-```json
-"potentialAction": {
-  "@type": "SearchAction",
-  "target": { "@type": "EntryPoint", "urlTemplate": "https://yourdomain.com/?q={search_term_string}" },
-  "query-input": "required name=search_term_string"
-}
-```
-
-This is conditional — only emit when search is enabled.
-
----
-
-**5. `SoftwareAppSchema` (mobile-app page) is missing `url`-level `offers` clarity**
-
-```ts
-// software-app.ts
-offers: buildOfferSchema({ priceCurrency: input.priceCurrency }),
-// missing: availability, url pointing to app store listing
-```
-
-Minor, but the `offers` for a mobile app should ideally include `"availability": "https://schema.org/InStock"` so it validates cleanly in Google's Rich Results Test.
-
----
-
-**6. `WebApplicationSchemaInput.datePublished` is missing**
-
-```ts
-// types.ts — WebApplicationSchemaInput
-dateModified: string;   // ✅ present
-// datePublished: string  ← MISSING
-```
-
-`WebApplication` schema should have both `datePublished` and `dateModified`. You pass `datePublished` to the Article schema co-located on tool pages, but not to the WebApplication schema itself. Google [recommends both](https://developers.google.com/search/docs/appearance/structured-data/software-app).
-
----
-
-**7. Static pages have duplicate `description` — defined twice, no single source**
-
-In `about.astro`:
-```astro
-// line 15 — in buildWebPageSchema()
-description: `Learn more about ${siteConfig.name}, our mission...`
-
-// line 19 — in BaseLayout description prop
-description={`Learn more about ${siteConfig.name}, our mission...`}
-```
-
-Same string literal written twice. If someone updates one, the other becomes stale. Should be extracted to a `const`.
