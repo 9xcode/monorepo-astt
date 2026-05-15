@@ -61,6 +61,6 @@ export default [
   },
   // Ignore
   {
-    ignores: ["**/dist/**", "**/node_modules/**", "**/.astro/**", "**/.planning/**"]
+    ignores: ["**/dist/**", "**/node_modules/**", "**/.astro/**", "**/.planning/**", "**/ios/**", "**/android/**"]
   }
 ];

@@ -74,13 +74,18 @@ list_and_delete "Build Output (dist)" "dist"
 list_and_delete "Turbo Cache (.turbo)" ".turbo"
 list_and_delete "Svelte Cache (.svelte-kit)" ".svelte-kit"
 
-# 3. OG Images
-list_and_delete "OG Image Cache (public/.../og)" "*/public/*/og" "" "true"
+# 3. Mobile App Artifacts
+list_and_delete "iOS Capacitor Public (ios/App/App/public)" "*/ios/App/App/public" "" "true"
+list_and_delete "Android Build (android/app/build)" "*/android/app/build" "" "true"
+list_and_delete "Android Assets Public (android/app/src/main/assets/public)" "*/android/app/src/main/assets/public" "" "true"
 
 # 4. Auto-generated Widgets (src/generated)
 list_and_delete "Generated Widget Map (src/generated)" "*/src/generated" "" "true"
 
-# 5. Lockfile (Special Case)
+# 5. OG Images
+list_and_delete "OG Image Cache (public/.../og)" "*/public/*/og" "" "true"
+
+# 6. Lockfile (Special Case)
 if [ -f "$ROOT_DIR/pnpm-lock.yaml" ]; then
     echo "🔍 Found pnpm-lock.yaml"
     if confirm "Delete pnpm-lock.yaml?"; then
