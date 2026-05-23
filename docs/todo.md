@@ -7,7 +7,7 @@ IMPORTANT: Do not Read this file and do not choose any task or feature from the 
 
 - [ ] Create tsconfig.sites.json at the root and shrink each site's tsconfig.json to a single extends line. read plan [tsconfig-files-centralization-plan](tsconfig-files-centralization-plan.md)
 
-- [ ] Add sitemap: false/true feature in content/tools/.../index.md frontmatter so that page will be included or excluded from sitemap.xml
+- [ ] Add sitemap: false/true feature in content/tools/.../index.md frontmatter so that page will be included or excluded from sitemap.xml (right now its done by `canonical`, `isDraft` and `noindex` formatters) and i don't think we still need this `sitemap: true/false` feature)
 
 - [ ] Add Robots index management feature in content/tools/.../index.md frontmatter so that we can manage index/noindex etc
 
@@ -53,3 +53,6 @@ letter do ad this : https://www.google.com/preferences/source?q=https://redeemco
 ===============
 ## Fixes
 
+- change the stretagy fro build time (modifiedDate)
+
+--------

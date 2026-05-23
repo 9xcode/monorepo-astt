@@ -7,7 +7,7 @@ tags: ["productivity"]
 author: demo
 coAuthors: ["abhishek"]
 featured: false
-draft: false
+
 ---
 
 ## A New Era of Money Management

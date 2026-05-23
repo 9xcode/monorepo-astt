@@ -12,6 +12,9 @@ dist/
 # ignore auto generated graphify output files
 graphify-out/
 
+# angigravity
+.antigravitycli/
+
 # OG Image Caches
 /public/images/og/**/*.png
 sites/*/public/images/og/**/*.png

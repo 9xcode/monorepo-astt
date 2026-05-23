@@ -8,7 +8,7 @@ tags: ["advanced", "savings"]
 coverImage: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&q=80&w=1200&h=630"
 coverImageAlt: "Gold coins stacked showing financial growth"
 featured: true
-draft: false
+isDraft: false
 ---
 
 ## Managing Your Wealth in a Changing Economy

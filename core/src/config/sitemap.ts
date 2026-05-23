@@ -5,19 +5,19 @@ Extracted from astro.config.mjs to keep that file clean.
 Phase 9: siteConfig now comes from virtual:site-config (build-time constant).
 Util imports updated to @mtools/core sibling paths.
 
-Import with:  import { sitemapConfig } from '@mtools/core/config/sitemap';
+Import with:  import { makeSitemapConfig } from '@mtools/core/config/sitemap';
               sitemap(sitemapConfig)
 
 Sitemap strategy:
   URL pattern                    | priority | changefreq | lastmod
   ──────────────────────────────────────────────────────────────────
   /                              |   1.0    |  weekly    | omitted  (static shell)
-  /tools/[slug]                  |   0.9    |  weekly    | from frontmatter 
+  /tools/[slug]                  |   0.9    |  weekly    | from frontmatter
   /tools  (index)                |   0.8    |  weekly    | omitted  (dynamic list, no real mod date)
   /categories                    |   0.8    |  weekly    | omitted  (dynamic list)
   /categories/[cat]              |   0.8    |  weekly    | omitted  (dynamic list)
   /blog  (index)                 |   0.8    |  weekly    | omitted  (dynamic list)
-  /blog/[slug]                   |   0.7    |  weekly    | from frontmatter 
+  /blog/[slug]                   |   0.7    |  weekly    | from frontmatter
   /blog/category/[cat]           |   0.5    |  monthly   | omitted  (≥3 posts required)
   /authors/[slug]                |   0.6    |  monthly   | omitted  (stable profile page)
   /about /contact /support etc.  | 0.5–0.6  |  monthly   | omitted  (static copy)
@@ -26,6 +26,9 @@ Sitemap strategy:
   /blog/tag/[tag]   EXCLUDED — thin-content duplicate trap
   /blog/page/[n]    EXCLUDED — Google says don't put pagination in sitemap
   /404 /500         EXCLUDED — error pages must not be indexed
+  canonical set     EXCLUDED — syndicated/duplicate content (any non-empty value,
+                               including a self-canonical to our own domain)
+  noindex: true     EXCLUDED — page explicitly opted out of indexing
 
 lastmod policy (Google's own guidance):
   "Only include lastmod when you can guarantee it reflects the date the
@@ -51,62 +54,139 @@ import { getStaticOgImage } from '../utils/og';
  * Blog category archives are only included in the sitemap when they have at
  * least this many published posts.  Empty / near-empty archives are thin
  * content and waste crawl budget.
+ *
+ * Note: tool categories use /categories/[slug] (not /tools/category/[slug]).
+ * Every tool category that exists in frontmatter already has ≥1 tool — Astro
+ * will not generate a route for an empty category — so no count guard is
+ * needed on the tools side.
  */
 const MIN_POSTS_FOR_CATEGORY = 3;
+
+// ── Frontmatter cache ─────────────────────────────────────────────────────────
+//
+// Per-build, module-level cache: absolute mdPath → ParsedFrontmatter.
+//
+// Each Astro build is a fresh Node process. The Map starts empty, grows as
+// files are accessed, and is discarded when the process exits — no stale-data
+// risk and no memory leak (entries are tiny plain objects bounded by the number
+// of content files, which is always small).
+//
+// This is strictly better than the previous approach:
+//   Before: readFrontmatterDate() called fs.readFileSync on every invocation.
+//           One content page → 2 reads in serialize() alone, plus additional
+//           reads inside countPostsInBlogCategory() for category pages.
+//   After:  Each file is parsed from disk exactly ONCE per build. Every
+//           subsequent access — whether from filter() or serialize() — is an
+//           O(1) Map lookup with zero I/O.
+
+interface ParsedFrontmatter {
+  /** Raw lastModified string from frontmatter, if present */
+  lastModified?: string;
+  /**
+   * Raw canonical string from frontmatter, if present.
+   * Any non-empty value means this page is syndicated or duplicate content.
+   * Excluded from the sitemap regardless of whether it points to our own
+   * domain or an external one — a canonical anywhere means this URL is not
+   * the authoritative source.
+   */
+  canonical?: string;
+  /** true when noindex: true is explicitly set in frontmatter */
+  noindex: boolean;
+  /** true when isDraft: true is explicitly set in frontmatter */
+  isDraft: boolean;
+  /**
+   * Display-name category (e.g. "Guides") — used only for blog category
+   * counting. Undefined for tool entries (not needed there).
+   */
+  category?: string;
+}
+
+const _frontmatterCache = new Map<string, ParsedFrontmatter>();
+
+/**
+ * Parse all sitemap-relevant frontmatter fields from a single markdown file.
+ *
+ * Uses a proper frontmatter-block extractor (content between the first ---
+ * pair) to avoid false positives from lines in the markdown body — e.g. a
+ * fenced code block that contains "canonical: something" would otherwise
+ * match a naive full-file regex.
+ */
+function parseFrontmatterFromDisk(mdPath: string): ParsedFrontmatter {
+  const empty: ParsedFrontmatter = { noindex: false, isDraft: false };
+  if (!fs.existsSync(mdPath)) return empty;
+  try {
+    const raw = fs.readFileSync(mdPath, 'utf8');
+    // Extract only the YAML block between the opening and closing ---
+    const fmBlock = raw.match(/^---\r?\n([\s\S]*?)\r?\n---/)?.[1] ?? '';
+    return {
+      lastModified: fmBlock.match(/^lastModified:\s*([^\r\n]+)/m)?.[1]?.replace(/['"]/g, '').trim(),
+      // Use `|| undefined` so an empty string after trimming still means "not set"
+      canonical:    fmBlock.match(/^canonical:\s*([^\r\n]+)/m)?.[1]?.replace(/['"]/g, '').trim() || undefined,
+      noindex:      /^noindex:\s*true/m.test(fmBlock),
+      isDraft:      /^isDraft:\s*true/m.test(fmBlock),
+      category:     fmBlock.match(/^category:\s*['"]?([^'"\r\n]+)['"]?/m)?.[1]?.trim(),
+    };
+  } catch {
+    return empty;
+  }
+}
+
+/** Returns cached frontmatter for mdPath, parsing from disk on first access. */
+function getFrontmatter(mdPath: string): ParsedFrontmatter {
+  const cached = _frontmatterCache.get(mdPath);
+  if (cached) return cached;
+  const fm = parseFrontmatterFromDisk(mdPath);
+  _frontmatterCache.set(mdPath, fm);
+  return fm;
+}
+
+// ── Blog category count cache ──────────────────────────────────────────────────
+//
+// Lazy map: categorySlug → published + indexable post count.
+// Built in one single pass over the blog directory on first access.
+// Reuses _frontmatterCache entries — blog files are never read twice.
+
+let _blogCategoryCountCache: Map<string, number> | null = null;
+
+/**
+ * Returns the count of published, indexable posts in a blog category.
+ *
+ * The categorySlug argument is the kebab-cased version of the display name
+ * stored in frontmatter (e.g. "Guides" → "guides", "Personal Finance" →
+ * "personal-finance").
+ *
+ * On first call, scans all blog content files in one pass and populates both
+ * the category count cache and the shared _frontmatterCache as a side effect.
+ * All subsequent calls — including filter() calls for individual blog posts —
+ * are O(1) cache hits with zero I/O.
+ */
+function getBlogCategoryCount(categorySlug: string): number {
+  if (!_blogCategoryCountCache) {
+    _blogCategoryCountCache = new Map();
+    const blogDir = path.resolve(process.cwd(), 'src/content/blog');
+    if (!fs.existsSync(blogDir)) return 0;
+
+    for (const slug of fs.readdirSync(blogDir)) {
+      const mdPath = path.join(blogDir, slug, 'index.md');
+      const fm = getFrontmatter(mdPath);  // also populates _frontmatterCache
+      if (fm.isDraft || fm.noindex || !fm.category) continue;
+      const catSlug = fm.category.toLowerCase().replace(/\s+/g, '-');
+      _blogCategoryCountCache.set(catSlug, (_blogCategoryCountCache.get(catSlug) ?? 0) + 1);
+    }
+  }
+  return _blogCategoryCountCache.get(categorySlug) ?? 0;
+}
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 /**
- * Count published (non-draft) posts that belong to a blog category by scanning
- * the content directory at build time.  Avoids importing the full Astro
- * Content Collections API (which isn't available in astro.config.mjs context).
+ * Resolves the best available lastmod date from parsed frontmatter.
+ * Priority: lastModified → buildTime fallback.
+ * All values are normalised to W3C/ISO 8601 format.
  */
-function countPostsInBlogCategory(categorySlug: string): number {
-  const blogDir = path.resolve(process.cwd(), 'src/content/blog');
-  if (!fs.existsSync(blogDir)) return 0;
-
-  let count = 0;
-  for (const slug of fs.readdirSync(blogDir)) {
-    const mdPath = path.join(blogDir, slug, 'index.md');
-    if (!fs.existsSync(mdPath)) continue;
-    const content = fs.readFileSync(mdPath, 'utf8');
-
-    // Skip drafts
-    if (/^isDraft:\s*true/m.test(content)) continue;
-    // Skip noindex
-    if (/^noindex:\s*true/m.test(content)) continue;
-
-    // Match category field — stored as the display name (e.g. "Guides")
-    // The URL slug is kebab-cased (e.g. "guides") so we normalise both sides.
-    const catMatch = content.match(/^category:\s*['"']?([^'"'\r\n]+)['"']?/m);
-    if (catMatch) {
-      const postCategorySlug = catMatch[1]!.trim().toLowerCase().replace(/\s+/g, '-');
-      if (postCategorySlug === categorySlug) count++;
-    }
-  }
-  return count;
-}
-
-/**
- * Read a frontmatter date field from a markdown file and return a W3C-formatted
- * date string.  Falls back to the global buildTime if the field is missing.
- */
-function readFrontmatterDate(
-  mdPath: string,
-  field: 'lastModified' | 'pubDate',
-  buildTime: string,
-): string {
-  try {
-    if (!fs.existsSync(mdPath)) return buildTime;
-    const content = fs.readFileSync(mdPath, 'utf8');
-    const match = content.match(new RegExp(`^${field}:\\s*([^\\r\\n]+)`, 'm'));
-    if (match?.[1]) {
-      return formatW3CDate(match[1].replace(/['"]/g, '').trim(), buildTime);
-    }
-  } catch {
-    // Silently fall through
-  }
-  return buildTime;
+function resolveLastmod(fm: ParsedFrontmatter, buildTime: string): string {
+  return (fm.lastModified && formatW3CDate(fm.lastModified, buildTime))
+      || buildTime;
 }
 
 // ── URL classification helpers ─────────────────────────────────────────────────
@@ -120,11 +200,12 @@ function makeClassifiers(siteUrl: string) {
   /** /tools  — the static tools index / listing page */
   const isToolsIndex  = (url: string) => url === new URL('/tools', siteUrl).href;
   const isBlogIndex   = (url: string) => url === new URL('/blog', siteUrl).href;
-  /** /blog/[slug] — an individual blog post (has real frontmatter dates) */
-  const isBlogPost    = (url: string) => /\/blog\/[^/]+\/?$/.test(url) && !isBlogCategoryArchive(url) && !isBlogTagArchive(url);
+  // Declare archive/pagination classifiers BEFORE isBlogPost which references them
   const isBlogCategoryArchive = (url: string) => url.includes('/blog/category/');
   const isBlogTagArchive      = (url: string) => url.includes('/blog/tag/');
   const isBlogPagination      = (url: string) => url.includes('/blog/page/');
+  /** /blog/[slug] — an individual blog post (has real frontmatter dates) */
+  const isBlogPost    = (url: string) => /\/blog\/[^/]+\/?$/.test(url) && !isBlogCategoryArchive(url) && !isBlogTagArchive(url);
   const isCategoryIndex       = (url: string) => url === new URL('/categories', siteUrl).href;
   const isCategoryPage        = (url: string) => /\/categories\/[^/]+\/?$/.test(url);
   const isAuthorPage          = (url: string) => /\/authors\/[^/]+\/?$/.test(url);
@@ -185,20 +266,59 @@ export function makeSitemapConfig(siteConfig: SiteConfig) {
     }
   }
 
+  // ── Content page serializer ─────────────────────────────────────────────────
+  /**
+   * Unified serializer for both /tools/[slug] and /blog/[slug] entries.
+   *
+   * Frontmatter is always a cache hit here: filter() ran first and called
+   * getFrontmatter() for every content page that passed through — so no
+   * additional disk I/O occurs during serialize().
+   */
+  function serializeContentPage(
+    item: Record<string, unknown> & { url: string },
+    collection: 'tools' | 'blog',
+    slug: string,
+    buildTime: string,
+  ): Record<string, unknown> & { url: string } {
+    const mdPath = path.resolve(process.cwd(), `src/content/${collection}/${slug}/index.md`);
+    const fm = getFrontmatter(mdPath);
+    item.lastmod = resolveLastmod(fm, buildTime);
+    injectOgImage(item, collection, slug);
+    return item;
+  }
+
   return {
     // ── Filter ────────────────────────────────────────────────────────────────
     filter(page: string): boolean {
       if (!siteConfig.features.blog?.enabled && page.includes('/blog')) return false;
-      if (c.isErrorPage(page))          return false;
-      if (c.isBlogTagArchive(page))     return false;
-      if (c.isBlogPagination(page))     return false;
+      if (c.isErrorPage(page))      return false;
+      if (c.isBlogTagArchive(page)) return false;
+      if (c.isBlogPagination(page)) return false;
+
+      // Blog category archive — only include when ≥ MIN_POSTS_FOR_CATEGORY
+      // published, indexable posts exist. Tools don't need this guard (see
+      // constant comment above).
       if (c.isBlogCategoryArchive(page)) {
-        const catMatch = page.match(/\/blog\/category\/([^/]+)\/?$/);
-        if (catMatch) {
-          const postCount = countPostsInBlogCategory(catMatch[1]!);
-          if (postCount < MIN_POSTS_FOR_CATEGORY) return false;
-        }
+        const catSlug = page.match(/\/blog\/category\/([^/]+)\/?$/)?.[1];
+        if (catSlug && getBlogCategoryCount(catSlug) < MIN_POSTS_FOR_CATEGORY) return false;
       }
+
+      // Individual content pages — exclude pages that have opted out of
+      // indexing or that declare a canonical URL (meaning this page is not
+      // the authoritative source of its content).
+      const blogSlug = c.isBlogPost(page) ? page.match(/\/blog\/([^/]+)\/?$/)?.[1] : undefined;
+      const toolSlug = c.isToolPage(page) && !c.isToolsIndex(page)
+        ? page.match(/\/tools\/([^/]+)\/?$/)?.[1]
+        : undefined;
+      const contentSlug = blogSlug ?? toolSlug;
+      if (contentSlug) {
+        const collection = blogSlug ? 'blog' : 'tools';
+        const mdPath = path.resolve(process.cwd(), `src/content/${collection}/${contentSlug}/index.md`);
+        const fm = getFrontmatter(mdPath);
+        if (fm.canonical) return false;  // syndicated — not our original content
+        if (fm.noindex)   return false;
+      }
+
       return true;
     },
 
@@ -213,26 +333,14 @@ export function makeSitemapConfig(siteConfig: SiteConfig) {
       // /tools/[slug] — real lastmod from frontmatter
       const toolMatch = url.match(/\/tools\/([^/]+)\/?$/);
       if (toolMatch && !c.isToolsIndex(url)) {
-        const slug = toolMatch[1]!;
-        const mdPath = path.resolve(process.cwd(), `src/content/tools/${slug}/index.md`);
-        item.lastmod = readFrontmatterDate(mdPath, 'lastModified', buildTime)
-          || readFrontmatterDate(mdPath, 'pubDate', buildTime)
-          || buildTime;
-        injectOgImage(item, 'tools', slug);
-        return item;
+        return serializeContentPage(item, 'tools', toolMatch[1]!, buildTime);
       }
 
       // /blog/[slug] — real lastmod from frontmatter
       if (c.isBlogPost(url)) {
         const blogMatch = url.match(/\/blog\/([^/]+)\/?$/);
         if (blogMatch) {
-          const slug = blogMatch[1]!;
-          const mdPath = path.resolve(process.cwd(), `src/content/blog/${slug}/index.md`);
-          item.lastmod = readFrontmatterDate(mdPath, 'lastModified', buildTime)
-            || readFrontmatterDate(mdPath, 'pubDate', buildTime)
-            || buildTime;
-          injectOgImage(item, 'blog', slug);
-          return item;
+          return serializeContentPage(item, 'blog', blogMatch[1]!, buildTime);
         }
       }
 

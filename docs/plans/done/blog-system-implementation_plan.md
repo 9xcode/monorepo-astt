@@ -157,7 +157,7 @@ const blogCollection = defineCollection({
     // Mark as featured for homepage highlighting (future use)
     featured: z.boolean().default(false),
     // Draft posts: visible in dev, excluded from production builds
-    draft: z.boolean().default(false),
+    isDraft: z.boolean().default(false),
     // Emergency SEO escape hatch — excludes from indexing
     noindex: z.boolean().default(false),
   }),
@@ -1176,7 +1176,7 @@ author: "Editorial Team"
 coverImage: /images/blog/budgeting-guide.jpg
 coverImageAlt: "Woman reviewing budget on laptop"
 featured: true
-draft: false
+isDraft: false
 ---
 
 ## Why Budgeting Matters
@@ -1500,7 +1500,7 @@ if (siteConfig.features.blog?.enabled) {
 - [ ] `/blog/tag/savings` correctly filters posts
 - [ ] `/blog/page/2` exists only if post count exceeds `postsPerPage`
 - [ ] Search palette Blog tab fires only one network request on first open
-- [ ] `draft: true` posts excluded from production builds but visible in dev
+- [ ] `isDraft: true` posts excluded from production builds but visible in dev
 - [ ] Blog tool pages render identically (breadcrumbs, AuthorCard intact)
 
 ### SEO

@@ -6,7 +6,7 @@ lastModified: 2024-08-01
 category: Guides
 tags: [budgeting, savings, beginners]
 featured: true
-draft: false
+
 ---
 
 ## Why Budgeting Matters

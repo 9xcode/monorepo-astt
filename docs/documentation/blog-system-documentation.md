@@ -42,7 +42,7 @@ tags: [budgeting, savings]      # Strictly typed against BLOG_TAGS
 author: "Editorial Team"
 coverImage: "/images/blog/cover.jpg" # Optional heroic imagery
 featured: true                  # Renders 2-cols wide on index layouts
-draft: false                    # Automatically stripped in production builds
+isDraft: false                    # Automatically stripped in production builds
 noindex: false                  # SEO escape hatch (adds noindex/nofollow)
 ---
 ```
