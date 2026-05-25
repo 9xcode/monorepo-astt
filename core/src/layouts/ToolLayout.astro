@@ -35,14 +35,14 @@ type Tool = {
 	};
 };
 
-const { title, toolTitle, category, description, pubDate, modDate, faqSchema, howToSchema, tools, canonical, tags, featureList, hasWidget, fullWidth, hasMath, tocHeadings, tocTitle } = Astro.props as {
+const { title, toolTitle, category, description, publishedAt, updatedAt, faqSchema, howToSchema, tools, canonical, tags, featureList, hasWidget, fullWidth, hasMath, tocHeadings, tocTitle } = Astro.props as {
 	title: string;
 	toolTitle: string;
 	category: string;
 	description: string;
-	/** Pre-resolved W3C date string from formatW3CDate(entry.data.pubDate, siteConfig.datePublished). */
-	pubDate: string;
-	modDate: string;
+	/** Pre-resolved W3C date string from getContentDates() — provided by [tool].astro. */
+	publishedAt: string;
+	updatedAt: string;
 	faqSchema?: any;
 	howToSchema?: any;
 	tools: Tool[];
@@ -121,8 +121,8 @@ const showSidebarSupportCard = siteConfig.ui.sidebar.showSupportCard !== false;
 			ogImageUrl={fullOgImageUrl}
 			category={category}
 			rawToolTitle={toolTitle}
-			pubDate={pubDate}
-			modDate={modDate}
+			publishedAt={publishedAt}
+			updatedAt={updatedAt}
 			faqSchema={faqSchema}
 			howToSchema={howToSchema}
 			tocHeadings={tocHeadings}

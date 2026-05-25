@@ -133,8 +133,8 @@ const breadcrumbSchema = buildBreadcrumbSchema([
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {blogPosts.map((post) => {
             const slug = getBlogSlug(post);
-            const pubDate = post.data.pubDate
-              ? new Date(post.data.pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+            const displayDate = post.data.publishedAt
+              ? new Date(post.data.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
               : null;
             return (
               <a
@@ -146,12 +146,12 @@ const breadcrumbSchema = buildBreadcrumbSchema([
                 </h3>
                 <p class="text-xs text-muted-foreground line-clamp-2 mb-4 flex-grow">{post.data.description}</p>
                 <div class="flex items-center justify-between mt-auto">
-                  {pubDate && (
+                  {displayDate && (
                     <time
-                      datetime={new Date(post.data.pubDate!).toISOString()}
+                      datetime={new Date(post.data.publishedAt!).toISOString()}
                       class="text-[11px] text-muted-foreground/70"
                     >
-                      {pubDate}
+                      {displayDate}
                     </time>
                   )}
                   <span class="inline-flex items-center rounded-md bg-primary/10 text-primary px-2 py-0.5 text-[10px] font-medium">

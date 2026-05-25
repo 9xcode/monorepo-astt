@@ -23,7 +23,7 @@ import ArticleSection from '../components/common/sections/ArticleSection.astro';
 import RichArticleProse from '../components/common/typography/RichArticleProse.astro';
 import AuthorCard from '../components/authors/AuthorCard.astro';
 import { siteConfig } from 'virtual:site-config';
-import { formatW3CDate } from '@mtools/core/utils/w3c-date';
+import { getContentDates } from '../integrations/content-dates/resolver.ts';
 import { getStaticOgImage } from '@mtools/core/utils/og';
 import { replaceSeoPlaceholders, buildBlogTitle } from '../utils/seo';
 import { filterTocHeadings } from '../utils/content';
@@ -40,7 +40,7 @@ interface Props {
 }
 
 const { post, headings, readTime } = Astro.props;
-const { title, seoTitle, description, pubDate, lastModified, coverImage, coverImageAlt, canonical, noindex, hasMath, category } = post.data;
+const { title, seoTitle, description, coverImage, coverImageAlt, canonical, noindex, hasMath, category } = post.data;
 const slug = getBlogSlug(post);
 
 // Resolve all authors — primary + co-authors. Falls back to defaultAuthorSlug for primary.
@@ -66,10 +66,9 @@ const fullOgImageUrl = ogImagePath
   ? new URL(ogImagePath, siteConfig.url).href
   : new URL('/images/og-image.png', siteConfig.url).href;
 
-// Pre-resolve dates to W3C format for schemas.
-// pubDate is optional (string | Date | undefined) — mirrors the tools schema.
-const w3cPubDate = formatW3CDate(pubDate, siteConfig.datePublished);
-const w3cModDate = formatW3CDate(lastModified, siteConfig.buildTime);
+// Pre-resolve dates from the content-dates integration.
+// Fallback hierarchy: frontmatter publishedAt/updatedAt → git → publishedAt.
+const { publishedAt, updatedAt } = getContentDates('blog', slug);
 
 // TOC: post.data.toc overrides site global. filterTocHeadings handles all
 // depth/threshold logic — same function as [tool].astro uses.
@@ -96,8 +95,8 @@ const tocHeadings = filterTocHeadings(headings, post.data.toc);
       description={processedDesc}
       seoUrl={seoUrl}
       ogImageUrl={fullOgImageUrl}
-      pubDate={w3cPubDate}
-      modDate={w3cModDate}
+      publishedAt={publishedAt}
+      updatedAt={updatedAt}
       tocHeadings={tocHeadings}
       category={category}
       categorySlug={categorySlug}
@@ -114,7 +113,7 @@ const tocHeadings = filterTocHeadings(headings, post.data.toc);
         <article>
           <BlogHero
             {title}
-            {lastModified}
+            updatedAt={updatedAt}
             authors={authors}
             {coverImage}
             {coverImageAlt}

@@ -4,14 +4,15 @@
  * Renders the H1, author byline, dates, read time, category badge, and
  * an optional cover image with eager loading to prevent CLS.
  */
-import { formatW3CDate } from '@mtools/core/utils/w3c-date';
+
 import Breadcrumb from '../../common/ui/Breadcrumb.astro';
 import type { AuthorEntry } from '../../../utils/authors';
 import AuthorByline from '../../authors/AuthorByline.astro';
 
 interface Props {
   title: string;
-  lastModified?: string | Date;
+  /** Pre-resolved W3C date string from getContentDates(). Shown as "Last updated" in the hero. */
+  updatedAt?: string;
   authors: AuthorEntry[];
   coverImage?: string;
   coverImageAlt?: string;
@@ -20,8 +21,8 @@ interface Props {
   categorySlug: string;
 }
 
-const { title, lastModified, authors, coverImage, coverImageAlt, readTime, category, categorySlug } = Astro.props;
-const resolvedModDate = lastModified ? new Date(formatW3CDate(lastModified)) : null;
+const { title, updatedAt, authors, coverImage, coverImageAlt, readTime, category, categorySlug } = Astro.props;
+const resolvedModDate = updatedAt ? new Date(updatedAt) : null;
 ---
 
 <header class="mb-2 lg:mb-4">
@@ -56,7 +57,7 @@ const resolvedModDate = lastModified ? new Date(formatW3CDate(lastModified)) : n
     {resolvedModDate && (
       <>
         <span class="text-border/80 hidden sm:inline" aria-hidden="true">•</span>
-        <time datetime={formatW3CDate(lastModified)} class="font-medium flex items-center gap-1.5" title="Last updated">
+        <time datetime={updatedAt} class="font-medium flex items-center gap-1.5" title="Last updated">
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary/70"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21v-5h5"/></svg>
           {resolvedModDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
         </time>

@@ -35,9 +35,9 @@ interface Props {
 	ogImageUrl: string;
 	category: string;
 	rawToolTitle: string;  // unprocessed toolTitle for breadcrumb display
-	/** Pre-resolved W3C date string — always provided by the page layer via formatW3CDate(). */
-	pubDate: string;
-	modDate: string;
+	/** Pre-resolved W3C date string — provided by the page layer via getContentDates(). */
+	publishedAt: string;
+	updatedAt: string;
 	faqSchema?: any;
 	howToSchema?: any;
 	tocHeadings?: Heading[];
@@ -54,8 +54,8 @@ const {
 	ogImageUrl,
 	category,
 	rawToolTitle,
-	pubDate,
-	modDate,
+	publishedAt,
+	updatedAt,
 	faqSchema,
 	howToSchema,
 	tocHeadings,
@@ -72,8 +72,8 @@ const toolSchema = buildWebApplicationSchema({
 	url: seoUrl,
 	description: description || `Use the ${toolTitle} to quickly calculate or convert values online.`,
 	screenshotUrl: ogImageUrl,
-	datePublished: pubDate,
-	dateModified: modDate,
+	datePublished: publishedAt,
+	dateModified: updatedAt,
 	categoryMapping,
 	operatingSystem: siteConfig.seo.softwareApplication.operatingSystem,
 	browserRequirements: siteConfig.seo.softwareApplication.browserRequirements,
@@ -99,8 +99,8 @@ const articleSchema = buildArticleSchema({
 	headline: articleHeadline,
 	description: description || `Use the ${toolTitle} to quickly calculate or convert values online.`,
 	imageUrl: ogImageUrl,
-	datePublished: pubDate,
-	dateModified: modDate,
+	datePublished: publishedAt,
+	dateModified: updatedAt,
 	author: toPersonSchemaInput(author, siteConfig.url),
 	publisher: {
 		name: siteConfig.companyName,

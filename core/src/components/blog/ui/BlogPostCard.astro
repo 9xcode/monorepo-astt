@@ -7,7 +7,6 @@ import type { BlogPost } from '../../../utils/blog';
 import { getBlogSlug } from '../../../utils/blog';
 import { formatW3CDate } from '@mtools/core/utils/w3c-date';
 import { categoryToSlug } from '@mtools/core/utils/slug';
-import { siteConfig } from 'virtual:site-config';
 
 interface Props {
   post: BlogPost;
@@ -16,11 +15,12 @@ interface Props {
 }
 
 const { post, featured = false } = Astro.props;
-const { title, description, pubDate, category } = post.data;
+const { title, description, publishedAt, category } = post.data;
 const slug = getBlogSlug(post);
 const categorySlug = categoryToSlug(category);
-// Resolve pubDate to a Date for display; formatW3CDate handles string|Date|undefined
-const resolvedPubDate = new Date(formatW3CDate(pubDate, siteConfig.datePublished));
+// publishedAt is optional — may be undefined for content without frontmatter dates
+// (git fills the gap in the integration, but BlogPostCard reads directly from post.data)
+const resolvedDate = publishedAt ? new Date(formatW3CDate(publishedAt)) : null;
 ---
 
 <article class:list={['group flex flex-col h-full border rounded-xl hover:shadow-md transition-shadow bg-card', featured && 'sm:col-span-2']}>
@@ -32,9 +32,11 @@ const resolvedPubDate = new Date(formatW3CDate(pubDate, siteConfig.datePublished
     <p class="text-muted-foreground line-clamp-3 mb-6 flex-grow">{description}</p>
 
     <div class="flex items-center justify-between text-sm text-muted-foreground pt-4 border-t border-border/50">
-      <time datetime={resolvedPubDate.toISOString()}>
-        {resolvedPubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
-      </time>
+      {resolvedDate ? (
+        <time datetime={resolvedDate.toISOString()}>
+          {resolvedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+        </time>
+      ) : null}
       <a
         href={`/blog/category/${categorySlug}`}
         class="font-semibold text-primary hover:underline uppercase tracking-wider text-xs"

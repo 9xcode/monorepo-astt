@@ -22,9 +22,9 @@ interface Props {
 	description: string;
 	seoUrl: string;
 	ogImageUrl: string;
-	/** Pre-resolved W3C date string — always provided by the page layer via formatW3CDate(). */
-	pubDate: string;
-	modDate: string;
+	/** Pre-resolved W3C date string — provided by the page layer via getContentDates(). */
+	publishedAt: string;
+	updatedAt: string;
 	faqSchema?: any;
 	tocHeadings?: Heading[];
 	/** Category display name — used for the 4th breadcrumb level in JSON-LD. */
@@ -40,8 +40,8 @@ const {
 	description,
 	seoUrl,
 	ogImageUrl,
-	pubDate,
-	modDate,
+	publishedAt,
+	updatedAt,
 	faqSchema,
 	tocHeadings,
 	category,
@@ -54,8 +54,8 @@ const articleSchema = buildArticleSchema({
 	headline: postTitle,
 	description,
 	imageUrl: ogImageUrl,
-	datePublished: pubDate,
-	dateModified: modDate,
+	datePublished: publishedAt,
+	dateModified: updatedAt,
 	author: toPersonSchemaInput(author, siteConfig.url),
 	publisher: {
 		name: siteConfig.companyName,
