@@ -4,7 +4,7 @@ import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { siteConfig } from 'virtual:site-config';
 import { parseFaqSchema, parseHowToSchema, parseFeatureList } from '../../seo/parsers';
-import { getContentDates } from '../../integrations/content-dates/resolver.ts';
+import { getContentDates } from '../../../integrations/content-dates/resolver.ts';
 import { filterTocHeadings } from '../../utils/content';
 import { getAllTools, getAllToolSummaries, getToolSlug } from '../../utils/tools';
 import { buildToolTitle } from '../../utils/seo';

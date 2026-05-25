@@ -62,6 +62,7 @@ export interface GenerateResult {
   blog: number;
   fromFrontmatter: number;
   fromGit: number;
+  missingDates: number;
   gitUnavailable: boolean;
   copyrightYear: number;
 }
@@ -86,7 +87,7 @@ function parseFrontmatter(mdPath: string): {
 
   const result: { publishedAt?: string; updatedAt?: string } = {};
   for (const line of match[1].split('\n')) {
-    const kv = line.match(/^(\w+)\s*:\s*"?([^"#\r\n]*)"?\s*$/);
+    const kv = line.match(/^(\w+)\s*:\s*['"]?([^'"#\r\n]*)['"]?\s*$/);
     if (!kv || !kv[1] || kv[2] === undefined) continue;
     const key = kv[1].trim();
     const val = kv[2].trim();
@@ -110,45 +111,70 @@ interface GitFileDates {
  *
  * Output format we parse:
  *   COMMIT 2026-04-09T10:00:00+00:00
- *   src/content/tools/sip-calculator/index.md
- *   src/content/blog/my-post/index.md
+ *   sites/finance-tools/src/content/tools/sip-calculator/index.md
+ *   sites/finance-tools/src/content/blog/my-post/index.md
  *
  *   COMMIT 2025-03-15T00:00:00+00:00
- *   src/content/tools/sip-calculator/index.md
+ *   sites/finance-tools/src/content/tools/sip-calculator/index.md
  *
  * Since git log walks from newest → oldest:
  *   - The LAST time we see a file = its first commit (oldest)
  *   - The FIRST time we see a file = its last commit (newest)
  *
- * Returns a Map keyed by relative path from siteRoot.
- * Returns an empty Map if git is unavailable (shallow clone, no .git dir, CI issue).
+ * MONOREPO HANDLING:
+ *   Git pathspecs and --name-only output are always relative to the repo root,
+ *   NOT relative to cwd. In a monorepo like turborepo, siteRoot is a subdirectory
+ *   (e.g. sites/finance-tools/) — so we must prefix the pathspec with the site's
+ *   path relative to the repo root. The returned Map keys are the full repo-root-
+ *   relative paths that git outputs.
+ *
+ * Returns { dates: Map, repoPrefix: string }.
+ *   - dates: Map keyed by repo-root-relative path
+ *   - repoPrefix: site's path relative to repo root (e.g. "sites/finance-tools/")
+ * Returns empty Map + empty prefix if git is unavailable.
  */
 function getGitDates(
   siteRoot: string,
   logger: Pick<AstroIntegrationLogger, 'warn' | 'debug'>,
-): Map<string, GitFileDates> {
+): { dates: Map<string, GitFileDates>; repoPrefix: string } {
   const result = new Map<string, GitFileDates>();
 
+  // ── Detect git repo root ──────────────────────────────────────────────────
+  let repoRoot: string;
   try {
-    // Check git is available and we have history
-    execSync('git rev-parse --git-dir', { cwd: siteRoot, stdio: 'pipe' });
+    repoRoot = execSync('git rev-parse --show-toplevel', {
+      cwd: siteRoot,
+      encoding: 'utf-8',
+      stdio: ['pipe', 'pipe', 'pipe'],
+    }).trim();
   } catch {
     logger.warn(
       '[content-dates] No git repository found. Dates will use frontmatter only. ' +
       'Run inside a git repo with full history (fetch-depth: 0 in CI).',
     );
-    return result;
+    return { dates: result, repoPrefix: '' };
   }
+
+  // Compute site's path relative to the repo root.
+  // e.g. siteRoot = "/path/monorepo/sites/finance-tools"
+  //      repoRoot = "/path/monorepo"
+  //      repoPrefix = "sites/finance-tools/"
+  const repoPrefix = relative(repoRoot, siteRoot).replace(/\\/g, '/') + '/';
+  // If siteRoot IS the repo root, prefix is "./" → normalise to ""
+  const normalizedPrefix = repoPrefix === './' ? '' : repoPrefix;
+
+  logger.debug(`[content-dates] repo root: ${repoRoot}, site prefix: "${normalizedPrefix}"`);
 
   try {
     // Single batch command — gets all commits that touched content files.
     // --diff-filter=ACRM: Added, Copied, Renamed, Modified (excludes Deleted)
-    // --name-only: list affected files per commit
-    // --follow is not used here (batch mode); rename tracking is covered by ACRM filter
+    // --name-only: list affected files per commit (paths relative to repo root)
+    // Pathspec uses the full repo-root-relative path to the content directories.
+    const toolsPathspec = `"${normalizedPrefix}src/content/tools/*/index.md"`;
+    const blogPathspec  = `"${normalizedPrefix}src/content/blog/*/index.md"`;
     const raw = execSync(
-      'git log --format="COMMIT %aI" --name-only --diff-filter=ACRM -- ' +
-      '"src/content/tools/*/index.md" "src/content/blog/*/index.md"',
-      { cwd: siteRoot, encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] },
+      `git log --format="COMMIT %aI" --name-only --diff-filter=ACRM -- ${toolsPathspec} ${blogPathspec}`,
+      { cwd: repoRoot, encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] },
     );
 
     let currentDate: string | undefined;
@@ -162,14 +188,13 @@ function getGitDates(
         continue;
       }
 
-      // It's a file path
+      // It's a file path (relative to repo root)
       if (!currentDate) continue;
-      const relPath = trimmed; // relative to repo root (which should be siteRoot for site repos)
 
-      const existing = result.get(relPath);
+      const existing = result.get(trimmed);
       if (!existing) {
         // First time we see this file = most recent commit (newest → oldest traversal)
-        result.set(relPath, { lastCommit: currentDate, firstCommit: currentDate });
+        result.set(trimmed, { lastCommit: currentDate, firstCommit: currentDate });
       } else {
         // Subsequent times = older commits → update firstCommit
         existing.firstCommit = currentDate;
@@ -182,7 +207,7 @@ function getGitDates(
     );
   }
 
-  return result;
+  return { dates: result, repoPrefix: normalizedPrefix };
 }
 
 // ---------------------------------------------------------------------------
@@ -280,7 +305,7 @@ export function generateContentDates(
   if (!existsSync(genDir)) mkdirSync(genDir, { recursive: true });
 
   // ── 1. Get git dates (single batch pass) ──────────────────────────────────
-  const gitDates = getGitDates(siteRoot, logger);
+  const { dates: gitDates, repoPrefix } = getGitDates(siteRoot, logger);
   const gitUnavailable = gitDates.size === 0;
 
   // ── 2. Copyright year ─────────────────────────────────────────────────────
@@ -302,6 +327,7 @@ export function generateContentDates(
   const manifest: Record<string, ResolvedDates> = {};
   let fromFrontmatter = 0;
   let fromGit = 0;
+  const missingDates: string[] = [];
 
   function resolveEntry(
     collection: 'tools' | 'blog',
@@ -310,10 +336,10 @@ export function generateContentDates(
   ): void {
     const mdPath    = join(contentDir, slug, 'index.md');
     const fm        = parseFrontmatter(mdPath);
-    // git log paths are relative to repo root — try both siteRoot-relative and bare
-    const relPath   = relative(siteRoot, mdPath).replace(/\\/g, '/');
-    // Also try without leading siteRoot (for repos where siteRoot IS the repo root)
-    const gitEntry  = gitDates.get(relPath) ?? gitDates.get(`src/content/${collection}/${slug}/index.md`);
+    // git log outputs paths relative to repo root (e.g. "sites/finance-tools/src/content/tools/slug/index.md")
+    // repoPrefix is the site's path relative to repo root (e.g. "sites/finance-tools/")
+    const gitKey    = `${repoPrefix}src/content/${collection}/${slug}/index.md`;
+    const gitEntry  = gitDates.get(gitKey);
 
     // publishedAt: frontmatter → git first-commit → undefined
     let publishedAt: string | undefined;
@@ -349,15 +375,23 @@ export function generateContentDates(
     if (publishedAt && updatedAt) {
       manifest[`${collection}/${slug}`] = { publishedAt, updatedAt };
     } else {
-      logger.warn(
-        `[content-dates] No date found for ${collection}/${slug}. ` +
-        'Add publishedAt to frontmatter or ensure git history is available.',
-      );
+      missingDates.push(`${collection}/${slug}`);
     }
   }
 
   for (const slug of toolSlugs) resolveEntry('tools', slug, toolsDir);
   for (const slug of blogSlugs) resolveEntry('blog', slug, blogDir);
+
+  // Emit a single combined warning for all entries that couldn't be resolved.
+  // Batching avoids 24 separate [WARN] lines flooding the build output.
+  if (missingDates.length > 0) {
+    logger.warn(
+      `[content-dates] No dates resolved for ${missingDates.length} ` +
+      `${missingDates.length === 1 ? 'entry' : 'entries'} — ` +
+      'add publishedAt to frontmatter or ensure git history is available ' +
+      `(fetch-depth: 0 in CI): [${missingDates.join(', ')}]`,
+    );
+  }
 
   // ── 5. Write manifest ─────────────────────────────────────────────────────
   const output: ContentDatesManifest = {
@@ -376,6 +410,7 @@ export function generateContentDates(
     blog: blogSlugs.length,
     fromFrontmatter,
     fromGit,
+    missingDates: missingDates.length,
     gitUnavailable,
     copyrightYear,
   };

@@ -66,9 +66,6 @@ export const siteConfig: SiteConfig = {
   // ─── Legal ──────────────────────────────────────────────────────────────
   companyName: "MultiTools",
 
-  // ─── Temporal ───────────────────────────────────────────────────────────
-  defaultTimezone: "UTC",
-
   // ─── Contact ────────────────────────────────────────────────────────────
   contact: {
     email: "support@multitools.app",

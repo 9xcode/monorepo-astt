@@ -51,7 +51,6 @@ A `Record<string, { appCategory, additionalType? }>` that maps content categorie
 ## 6. Company & Copyright
 * **`companyName`**: The legal name of the entity operating the site.
 * **`copyrightYear`**: Removed. The copyright year is now automatically derived from the newest Git commit date via the `content-dates` integration and exposed through `getCopyrightYear()` in `Footer.astro`. No manual configuration needed.
-* **`defaultTimezone`**: The fallback timezone applied when a date is written without an explicit offset (e.g., "UTC" or "+05:30"). Ensure consistency across schemas and sitemaps.
 
 ## 7. Contact Information
 * **`contact.email`**: The primary support email address.
@@ -126,3 +125,9 @@ Governs the sticky/inline bar found immediately below a tool's primary widget.
 A dedicated object connecting "Support Us" or "Buy me a Coffee" links to various buttons scattered across the UI (the sidebar `SupportCard`, the `ToolActionTray` support button, and the `/support` page).
 * **`features.support.url`**: The destination link. Setting this to an empty string (`""`) will automatically hide all support buttons across the site regardless of other config settings.
 * **`features.support.label`**: The text rendered on the buttons (e.g., "Support Us").
+
+
+## Deprecated
+
+* **`defaultTimezone`**: The fallback timezone applied when a date is written without an explicit offset (e.g., "UTC" or "+05:30"). Ensure consistency across schemas and sitemaps.
+* **`copyrightYear`**: Removed. The copyright year is now automatically derived from the newest Git commit date via the `content-dates` integration and exposed through `getCopyrightYear()` in `Footer.astro`. No manual configuration needed.

@@ -12,6 +12,8 @@
  * - [month_year] -> "March 2026"
  */
 
+import { siteConfig } from 'virtual:site-config';
+
 // Captured once when the module loads during the Astro build.
 // Using a module-level constant ensures every replaceSeoPlaceholders()
 // call within a build sees the same month/year — and avoids repeated

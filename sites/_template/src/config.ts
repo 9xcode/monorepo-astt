@@ -64,9 +64,6 @@ export const siteConfig: SiteConfig = {
   // ─── Legal ──────────────────────────────────────────────────────────────
   companyName: "PLACEHOLDER_COMPANY",
 
-  // ── Temporal ───────────────────────────────────────────────────────────────
-  defaultTimezone: "UTC",
-
   // ─── Contact ────────────────────────────────────────────────────────────
   contact: {
     email: "support@PLACEHOLDER_DOMAIN",

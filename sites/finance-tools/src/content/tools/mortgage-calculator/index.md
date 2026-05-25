@@ -64,3 +64,4 @@ The traditional "gold standard" is a **20% down payment**. Putting 20% down imme
 
 ### Does a lower interest rate really matter that much?
 Yes. On a 30-year mortgage for $350,000, the difference between a 6.0% interest rate and a 7.0% interest rate is roughly $230 *every single month*. Over the life of the 30-year loan, that 1% difference will cost you over **$80,000** in extra interest payments. This is why having an excellent credit score before applying for a mortgage is fiercely important.
+ 

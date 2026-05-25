@@ -23,7 +23,7 @@ import ArticleSection from '../components/common/sections/ArticleSection.astro';
 import RichArticleProse from '../components/common/typography/RichArticleProse.astro';
 import AuthorCard from '../components/authors/AuthorCard.astro';
 import { siteConfig } from 'virtual:site-config';
-import { getContentDates } from '../integrations/content-dates/resolver.ts';
+import { getContentDates } from '../../integrations/content-dates/resolver.ts';
 import { getStaticOgImage } from '@mtools/core/utils/og';
 import { replaceSeoPlaceholders, buildBlogTitle } from '../utils/seo';
 import { filterTocHeadings } from '../utils/content';

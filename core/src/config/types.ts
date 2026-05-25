@@ -224,10 +224,6 @@ export interface SiteConfig {
   // ── Legal ──────────────────────────────────────────────────────────────────
   companyName: string;
 
-  // ── Temporal ───────────────────────────────────────────────────────────────
-  /** Fallback timezone when a date has no explicit offset (e.g. "2026-03-15"). Use "UTC" or "+05:30". */
-  defaultTimezone: string;
-
   // ── Contact ────────────────────────────────────────────────────────────────
   contact: {
     email: string;

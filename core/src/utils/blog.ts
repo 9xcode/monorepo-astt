@@ -6,9 +6,6 @@
  *
  * Common utilities (getReadTime, filterTocHeadings) live in content.ts.
  * Slug normalisation lives in slug.ts.
- *
- * Phase 10: moved to @mtools/core/utils/blog.
- * siteConfig now comes from virtual:site-config (build-time constant).
  */
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { formatW3CDate } from './w3c-date';

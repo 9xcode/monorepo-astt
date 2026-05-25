@@ -5,7 +5,6 @@ publishedAt: 2024-03-15
 category: "News"
 tags: ["productivity"]
 author: demo
-coAuthors: ["abhishek"]
 featured: false
 
 ---

@@ -15,23 +15,8 @@
 // The JSON import is resolved statically by Vite — no runtime file I/O.
 
 import contentDatesJson from '@content-dates';
-
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
-
-interface ResolvedDates {
-  publishedAt: string;
-  updatedAt: string;
-}
-
-interface ContentDatesManifest {
-  _meta: {
-    copyrightYear: number;
-    generatedAt: string;
-  };
-  [key: string]: ResolvedDates | { copyrightYear: number; generatedAt: string };
-}
+// Types are import-type only — erased at build time, no Node code bundled.
+import type { ResolvedDates, ContentDatesManifest } from './generator.ts';
 
 const contentDates = contentDatesJson as ContentDatesManifest;
 
@@ -61,11 +46,15 @@ export function getContentDates(
   const entry = (contentDates as Record<string, unknown>)[key];
 
   if (!entry || typeof entry !== 'object' || !('publishedAt' in entry)) {
-    throw new Error(
-      `[content-dates] No resolved dates found for "${key}". ` +
-      'Ensure the content file exists and the content-dates integration has run. ' +
-      'If git history is unavailable, add publishedAt to frontmatter.',
+    // No entry in manifest: git history was unavailable and no frontmatter publishedAt.
+    // Fall back to the manifest generation timestamp so the build can complete.
+    // Fix: add publishedAt to the frontmatter, or run with full git history (fetch-depth: 0).
+    const fallback = contentDates._meta.generatedAt;
+    console.warn(
+      `[content-dates] No resolved dates for "${key}" — falling back to manifest generatedAt. ` +
+      'Add publishedAt to frontmatter or ensure git history is available (fetch-depth: 0 in CI).',
     );
+    return { publishedAt: fallback, updatedAt: fallback };
   }
 
   return entry as ResolvedDates;

@@ -73,9 +73,14 @@ export function contentDates(): AstroIntegration {
           if (result.fromFrontmatter > 0) sources.push(`${result.fromFrontmatter} frontmatter`);
           if (result.fromGit > 0)         sources.push(`${result.fromGit} git`);
 
+          const missingPart = result.missingDates > 0
+            ? ` — ${result.missingDates} missing dates (see WARN above)`
+            : '';
+
           logger.info(
             `[content-dates] Resolved ${result.tools} tools + ${result.blog} blog posts` +
             (sources.length > 0 ? ` (${sources.join(', ')})` : '') +
+            missingPart +
             ` — copyright year: ${result.copyrightYear}`,
           );
 

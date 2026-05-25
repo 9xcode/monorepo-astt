@@ -53,7 +53,6 @@ letter do ad this : https://www.google.com/preferences/source?q=https://redeemco
 ===============
 ## Fixes
 
-- change the stretagy fro build time (modifiedDate)
 
 --------
 

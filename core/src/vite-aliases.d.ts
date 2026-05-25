@@ -20,3 +20,8 @@ declare module '@body-scripts' {
   const BodyScripts: import('astro').AstroComponentFactory;
   export default BodyScripts;
 }
+
+declare module '@content-dates' {
+  const contentDates: import('../integrations/content-dates/generator.ts').ContentDatesManifest;
+  export default contentDates;
+}
