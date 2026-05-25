@@ -1,8 +1,8 @@
 ---
 title: "Top 10 Essential Finance Tips for 2024"
 description: "Master your money this year with our curated list of actionable financial advice for individuals and families."
-pubDate: 2024-03-01
-lastModified: 2024-03-05
+publishedAt: 2024-03-01
+updatedAt: 2024-03-05
 category: "Tips"
 tags: ["advanced", "savings"]
 coverImage: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&q=80&w=1200&h=630"

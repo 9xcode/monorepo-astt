@@ -6,8 +6,8 @@ shortDescription: "A example tool to test options and layouts of the app"
 category: "General"
 tags: ["utility", "text"]
 icon: "Wrench"
-pubDate: "2026-02-08T08:00:00"
-lastModified: 2026-02-15T14:24:33
+publishedAt: "2026-02-08T08:00:00"
+updatedAt: 2026-02-15T14:24:33
 author: example-author
 coAuthors: ["example-author-2", "example-author-3"]
 # widgetSlug: "example-tool-widget"

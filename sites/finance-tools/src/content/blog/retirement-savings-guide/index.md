@@ -1,7 +1,7 @@
 ---
 title: "Saving for Retirement: A Simple 4-Step Guide"
 description: "It is never too early or too late to start. Follow this simple guide to ensure your golden years are financially secure."
-pubDate: 2024-03-20
+publishedAt: 2024-03-20
 category: "Guides"
 tags: ["savings", "budgeting"]
 featured: true

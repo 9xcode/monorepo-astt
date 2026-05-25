@@ -9,8 +9,8 @@ order: 1
 tags: ["investment", "savings", "retirement", "compound-interest"]
 fullWidth: true
 hasMath: true
-pubDate: '2025-03-15'
-lastModified: '2026-04-09'
+publishedAt: '2025-03-15'
+updatedAt: '2026-04-09'
 ---
 
 ## What is a Systematic Investment Plan (SIP)?

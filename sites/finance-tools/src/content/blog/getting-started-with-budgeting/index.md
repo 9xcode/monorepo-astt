@@ -1,8 +1,8 @@
 ---
 title: "How to Start Budgeting in 2024: A Complete Beginner's Guide"
 description: "Learn the fundamentals of personal budgeting with our step-by-step guide. Start tracking your income and expenses today to take control of your financial future."
-pubDate: 2024-06-15
-lastModified: 2024-08-01
+publishedAt: 2024-06-15
+updatedAt: 2024-08-01
 category: Guides
 tags: [budgeting, savings, beginners]
 featured: true

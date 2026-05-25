@@ -1,7 +1,7 @@
 ---
 title: "The Future of AI in Personal Finance"
 description: "Exploring how Artificial Intelligence is revolutionizing the way we manage, invest, and save our money."
-pubDate: 2024-03-15
+publishedAt: 2024-03-15
 category: "News"
 tags: ["productivity"]
 author: demo

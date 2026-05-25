@@ -4,8 +4,8 @@ seoTitle: "Astro Tools Template: Ultimate Setup Guide [year]"
 description: "Learn how to customize the MultiTools template to build your own lightning-fast, privacy-focused tools platform in minutes."
 category: "Guides"
 tags: ["beginners", "productivity"]
-pubDate: "2026-05-13T12:00:00Z"
-lastModified: "2026-05-14T10:00:00Z"
+publishedAt: "2026-05-13T12:00:00Z"
+updatedAt: "2026-05-14T10:00:00Z"
 author: "example-author"
 coAuthors: []
 # coverImage: "./cover.jpg"

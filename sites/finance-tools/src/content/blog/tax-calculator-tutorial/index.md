@@ -1,7 +1,7 @@
 ---
 title: "Tutorial: Getting the Most Out of Our Tax Calculator"
 description: "A comprehensive walkthrough on how to accurately calculate your taxes using our latest web-based tool."
-pubDate: 2024-03-10
+publishedAt: 2024-03-10
 category: "Tutorials"
 tags: ["retirement", "credit"]
 featured: false
