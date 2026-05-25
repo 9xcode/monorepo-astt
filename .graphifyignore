@@ -1,0 +1,14 @@
+# OG Image Caches
+public/images/og/
+
+# auto-generated files
+src/generated/
+
+# generated types
+.astro/
+
+# build output
+dist/
+
+# dependencies
+node_modules/

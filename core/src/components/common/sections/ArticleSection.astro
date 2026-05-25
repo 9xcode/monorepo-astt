@@ -1,0 +1,72 @@
+---
+/**
+ * ArticleSection — A modern, elegant, editorial-style content container.
+ * Perfect for long-form reading, blogs, or minimalist tool descriptions.
+ * Features an open, spacious design compared to the boxed ContentSection.
+ */
+import TableOfContents from "./TableOfContents.astro";
+import { categoryToSlug } from "@mtools/core/utils/slug";
+
+type Heading = import('./TableOfContents.astro').Heading;
+
+interface Props {
+	title?: string;
+	category?: string;
+	tocHeadings?: Heading[];
+	tocTitle?: string;
+	tags?: readonly string[];
+}
+
+const { title, category, tocHeadings, tocTitle, tags } = Astro.props;
+---
+
+<section class="relative py-2 md:py-4">
+	{title && (
+		<header class="mb-8 flex flex-col gap-2">
+			<div class="text-3xl font-extrabold tracking-tight text-foreground md:text-4xl lg:text-5xl leading-tight">{title}</div>
+			
+			<div class="mt-3 flex items-center w-full">
+				<div class="h-1 w-12 bg-primary rounded-full"></div>
+				<div class="h-[1px] flex-1 bg-gradient-to-r from-border/80 to-transparent"></div>
+			</div>
+		</header>
+	)}
+
+	{tocHeadings && tocHeadings.length > 0 && (
+		<nav class="mb-10">
+			<TableOfContents headings={tocHeadings} title={tocTitle || "In this Article"} />
+		</nav>
+	)}
+	
+	<div class="relative z-10">
+		<slot />
+	</div>
+
+	{(tags && tags.length > 0) || category ? (
+		<footer class="mt-8 pt-6 border-t border-border/40">
+			<h4 class="text-sm font-bold text-foreground mb-4 uppercase tracking-widest flex items-center gap-2">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground"><path d="m10 13-6 6a2 2 0 0 0 2 2h6l6-6"/><path d="m14 11 6-6a2 2 0 0 0-2-2h-6l-6 6"/><path d="m14 11-4-4"/><path d="m10 13 4 4"/></svg>
+				Topics & Categories
+			</h4>
+			<div class="flex flex-wrap items-center gap-2.5">
+				{category && (
+					<a 
+						href={`/categories/${categoryToSlug(category)}`} 
+						class="inline-flex items-center px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-sm font-medium text-primary hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all"
+					>
+						<span class="w-1.5 h-1.5 rounded-full bg-primary mr-2 opacity-80"></span>
+						{category}
+					</a>
+				)}
+				{tags && tags.map(tag => (
+					<span 
+						class="inline-flex items-center px-3.5 py-1.5 rounded-full bg-secondary/30 border border-border/50 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/80 hover:border-border transition-all cursor-default"
+					>
+						<span class="opacity-40 mr-1.5 text-primary">#</span>
+						{tag.replace(/-/g, ' ')}
+					</span>
+				))}
+			</div>
+		</footer>
+	) : null}
+</section>

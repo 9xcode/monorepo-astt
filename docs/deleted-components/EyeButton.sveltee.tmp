@@ -1,0 +1,133 @@
+<script lang="ts">
+  interface Props {
+    href?: string;
+    text?: string;
+    buttonColor?: string;
+    textColor?: string;
+    eyeColor?: string;
+    pupilColor?: string;
+    eyeSize?: number; // Size in pixels
+    pupilSize?: number; // Size in pixels
+    blinking?: boolean;
+  }
+
+  let {
+    href = "https://buymeacoffee.com/kumar",
+    text = "Buy me a coffee",
+    buttonColor = "bg-yellow-400",
+    textColor = "text-black",
+    eyeColor = "bg-white",
+    pupilColor = "bg-black",
+    eyeSize = 24,
+    pupilSize = 10,
+    blinking = true,
+  }: Props = $props();
+
+  // Track global mouse position
+  let mouseX = $state(0);
+  let mouseY = $state(0);
+
+  // References to calculate individual eye centers
+  let leftEyeRef = $state<HTMLDivElement>();
+  let rightEyeRef = $state<HTMLDivElement>();
+
+  function handleMouseMove(e: MouseEvent) {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  }
+
+  // Calculate the transform for the pupil to point toward the cursor
+  function getPupilTransform(node: HTMLDivElement | undefined, mx: number, my: number) {
+    if (!node) return "translate(0px, 0px)";
+    
+    const rect = node.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    
+    const dx = mx - cx;
+    const dy = my - cy;
+    const angle = Math.atan2(dy, dx);
+    
+    // Confine the pupil inside the eye boundary with 2px of padding
+    const maxRadius = (eyeSize - pupilSize) / 2 - 2; 
+    
+    // Scale down the distance so it feels natural and doesn't instantly snap to the edge
+    const distance = Math.min(maxRadius, Math.hypot(dx, dy) / 15);
+
+    const x = Math.cos(angle) * distance;
+    const y = Math.sin(angle) * distance;
+    
+    return `translate(${x}px, ${y}px)`;
+  }
+</script>
+
+<svelte:window onmousemove={handleMouseMove} />
+
+<a
+  {href}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="{buttonColor} {textColor} inline-flex items-center justify-center gap-2.5 px-6 py-3 rounded-full font-bold shadow-sm hover:scale-105 hover:shadow-md transition-all duration-200 decoration-none outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+>
+  <div class="flex gap-1.5 pointer-events-none">
+    <div
+      bind:this={leftEyeRef}
+      class="{eyeColor} rounded-full flex items-center justify-center relative overflow-hidden {blinking ? 'animate-blink' : ''}"
+      style="width: {eyeSize}px; height: {eyeSize}px;"
+    >
+      <div
+        class="{pupilColor} rounded-full transition-transform duration-75 ease-out"
+        style="width: {pupilSize}px; height: {pupilSize}px; transform: {getPupilTransform(leftEyeRef, mouseX, mouseY)};"
+      ></div>
+    </div>
+
+    <div
+      bind:this={rightEyeRef}
+      class="{eyeColor} rounded-full flex items-center justify-center relative overflow-hidden {blinking ? 'animate-blink' : ''}"
+      style="width: {eyeSize}px; height: {eyeSize}px;"
+    >
+      <div
+        class="{pupilColor} rounded-full transition-transform duration-75 ease-out"
+        style="width: {pupilSize}px; height: {pupilSize}px; transform: {getPupilTransform(rightEyeRef, mouseX, mouseY)};"
+      ></div>
+    </div>
+  </div>
+  
+  <span>{text}</span>
+</a>
+
+<style>
+  /* Native CSS keyframes for a lightweight blink without needing external JS libraries */
+  @keyframes blink {
+    0%, 96%, 98%, 100% {
+      transform: scaleY(1);
+    }
+    97%, 99% {
+      transform: scaleY(0.1);
+    }
+  }
+  .animate-blink {
+    animation: blink 4.5s infinite ease-in-out;
+  }
+</style>
+
+
+
+-------------
+## Usage in Astro
+
+import EyeButton from '../components/EyeButton.svelte';
+
+
+<EyeButton client:idle />
+
+  // button with custom colors
+  <EyeButton 
+    client:idle 
+    buttonColor="bg-zinc-900" 
+    textColor="text-white"
+    pupilColor="bg-yellow-400"
+    text="Sponsor Project"
+    eyeSize={28}
+    pupilSize={12}
+  />

@@ -1,0 +1,62 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/common/sections/Header.astro";
+import Footer from "../../components/common/sections/Footer.astro";
+import ToolGrid from "../../components/tools-grid/ToolGrid.astro";
+import CategoryHeroSection from "../../components/common/sections/CategoryHeroSection.astro";
+import { siteConfig } from 'virtual:site-config';
+import { categoryToSlug } from '@mtools/core/utils/slug';
+import JsonLd from "../../seo/JsonLd.astro";
+import { buildItemListSchema } from "../../seo";
+import { getAllToolSummaries, getToolSummariesByCategory } from "../../utils/tools";
+
+export async function getStaticPaths() {
+  const allTools = await getAllToolSummaries();
+  const categories = [...new Set(allTools.map(t => t.data.category))];
+  return categories.map(category => ({
+    params: { category: categoryToSlug(category) },
+    props: { categoryName: category },
+  }));
+}
+
+const { categoryName } = Astro.props;
+const seoUrl = new URL(Astro.url.pathname, siteConfig.url).href;
+
+// Get tools for this category to populate the ItemList schema.
+// getToolSummariesByCategory() returns sorted (order → alpha) draft-filtered summaries.
+const categoryTools = await getToolSummariesByCategory(categoryName);
+
+const itemListSchema = buildItemListSchema({
+	name: `${categoryName} Tools`,
+	description: `A comprehensive list of free ${categoryName.toLowerCase()} tools and calculators.`,
+	url: seoUrl,
+	items: categoryTools.map(tool => ({
+		name: tool.data.title,
+		url: new URL(`/tools/${tool.slug}`, siteConfig.url).href,
+		categoryMapping: siteConfig.seo.categoryMappings[categoryName] || { appCategory: "UtilitiesApplication" },
+		operatingSystem: siteConfig.seo.softwareApplication.operatingSystem || "Any",
+		priceCurrency: siteConfig.localization?.currencyCode || "USD",
+	})),
+});
+---
+
+<BaseLayout title={`Free ${categoryName} Tools - Online Calculators and Converters`} canonicalURL={seoUrl} description={`Explore our free collection of fast, privacy-focused ${categoryName.toLowerCase()} tools. No sign-up or data tracking.`}>
+	<Fragment slot="head">
+		<JsonLd schema={itemListSchema} />
+	</Fragment>
+	<Header />
+	<main class="flex-1">
+		<CategoryHeroSection
+			badge="Collection Directory"
+			title={categoryName}
+			subtitle={`Explore our collection of fast and free ${categoryName.toLowerCase()} tools. No tracking, just pure privacy-first utility.`}
+		/>
+
+		<section class="py-16 px-4">
+			<div class="container mx-auto">
+				<ToolGrid category={categoryName} />
+			</div>
+		</section>
+	</main>
+	<Footer />
+</BaseLayout>

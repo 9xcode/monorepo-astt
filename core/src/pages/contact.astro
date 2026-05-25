@@ -1,0 +1,62 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/common/sections/Header.astro";
+import Footer from "../components/common/sections/Footer.astro";
+import { Mail, MapPin } from '@lucide/svelte';
+import ContactForm from "../components/common/forms/ContactForm.svelte";
+import ErrorBoundary from "../components/common/ui/ErrorBoundary.svelte";
+import { siteConfig } from 'virtual:site-config';
+import JsonLd from "../seo/JsonLd.astro";
+import { buildWebPageSchema } from "../seo";
+
+const seoUrl = new URL('/contact', siteConfig.url).href;
+const pageTitle = `Contact Us - ${siteConfig.name}`;
+const pageDescription = `Get in touch with the ${siteConfig.name} team.`;
+
+const contactSchema = buildWebPageSchema({
+	type: 'ContactPage',
+	name: pageTitle,
+	description: pageDescription,
+	url: seoUrl,
+	websiteUrl: siteConfig.url,
+});
+---
+<BaseLayout title={pageTitle} canonicalURL={seoUrl} description={pageDescription}>
+	<Fragment slot="head">
+		<JsonLd schema={contactSchema} />
+	</Fragment>
+	<Header />
+	<main class="flex-1 container mx-auto px-4 py-16 max-w-5xl">
+		<div class="text-center space-y-4 mb-12">
+			<h1 class="text-4xl font-bold tracking-tight">Contact Us</h1>
+			<p class="text-lg text-muted-foreground">Have a question? We'd love to hear from you.</p>
+		</div>
+
+		<div class="grid md:grid-cols-2 gap-12 items-start">
+			<div class="space-y-8">
+				<div class="space-y-6 bg-card border rounded-xl p-8 shadow-sm">
+					<div>
+						<h3 class="text-xl font-semibold mb-2">Get in Touch</h3>
+						<p class="text-muted-foreground">Fill out the form and our team will get back to you within 24 hours.</p>
+					</div>
+					
+					<div class="space-y-4">
+						<div class="flex items-center gap-3 text-muted-foreground">
+							<Mail class="size-5 text-primary" />
+							<span>{siteConfig.contact.email}</span>
+						</div>
+						<div class="flex items-center gap-3 text-muted-foreground">
+							<MapPin class="size-5 text-primary" />
+							<span>{siteConfig.contact.location}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<ErrorBoundary client:load>
+				<ContactForm client:visible />
+			</ErrorBoundary>
+		</div>
+	</main>
+	<Footer />
+</BaseLayout>

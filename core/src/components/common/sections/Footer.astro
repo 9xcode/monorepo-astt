@@ -1,0 +1,18 @@
+---
+import { siteConfig } from 'virtual:site-config';
+import type { NavItem } from '../../../config/types.ts';
+import { getCopyrightYear } from '../../../../integrations/content-dates/resolver.ts';
+---
+
+<footer class="border-t py-6 md:py-0">
+	<div class="container mx-auto px-4 h-16 flex flex-col md:flex-row items-center justify-between gap-4">
+		<p class="text-sm text-muted-foreground text-center md:text-left">
+			&copy; {getCopyrightYear()} {siteConfig.companyName}. All rights reserved.
+		</p>
+		<div class="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+			{siteConfig.ui.navigation.footer.map((item: NavItem) => (
+				<a href={item.href} class="hover:text-foreground transition-colors">{item.label}</a>
+			))}
+		</div>
+	</div>
+</footer>

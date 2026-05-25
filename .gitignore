@@ -1,22 +1,38 @@
 # build output
 dist/
+**/dist/
 
 # generated types
 .astro/
+**/.astro/
+
+# Turborepo cache
+.turbo/
+
+# ignore auto generated graphify output files
+graphify-out/
+
+# angigravity
+.antigravitycli/
 
 # OG Image Caches
 /public/images/og/**/*.png
+sites/*/public/images/og/**/*.png
 # NOTE: .og-manifest.json is NOT ignored. Track it in Git to show OG updates in pull requests!
 
 # auto-generated files (rebuilt on every dev/build)
 src/generated/
+sites/*/src/generated/
 
 # dependencies
 node_modules/
+**/node_modules/
+# pnpm parks packages installed by other package managers here
+node_modules/.ignored/
 
 # file for temporary use
-tmp-file.md
-
+tmp.md
+docs/tmp.md
 
 # logs
 npm-debug.log*
@@ -44,3 +60,7 @@ pnpm-debug.log*
 .idea/
 # Uncomment below if you don't want to share VS Code settings with the team:
 .vscode/
+
+# Capacitor native platform projects
+mobile/*/android/
+mobile/*/ios/

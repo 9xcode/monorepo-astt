@@ -1,0 +1,176 @@
+---
+/**
+ * Author Profile Page — /authors/[author]
+ *
+ * Statically generated for every author in src/content/authors/.
+ * Renders: AuthorProfileHero, long-form bio body, posts grid, tools grid.
+ *
+ * SEO:
+ *   - Title: {name} — Author at {siteConfig.name}
+ *   - Person JSON-LD schema in <head>
+ *   - BreadcrumbList: Home → Authors → {name}
+ */
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/common/sections/Header.astro';
+import Footer from '../../components/common/sections/Footer.astro';
+import AuthorProfileHero from '../../components/authors/AuthorProfileHero.astro';
+import JsonLd from '../../seo/JsonLd.astro';
+import { siteConfig } from 'virtual:site-config';
+import {
+  getAllAuthors,
+  getContentByAuthor,
+  getAuthorUrl,
+  toPersonSchemaInput,
+} from '../../utils/authors';
+import { buildPersonSchema } from '../../seo/primitives';
+import { buildBreadcrumbSchema } from '../../seo/index';
+import { getBlogSlug } from '../../utils/blog';
+import { getToolSlug } from '../../utils/tools';
+import { iconMap, Calculator } from '$lib/icons';
+
+export async function getStaticPaths() {
+  const authors = await getAllAuthors();
+  return authors.map((author) => ({
+    params: { author: author.id },
+    props: { author },
+  }));
+}
+
+const { author } = Astro.props;
+const { Content } = await render(author);
+
+const { blogPosts, tools } = await getContentByAuthor(author.id);
+const { name } = author.data;
+
+const pageTitle = `${name}, Author at ${siteConfig.name}`;
+const pageDescription = author.data.shortBio;
+const canonicalUrl = new URL(getAuthorUrl(author.id), siteConfig.url).href;
+
+// --- Person JSON-LD ---
+const personSchema = buildPersonSchema(toPersonSchemaInput(author, siteConfig.url));
+
+// --- BreadcrumbList JSON-LD ---
+const breadcrumbSchema = buildBreadcrumbSchema([
+  { name: 'Home',    url: siteConfig.url },
+  { name: 'Authors', url: new URL('/authors', siteConfig.url).href },
+  { name: name,      url: canonicalUrl },
+]);
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  canonicalURL={canonicalUrl}
+  type="website"
+>
+  <Fragment slot="head">
+    <JsonLd schema={personSchema} />
+    <JsonLd schema={breadcrumbSchema} />
+  </Fragment>
+
+  <Header />
+
+  <main class="flex-1 container mx-auto px-4 py-8 max-w-4xl">
+
+    {/* Profile hero — avatar, name, role, socials, expertise tags */}
+    <AuthorProfileHero author={author} />
+
+    {/* Divider */}
+    <hr class="border-border my-6" />
+
+    {/* Long-form bio from the .md body */}
+    {author.body && author.body.trim().length > 0 && (
+      <section class="prose prose-neutral dark:prose-invert max-w-none mb-10" aria-label="About the author">
+        <Content />
+      </section>
+    )}
+
+    {/* Tools by this author — only shown if any tools have this author explicitly set */}
+    {tools.length > 0 && (
+      <section class="mb-10" aria-label={`Tools by ${name}`}>
+        <h2 class="text-2xl font-bold text-foreground mb-5">
+          Tools by {name}
+          <span class="ml-2 text-sm font-normal text-muted-foreground">({tools.length})</span>
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {tools.map((tool) => {
+            const slug = getToolSlug(tool);
+            const Icon = tool.data.icon ? (iconMap[tool.data.icon] ?? Calculator) : Calculator;
+            return (
+              <a
+                href={`/tools/${slug}`}
+                class="group flex items-start gap-4 p-4 rounded-xl border bg-card hover:border-primary/50 hover:shadow-md transition-all duration-200"
+              >
+                <div class="p-2.5 bg-primary/10 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors shrink-0">
+                  <Icon class="size-5" />
+                </div>
+                <div class="min-w-0 flex-1">
+                  <h3 class="font-semibold text-foreground group-hover:text-primary transition-colors text-sm leading-snug mb-1">
+                    {tool.data.title}
+                  </h3>
+                  {(tool.data.shortDescription ?? tool.data.description) && (
+                    <p class="text-xs text-muted-foreground line-clamp-2">
+                      {tool.data.shortDescription ?? tool.data.description}
+                    </p>
+                  )}
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      </section>
+    )}
+
+
+    {/* Blog posts by this author */}
+    {blogPosts.length > 0 && (
+      <section class="mb-5" aria-label={`Blog posts by ${name}`}>
+        <h2 class="text-2xl font-bold text-foreground mb-5">
+          Posts by {name}
+          <span class="ml-2 text-sm font-normal text-muted-foreground">({blogPosts.length})</span>
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {blogPosts.map((post) => {
+            const slug = getBlogSlug(post);
+            const displayDate = post.data.publishedAt
+              ? new Date(post.data.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+              : null;
+            return (
+              <a
+                href={`/blog/${slug}`}
+                class="group flex flex-col h-full rounded-xl border bg-card p-4 hover:border-primary/50 hover:shadow-md transition-all duration-200"
+              >
+                <h3 class="font-semibold text-foreground group-hover:text-primary transition-colors text-sm leading-snug mb-1 line-clamp-2">
+                  {post.data.title}
+                </h3>
+                <p class="text-xs text-muted-foreground line-clamp-2 mb-4 flex-grow">{post.data.description}</p>
+                <div class="flex items-center justify-between mt-auto">
+                  {displayDate && (
+                    <time
+                      datetime={new Date(post.data.publishedAt!).toISOString()}
+                      class="text-[11px] text-muted-foreground/70"
+                    >
+                      {displayDate}
+                    </time>
+                  )}
+                  <span class="inline-flex items-center rounded-md bg-primary/10 text-primary px-2 py-0.5 text-[10px] font-medium">
+                    {post.data.category}
+                  </span>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      </section>
+    )}
+
+    {/* Empty state — author exists but has no content yet */}
+    {blogPosts.length === 0 && tools.length === 0 && (
+      <p class="text-muted-foreground text-sm py-4">No published content yet.</p>
+    )}
+
+  </main>
+
+  <Footer />
+</BaseLayout>

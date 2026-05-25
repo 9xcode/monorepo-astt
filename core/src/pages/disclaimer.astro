@@ -1,0 +1,45 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/common/sections/Header.astro";
+import Footer from "../components/common/sections/Footer.astro";
+import StandardProse from "../components/common/typography/StandardProse.astro";
+import { siteConfig } from 'virtual:site-config';
+import JsonLd from "../seo/JsonLd.astro";
+import { buildWebPageSchema } from "../seo";
+
+const seoUrl = new URL(Astro.url.pathname, siteConfig.url).href;
+const pageTitle = `Disclaimer - ${siteConfig.name}`;
+const pageDescription = `Disclaimer regarding the use of ${siteConfig.name} financial calculators and utility tools.`;
+const pageSchema = buildWebPageSchema({
+	type: 'WebPage',
+	name: pageTitle,
+	description: pageDescription,
+	url: seoUrl,
+	websiteUrl: siteConfig.url,
+});
+---
+<BaseLayout title={pageTitle} canonicalURL={seoUrl} description={pageDescription}>
+	<Fragment slot="head">
+		<JsonLd schema={pageSchema} />
+	</Fragment>
+	<Header />
+	<main class="flex-1 container mx-auto px-4 py-16 max-w-4xl">
+		<StandardProse>
+			<h1>Disclaimer</h1>
+			<p class="lead">Last updated: May 2026</p>
+			
+			<h2>1. Educational and Informational Purposes Only</h2>
+			<p>The calculators, tools, and information provided on the {siteConfig.name} website and mobile applications are for educational and informational purposes only. They are not intended to provide specific financial, investment, tax, or legal advice.</p>
+			
+			<h2>2. No Financial Advice (YMYL Clause)</h2>
+			<p>{siteConfig.name} is not a registered investment advisor, broker/dealer, financial planner, or tax professional. You should not construe any information or calculation results from our tools as a recommendation that any specific financial action, loan, or investment strategy is suitable for you. We strongly recommend consulting with a certified financial professional before making any major financial decisions.</p>
+			
+			<h2>3. Accuracy of Calculations</h2>
+			<p>While we make every effort to ensure the mathematical accuracy of our calculators based on standard industry formulas, we make no representations, warranties, or guarantees, express or implied, regarding the precise accuracy or completeness of any calculation. Real-world financial outcomes—such as exact mortgage payments or mutual fund returns—are subject to variable terms, shifting bank policies, undisclosed fees, and market volatility that our tools cannot perfectly predict.</p>
+			
+			<h2>4. Limitation of Liability</h2>
+			<p>Under no circumstances shall {siteConfig.name}, its owners, or developers be held liable for any direct, indirect, incidental, consequential, or special damages arising out of your reliance upon the information or calculated results provided by our platform.</p>
+		</StandardProse>
+	</main>
+	<Footer />
+</BaseLayout>
