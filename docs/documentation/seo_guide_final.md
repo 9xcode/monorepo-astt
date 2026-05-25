@@ -47,7 +47,7 @@ AI bots don't "read" like humans. They parse structured data.
 
 **IMPORTANT: Do not write articles blindly. You MUST use the official `abhii-docs/content_template.md` file.**
 
-The `content_template.md` file contains the exact structural requirements, frontmatter variables (like `pubDate`), and the precise heading levels (`###`) required to trigger the MultiTools background JSON-LD parsing algorithms. If you deviate from the template structure, the Google Rich Snippets will break.
+The `content_template.md` file contains the exact structural requirements, frontmatter variables (like `publishedAt` / `updatedAt`), and the precise heading levels (`###`) required to trigger the MultiTools background JSON-LD parsing algorithms. If you deviate from the template structure, the Google Rich Snippets will break.
 
 ### Automatic Schema Generation (What the Codebase Does For You)
 To maximize Generative Engine Optimization (GEO), the `MultiTools` codebase automatically injects structured data (JSON-LD) into the `<head>` of every page. Here is the complete, accurate schema inventory:
@@ -65,7 +65,7 @@ To maximize Generative Engine Optimization (GEO), the `MultiTools` codebase auto
    - **`Automatic Subcategories & Keywords:`** Automatically strips your `tags` array and builds structured `applicationSubCategory` and `keywords` (e.g., tag `['compound-interest']` generates `"Compound Interest Tool"`).
    - **`Requirements & Free Tier:`** Injects globally configured elements from `siteConfig.seo.softwareApplication`, like `operatingSystem: "Windows, macOS, Linux..."`, `isAccessibleForFree: true`, and `browserRequirements`.
    - **`Automatically Parsed featureList:`** Automatically scans your Markdown for a `## Features` or `### Key Features` heading and explicitly maps the bullet points below it into the `featureList` array inside the tool's structured data. Meaning Google sees the same features the user sees!
-6. **`Article`** — Dual-classifies every tool page as an educational article. The `datePublished` defaults to `siteConfig.datePublished` (overridable in markdown frontmatter via `pubDate`). The `dateModified` is dynamically set to the exact time the site is built — see the Freshness section below. *Crucially, it also dynamically generates `hasPart` schema pointing directly to the Table of Contents anchor links (`#h2-slug`). This specifically enables AI search engines to cite your sub-sections!*
+6. **`Article`** — Dual-classifies every tool page as an educational article. The `datePublished` and `dateModified` are resolved by the `content-dates` integration using this priority: frontmatter `publishedAt`/`updatedAt` (highest trust) → Git first/last commit date → `publishedAt` fallback for `updatedAt`. **Build time is never used.** *Crucially, it also dynamically generates `hasPart` schema pointing directly to the Table of Contents anchor links (`#h2-slug`). This specifically enables AI search engines to cite your sub-sections!*
 
 7. **`BreadcrumbList`** — Generates a 4-level breadcrumb: Home → Categories → [Category Name] → [Tool Name]. Enables breadcrumb display in Google search results.
 8. **`FAQPage` (conditional)** — Auto-generated from markdown. If your `.md` file contains the heading `## Frequently Asked Questions (FAQ)` or `## Frequently Asked Questions`, the parser extracts every `###` subheading as a Question and the paragraph below it as the Answer. **Do not use `##` or `####` for FAQ questions — you must use exactly `###` for the parser to work.**

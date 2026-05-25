@@ -26,8 +26,8 @@ Every markdown file in `src/content/` begins with YAML frontmatter. To avoid dup
 | `category` | **T, B** | Yes | `category: "Finance/Tax"` |
 | `tags` | **T, B** | No | `tags: ["investment", "savings"]` |
 | `icon` | **T** | No | `icon: "Calculator"` |
-| `pubDate` | **T, B** | No | `pubDate: "2026-02-08T08:00:00"` |
-| `lastModified` | **T, B** | No | `lastModified: 2026-03-22T14:30:00Z` |
+| `publishedAt` | **T, B** | No | `publishedAt: "2026-02-08T08:00:00"` |
+| `updatedAt` | **T, B** | No | `updatedAt: "2026-03-22T14:30:00Z"` |
 | `author` | **T, B** | No | `author: "demo"` |
 | `coAuthors` | **T, B** | No | `coAuthors: ["demo", "abhishek"]` |
 | `coverImage` | **B** | No | `coverImage: "/images/blog/my-post.jpg"` |
@@ -111,6 +111,10 @@ shortDescription: "[Verb] [what the tool does in plain English]"
 category: "[Category]"
 icon: "[LucideIconName]"
 tags: ["tag-1", "tag-2"]
+# publishedAt and updatedAt are auto-resolved from Git — only set them to
+# override or "lock" a date (e.g. when the commit date doesn't reflect real content work).
+# publishedAt: "2026-01-15"
+# updatedAt: "2026-03-22"
 ---
 
 ## What is a [Tool Concept]?

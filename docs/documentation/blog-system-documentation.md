@@ -35,8 +35,8 @@ Posts use strict Zod validation defined by core schema factories. Categories and
 ---
 title: "How to Start Budgeting in 2024"
 description: "Learn the fundamentals of personal budgeting..."
-pubDate: 2024-06-15
-lastModified: 2024-08-01        # Optional update timestamp
+publishedAt: 2024-06-15
+updatedAt: 2024-08-01          # Optional: lock the update date. Auto-resolved from Git if omitted.
 category: Guides                # Strictly typed against BLOG_CATEGORIES
 tags: [budgeting, savings]      # Strictly typed against BLOG_TAGS
 author: "Editorial Team"
@@ -55,7 +55,7 @@ The `search.json` API was extended to provide a unified `SearchItem` discriminat
 - Safely manages `href` click routing.
 
 ### 5. SEO & Discoverability
-- **Sitemap Extensibility:** `astro.config.mjs` maps blog priorities, extracts frontmatter `lastModified` intelligently, and hydrates `<image:image>` entries from the Manifest OG engine.
+- **Sitemap Extensibility:** `astro.config.mjs` maps blog priorities, reads `lastmod` from the `content-dates` manifest (git-backed, never a fake rebuild timestamp), and hydrates `<image:image>` entries from the Manifest OG engine.
 - **Static Open Graph (OG) Generation:** Utilizes a bespoke `.png` template (`src/og/templates/blog.ts`) styled with emerald/teal branding to distinguish articles from indigo-themed tools in social shares.
 - **JSON-LD Schema (`BlogPageSchemas.astro`):** Assembles rich `ArticleSchema`, `BreadcrumbList`, and `FAQPage` snippets.
 - **RSS Autodiscovery:** Injecting `<link rel="alternate" type="application/rss+xml">` headers inside `BaseLayout`.

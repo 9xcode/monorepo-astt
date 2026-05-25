@@ -93,13 +93,18 @@ const pageSchema = buildWebPageSchema({
 ---
 import JsonLd from '../../components/common/seo/JsonLd.astro';
 import { buildArticleSchema, buildBreadcrumbSchema } from '../../components/common/seo';
+import { getContentDates } from '../../integrations/content-dates/resolver.ts';
+
+// Dates are pre-resolved by the content-dates integration:
+//   frontmatter publishedAt/updatedAt → git → publishedAt fallback
+const { publishedAt, updatedAt } = getContentDates('blog', slug);
 
 const articleSchema = buildArticleSchema({
   headline: post.title,
   description: post.description,
   imageUrl: ogImage,
-  datePublished: post.pubDate,
-  dateModified: post.modifiedDate,
+  datePublished: publishedAt,
+  dateModified: updatedAt,
   author: { name: '...', jobTitle: '...', ... },
   publisher: { name: '...', url: '...', logoUrl: '...' },
   tocHeadings: headings,

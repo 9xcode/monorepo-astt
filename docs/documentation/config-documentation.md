@@ -48,36 +48,32 @@ A `Record<string, { appCategory, additionalType? }>` that maps content categorie
 * **`seo.titleSeparator`**: Separator used between tool/page title and the descriptor suffix in SERP `<title>` tags.
 * **`seo.titleDescriptors`**: Keyword-rich descriptor appended to tool page titles that have no custom `seoTitle`. Keyed by category name (must match `categoryMappings` keys), with `_default` as a fallback.
 
-## 6. Dates & Timezones
-* **`defaultTimezone`**: The fallback timezone applied when a date is written without an explicit offset (e.g., "UTC" or "+05:30"). Ensure consistency across schemas and sitemaps.
-* **`datePublished`**: A global fallback date for the Article schema, representing when the site or original base content was published.
-* **`buildTime`**: A strictly managed variable that freezes the timestamp at the exact moment the Astro build process starts. **Do not alter this to `new Date()`**, as doing so will break synchronization between sitemap generation, HTML meta tags, and schema outputs.
-
-## 7. Company & Copyright
+## 6. Company & Copyright
 * **`companyName`**: The legal name of the entity operating the site.
-* **`copyrightYear`**: Dynamically grabs the year from the `buildTime` to ensure the footer copyright is always up-to-date.
+* **`copyrightYear`**: Removed. The copyright year is now automatically derived from the newest Git commit date via the `content-dates` integration and exposed through `getCopyrightYear()` in `Footer.astro`. No manual configuration needed.
+* **`defaultTimezone`**: The fallback timezone applied when a date is written without an explicit offset (e.g., "UTC" or "+05:30"). Ensure consistency across schemas and sitemaps.
 
-## 8. Contact Information
+## 7. Contact Information
 * **`contact.email`**: The primary support email address.
 * **`contact.location`**: The physical or generalized location (e.g., "San Francisco, CA") displayed on the Contact page.
 
-## 9. Author Fallback & Socials
+## 8. Author Fallback & Socials
 The primary author configuration has been migrated to Astro Content Collections (`src/content/authors/`). However, the `siteConfig` still holds important fallback and site-wide social settings:
 * **`seo.defaultAuthorSlug`**: The slug of the author used as a fallback if a blog post or tool doesn't explicitly define an author in its frontmatter. This must reference a valid `.md` file in `src/content/authors/`.
 * **`seo.twitterHandle`**: The site-wide Twitter handle (e.g., "@multitools") used for the `twitter:site` meta tag and social sharing.
 
-## 10. API Keys and Endpoints
+## 9. API Keys and Endpoints
 * **`apiKeys.web3Forms`**: Uses environment variables (`import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY`) to securely manage the key for the Contact Form.
 * **`apiKeys.web3FormsEndpoint`**: The API destination URL for form submissions.
 
-## 11. Advertisement Configuration (`features.ads`)
+## 10. Advertisement Configuration (`features.ads`)
 Centralized control over Google AdSense (or alternative ad network) placement.
 * **`features.ads.enabled`**: The master switch. Setting this to `false` disables all auto and manual ad slots globally.
 * **`features.ads.autoAds`**: Injects the Google AdSense Auto Ads script into the `<head>` of every page when `true`.
 * **`features.ads.publisherId`**: Your unique AdSense Publisher ID (e.g., "ca-pub-XXXXXXXX").
 * **`features.ads.slots`**: A mapping of named placement areas (like `home-hero-bottom`, `tool-sidebar-top`) to booleans. Set individual slots to `false` to disable ads in specific UI locations.
 
-## 12. Navigation & Layout Items
+## 11. Navigation & Layout Items
 Arrays dictating the links rendered in various menus. Navigation items can support a single level of nesting via a `children` array, rendering as dropdowns on desktop and indented lists on mobile. now icons are also supported.
 * **`navigation.header`**: Primary nav links. Supports nested children.
 * **`navigation.footer`**: Links rendered in the standard footer layout. Flat list only.
@@ -91,7 +87,7 @@ Arrays dictating the links rendered in various menus. Navigation items can suppo
 * **`ui.theme.defaultMode`**: Default color mode ('dark', 'light', or 'system').
 * **`ui.theme.name`**: The active color theme stylesheet.
 
-## 13. Feature Toggles
+## 12. Feature Toggles
 
 The `features` object controls the visibility and behavior of major UI components without requiring edits to `.astro` or `.svelte` files.
 
@@ -126,7 +122,7 @@ Governs the sticky/inline bar found immediately below a tool's primary widget.
 * **`blog.enabled`**: Master switch. If `false`, the blog system is disabled and pages are hidden.
 * **`blog.postsPerPage`**: Number of posts visible on the main blog index before pagination.
 
-## 14. Support / Monetization (`features.support`)
+## 13. Support / Monetization (`features.support`)
 A dedicated object connecting "Support Us" or "Buy me a Coffee" links to various buttons scattered across the UI (the sidebar `SupportCard`, the `ToolActionTray` support button, and the `/support` page).
 * **`features.support.url`**: The destination link. Setting this to an empty string (`""`) will automatically hide all support buttons across the site regardless of other config settings.
 * **`features.support.label`**: The text rendered on the buttons (e.g., "Support Us").
