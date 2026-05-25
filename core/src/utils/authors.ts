@@ -18,10 +18,8 @@
  * PersonSchemaInput import updated to ../seo/types (Phase 9 moved it there).
  */
 import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
-// Phase 10: replaced `import { siteConfig } from '../config'`
 import { siteConfig } from 'virtual:site-config';
 import { formatW3CDate } from './w3c-date';
-// Phase 10: updated from ../components/common/seo/types → ../seo/types
 import type { PersonSchemaInput } from '../seo/types';
 
 /** Full author entry type — use this everywhere you pass author data to components */
@@ -146,9 +144,9 @@ export async function getContentByAuthor(slug: string): Promise<{
       return post.data.coAuthors?.some((ref: { id: string }) => ref.id === slug) ?? false;
     })
     .sort((a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) => {
-      const dateA = new Date(formatW3CDate(a.data.pubDate, siteConfig.datePublished)).valueOf();
-      const dateB = new Date(formatW3CDate(b.data.pubDate, siteConfig.datePublished)).valueOf();
-      return dateB - dateA; // newest first
+      const dateA = a.data.publishedAt ? new Date(formatW3CDate(a.data.publishedAt)).valueOf() : 0;
+      const dateB = b.data.publishedAt ? new Date(formatW3CDate(b.data.publishedAt)).valueOf() : 0;
+      return dateB - dateA; // newest first; undated posts sort last
     });
 
   const tools = allTools

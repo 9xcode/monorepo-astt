@@ -12,8 +12,6 @@
  */
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { formatW3CDate } from './w3c-date';
-// Phase 10: replaced `import { siteConfig } from '../config'`
-import { siteConfig } from 'virtual:site-config';
 import { resolveSlug } from './slug';
 import { cyrb128, mulberry32, seededShuffle } from './prng';
 
@@ -31,7 +29,7 @@ export type BlogPostSummary = {
   data: {
     title: string;
     description: string;
-    pubDate?: Date | string;
+    publishedAt?: Date | string;
     category: string;
     tags: readonly string[];
     coverImage?: string;
@@ -43,13 +41,14 @@ export type BlogPostSummary = {
 };
 
 /**
- * Resolves a blog post's pubDate to a sortable timestamp.
- * Mirrors the tools approach: uses formatW3CDate so optional pubDate
- * and string/Date inputs both resolve consistently.
+ * Resolves a blog post's publishedAt to a sortable timestamp.
+ * Uses publishedAt from frontmatter (renamed from pubDate in Phase 3).
+ * Falls back to epoch (0) when unset so undated posts sort last.
  */
 function resolvePubDate(post: BlogPost): number {
-  const resolved = formatW3CDate(post.data.pubDate, siteConfig.datePublished);
-  return new Date(resolved).valueOf();
+  const raw = post.data.publishedAt;
+  if (!raw) return 0;
+  return new Date(formatW3CDate(raw)).valueOf();
 }
 
 /**
@@ -175,7 +174,7 @@ export async function getAllPostSummaries(): Promise<BlogPostSummary[]> {
     data: {
       title:         p.data.title,
       description:   p.data.description,
-      pubDate:       p.data.pubDate,
+      publishedAt:   p.data.publishedAt,
       category:      p.data.category,
       tags:          p.data.tags,
       coverImage:    p.data.coverImage,

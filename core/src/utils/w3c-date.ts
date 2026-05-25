@@ -13,8 +13,8 @@
  *   - Date object                     → normalized to UTC
  *   - undefined / invalid             → returns fallback
  *
- * IMPORTANT: The `fallback` parameter is no longer defaulted from siteConfig.
- * Callers that need siteConfig.buildTime must pass it explicitly as the second arg.
+ * The optional fallback parameter provides a default when the input is missing/invalid.
+ * Callers that need a specific fallback value must pass it explicitly as the second arg.
  * Callers that only need "a valid date" can omit it (defaults to current UTC time).
  *
  * @param d        The date to normalize (string, Date, or undefined)

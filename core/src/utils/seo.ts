@@ -1,6 +1,3 @@
-// Phase 9: siteConfig now comes from virtual:site-config (build-time constant).
-// Replaced: import { siteConfig } from '../config';
-import { siteConfig } from 'virtual:site-config';
 
 /**
  * SEO Utility
@@ -15,16 +12,18 @@ import { siteConfig } from 'virtual:site-config';
  * - [month_year] -> "March 2026"
  */
 
+// Captured once when the module loads during the Astro build.
+// Using a module-level constant ensures every replaceSeoPlaceholders()
+// call within a build sees the same month/year — and avoids repeated
+// Date allocations.
+const _buildDate = new Date();
+
 export function replaceSeoPlaceholders(text: string | undefined): string {
     if (!text) return "";
 
-    // Use the frozen build time — identical for every page in this build.
-    const now = new Date(siteConfig.buildTime);
-    
-    // Formats
-    const month = now.toLocaleString('en-US', { month: 'long' }); // e.g., "March"
-    const year = now.getFullYear().toString(); // e.g., "2026"
-    
+    const month = _buildDate.toLocaleString('en-US', { month: 'long' }); // e.g., "March"
+    const year  = _buildDate.getFullYear().toString();                    // e.g., "2026"
+
     return text
         .replace(/\[month_year\]/gi, `${month} ${year}`)
         .replace(/\[month\]/gi, month)

@@ -35,7 +35,8 @@ lastmod policy (Google's own guidance):
    *content* changed — not just a rebuild timestamp."  Hub / index pages
   have no meaningful content date, so we omit lastmod entirely rather than
   lying with a build timestamp. Individual content pages (/tools/[slug] and
-  /blog/[slug]) carry a real date sourced from frontmatter.
+  /blog/[slug]) carry a real date sourced from git history or frontmatter
+  via the content-dates integration.
 
 References:
   https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap
@@ -47,6 +48,28 @@ import { ChangeFreqEnum } from '@astrojs/sitemap';
 import type { SiteConfig } from './types.ts';
 import { formatW3CDate } from '../utils/w3c-date';
 import { getStaticOgImage } from '../utils/og';
+
+// ── Content-dates manifest loader ────────────────────────────────────────────
+//
+// Reads src/generated/content-dates.json (produced by the content-dates
+// integration) once per build. Falls back to an empty object when the file
+// doesn't exist yet (first run before the integration has written it).
+
+type ContentDatesEntry = { publishedAt?: string; updatedAt?: string };
+type ContentDatesMap   = Record<string, ContentDatesEntry>;
+
+function loadContentDates(siteRoot: string): ContentDatesMap {
+  const jsonPath = path.join(siteRoot, 'src', 'generated', 'content-dates.json');
+  if (!fs.existsSync(jsonPath)) return {};
+  try {
+    const raw = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+    // Strip the _meta sentinel key — real entries are collection/slug pairs
+    const { _meta, ...entries } = raw as Record<string, unknown>;
+    return entries as ContentDatesMap;
+  } catch {
+    return {};
+  }
+}
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -76,12 +99,10 @@ const MIN_POSTS_FOR_CATEGORY = 3;
 //           One content page → 2 reads in serialize() alone, plus additional
 //           reads inside countPostsInBlogCategory() for category pages.
 //   After:  Each file is parsed from disk exactly ONCE per build. Every
-//           subsequent access — whether from filter() or serialize() — is an
+//           subsequent access — whether from filter() or category counting — is an
 //           O(1) Map lookup with zero I/O.
 
 interface ParsedFrontmatter {
-  /** Raw lastModified string from frontmatter, if present */
-  lastModified?: string;
   /**
    * Raw canonical string from frontmatter, if present.
    * Any non-empty value means this page is syndicated or duplicate content.
@@ -119,12 +140,11 @@ function parseFrontmatterFromDisk(mdPath: string): ParsedFrontmatter {
     // Extract only the YAML block between the opening and closing ---
     const fmBlock = raw.match(/^---\r?\n([\s\S]*?)\r?\n---/)?.[1] ?? '';
     return {
-      lastModified: fmBlock.match(/^lastModified:\s*([^\r\n]+)/m)?.[1]?.replace(/['"]/g, '').trim(),
       // Use `|| undefined` so an empty string after trimming still means "not set"
-      canonical:    fmBlock.match(/^canonical:\s*([^\r\n]+)/m)?.[1]?.replace(/['"]/g, '').trim() || undefined,
-      noindex:      /^noindex:\s*true/m.test(fmBlock),
-      isDraft:      /^isDraft:\s*true/m.test(fmBlock),
-      category:     fmBlock.match(/^category:\s*['"]?([^'"\r\n]+)['"]?/m)?.[1]?.trim(),
+      canonical: fmBlock.match(/^canonical:\s*([^\r\n]+)/m)?.[1]?.replace(/['"]/g, '').trim() || undefined,
+      noindex:   /^noindex:\s*true/m.test(fmBlock),
+      isDraft:   /^isDraft:\s*true/m.test(fmBlock),
+      category:  fmBlock.match(/^category:\s*['"]?([^'"\r\n]+)['"]?/m)?.[1]?.trim(),
     };
   } catch {
     return empty;
@@ -180,13 +200,24 @@ function getBlogCategoryCount(categorySlug: string): number {
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 /**
- * Resolves the best available lastmod date from parsed frontmatter.
- * Priority: lastModified → buildTime fallback.
- * All values are normalised to W3C/ISO 8601 format.
+ * Resolves the best available lastmod date from content-dates.json.
+ *
+ * Lookup key: "collection/slug" (e.g. "tools/sip-calculator").
+ * Priority: updatedAt → publishedAt → undefined.
+ *
+ * Returns undefined when no dates are available so the caller can delete
+ * item.lastmod rather than writing a fake timestamp.
  */
-function resolveLastmod(fm: ParsedFrontmatter, buildTime: string): string {
-  return (fm.lastModified && formatW3CDate(fm.lastModified, buildTime))
-      || buildTime;
+function resolveLastmod(
+  collection: 'tools' | 'blog',
+  slug: string,
+  contentDates: ContentDatesMap,
+): string | undefined {
+  const entry = contentDates[`${collection}/${slug}`];
+  if (!entry) return undefined;
+  const raw = entry.updatedAt ?? entry.publishedAt;
+  if (!raw) return undefined;
+  return formatW3CDate(raw);
 }
 
 // ── URL classification helpers ─────────────────────────────────────────────────
@@ -223,6 +254,27 @@ function makeClassifiers(siteUrl: string) {
 // be called safely from astro-config.ts during Astro's config loading phase —
 // before Vite's plugin system is initialised.
 // ═══════════════════════════════════════════════════════════════════════════════
+
+// ── Lazy content-dates loader ─────────────────────────────────────────────────
+//
+// IMPORTANT: loadContentDates() MUST NOT be called at makeSitemapConfig() time.
+// makeSitemapConfig() is evaluated when astro.config.ts is first loaded —
+// BEFORE the contentDates() integration's astro:config:setup hook has run
+// and written content-dates.json. Calling it eagerly would always read stale
+// or missing data.
+//
+// Instead, we use a module-level lazy singleton: the JSON is read on the first
+// serialize() call, which happens at actual build time, after all integration
+// hooks have completed.
+
+let _contentDatesCache: ContentDatesMap | null = null;
+
+function getContentDatesLazy(): ContentDatesMap {
+  if (_contentDatesCache === null) {
+    _contentDatesCache = loadContentDates(process.cwd());
+  }
+  return _contentDatesCache;
+}
 
 export function makeSitemapConfig(siteConfig: SiteConfig) {
   const c = makeClassifiers(siteConfig.url);
@@ -270,19 +322,21 @@ export function makeSitemapConfig(siteConfig: SiteConfig) {
   /**
    * Unified serializer for both /tools/[slug] and /blog/[slug] entries.
    *
-   * Frontmatter is always a cache hit here: filter() ran first and called
-   * getFrontmatter() for every content page that passed through — so no
-   * additional disk I/O occurs during serialize().
+   * Reads lastmod from contentDates (content-dates.json) keyed by
+   * "collection/slug". Deletes lastmod when no date is available rather
+   * than writing a fake timestamp.
    */
   function serializeContentPage(
     item: Record<string, unknown> & { url: string },
     collection: 'tools' | 'blog',
     slug: string,
-    buildTime: string,
   ): Record<string, unknown> & { url: string } {
-    const mdPath = path.resolve(process.cwd(), `src/content/${collection}/${slug}/index.md`);
-    const fm = getFrontmatter(mdPath);
-    item.lastmod = resolveLastmod(fm, buildTime);
+    const lastmod = resolveLastmod(collection, slug, getContentDatesLazy());
+    if (lastmod) {
+      item.lastmod = lastmod;
+    } else {
+      delete item.lastmod;
+    }
     injectOgImage(item, collection, slug);
     return item;
   }
@@ -325,22 +379,21 @@ export function makeSitemapConfig(siteConfig: SiteConfig) {
     // ── Serialize ─────────────────────────────────────────────────────────────
     serialize(item: Record<string, unknown> & { url: string }) {
       const { url } = item;
-      const buildTime = process.env['BUILD_TIME'] || siteConfig.buildTime;
 
       item.priority   = getPriority(url);
       item.changefreq = getChangefreq(url);
 
-      // /tools/[slug] — real lastmod from frontmatter
+      // /tools/[slug] — real lastmod from content-dates integration
       const toolMatch = url.match(/\/tools\/([^/]+)\/?$/);
       if (toolMatch && !c.isToolsIndex(url)) {
-        return serializeContentPage(item, 'tools', toolMatch[1]!, buildTime);
+        return serializeContentPage(item, 'tools', toolMatch[1]!);
       }
 
-      // /blog/[slug] — real lastmod from frontmatter
+      // /blog/[slug] — real lastmod from content-dates integration
       if (c.isBlogPost(url)) {
         const blogMatch = url.match(/\/blog\/([^/]+)\/?$/);
         if (blogMatch) {
-          return serializeContentPage(item, 'blog', blogMatch[1]!, buildTime);
+          return serializeContentPage(item, 'blog', blogMatch[1]!);
         }
       }
 

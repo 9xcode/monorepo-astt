@@ -86,7 +86,7 @@ export async function buildLlmsFullContent(): Promise<string> {
 					`### ${post.data.title}`,
 					`- URL: ${url}`,
 					`- Category: ${post.data.category}`,
-					`- Published: ${formatW3CDate(post.data.pubDate, siteConfig.datePublished).split('T')[0]}`,
+					`- Published: ${formatW3CDate(post.data.publishedAt).split('T')[0]}`,
 					`- Description: ${post.data.description}`,
 					``,
 					`#### Content:`,
