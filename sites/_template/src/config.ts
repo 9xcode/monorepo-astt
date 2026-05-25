@@ -4,7 +4,6 @@
 // Replace all PLACEHOLDER_ values before launching a new site.
 // See docs/project/creating-new-site.md for the full setup guide.
 // ────────────────────────────────────────────────────────────────────────────
-import { getBuildTime, getCopyrightYear } from '@mtools/core/utils/build-time';
 
 // Re-export all types so site-level code imports from './config' as normal.
 import type {
@@ -64,12 +63,9 @@ export const siteConfig: SiteConfig = {
 
   // ─── Legal ──────────────────────────────────────────────────────────────
   companyName: "PLACEHOLDER_COMPANY",
-  copyrightYear: getCopyrightYear(),
 
-  // ─── Temporal ───────────────────────────────────────────────────────────
+  // ── Temporal ───────────────────────────────────────────────────────────────
   defaultTimezone: "UTC",
-  datePublished: "2026-01-01T00:00:00Z",  // Replace with actual launch date
-  buildTime: getBuildTime(),
 
   // ─── Contact ────────────────────────────────────────────────────────────
   contact: {

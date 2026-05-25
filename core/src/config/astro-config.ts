@@ -17,6 +17,7 @@ import { toolsTemplate } from '../og/templates/tools.ts';
 import { blogTemplate } from '../og/templates/blog.ts';
 import { corePages } from '../../integrations/core-pages.ts';
 import { widgetMap } from '../../integrations/widget-map/index.ts';
+import { contentDates } from '../../integrations/content-dates/index.ts';
 
 /**
  * createAstroConfig — Astro config factory for @mtools sites.
@@ -48,15 +49,6 @@ export function createAstroConfig(
   // This file: core/src/config/astro-config.ts
   // ../.. → core/src/config → core/src → core
   const coreRoot = fileURLToPath(new URL('../..', import.meta.url));
-
-  // ── Build time freeze ───────────────────────────────────────────────────────
-  // Freeze the build time ONCE at the very start of the Astro build process.
-  // This env var is inherited by all Astro worker processes so every page's
-  // siteConfig.buildTime evaluates to the same frozen millisecond.
-  if (!process.env['BUILD_TIME']) {
-    process.env['BUILD_TIME'] = new Date().toISOString().split('.')[0] + '+00:00';
-    process.env['PUBLIC_BUILD_TIME'] = process.env['BUILD_TIME'];
-  }
 
   // ── virtual:site-config Vite plugin ────────────────────────────────────────
   // Serialises siteConfig at build time into a virtual module.
@@ -106,7 +98,10 @@ export function createAstroConfig(
       // widgetMap MUST be first: it generates src/generated/*.astro before
       // corePages() sets the @widget-renderer alias and before Vite starts.
       widgetMap(),
-      // corePages must be second — it registers middleware + injectRoute + @widget-renderer alias
+      // contentDates generates src/generated/content-dates.json and sets the
+      // @content-dates Vite alias — must run before corePages and Vite start.
+      contentDates(),
+      // corePages must be third — it registers middleware + injectRoute + @widget-renderer alias
       corePages(),
       // og image generation
       ogCache({

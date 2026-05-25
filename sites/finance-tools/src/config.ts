@@ -1,14 +1,9 @@
 // ────────────────────────────────────────────────────────────────────────────
 // Finance-Tools Site Configuration
 //
-// Uses createSiteConfig() from @mtools/core/config/factory to resolve
-// build-time values (buildTime, copyrightYear) automatically.
-//
 // All type-only exports re-exported from core — no duplicate type definitions.
 // Documentation: see @mtools/core/config/types for the full SiteConfig shape.
 // ────────────────────────────────────────────────────────────────────────────
-// Package path — resolved by the @mtools/core alias in astro-config.ts.
-import { getBuildTime, getCopyrightYear } from '@mtools/core/utils/build-time';
 
 // Re-export all types so site-level code that imports from './config'
 // (e.g. Astro pages, layouts) continues to work without changes.
@@ -70,14 +65,9 @@ export const siteConfig: SiteConfig = {
 
   // ─── Legal ──────────────────────────────────────────────────────────────
   companyName: "MultiTools",
-  // copyrightYear resolved automatically to match the frozen build environment
-  copyrightYear: getCopyrightYear(),
 
   // ─── Temporal ───────────────────────────────────────────────────────────
   defaultTimezone: "UTC",
-  datePublished: "2026-03-08T12:00:00Z",
-  // buildTime resolved automatically to freeze the timestamp across the build
-  buildTime: getBuildTime(),
 
   // ─── Contact ────────────────────────────────────────────────────────────
   contact: {

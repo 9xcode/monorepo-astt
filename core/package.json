@@ -21,7 +21,6 @@
     "./integrations/widget-map": "./integrations/widget-map/index.ts",
     "./utils/slug": "./src/utils/slug.ts",
     "./utils/prng": "./src/utils/prng.ts",
-    "./utils/build-time": "./src/utils/build-time.ts",
     "./utils/w3c-date": "./src/utils/w3c-date.ts",
     "./utils/og": "./src/utils/og.ts",
     "./utils/seo": "./src/utils/seo.ts",

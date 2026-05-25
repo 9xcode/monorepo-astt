@@ -31,7 +31,8 @@
 
 import type { AstroIntegration } from 'astro';
 import { fileURLToPath } from 'node:url';
-import { generateContentDates } from './generator.ts';
+import { join } from 'node:path';
+import { generateContentDates, getGeneratedDir } from './generator.ts';
 
 export { getGeneratedDir } from './generator.ts';
 
@@ -39,8 +40,25 @@ export function contentDates(): AstroIntegration {
   return {
     name: '@mtools/content-dates',
     hooks: {
-      'astro:config:setup': async ({ config, addWatchFile, logger, command, isRestart }) => {
+      'astro:config:setup': async ({ config, updateConfig, addWatchFile, logger, command, isRestart }) => {
         const siteRoot = fileURLToPath(config.root);
+
+        // ── @content-dates Vite alias ──────────────────────────────────────
+        // Resolves '@content-dates' → <siteRoot>/src/generated/content-dates.json
+        // This lets resolver.ts do:  import contentDatesJson from '@content-dates'
+        // without hard-coding any path. The alias must be registered here (not in
+        // astro-config.ts) because config.root (site root) is only known at hook time.
+        const contentDatesJsonPath = join(getGeneratedDir(config.root), 'content-dates.json');
+        updateConfig({
+          vite: {
+            resolve: {
+              alias: {
+                '@content-dates': contentDatesJsonPath,
+              },
+            },
+          },
+        });
+        logger.debug(`@mtools/content-dates: @content-dates → ${contentDatesJsonPath}`);
 
         // Run the generator. writeIfChanged inside means this is a no-op
         // when nothing has changed — fast on dev server restarts.

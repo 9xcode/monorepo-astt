@@ -223,14 +223,10 @@ export interface SiteConfig {
 
   // ── Legal ──────────────────────────────────────────────────────────────────
   companyName: string;
-  copyrightYear: number;
 
   // ── Temporal ───────────────────────────────────────────────────────────────
   /** Fallback timezone when a date has no explicit offset (e.g. "2026-03-15"). Use "UTC" or "+05:30". */
   defaultTimezone: string;
-  datePublished: string;
-  /** Frozen at build-start by astro.config.mjs — never use new Date() here. */
-  buildTime: string;
 
   // ── Contact ────────────────────────────────────────────────────────────────
   contact: {
