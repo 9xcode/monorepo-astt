@@ -57,3 +57,10 @@ letter do ad this : https://www.google.com/preferences/source?q=https://redeemco
 --------
 
 
+# Hardcoded lines in files that are site specific
+
+- mobile app section page and its components are need to generalize and configurable
+
+- legal pages need to configurable
+
+

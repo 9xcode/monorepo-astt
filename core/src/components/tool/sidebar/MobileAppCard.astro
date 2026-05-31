@@ -1,5 +1,6 @@
 ---
 import { Smartphone } from '@lucide/svelte';
+import { siteConfig } from 'virtual:site-config';
 ---
 
 <div class="relative overflow-hidden rounded-xl border border-border/60 p-6 bg-gradient-to-b from-primary/10 to-transparent shadow-sm">
@@ -10,7 +11,7 @@ import { Smartphone } from '@lucide/svelte';
 		</div>
 		<div>
 			<h3 class="font-bold text-lg tracking-tight mb-1 text-foreground">Mobile App</h3>
-			<p class="text-sm text-muted-foreground leading-relaxed">Calculate offline with zero tracking. Get the premium experience on your phone.</p>
+			<p class="text-sm text-muted-foreground leading-relaxed">{siteConfig.content.components.mobileAppCard.description}</p>
 		</div>
 		<a href="/mobile-app" class="inline-flex w-full items-center justify-center rounded-xl bg-background border border-border/60 px-4 py-2.5 text-sm font-semibold text-foreground shadow-sm hover:bg-muted transition-colors mt-2">
 			Download Now

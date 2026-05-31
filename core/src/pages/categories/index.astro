@@ -16,23 +16,23 @@ const categories = [...new Set(allTools.map(t => t.data.category))].sort();
 const seoUrl = new URL(Astro.url.pathname, siteConfig.url).href;
 const pageSchema = buildWebPageSchema({
 	type: 'CollectionPage',
-	name: `All Tool Categories - Free Calculators & Converters`,
-	description: 'Browse all our tool categories to find the perfect calculator or utility for your needs.',
+	name: siteConfig.content.pages.categories.title,
+	description: siteConfig.content.pages.categories.description,
 	url: seoUrl,
 	websiteUrl: siteConfig.url,
 });
 
 ---
-<BaseLayout title={`All Tool Categories - Free Calculators & Converters`} canonicalURL={seoUrl} description="Browse all our tool categories to find the perfect calculator or utility for your needs.">
+<BaseLayout title={siteConfig.content.pages.categories.title} canonicalURL={seoUrl} description={siteConfig.content.pages.categories.description}>
   <Fragment slot="head">
     <JsonLd schema={pageSchema} />
   </Fragment>
   <Header />
   <main class="flex-1">
     <CategoryHeroSection
-      badge="All Utilities Directory"
-      title="Browse by Category"
-      subtitle="Explore our complete directory of free, private, and fast tools organized by category."
+      badge={siteConfig.content.pages.categories.heroBadge}
+      title={siteConfig.content.pages.categories.heroTitle}
+      subtitle={siteConfig.content.pages.categories.description}
     />
 
     <div class="container mx-auto px-4 py-16 space-y-24">

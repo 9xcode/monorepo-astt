@@ -5,6 +5,132 @@
 // The config object itself lives in each site's src/config.ts.
 // ─────────────────────────────────────────────────────────────────────────────
 
+// ─────────────────────────────────────────────────────────────────────────────
+// SiteContent — All user-facing UI text that varies by site niche.
+//
+// Every field is required (no `?`). TypeScript will error at build time if any
+// key is missing in a site's config.ts — no runtime surprises.
+//
+// Structure mirrors i18n namespace conventions (pages.*, components.*).
+// When i18n is added later, this shape maps directly to a locale resource file.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Site-specific user-facing text, grouped by page and component scope.
+ *  All fields are required — missing any will cause a TypeScript build error.
+ *  i18n-forward: this shape maps 1:1 to a locale resource file (e.g. en.json). */
+export interface SiteContent {
+
+  // ── Page-level content ─────────────────────────────────────────────────────
+  pages: {
+
+    home: {
+      /** <title> tag for the homepage */
+      title: string;
+    };
+
+    tools: {
+      /** <title> tag for /tools */
+      title: string;
+      /** meta description for /tools */
+      description: string;
+      /** Small badge pill above the hero H1 */
+      heroBadge: string;
+      /** Hero section H1 */
+      heroTitle: string;
+    };
+
+    blog: {
+      /** <title> tag for /blog */
+      title: string;
+      /** meta description for /blog */
+      description: string;
+    };
+
+    categories: {
+      /** <title> tag for /categories */
+      title: string;
+      /** meta description for /categories */
+      description: string;
+      /** Small badge pill above the hero H1 */
+      heroBadge: string;
+      /** Hero section H1 */
+      heroTitle: string;
+    };
+
+    /** Dynamic /categories/[category] page — use `{category}` as a placeholder.
+     *  Core replaces it at render time via `.replace('{category}', categoryName)`. */
+    categoryPage: {
+      /** e.g. "Free {category} Tools – Online Utilities" */
+      titleTemplate: string;
+      /** e.g. "Explore our free {category} tools. No sign-up required." */
+      descriptionTemplate: string;
+      /** Small badge pill above the hero H1 */
+      heroBadge: string;
+    };
+
+
+  };
+
+  // ── Component-level content ────────────────────────────────────────────────
+  components: {
+
+    hero: {
+      /** First line of the homepage hero H1 */
+      headline: string;
+      /** Second line prefix (e.g. 'Safer ' before the accent) */
+      headline2: string;
+      /** Second line — rendered in italic gradient style */
+      headlineAccent: string;
+      /** Subtitle paragraph below the H1 */
+      subtitle: string;
+    };
+
+    bottomCta: {
+      mobileApp: {
+        title: string;
+        description: string;
+        buttonLabel: string;
+      };
+      featureRequest: {
+        title: string;
+        description: string;
+        buttonLabel: string;
+      };
+      supportUs: {
+        title: string;
+        description: string;
+      };
+    };
+
+    toolsGrid: {
+      /** H2 title for the main tools discovery grid on the homepage */
+      sectionTitle: string;
+      /** Subtitle below the tools grid H2 */
+      sectionSubtitle: string;
+    };
+
+    toolPage: {
+      /** Title of the article section below the tool widget (e.g. "About this Tool") */
+      aboutSectionTitle: string;
+    };
+
+    mobileAppCard: {
+      /** Description text in the sidebar mobile app promo card */
+      description: string;
+    };
+
+    sidebar: {
+      /** Description text in the blog sidebar "Explore Tools" card */
+      exploreToolsDescription: string;
+    };
+
+    search: {
+      /** Placeholder text for the search dialog input */
+      placeholder: string;
+    };
+  };
+}
+
 /** A single navigation link entry — children are one level deep max */
 export interface NavItem {
   label: string;
@@ -112,6 +238,7 @@ export interface SupportConfig {
   /** Set to "" to hide all support buttons site-wide */
   url: string;
   label: string;
+  label2: string;
 }
 
 /** Table-of-contents settings (tool pages) */
@@ -244,4 +371,9 @@ export interface SiteConfig {
 
   // ── Features ───────────────────────────────────────────────────────────────
   features: FeaturesConfig;
+
+  // ── Content ────────────────────────────────────────────────────────────────
+  /** Site-specific user-facing text. All fields required — missing any causes
+   *  a TypeScript build error. i18n-forward: same shape as a locale resource file. */
+  content: SiteContent;
 }

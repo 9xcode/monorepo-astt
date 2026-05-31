@@ -73,4 +73,5 @@ export const navIconMap: Record<string, any> = {
 export {
   Calculator,
   ArrowRight,
+  Wrench,
 };

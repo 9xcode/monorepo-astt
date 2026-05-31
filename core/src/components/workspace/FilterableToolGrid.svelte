@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { iconMap, Calculator, ArrowRight } from '$lib/icons';
+    import { iconMap, ArrowRight } from '$lib/icons';
     import CategoryFilter from '../tools-grid/CategoryFilter.svelte';
     import ToolCard from '../tools-grid/ToolCard.svelte';
 

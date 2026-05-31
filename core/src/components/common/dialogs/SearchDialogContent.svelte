@@ -1,6 +1,6 @@
 <script lang="ts">
   import * as Command from "$lib/components/ui/command";
-  import { iconMap, Calculator } from "$lib/icons";
+  import { iconMap, Wrench } from "$lib/icons";
   import { ChevronRight } from '@lucide/svelte';
 
   import SearchResultsSkeleton from "../ui/skeletons/SearchResultsSkeleton.svelte";
@@ -10,6 +10,8 @@
   type Tool = typeof toolsStore.items[number];
 
   let { open = $bindable(false) } = $props<{ open: boolean }>();
+
+  const searchPlaceholder = siteConfig.content.components.search.placeholder;
 
   // Use configured tabs
   const tabsConfig = siteConfig.features.search.showTabs;
@@ -62,7 +64,7 @@
 </script>
 
 <Command.Dialog bind:open>
-  <Command.Input aria-label="Search tools and articles" placeholder="Search tools, calculators, articles..." />
+  <Command.Input aria-label="Search tools and articles" placeholder={searchPlaceholder} />
 
   {#if availableTabs.length > 1}
     <div class="flex items-center gap-1.5 px-3 pt-2 pb-1 border-b border-border/40">
@@ -98,7 +100,7 @@
       {#each Object.entries(groupedTools) as [category, categoryTools] (category)}
         <Command.Group heading={category}>
           {#each categoryTools as tool (tool.slug + '-' + tool.type)}
-            {@const ToolIcon = tool.data.icon ? (iconMap[tool.data.icon] ?? Calculator) : Calculator}
+            {@const ToolIcon = tool.data.icon ? (iconMap[tool.data.icon] ?? Wrench) : Wrench}
             {@const searchKeywords = [...(tool.data.tags ?? [])]}
             <Command.Item
               value={tool.data.title}

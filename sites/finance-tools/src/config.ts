@@ -9,6 +9,7 @@
 // (e.g. Astro pages, layouts) continues to work without changes.
 import type {
   SiteConfig,
+  SiteContent,
   NavItem,
   SeoConfig,
   NavigationConfig,
@@ -26,6 +27,7 @@ import type {
 
 export type {
   SiteConfig,
+  SiteContent,
   NavItem,
   SeoConfig,
   NavigationConfig,
@@ -172,7 +174,8 @@ export const siteConfig: SiteConfig = {
 
     theme: {
       defaultMode: "system",
-      name: "slate",
+//       name: "slate",
+       name: "neutral",
     },
   },
 
@@ -190,8 +193,8 @@ export const siteConfig: SiteConfig = {
 
     homepage: {
       toolWidgetSection: {
-        enabled: false,
-        toolSlug: "loan-amortization-calculator",
+        enabled: true,
+        toolSlug: "sip-calculator",
       },
       featuredSection: {
         enabled: true,
@@ -258,11 +261,97 @@ export const siteConfig: SiteConfig = {
     support: {
       url: "/support",
       label: "Support Us",
+      label2: "Buy me a Coffie",
     },
 
     blog: {
       enabled: true,
       postsPerPage: 12,
     },
+  },
+  // ─── Content ──────────────────────────────────────────────────────────────────
+  content: {
+
+    pages: {
+
+      home: {
+        title: "MultiTools – Free Online Tools and Calculators",
+      },
+
+      tools: {
+        title: "All Free Online Tools and Calculators – MultiTools",
+        description: "Browse our full collection of free, privacy-focused, and lightning-fast online tools.",
+        heroBadge: "Complete Tools Directory",
+        heroTitle: "All Free Online Tools",
+      },
+
+      blog: {
+        title: "Free Tool Guides and Tutorials – MultiTools Blog",
+        description: "Guides, tips, and tutorials for using our free online tools and calculators.",
+      },
+
+      categories: {
+        title: "All Tool Categories – Free Calculators & Converters",
+        description: "Explore our complete collection of free, private, and fast tools organized by category to find the perfect calculator or utility for your needs.",
+        heroBadge: "All Utilities Directory",
+        heroTitle: "Browse by Category",
+      },
+
+      categoryPage: {
+        titleTemplate: "Free {category} Tools Online",
+        descriptionTemplate: "Explore our collection of fast and free {category} tools. No tracking, just pure privacy-first utility.",
+        heroBadge: "Collection Directory",
+      },
+
+    },
+
+    components: {
+
+      hero: {
+        headline: "Faster than AI,",
+        headline2: "Safer ",
+        headlineAccent: "than Cloud",
+        subtitle: "Lightning-fast, free tools to edit, format, calculate, convert, and more",
+      },
+
+      bottomCta: {
+        mobileApp: {
+          title: "Mobile App",
+          description: "Fast, offline calculations natively on iOS & Android.",
+          buttonLabel: "Download Free",
+        },
+        featureRequest: {
+          title: "Missing a Tool?",
+          description: "Tell us what to build next. We monitor community feedback.",
+          buttonLabel: "Request Feature",
+        },
+        supportUs: {
+          title: "Support Us",
+          description: "Tools are built for free. Help fuel the developer with caffeine!",
+        },
+      },
+
+      toolsGrid: {
+        sectionTitle: "Discover Tools",
+        sectionSubtitle: "Find the perfect tool for your needs",
+      },
+
+      toolPage: {
+        aboutSectionTitle: "About this Tool",
+      },
+
+      mobileAppCard: {
+        description: "Calculate offline with zero tracking. Get the premium experience on your phone.",
+      },
+
+      sidebar: {
+        exploreToolsDescription: "Try our free financial calculators and converters.",
+      },
+
+      search: {
+        placeholder: "Search tools, calculators, articles...",
+      },
+    },
+
   },
 };

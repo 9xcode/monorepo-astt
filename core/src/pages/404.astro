@@ -9,7 +9,7 @@ import { siteConfig } from 'virtual:site-config';
 const seoUrl = new URL('/404', siteConfig.url).href;
 ---
 
-<BaseLayout title={`404: Page Not Found - ${siteConfig.name}`} canonicalURL={seoUrl} description="The page you are looking for does not exist. Return home to browse our free calculators and tools." type="website">
+<BaseLayout title={`404: Page Not Found - ${siteConfig.name}`} canonicalURL={seoUrl} description="The page you are looking for does not exist. Return home to browse our latest content." type="website">
 	<Fragment slot="head">
 		<meta name="robots" content="noindex, nofollow" />
 	</Fragment>
@@ -22,19 +22,33 @@ const seoUrl = new URL('/404', siteConfig.url).href;
 			<h1 class="text-5xl md:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
 				Page Not Found.
 			</h1>
-			<p class="text-xl text-muted-foreground leading-relaxed">
-				Oops! We couldn't find the tool or page you were looking for. It might have been moved or deleted.
-			</p>
+				<p class="text-xl text-muted-foreground leading-relaxed">
+					Oops! We couldn't find the page you were looking for. It might have been moved or deleted.
+				</p>
 		</div>
 		
 		<div class="flex flex-col sm:flex-row gap-4 pt-4">
 			<Button size="lg" href="/" class="gap-2 px-8 text-base shadow-lg">
 				<House class="size-5" /> Return Home
 			</Button>
-			<Button size="lg" variant="outline" href="/categories" class="gap-2 px-8 text-base">
-				<Search class="size-5" /> Browse Tools
+			<Button
+				size="lg"
+				variant="outline"
+				class="gap-2 px-8 text-base"
+				id="search-404-btn"
+			>
+				<Search class="size-5" /> Search
 			</Button>
 		</div>
 	</main>
 	<Footer />
 </BaseLayout>
+
+<script>
+	const searchBtn = document.getElementById('search-404-btn');
+	if (searchBtn) {
+		searchBtn.addEventListener('click', () => {
+			window.dispatchEvent(new CustomEvent('open-search'));
+		});
+	}
+</script>

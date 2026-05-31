@@ -1,9 +1,8 @@
 import type { APIRoute } from 'astro';
 import { siteConfig } from 'virtual:site-config';
 import { getAllToolSummaries } from '@mtools/core/utils/tools';
-// Phase 10: SearchItem type moved to core; re-exported here for backwards compat.
+// SearchItem type moved to core; re-exported here for backwards compat.
 export type { SearchItem } from '@mtools/core/utils/search';
-
 import type { SearchItem } from '@mtools/core/utils/search';
 
 export const GET: APIRoute = async () => {

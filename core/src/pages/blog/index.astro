@@ -15,8 +15,8 @@ const seoUrl = new URL('/blog', siteConfig.url).href;
 ---
 
 <BaseLayout
-  title={`Free Tool Guides and Tutorials - ${siteConfig.name} Blog`}
-  description="Articles, guides, and updates."
+  title={siteConfig.content.pages.blog.title}
+  description={siteConfig.content.pages.blog.description}
   canonicalURL={seoUrl}
 >
   <Header />
@@ -24,7 +24,7 @@ const seoUrl = new URL('/blog', siteConfig.url).href;
     <div class="container mx-auto px-4 py-12">
       <h1 class="text-4xl font-bold mb-4">Blog</h1>
       <p class="text-muted-foreground mb-10 text-lg max-w-2xl">
-        Guides, tips, and tutorials.
+        {siteConfig.content.pages.blog.description}
       </p>
 
       {posts.length === 0 ? (

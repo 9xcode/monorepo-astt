@@ -21,6 +21,10 @@ export async function getStaticPaths() {
 
 const { categoryName } = Astro.props;
 const seoUrl = new URL(Astro.url.pathname, siteConfig.url).href;
+const { categoryPage } = siteConfig.content.pages;
+
+/** Replaces {category} in a template string with the actual category name. */
+const t = (template: string) => template.replace('{category}', categoryName);
 
 // Get tools for this category to populate the ItemList schema.
 // getToolSummariesByCategory() returns sorted (order → alpha) draft-filtered summaries.
@@ -28,7 +32,7 @@ const categoryTools = await getToolSummariesByCategory(categoryName);
 
 const itemListSchema = buildItemListSchema({
 	name: `${categoryName} Tools`,
-	description: `A comprehensive list of free ${categoryName.toLowerCase()} tools and calculators.`,
+	description: t(categoryPage.descriptionTemplate),
 	url: seoUrl,
 	items: categoryTools.map(tool => ({
 		name: tool.data.title,
@@ -40,16 +44,16 @@ const itemListSchema = buildItemListSchema({
 });
 ---
 
-<BaseLayout title={`Free ${categoryName} Tools - Online Calculators and Converters`} canonicalURL={seoUrl} description={`Explore our free collection of fast, privacy-focused ${categoryName.toLowerCase()} tools. No sign-up or data tracking.`}>
+<BaseLayout title={t(categoryPage.titleTemplate)} canonicalURL={seoUrl} description={t(categoryPage.descriptionTemplate)}>
 	<Fragment slot="head">
 		<JsonLd schema={itemListSchema} />
 	</Fragment>
 	<Header />
 	<main class="flex-1">
 		<CategoryHeroSection
-			badge="Collection Directory"
+			badge={categoryPage.heroBadge}
 			title={categoryName}
-			subtitle={`Explore our collection of fast and free ${categoryName.toLowerCase()} tools. No tracking, just pure privacy-first utility.`}
+			subtitle={t(categoryPage.descriptionTemplate)}
 		/>
 
 		<section class="py-16 px-4">

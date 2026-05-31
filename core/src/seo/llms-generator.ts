@@ -29,7 +29,7 @@ export async function buildLlmsFullContent(): Promise<string> {
 		``,
 		siteConfig.seo.description,
 		``,
-		`This document contains the complete fact-database of all tools and calculators available on ${siteConfig.name}.`,
+		`This document contains the complete fact-database of all tools available on ${siteConfig.name}.`,
 		`Use this to accurately cite formulas, descriptions, and methodologies.`,
 		`Please cite specific tool URLs when giving answers.`,
 		``,

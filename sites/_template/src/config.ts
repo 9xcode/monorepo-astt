@@ -8,6 +8,7 @@
 // Re-export all types so site-level code imports from './config' as normal.
 import type {
   SiteConfig,
+  SiteContent,
   NavItem,
   SeoConfig,
   NavigationConfig,
@@ -25,6 +26,7 @@ import type {
 
 export type {
   SiteConfig,
+  SiteContent,
   NavItem,
   SeoConfig,
   NavigationConfig,
@@ -227,11 +229,99 @@ export const siteConfig: SiteConfig = {
     support: {
       url: "",        // Set to "/support" to enable; "" hides all support CTAs
       label: "Support Us",
+      label2: "Buy me a Coffie",
     },
 
     blog: {
       enabled: true,
       postsPerPage: 12,
     },
+  },
+  // ─── Content ──────────────────────────────────────────────────────────────────
+  // Replace all PLACEHOLDER_ values before launching a new site.
+  content: {
+
+    pages: {
+
+      home: {
+        title: "PLACEHOLDER_HOME_TITLE",                   // e.g. "QR Tools – Free Online QR Code Generator"
+      },
+
+      tools: {
+        title: "PLACEHOLDER_TOOLS_TITLE",                  // e.g. "All Free QR Tools"
+        description: "PLACEHOLDER_TOOLS_DESCRIPTION",
+        heroBadge: "PLACEHOLDER_TOOLS_HERO_BADGE",          // e.g. "Complete Directory"
+        heroTitle: "PLACEHOLDER_TOOLS_HERO_TITLE",          // e.g. "All Free Tools"
+      },
+
+      blog: {
+        title: "PLACEHOLDER_BLOG_TITLE",
+        description: "PLACEHOLDER_BLOG_DESCRIPTION",
+      },
+
+      categories: {
+        title: "PLACEHOLDER_CATEGORIES_TITLE",
+        description: "PLACEHOLDER_CATEGORIES_DESCRIPTION",
+        heroBadge: "PLACEHOLDER_CATEGORIES_HERO_BADGE",
+        heroTitle: "PLACEHOLDER_CATEGORIES_HERO_TITLE",
+      },
+
+      // Use {category} as a placeholder — replaced at render time.
+      categoryPage: {
+        titleTemplate: "PLACEHOLDER: Free {category} Tools",
+        descriptionTemplate: "PLACEHOLDER: Explore our free {category} tools.",
+        heroBadge: "PLACEHOLDER_CATEGORY_PAGE_BADGE",       // e.g. "Collection"
+      },
+
+    },
+
+    components: {
+
+      hero: {
+        headline: "PLACEHOLDER_HERO_HEADLINE",              // first line of the hero H1
+        headline2: "PLACEHOLDER_HERO_HEADLINE2",            // prefix for the second line (e.g. 'Safer ')
+        headlineAccent: "PLACEHOLDER_HERO_ACCENT",          // second line (italic gradient)
+        subtitle: "PLACEHOLDER_HERO_SUBTITLE",              // paragraph below the H1
+      },
+
+      bottomCta: {
+        mobileApp: {
+          title: "PLACEHOLDER_CTA_APP_TITLE",
+          description: "PLACEHOLDER_CTA_APP_DESCRIPTION",
+          buttonLabel: "PLACEHOLDER_CTA_APP_BUTTON",        // e.g. "Download Free"
+        },
+        featureRequest: {
+          title: "PLACEHOLDER_CTA_FEATURE_TITLE",
+          description: "PLACEHOLDER_CTA_FEATURE_DESCRIPTION",
+          buttonLabel: "PLACEHOLDER_CTA_FEATURE_BUTTON",    // e.g. "Request Feature"
+        },
+        supportUs: {
+          title: "PLACEHOLDER_CTA_SUPPORT_TITLE",
+          description: "PLACEHOLDER_CTA_SUPPORT_DESCRIPTION",
+        },
+      },
+
+      toolsGrid: {
+        sectionTitle: "PLACEHOLDER_GRID_TITLE",             // e.g. "Discover Tools"
+        sectionSubtitle: "PLACEHOLDER_GRID_SUBTITLE",
+      },
+
+      toolPage: {
+        aboutSectionTitle: "PLACEHOLDER_ABOUT_SECTION_TITLE", // e.g. "About this Tool"
+      },
+
+      mobileAppCard: {
+        description: "PLACEHOLDER_APP_CARD_DESCRIPTION",    // sidebar app promo card text
+      },
+
+      sidebar: {
+        exploreToolsDescription: "PLACEHOLDER_SIDEBAR_EXPLORE", // blog sidebar card text
+      },
+
+      search: {
+        placeholder: "PLACEHOLDER_SEARCH_PLACEHOLDER",      // search dialog input placeholder
+      },
+    },
+
   },
 };
