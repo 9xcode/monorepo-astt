@@ -24,7 +24,7 @@ const CORE_ROUTES = [
   { pattern: '/terms',          entrypoint: `${pagesDir}/terms.astro`         },
   { pattern: '/disclaimer',     entrypoint: `${pagesDir}/disclaimer.astro`    },
   { pattern: '/support',        entrypoint: `${pagesDir}/support.astro`       },
-  { pattern: '/mobile-app',     entrypoint: `${pagesDir}/mobile-app.astro`    },
+  { pattern: '/get-app',        entrypoint: `${pagesDir}/get-app.astro`      },
   { pattern: '/404',            entrypoint: `${pagesDir}/404.astro`           },
   { pattern: '/500',            entrypoint: `${pagesDir}/500.astro`           },
   { pattern: '/llms-full.txt',  entrypoint: `${pagesDir}/llms-full.txt.ts`   },

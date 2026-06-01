@@ -68,6 +68,12 @@ export interface SiteContent {
       heroBadge: string;
     };
 
+    getApp: {
+      /** <title> tag for /get-app */
+      title: string;
+      /** meta description for /get-app */
+      description: string;
+    };
 
   };
 
@@ -86,7 +92,7 @@ export interface SiteContent {
     };
 
     bottomCta: {
-      mobileApp: {
+      getApp: {
         title: string;
         description: string;
         buttonLabel: string;
@@ -114,8 +120,8 @@ export interface SiteContent {
       aboutSectionTitle: string;
     };
 
-    mobileAppCard: {
-      /** Description text in the sidebar mobile app promo card */
+    getAppCard: {
+      /** Description text in the sidebar get-app promo card */
       description: string;
     };
 
@@ -127,6 +133,33 @@ export interface SiteContent {
     search: {
       /** Placeholder text for the search dialog input */
       placeholder: string;
+    };
+
+    getApp: {
+      hero: {
+        /** Social proof user count — e.g. "10,000+" */
+        userCount: string;
+        /** Rating display text — e.g. "4.9/5 on App Stores" */
+        ratingText: string;
+      };
+      tools: {
+        /** Subtitle under the tools section heading */
+        subtitle: string;
+        /** Grid items — include the "And X+ More" tile as the last entry */
+        items: Array<{ label: string }>;
+      };
+      testimonials: Array<{
+        /** Full review quote — without surrounding quotation marks */
+        quote: string;
+        /** Initials for avatar — e.g. "AJ" */
+        initials: string;
+        /** Reviewer display name — e.g. "Amit J." */
+        name: string;
+        /** Source platform — e.g. "App Store Review" */
+        platform: string;
+        /** Star rating 1–5 */
+        rating: number;
+      }>;
     };
   };
 }
@@ -193,7 +226,7 @@ export interface NavigationConfig {
 /** Sidebar layout toggles — reusable across page types */
 export interface SidebarConfig {
   showAllToolsList: boolean;
-  showMobileAppCard: boolean;
+  showGetAppCard: boolean;
   showSupportCard: boolean;
 }
 
@@ -269,6 +302,16 @@ export interface SearchConfig {
   };
 }
 
+/** App Download Landing Page feature configuration */
+export interface GetAppConfig {
+  /** Master switch — when false, hides all get-app UI across the entire site */
+  enabled: boolean;
+  /** iOS App Store deep link — e.g. "https://apps.apple.com/app/id..." */
+  appStoreUrl: string;
+  /** Google Play Store deep link — e.g. "https://play.google.com/store/apps/details?id=..." */
+  playStoreUrl: string;
+}
+
 /** Opt-in feature capabilities, grouped by page scope */
 export interface FeaturesConfig {
   search: SearchConfig;
@@ -323,6 +366,8 @@ export interface FeaturesConfig {
   support: SupportConfig;
   /** Blog — article publishing system */
   blog: BlogConfig;
+  /** App Download Landing Page — opt-in feature */
+  getApp: GetAppConfig;
 }
 
 /** Root site configuration shape — every site must satisfy this contract */

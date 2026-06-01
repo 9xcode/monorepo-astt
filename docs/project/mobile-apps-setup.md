@@ -10,7 +10,7 @@ The web components (`@mtools/core`) and sites (`sites/*`) are completely isolate
 ## Directory Structure
 
 ```text
-mobile-apps/
+get-apps/
 ├── _template/             # Scaffold template for creating new mobile wrappers
 │   ├── capacitor.config.ts
 │   ├── package.json       # @mtools/mobile-template
@@ -38,16 +38,16 @@ mobile-apps/
    - The `capacitor.config.ts` points `webDir` directly to `../../sites/<site-name>/dist`.
    - This means Capacitor immediately consumes the production-ready static assets built by Astro.
 
-4. **Shared Directory (`mobile-apps/shared`)**:
+4. **Shared Directory (`get-apps/shared`)**:
    - **Do not put mobile code in `@mtools/core`**. Doing so would infect web-only projects with Capacitor native libraries.
-   - Any custom native code (Java/Swift plugin wrappers), native mobile bridge utilities, or mobile-specific Svelte components should be placed in `mobile-apps/shared` (`@mtools/mobile-shared`).
+   - Any custom native code (Java/Swift plugin wrappers), native mobile bridge utilities, or mobile-specific Svelte components should be placed in `get-apps/shared` (`@mtools/mobile-shared`).
 
 5. **Centralized Dependency Management**:
    - All Capacitor core plugins are strictly managed via `pnpm-workspace.yaml` catalogs. This guarantees every mobile app utilizes the exact same Capacitor versions (e.g., `^8.3.1`).
 
 ## How to Create a New Mobile App
 
-1. Copy the `mobile-apps/_template/` directory to `mobile-apps/<new-app-name>`.
+1. Copy the `get-apps/_template/` directory to `get-apps/<new-app-name>`.
 2. Update `package.json`:
    - Change the package `"name"` to `@mtools/<new-app-name>`.
    - Replace `"@mtools/SITE_NAME": "workspace:*"` with the actual package name of your site (e.g., `"@mtools/my-new-site": "workspace:*"`).
@@ -59,7 +59,7 @@ mobile-apps/
 
 ## Lifecycle Commands
 
-To prepare and build a mobile app, navigate to its directory (`cd mobile-apps/finance-tools/`) and run:
+To prepare and build a mobile app, navigate to its directory (`cd get-apps/finance-tools/`) and run:
 
 1. **Add Native Platforms (Run Once):**
    ```bash

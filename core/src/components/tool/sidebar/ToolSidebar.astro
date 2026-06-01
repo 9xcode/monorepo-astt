@@ -5,7 +5,7 @@
  */
 import AdPlaceholder from "../../common/ui/AdPlaceholder.astro";
 import SupportCard from "../../engagement/SupportCard.astro";
-import MobileAppCard from "./MobileAppCard.astro";
+import GetAppCard from "./GetAppCard.astro";
 import AllToolsList from "./AllToolsList.astro";
 
 type Tool = {
@@ -30,7 +30,7 @@ const { tools, currentPath, showAllTools = true, showAppCard = true, showSupport
 	<div class="sticky top-24 space-y-8">
 		{showAllTools && <AllToolsList tools={tools} currentPath={currentPath} />}
 		<AdPlaceholder slotId="tool-sidebar" label="Ad" className="min-h-[250px]" />
-		{showAppCard && <MobileAppCard />}
+		{showAppCard && <GetAppCard />}
 		{showSupportCard && <SupportCard />}
 		<AdPlaceholder slotId="tool-sidebar-bottom" label="Sponsored" className="min-h-[250px] mt-2" />
 	</div>

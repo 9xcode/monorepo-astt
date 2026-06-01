@@ -133,7 +133,7 @@ export const siteConfig: SiteConfig = {
 
     sidebar: {
       showAllToolsList: true,
-      showMobileAppCard: false,
+      showGetAppCard: false,
       showSupportCard: false,
     },
 
@@ -206,7 +206,7 @@ export const siteConfig: SiteConfig = {
       showSupport: false,
       showFeedback: true,
       showGetApp: false,
-      getAppHref: "/mobile-app",
+      getAppHref: "/get-app",
     },
 
     ads: {
@@ -235,6 +235,13 @@ export const siteConfig: SiteConfig = {
     blog: {
       enabled: true,
       postsPerPage: 12,
+    },
+
+    getApp: {
+      // Set enabled: true and fill store URLs to activate the /get-app landing page
+      enabled: false,
+      appStoreUrl: "",   // e.g. "https://apps.apple.com/app/id..."
+      playStoreUrl: "",  // e.g. "https://play.google.com/store/apps/details?id=..."
     },
   },
   // ─── Content ──────────────────────────────────────────────────────────────────
@@ -273,6 +280,11 @@ export const siteConfig: SiteConfig = {
         heroBadge: "PLACEHOLDER_CATEGORY_PAGE_BADGE",       // e.g. "Collection"
       },
 
+      getApp: {
+        title: "PLACEHOLDER_GET_APP_TITLE",            // e.g. "Download MyApp – Free iOS & Android App"
+        description: "PLACEHOLDER_GET_APP_DESCRIPTION", // e.g. "Get MyApp for iOS and Android..."
+      },
+
     },
 
     components: {
@@ -285,10 +297,10 @@ export const siteConfig: SiteConfig = {
       },
 
       bottomCta: {
-        mobileApp: {
-          title: "PLACEHOLDER_CTA_APP_TITLE",
-          description: "PLACEHOLDER_CTA_APP_DESCRIPTION",
-          buttonLabel: "PLACEHOLDER_CTA_APP_BUTTON",        // e.g. "Download Free"
+        getApp: {
+          title: "PLACEHOLDER_BOTTOM_CTA_TITLE",
+          description: "PLACEHOLDER_BOTTOM_CTA_DESCRIPTION",
+          buttonLabel: "PLACEHOLDER_BUTTON",
         },
         featureRequest: {
           title: "PLACEHOLDER_CTA_FEATURE_TITLE",
@@ -310,7 +322,7 @@ export const siteConfig: SiteConfig = {
         aboutSectionTitle: "PLACEHOLDER_ABOUT_SECTION_TITLE", // e.g. "About this Tool"
       },
 
-      mobileAppCard: {
+      getAppCard: {
         description: "PLACEHOLDER_APP_CARD_DESCRIPTION",    // sidebar app promo card text
       },
 
@@ -320,6 +332,45 @@ export const siteConfig: SiteConfig = {
 
       search: {
         placeholder: "PLACEHOLDER_SEARCH_PLACEHOLDER",      // search dialog input placeholder
+      },
+
+      getApp: {
+        hero: {
+          userCount: "PLACEHOLDER_USER_COUNT",    // e.g. "10,000+"
+          ratingText: "PLACEHOLDER_RATING_TEXT",  // e.g. "4.9/5 on App Stores"
+        },
+        tools: {
+          subtitle: "PLACEHOLDER_TOOLS_SUBTITLE",  // e.g. "Access over 50+ tools..."
+          items: [
+            { label: "PLACEHOLDER_TOOL_1" },
+            { label: "PLACEHOLDER_TOOL_2" },
+            { label: "PLACEHOLDER_TOOL_3" },
+            { label: "And More" },
+          ],
+        },
+        testimonials: [
+          {
+            quote: "PLACEHOLDER_REVIEW_1",
+            initials: "AB",
+            name: "PLACEHOLDER_NAME_1",
+            platform: "App Store Review",
+            rating: 5,
+          },
+          {
+            quote: "PLACEHOLDER_REVIEW_2",
+            initials: "CD",
+            name: "PLACEHOLDER_NAME_2",
+            platform: "Play Store Review",
+            rating: 5,
+          },
+          {
+            quote: "PLACEHOLDER_REVIEW_3",
+            initials: "EF",
+            name: "PLACEHOLDER_NAME_3",
+            platform: "Play Store Review",
+            rating: 4,
+          },
+        ],
       },
     },
 

@@ -1,6 +1,9 @@
 ---
 /**
  * AppHero — Mobile app landing page hero section with phone mockup.
+ *
+ * Store URLs and social proof stats come from siteConfig.features.getApp
+ * and siteConfig.content.components.getApp.hero.
  */
 import { Button } from "$lib/components/ui/button";
 import { MoveRight, Smartphone, Zap, Globe, Lock, House } from '@lucide/svelte';
@@ -10,6 +13,9 @@ import user1 from "../../../assets/images/user-1.jpg";
 import user2 from "../../../assets/images/user-2.jpg";
 import user3 from "../../../assets/images/user-3.jpg";
 import Logo from "../../common/ui/Logo.svelte";
+
+const { appStoreUrl, playStoreUrl } = siteConfig.features.getApp;
+const { userCount, ratingText } = siteConfig.content.components.getApp.hero;
 ---
 
 <section class="py-24 px-4 overflow-hidden relative border-b border-border/50 bg-gradient-to-b from-background to-muted/20">
@@ -27,10 +33,10 @@ import Logo from "../../common/ui/Logo.svelte";
                 Experience the full power of {siteConfig.name} on your mobile device. Offline access, native performance, and the absolute privacy you expect.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 pt-4">
-                <Button size="lg" class="gap-2 h-14 px-8 text-base shadow-lg">
+                <Button size="lg" class="gap-2 h-14 px-8 text-base shadow-lg" href={appStoreUrl}>
                     Get for iOS <MoveRight class="size-5" />
                 </Button>
-                <Button size="lg" variant="outline" class="gap-2 h-14 px-8 text-base bg-background/50 hover:bg-accent backdrop-blur-sm border-border/50">
+                <Button size="lg" variant="outline" class="gap-2 h-14 px-8 text-base bg-background/50 hover:bg-accent backdrop-blur-sm border-border/50" href={playStoreUrl}>
                     Get for Android <MoveRight class="size-5" />
                 </Button>
             </div>
@@ -41,8 +47,8 @@ import Logo from "../../common/ui/Logo.svelte";
                     <Image src={user3} alt="User 3" width={32} height={32} class="size-8 rounded-full border-2 border-background object-cover" />
                 </div>
                 <div class="flex flex-col">
-                    <span class="font-medium text-foreground">Join 10,000+ users</span>
-                    <span>Rated 4.9/5 on App Stores</span>
+                    <span class="font-medium text-foreground">Join {userCount} users</span>
+                    <span>Rated {ratingText}</span>
                 </div>
             </div>
         </div>

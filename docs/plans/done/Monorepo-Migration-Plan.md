@@ -488,7 +488,7 @@ monorepo-astt/
 - Move `src/layouts/` → `core/src/layouts/`
 - Move ALL `src/components/` subdirs → `core/src/components/`
   - **EXCEPT** `src/components/integrations/` (site-specific analytics — stays per-site)
-  - Dirs: `common/`, `blog/`, `tool/`, `tools-grid/`, `authors/`, `engagement/`, `workspace/`, `home/`, `mobile-app/`
+  - Dirs: `common/`, `blog/`, `tool/`, `tools-grid/`, `authors/`, `engagement/`, `workspace/`, `home/`, `get-app/`
 - **Refactor ALL `siteConfig` imports** in moved components:
   - **Astro components:** Replace `import { siteConfig } from '../../../config'` with `import { siteConfig } from 'virtual:site-config'`
   - **Svelte components:** Same change — `import { siteConfig } from 'virtual:site-config'` (virtual modules work in Svelte with client directives)
@@ -496,7 +496,7 @@ monorepo-astt/
   1. Move `common/` components
   2. Move `blog/` + `tool/` + `tools-grid/`
   3. Move `authors/` + `engagement/` + `workspace/`
-  4. Move `home/` + `mobile-app/`
+  4. Move `home/` + `get-app/`
   5. Move `layouts/`
 - **Commit:** `refactor: move all shared layouts and components to core`
 

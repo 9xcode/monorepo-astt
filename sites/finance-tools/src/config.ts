@@ -133,7 +133,7 @@ export const siteConfig: SiteConfig = {
         },
         { label: "Blog",         href: "/blog" },
         { label: "Support",      href: "/support" },
-        { label: "Download App", href: "/mobile-app" },
+        { label: "Download App", href: "/get-app" },
       ],
       footer: [
         { label: "About Us",   href: "/about" },
@@ -160,7 +160,7 @@ export const siteConfig: SiteConfig = {
 
     sidebar: {
       showAllToolsList: true,
-      showMobileAppCard: false,
+      showGetAppCard: false,
       showSupportCard: true,
     },
 
@@ -238,7 +238,7 @@ export const siteConfig: SiteConfig = {
       showSupport: true,
       showFeedback: true,
       showGetApp: true,
-      getAppHref: "/mobile-app",
+      getAppHref: "/get-app",
     },
 
     ads: {
@@ -267,6 +267,12 @@ export const siteConfig: SiteConfig = {
     blog: {
       enabled: true,
       postsPerPage: 12,
+    },
+
+    getApp: {
+      enabled: true,
+      appStoreUrl: "https://apps.apple.com/app/id",        // TODO: replace with real App Store link
+      playStoreUrl: "https://play.google.com/store/apps/details?id=app.multitools", // TODO: replace with real Play Store link
     },
   },
   // ─── Content ──────────────────────────────────────────────────────────────────
@@ -303,6 +309,11 @@ export const siteConfig: SiteConfig = {
         heroBadge: "Collection Directory",
       },
 
+      getApp: {
+        title: "Download MultiTools App – Free iOS & Android App",
+        description: "Get the MultiTools app for iOS and Android. Offline access, zero tracking, and all our tools directly on your device.",
+      },
+
     },
 
     components: {
@@ -315,7 +326,7 @@ export const siteConfig: SiteConfig = {
       },
 
       bottomCta: {
-        mobileApp: {
+        getApp: {
           title: "Mobile App",
           description: "Fast, offline calculations natively on iOS & Android.",
           buttonLabel: "Download Free",
@@ -340,7 +351,7 @@ export const siteConfig: SiteConfig = {
         aboutSectionTitle: "About this Tool",
       },
 
-      mobileAppCard: {
+      getAppCard: {
         description: "Calculate offline with zero tracking. Get the premium experience on your phone.",
       },
 
@@ -350,6 +361,49 @@ export const siteConfig: SiteConfig = {
 
       search: {
         placeholder: "Search tools, calculators, articles...",
+      },
+
+      getApp: {
+        hero: {
+          userCount: "10,000+",
+          ratingText: "4.9/5 on App Stores",
+        },
+        tools: {
+          subtitle: "Access over 50+ financial, mathematical, and everyday tools directly from your pocket.",
+          items: [
+            { label: "SIP Calculator" },
+            { label: "EMI Calculator" },
+            { label: "GST & Tax Tools" },
+            { label: "Health & BMI" },
+            { label: "Age Calculator" },
+            { label: "Percentage Tools" },
+            { label: "Discount Tools" },
+            { label: "And 40+ More" },
+          ],
+        },
+        testimonials: [
+          {
+            quote: "This app is an absolute lifesaver. I use it daily and the fact that it works offline is amazing. Zero ads, pure functionality, exactly what I needed.",
+            initials: "AJ",
+            name: "Amit J.",
+            platform: "App Store Review",
+            rating: 5,
+          },
+          {
+            quote: "Finally, a perfectly designed toolset that respects my privacy. I uninstalled 4 different calculator apps after finding this one. It has literally everything I need.",
+            initials: "SM",
+            name: "Sarah M.",
+            platform: "Play Store Review",
+            rating: 5,
+          },
+          {
+            quote: "Extremely fast and snappy. The UI is gorgeous and the dark mode is perfect. Would give it 5 stars if they added a dedicated scientific calculator, but it's great!",
+            initials: "RJ",
+            name: "Rahul J.",
+            platform: "Play Store Review",
+            rating: 4,
+          },
+        ],
       },
     },
 

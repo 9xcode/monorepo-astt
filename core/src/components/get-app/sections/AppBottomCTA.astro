@@ -1,9 +1,14 @@
 ---
 /**
- * AppBottomCTA — Download CTA section for mobile app page.
+ * AppBottomCTA — Download CTA section for the get-app landing page.
+ *
+ * Store links come from siteConfig.features.getApp.
  */
 import { Button } from "$lib/components/ui/button";
 import { MoveRight } from '@lucide/svelte';
+import { siteConfig } from 'virtual:site-config';
+
+const { appStoreUrl, playStoreUrl } = siteConfig.features.getApp;
 ---
 
 <section class="py-24 px-4 bg-muted/30 cv-auto cv-intrinsic-h300">
@@ -16,10 +21,10 @@ import { MoveRight } from '@lucide/svelte';
 					Join thousands of professionals who calculate smarter, faster, and privately.
 				</p>
 				<div class="flex flex-col sm:flex-row justify-center gap-4 pt-6">
-					<Button size="lg" variant="secondary" class="gap-2 text-secondary-foreground h-14 px-8 text-base rounded-xl shadow-md font-semibold">
+					<Button size="lg" variant="secondary" class="gap-2 text-secondary-foreground h-14 px-8 text-base rounded-xl shadow-md font-semibold" href={appStoreUrl}>
 						Download for iOS <MoveRight class="size-5" />
 					</Button>
-					<Button size="lg" variant="outline" class="gap-2 bg-transparent text-primary-foreground border-primary-foreground/30 hover:bg-primary-foreground/10 h-14 px-8 text-base rounded-xl font-semibold">
+					<Button size="lg" variant="outline" class="gap-2 bg-transparent text-primary-foreground border-primary-foreground/30 hover:bg-primary-foreground/10 h-14 px-8 text-base rounded-xl font-semibold" href={playStoreUrl}>
 						Download for Android <MoveRight class="size-5" />
 					</Button>
 				</div>

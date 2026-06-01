@@ -87,7 +87,7 @@ const trayConfig = siteConfig.features.toolActionTray;
 const trayEnabled = trayConfig?.enabled ?? false;
 const sidebarConfig = siteConfig.ui.sidebar;
 const showSidebarAllTools = sidebarConfig.showAllToolsList ?? true;
-const showSidebarAppCard = sidebarConfig.showMobileAppCard ?? true;
+const showSidebarAppCard = sidebarConfig.showGetAppCard ?? true;
 const trayProps = {
 	slug: currentSlug,
 	toolTitle: processedToolTitle,
@@ -101,7 +101,7 @@ const trayProps = {
 	supportLabel: siteConfig.features.support?.label ?? "Support Us",
 	showFeedback: trayConfig?.showFeedback ?? true,
 	showGetApp: trayConfig?.showGetApp ?? true,
-	getAppHref: trayConfig?.getAppHref ?? "/mobile-app",
+	getAppHref: trayConfig?.getAppHref ?? "/get-app",
 	favouriteStorageKey: siteConfig.features.favouriteTools?.storageKey ?? "favourites",
 };
 
