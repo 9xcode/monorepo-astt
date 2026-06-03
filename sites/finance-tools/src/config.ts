@@ -68,6 +68,16 @@ export const siteConfig: SiteConfig = {
   // ─── Legal ──────────────────────────────────────────────────────────────
   companyName: "MultiTools",
 
+  legal: {
+    lastUpdated: "June 2025",
+    toolDisclaimers: [
+      {
+        category: "Finance & Investment Tools",
+        description: "Results from financial calculators (EMI, SIP, compound interest, loan repayment, etc.) are computed using standard mathematical formulas and are provided for general estimation purposes only. They do not account for individual tax liability, institution-specific charges, variable rate fluctuations, or regulatory changes. Always verify outputs with a qualified financial adviser or your financial institution before making any investment, loan, or financial planning decision.",
+      },
+    ],
+  },
+
   // ─── Contact ────────────────────────────────────────────────────────────
   contact: {
     email: "support@multitools.app",
@@ -136,12 +146,14 @@ export const siteConfig: SiteConfig = {
         { label: "Download App", href: "/get-app" },
       ],
       footer: [
-        { label: "About Us",   href: "/about" },
-        { label: "Privacy",    href: "/privacy" },
-        { label: "Terms",      href: "/terms" },
-        { label: "Disclaimer", href: "/disclaimer" },
-        { label: "Contact",    href: "/contact" },
-        { label: "Support",    href: "/support" },
+        { label: "About Us",            href: "/about" },
+        { label: "Privacy",             href: "/privacy" },
+        { label: "Terms",               href: "/terms" },
+        { label: "Disclaimer",          href: "/disclaimer" },
+        { label: "Affiliate Disclosure", href: "/affiliate-disclosure" },
+        { label: "DMCA",                href: "/dmca" },
+        { label: "Contact",             href: "/contact" },
+        { label: "Support",             href: "/support" },
       ],
       mobile: [
         { label: "Home",       href: "/" },

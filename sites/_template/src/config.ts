@@ -63,8 +63,21 @@ export const siteConfig: SiteConfig = {
     currencyCode: "USD",
   },
 
-  // ─── Legal ──────────────────────────────────────────────────────────────
+  // ─── Legal ──────────────────────────────────────────────────────────────────
   companyName: "PLACEHOLDER_COMPANY",
+
+  legal: {
+    /** Displayed as "Last updated" on all legal pages. Format: "Month YYYY" */
+    lastUpdated: "June 2025",
+    /**
+     * Site-specific tool disclaimer entries appended to the Disclaimer page.
+     * These supplement the shared defaults (Calculators, File Processing, Code, Text).
+     * Leave as [] if the shared defaults are sufficient for this site.
+     * Example entry:
+     *   { category: "Finance & Investment Tools", description: "..." }
+     */
+    toolDisclaimers: [],
+  },
 
   // ─── Contact ────────────────────────────────────────────────────────────
   contact: {
@@ -118,11 +131,13 @@ export const siteConfig: SiteConfig = {
         { label: "Contact", href: "/contact" },
       ],
       footer: [
-        { label: "About Us",   href: "/about" },
-        { label: "Privacy",    href: "/privacy" },
-        { label: "Terms",      href: "/terms" },
-        { label: "Disclaimer", href: "/disclaimer" },
-        { label: "Contact",    href: "/contact" },
+        { label: "About Us",            href: "/about" },
+        { label: "Privacy",             href: "/privacy" },
+        { label: "Terms",               href: "/terms" },
+        { label: "Disclaimer",          href: "/disclaimer" },
+        { label: "Affiliate Disclosure", href: "/affiliate-disclosure" },
+        { label: "DMCA",                href: "/dmca" },
+        { label: "Contact",             href: "/contact" },
       ],
       mobile: [
         { label: "Home",  href: "/" },

@@ -1,0 +1,147 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/common/sections/Header.astro";
+import Footer from "../components/common/sections/Footer.astro";
+import StandardProse from "../components/common/typography/StandardProse.astro";
+import { siteConfig } from 'virtual:site-config';
+import JsonLd from "../seo/JsonLd.astro";
+import { buildWebPageSchema } from "../seo";
+
+const seoUrl = new URL(Astro.url.pathname, siteConfig.url).href;
+const pageTitle = `Affiliate Disclosure - ${siteConfig.name}`;
+const pageDescription = `Affiliate disclosure for ${siteConfig.name}. Learn how we earn commissions from affiliate links and how that affects our content.`;
+const pageSchema = buildWebPageSchema({
+	type: 'WebPage',
+	name: pageTitle,
+	description: pageDescription,
+	url: seoUrl,
+	websiteUrl: siteConfig.url,
+});
+---
+<BaseLayout title={pageTitle} canonicalURL={seoUrl} description={pageDescription}>
+	<Fragment slot="head">
+		<JsonLd schema={pageSchema} />
+	</Fragment>
+	<Header />
+	<main class="flex-1 container mx-auto px-4 py-16 max-w-4xl">
+		<StandardProse>
+			<h1>Affiliate Disclosure</h1>
+			<p class="lead">Last updated: {siteConfig.legal.lastUpdated}</p>
+
+			<p>
+				Transparency is important to us. This Affiliate Disclosure explains how {siteConfig.name}
+				earns revenue through affiliate relationships and how this may affect the content you see on
+				this website.
+			</p>
+
+			<h2>1. What Is an Affiliate Link?</h2>
+			<p>
+				An affiliate link is a specially tracked URL that identifies {siteConfig.name} as the
+				source of a referral. When you click an affiliate link and make a purchase (or complete
+				another qualifying action), we may earn a commission or referral fee from the merchant —
+				at <strong>no additional cost to you</strong>. The price you pay is the same whether you
+				use our affiliate link or visit the merchant directly.
+			</p>
+
+			<h2>2. Amazon Associates Disclosure</h2>
+			<p>
+				{siteConfig.name} is a participant in the <strong>Amazon Services LLC Associates Program</strong>,
+				an affiliate advertising program designed to provide a means for sites to earn advertising
+				fees by advertising and linking to Amazon.com and its affiliated international stores
+				(including amazon.co.uk, amazon.in, amazon.ca, and others).
+			</p>
+			<p>
+				<strong>As an Amazon Associate, we earn from qualifying purchases.</strong>
+			</p>
+			<p>
+				This means that when you click a link to an Amazon product on {siteConfig.name} and
+				subsequently make a purchase, we may receive a small commission. This does not affect the
+				price you pay.
+			</p>
+
+			<h2>3. Other Affiliate Programs</h2>
+			<p>
+				In addition to Amazon, {siteConfig.name} may participate in affiliate programs offered by
+				other companies and platforms. These may include, but are not limited to, software vendors,
+				app developers, hosting providers, and other online retailers. In each case, we may earn a
+				commission if you make a purchase or sign up for a service through our links.
+			</p>
+			<p>
+				Where affiliate links are used in our content (such as blog posts, tool recommendations, or
+				resource pages), we will clearly identify them where required. You may see labels such as
+				<strong>"affiliate link"</strong>, <strong>"(paid link)"</strong>, or similar disclosures
+				near the relevant link or at the top of the relevant page.
+			</p>
+
+			<h2>4. Third-Party Advertising</h2>
+			<p>
+				{siteConfig.name} also displays advertisements served by third-party ad networks, including
+				Google AdSense and potentially other advertising partners. These are separate from affiliate
+				links — they are display advertisements where we earn revenue based on ad impressions or
+				clicks, not on purchases you make.
+			</p>
+			<p>
+				Advertisers do not control our content. The appearance of an advertisement on this site
+				does not constitute an endorsement of the advertiser or its products.
+			</p>
+
+			<h2>5. Our Editorial Integrity</h2>
+			<p>
+				Our primary purpose is to provide useful, accurate, and free tools. The existence of
+				affiliate relationships does <strong>not</strong> influence which tools we build, how we
+				describe them, or whether we recommend a product or service. Specifically:
+			</p>
+			<ul>
+				<li>We only include affiliate links to products and services we genuinely believe are
+					relevant and useful to our users</li>
+				<li>We do not accept payment to write positive reviews or to feature a product</li>
+				<li>Affiliate compensation does not affect the ranking, rating, or coverage of any
+					product or tool on this site</li>
+				<li>If a product has significant drawbacks, we will note them regardless of any affiliate
+					relationship</li>
+			</ul>
+			<p>
+				We believe our long-term credibility with users is worth more than any short-term
+				commission. We will never compromise our editorial standards for affiliate revenue.
+			</p>
+
+			<h2>6. FTC Compliance</h2>
+			<p>
+				This disclosure is made in accordance with the Federal Trade Commission's (FTC) guidelines
+				under 16 CFR Part 255: <em>"Guides Concerning the Use of Endorsements and Testimonials in
+				Advertising."</em> These guidelines require that material connections between endorsers and
+				the products or services they promote be disclosed clearly.
+			</p>
+			<p>
+				If you are in the European Union, this disclosure also aligns with the requirements of the
+				EU Unfair Commercial Practices Directive regarding transparent commercial communications.
+			</p>
+
+			<h2>7. Your Choices</h2>
+			<p>
+				You are never obligated to use our affiliate links. If you prefer not to support us through
+				affiliate commissions, you can simply search for the product or service directly on the
+				merchant's website. Our tools will always remain completely free to use regardless.
+			</p>
+
+			<h2>8. Changes to This Disclosure</h2>
+			<p>
+				We may update this Affiliate Disclosure as we add or remove affiliate programs. The "Last
+				updated" date at the top of this page reflects when changes were last made. We encourage
+				you to review this page periodically.
+			</p>
+
+			<h2>9. Contact Us</h2>
+			<p>
+				If you have any questions about our affiliate relationships or this disclosure, please
+				contact us:
+			</p>
+			<ul>
+				<li><strong>Email:</strong> <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a></li>
+				<li><strong>Website:</strong> <a href="/contact">Contact Page</a></li>
+				<li><strong>Company:</strong> {siteConfig.companyName}</li>
+			</ul>
+		</StandardProse>
+	</main>
+	<Footer />
+</BaseLayout>

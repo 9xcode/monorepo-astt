@@ -396,6 +396,25 @@ export interface SiteConfig {
   // ── Legal ──────────────────────────────────────────────────────────────────
   companyName: string;
 
+  /**
+   * Legal pages configuration.
+   * - `lastUpdated`: Displayed as "Last updated" on all legal pages.
+   *   Format: human-readable month + year, e.g. "June 2025"
+   * - `toolDisclaimers`: Optional site-specific tool category disclaimer entries
+   *   appended to Section 7 of the Disclaimer page. Use these to add
+   *   niche-relevant limitations beyond the shared defaults.
+   *   Leave as an empty array [] if no additional entries are needed.
+   */
+  legal: {
+    lastUpdated: string;
+    toolDisclaimers: Array<{
+      /** Bold category label, e.g. "Finance & Investment Tools" */
+      category: string;
+      /** One or two sentences describing the limitation for this tool type */
+      description: string;
+    }>;
+  };
+
   // ── Contact ────────────────────────────────────────────────────────────────
   contact: {
     email: string;

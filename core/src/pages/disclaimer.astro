@@ -9,7 +9,7 @@ import { buildWebPageSchema } from "../seo";
 
 const seoUrl = new URL(Astro.url.pathname, siteConfig.url).href;
 const pageTitle = `Disclaimer - ${siteConfig.name}`;
-const pageDescription = `Disclaimer regarding the use of ${siteConfig.name} financial calculators and utility tools.`;
+const pageDescription = `Disclaimer for ${siteConfig.name}. Understand the limitations of our tools and the scope of our liability.`;
 const pageSchema = buildWebPageSchema({
 	type: 'WebPage',
 	name: pageTitle,
@@ -26,19 +26,153 @@ const pageSchema = buildWebPageSchema({
 	<main class="flex-1 container mx-auto px-4 py-16 max-w-4xl">
 		<StandardProse>
 			<h1>Disclaimer</h1>
-			<p class="lead">Last updated: May 2026</p>
-			
-			<h2>1. Educational and Informational Purposes Only</h2>
-			<p>The calculators, tools, and information provided on the {siteConfig.name} website and mobile applications are for educational and informational purposes only. They are not intended to provide specific financial, investment, tax, or legal advice.</p>
-			
-			<h2>2. No Financial Advice (YMYL Clause)</h2>
-			<p>{siteConfig.name} is not a registered investment advisor, broker/dealer, financial planner, or tax professional. You should not construe any information or calculation results from our tools as a recommendation that any specific financial action, loan, or investment strategy is suitable for you. We strongly recommend consulting with a certified financial professional before making any major financial decisions.</p>
-			
-			<h2>3. Accuracy of Calculations</h2>
-			<p>While we make every effort to ensure the mathematical accuracy of our calculators based on standard industry formulas, we make no representations, warranties, or guarantees, express or implied, regarding the precise accuracy or completeness of any calculation. Real-world financial outcomes—such as exact mortgage payments or mutual fund returns—are subject to variable terms, shifting bank policies, undisclosed fees, and market volatility that our tools cannot perfectly predict.</p>
-			
+			<p class="lead">Last updated: {siteConfig.legal.lastUpdated}</p>
+
+			<p>
+				The information and tools provided on <strong>{siteConfig.name}</strong> ({siteConfig.domain}),
+				operated by <strong>{siteConfig.companyName}</strong>, are made available for general
+				informational, educational, and convenience purposes only. Please read this Disclaimer
+				carefully before relying on any output produced by our tools.
+			</p>
+
+			<h2>1. Informational Purposes Only</h2>
+			<p>
+				All tools, calculators, converters, generators, and utilities on {siteConfig.name} produce
+				results for <strong>informational and educational purposes only</strong>. The output of any
+				tool on this website does not constitute, and should not be construed as, professional advice
+				of any kind — including but not limited to:
+			</p>
+			<ul>
+				<li>Financial, investment, tax, or accounting advice</li>
+				<li>Legal advice or guidance</li>
+				<li>Medical or health-related advice</li>
+				<li>Technical or engineering specifications for safety-critical applications</li>
+				<li>Any other form of licensed professional guidance</li>
+			</ul>
+			<p>
+				If you require advice specific to your situation, we strongly recommend consulting with a
+				qualified and licensed professional in the relevant field before making any decision.
+			</p>
+
+			<h2>2. No Warranty of Accuracy</h2>
+			<p>
+				While we make every reasonable effort to ensure that our tools implement standard formulas,
+				algorithms, and methodologies correctly, we make <strong>no representations, warranties,
+				or guarantees</strong> — express or implied — regarding:
+			</p>
+			<ul>
+				<li>The mathematical accuracy, completeness, or precision of any calculated result</li>
+				<li>The fitness of any tool's output for any specific purpose or use case</li>
+				<li>The currency, timeliness, or up-to-date nature of any rates, standards, or parameters
+					embedded in our tools (e.g., tax rates, conversion factors, format specifications)</li>
+				<li>The reliability of results when applied to edge cases, unusual inputs, or
+					jurisdiction-specific scenarios</li>
+			</ul>
+			<p>
+				Real-world outcomes may differ from tool outputs due to factors beyond our control, including
+				but not limited to: rounding conventions, regional variations, regulatory changes, and
+				individual circumstances.
+			</p>
+
+			<h2>3. User Responsibility</h2>
+			<p>
+				You assume full and sole responsibility for how you interpret and use the results produced
+				by our tools. By using {siteConfig.name}, you acknowledge and agree that:
+			</p>
+			<ul>
+				<li>You will independently verify any result before using it as the basis for a consequential
+					decision</li>
+				<li>You will not make financial, legal, health, or other significant decisions based solely
+					on the output of a tool on this website without consulting a relevant professional</li>
+				<li>The tools are meant to assist your understanding, not to replace professional judgement</li>
+			</ul>
+
 			<h2>4. Limitation of Liability</h2>
-			<p>Under no circumstances shall {siteConfig.name}, its owners, or developers be held liable for any direct, indirect, incidental, consequential, or special damages arising out of your reliance upon the information or calculated results provided by our platform.</p>
+			<p>
+				To the maximum extent permitted by applicable law, {siteConfig.companyName}, its owners,
+				officers, directors, employees, and contributors shall not be liable for any loss or
+				damage — direct, indirect, incidental, consequential, or otherwise — arising out of or
+				in connection with:
+			</p>
+			<ul>
+				<li>Your use of or reliance on any tool, result, or information provided on {siteConfig.name}</li>
+				<li>Any error, inaccuracy, or omission in the tools or their outputs</li>
+				<li>Any decision made or action taken based on information obtained from this website</li>
+				<li>Interruption or unavailability of the Service</li>
+			</ul>
+
+			<h2>5. Third-Party Content and Links</h2>
+			<p>
+				{siteConfig.name} may reference external websites, datasets, standards, or third-party
+				resources. We do not endorse and are not responsible for the accuracy, content, or practices
+				of any third-party sites or sources. Links to external sites are provided for convenience
+				only and do not imply affiliation or endorsement.
+			</p>
+
+			<h2>6. No Professional Relationship</h2>
+			<p>
+				Your use of {siteConfig.name} does not create any professional, advisory, fiduciary, or
+				contractual relationship between you and {siteConfig.companyName}. We are not your advisor,
+				agent, or representative. The use of our tools does not constitute engagement of professional
+				services.
+			</p>
+
+			<h2>7. Tool-Specific Limitations</h2>
+			<p>
+				Different categories of tools on {siteConfig.name} carry their own specific limitations.
+				As a general guideline:
+			</p>
+			<ul>
+				<li>
+					<strong>Calculators &amp; Converters:</strong> Results are computed using standard
+					formulas and may not reflect jurisdiction-specific rules, special cases, or real-time
+					data (e.g., live currency rates, current tax brackets).
+				</li>
+				<li>
+					<strong>File Processing Tools:</strong> Tools that process images, documents, or other
+					files operate entirely in your browser. We cannot guarantee perfect output for all file
+					types, encodings, or edge cases. Always keep backups of your original files.
+				</li>
+				<li>
+					<strong>Code &amp; Developer Tools:</strong> Output from code formatters, generators,
+					or validators is provided as-is. Results should be reviewed by a qualified developer
+					before use in production systems.
+				</li>
+				<li>
+					<strong>Content &amp; Text Tools:</strong> Word counts, readability scores, and similar
+					metrics are computed algorithmically and may differ from results produced by other tools
+					or by manual counting.
+				</li>
+			</ul>
+			{siteConfig.legal.toolDisclaimers.length > 0 && (
+				<>
+				<p>The following limitations apply specifically to tools available on {siteConfig.name}:</p>
+				<ul>
+					{siteConfig.legal.toolDisclaimers.map((entry: { category: string, description: string }) => (
+						<li>
+							<strong>{entry.category}:</strong> {entry.description}
+						</li>
+					))}
+				</ul>
+				</>
+			)}
+
+			<h2>8. Changes to This Disclaimer</h2>
+			<p>
+				We may update this Disclaimer at any time. Changes will be reflected by the "Last updated"
+				date at the top of this page. We encourage you to review this page periodically to stay
+				informed of any updates.
+			</p>
+
+			<h2>9. Contact Us</h2>
+			<p>
+				If you have any questions about this Disclaimer, please reach out to us:
+			</p>
+			<ul>
+				<li><strong>Email:</strong> <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a></li>
+				<li><strong>Website:</strong> <a href="/contact">Contact Page</a></li>
+				<li><strong>Company:</strong> {siteConfig.companyName}</li>
+			</ul>
 		</StandardProse>
 	</main>
 	<Footer />
