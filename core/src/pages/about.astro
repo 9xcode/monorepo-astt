@@ -9,7 +9,7 @@ import { buildWebPageSchema } from "../seo";
 
 const seoUrl = new URL('/about', siteConfig.url).href;
 const pageTitle = `About Us - ${siteConfig.name}`;
-const pageDescription = `Learn more about ${siteConfig.name}, our mission, and our commitment to privacy and providing top-tier free tools and calculators for everyone.`;
+const pageDescription = `Learn about ${siteConfig.name}, who we are, why we built this, and what we believe about free, fast, and private web tools.`;
 
 const aboutSchema = buildWebPageSchema({
 	type: 'AboutPage',
@@ -28,24 +28,52 @@ const aboutSchema = buildWebPageSchema({
 		<StandardProse>
 			<h1>About {siteConfig.name}</h1>
 
-			<p class="lead">At {siteConfig.name}, we believe that powerful, useful software should be accessible to everyone — free, fast, and built with privacy in mind.</p>
+			<p class="lead">We build tools that actually work. No accounts, no paywalls, no nonsense.</p>
 
-			<h2>Our Mission</h2>
-			<p>We built {siteConfig.name} because we saw a gap: most online tools are either paywalled, slow, or packed with unnecessary complexity. Our mission is simple — provide a growing collection of high-quality, browser-based utility tools that just work, without requiring accounts, installations, or subscriptions.</p>
+			<h2>Why We Built This</h2>
+			<p>
+				Most online tools have the same problem. They are either buried behind a sign-up wall,
+				slow to load, cluttered with ads that break the experience, or they ask for way more
+				than they need. We got tired of that, so we built {siteConfig.name}.
+			</p>
+			<p>
+				The idea is straightforward: a clean, growing collection of utility tools that you can
+				just open and use. No account required. No installation. No premium tier locking away
+				the features you actually need. Just tools that do what they say.
+			</p>
 
-			<h2>Why Choose Us?</h2>
-			<ul>
-				<li><strong>Privacy by Design:</strong> The vast majority of our tools run entirely in your browser. Your files, inputs, and data are processed locally on your device and are never uploaded to our servers.</li>
-				<li><strong>Blazing Fast:</strong> Built with modern web technologies (Astro and Svelte), our tools load instantly — no spinners, no waiting.</li>
-				<li><strong>Always Free:</strong> Our core toolset will always be free. We sustain the platform through non-intrusive advertising and optional affiliate partnerships — this is what keeps the lights on without charging you.</li>
-				<li><strong>Constantly Growing:</strong> We are continuously adding new tools across categories including finance, productivity, development, image processing, document utilities, and more.</li>
-			</ul>
+			<h2>How It Works</h2>
+			<p>
+				Almost everything on {siteConfig.name} runs directly in your browser. When you use one
+				of our tools, your data (your files, your numbers, your text) stays on your device.
+				It never touches our servers. We think that is the right way to build tools that
+				people trust, and we are not going to change that.
+			</p>
+			<p>
+				The site is free because we use non-intrusive ads and, on some pages, affiliate links
+				to products we think are genuinely useful. That is how we keep the lights on. We are
+				transparent about it, so you can read our <a href="/affiliate-disclosure">Affiliate Disclosure</a> if
+				you want the full picture.
+			</p>
 
 			<h2>Who We Are</h2>
-			<p>We are a small, independent team of software engineers and designers who are passionate about building tools that solve real everyday problems. We listen to our community and ship updates based on what our users actually need.</p>
+			<p>
+				We are a small, independent team of engineers and designers. There is no big marketing
+				department here. We build things because we think they are useful, we fix things when
+				they break, and we actually pay attention to feedback from people who use the site.
+			</p>
+			<p>
+				We add new tools when we see a real need for them, not just to fill a page. If you
+				have been looking for something and could not find a decent free version of it, there
+				is a good chance we have thought about building it too.
+			</p>
 
 			<h2>Get in Touch</h2>
-			<p>We love hearing from our users. If you want to request a new tool, report a bug, or just say hello, reach out via our <a href="/contact">Contact Page</a>.</p>
+			<p>
+				If something is broken, a tool is giving you wrong results, or you have an idea for
+				something we should build, we genuinely want to hear it. Send us a message through
+				our <a href="/contact">Contact Page</a> and we will get back to you.
+			</p>
 		</StandardProse>
 	</main>
 	<Footer />
