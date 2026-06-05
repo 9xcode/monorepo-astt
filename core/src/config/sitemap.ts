@@ -240,7 +240,7 @@ function makeClassifiers(siteUrl: string) {
   const isCategoryIndex       = (url: string) => url === new URL('/categories', siteUrl).href;
   const isCategoryPage        = (url: string) => /\/categories\/[^/]+\/?$/.test(url);
   const isAuthorPage          = (url: string) => /\/authors\/[^/]+\/?$/.test(url);
-  const isLegalPage           = (url: string) => /\/(privacy|terms|disclaimer|dmca|gdpr|cookie)/.test(url);
+  const isLegalPage           = (url: string) => /\/(privacy|terms|disclaimer|dmca|affiliate-disclosure|gdpr|cookie)/.test(url);
   const isErrorPage           = (url: string) => /\/(404|500)\/?$/.test(url);
   return { isHomepage, isToolPage, isToolsIndex, isBlogIndex, isBlogPost,
            isBlogCategoryArchive, isBlogTagArchive, isBlogPagination,

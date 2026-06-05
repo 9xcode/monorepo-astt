@@ -61,8 +61,8 @@ export const siteConfig: SiteConfig = {
 
   // ─── Localization ───────────────────────────────────────────────────────
   localization: {
-    currencySymbol: "₹",
-    currencyCode: "INR",
+    currencySymbol: "$",
+    currencyCode: "USD",
   },
 
   // ─── Legal ──────────────────────────────────────────────────────────────
