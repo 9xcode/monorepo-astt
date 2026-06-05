@@ -1,5 +1,13 @@
 <!-- Hero Section -->
 		<section class="relative pt-20 pb-28 md:pt-32 md:pb-36 px-4 text-center overflow-hidden">
+
+{/* Box Grid Background with Fade */}
+		<div class="absolute inset-0 -z-20 h-full w-full grid-bg grid-mask-hero-top"></div>
+		{/* Subtle top glow */}
+		<div class="absolute top-0 left-1/2 w-full -translate-x-1/2 -z-10 h-64 bg-gradient-to-b from-primary/10 to-transparent blur-[100px] pointer-events-none [mask-image:linear-gradient(to_bottom,black_20%,transparent_100%)]"></div>
+
+        
+
             <!-- Box Grid Background with Fade -->
             <div class="absolute inset-0 -z-20 h-full w-full bg-background bg-[linear-gradient(to_right,#8080801a_1px,transparent_1px),linear-gradient(to_bottom,#8080801a_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_0%,#000_70%,transparent_100%)]"></div>
             <!-- Subtle top glow -->
