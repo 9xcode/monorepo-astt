@@ -44,8 +44,6 @@ letter do ad this : https://www.google.com/preferences/source?q=https://redeemco
 
 ## Fix (I will tell you what to fix, don't choose by yourself)
 
-- [] change support page completley
-
 - [ ] **Mobile App Issue**: Capacitor's internal web server is not as smart as a cloud server (like Vercel). When Astro generates your web app, it creates folders with index.html files inside (e.g., dist/tools/sip-calculator/index.html). On the web, if you visit /tools/sip-calculator, Vercel is smart enough to serve the index.html file silently. However, Capacitor's local Android server strictly maps URLs to literal files. When it receives a request for /tools/sip-calculator, it looks for a file named exactly sip-calculator. When it doesn't find it, it 404s, and its built-in SPA-fallback mechanism reloads the homepage index.html instead.
   - (Side note: The Javascript interceptor I gave you failed because Svelte/UI frameworks use event delegation that stops the click event before it reaches the document. While fixable with { capture: true }, you are completely right—we should use a proper architectural solution that natively handles all links like about, privacy, etc.)
 
@@ -58,4 +56,3 @@ letter do ad this : https://www.google.com/preferences/source?q=https://redeemco
 
 - [ ] Implement cookie consent banner (CMP)
 - [ ] Implement short affilaite disclosor only on the pages where we have affliate links and use ("paid link") as mention in disclosor policy
-- update about us, contact us, suport us page
