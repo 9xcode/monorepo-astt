@@ -67,9 +67,8 @@ export const siteConfig: SiteConfig = {
 
   // ─── Legal ──────────────────────────────────────────────────────────────
   companyName: "MultiTools",
-
   legal: {
-    lastUpdated: "June 2025",
+    lastUpdated: "June 06, 2026",
     toolDisclaimers: [
       {
         category: "Finance & Investment Tools",

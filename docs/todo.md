@@ -55,4 +55,11 @@ letter do ad this : https://www.google.com/preferences/source?q=https://redeemco
 --------
 
 - [ ] Implement cookie consent banner (CMP)
-- [ ] Implement short affilaite disclosor only on the pages where we have affliate links and use ("paid link") as mention in disclosor policy
+- [ ] Implement short affilaite disclosor only on the pages where we have affliate links and use ("paid link") as mention in disclosor policy, and also build complete affiliate solution
+
+
+
+---------
+- animation: a "Rolling Slide Swap" (or Vertical Scroll Reveal).
+- animation: the "Offset Ghost Shadow" effect.
+- "Jelly Squish & Bounce" animation.
