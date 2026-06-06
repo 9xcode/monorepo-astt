@@ -334,6 +334,8 @@ export interface FeaturesConfig {
     };
   };
   toolPage: {
+    /** Set default full width for tool page */
+    defaultFullWidth: boolean;
     toc: TocConfig;
   };
   favouriteTools: {

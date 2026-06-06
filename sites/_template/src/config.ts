@@ -189,6 +189,7 @@ export const siteConfig: SiteConfig = {
     },
 
     toolPage: {
+      defaultFullWidth: false,
       toc: {
         enabled: true,
         title: "On this page",
