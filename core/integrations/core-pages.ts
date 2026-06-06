@@ -93,6 +93,12 @@ export function corePages(): AstroIntegration {
         const bodyScriptsPath = fileURLToPath(
           new URL('src/components/integrations/BodyScripts.astro', config.root)
         );
+        // @site-logo → each site's own src/components/common/ui/Logo.svelte.
+        // Sites copy the SVG from core (or replace with their own brand mark).
+        // Core components import from '@site-logo' — never directly from the file system.
+        const siteLogoPath = fileURLToPath(
+          new URL('src/components/common/ui/Logo.svelte', config.root)
+        );
         updateConfig({
           vite: {
             resolve: {
@@ -100,6 +106,7 @@ export function corePages(): AstroIntegration {
                 '@widget-renderer': widgetRendererPath,
                 '@head-scripts':    headScriptsPath,
                 '@body-scripts':    bodyScriptsPath,
+                '@site-logo':       siteLogoPath,
               },
             },
           },
@@ -107,6 +114,7 @@ export function corePages(): AstroIntegration {
         logger.debug(`@mtools/core-pages: @widget-renderer → ${widgetRendererPath}`);
         logger.debug(`@mtools/core-pages: @head-scripts → ${headScriptsPath}`);
         logger.debug(`@mtools/core-pages: @body-scripts → ${bodyScriptsPath}`);
+        logger.debug(`@mtools/core-pages: @site-logo → ${siteLogoPath}`);
 
         // ── 2. Inject shared routes ──────────────────────────────────────────
         // Lower priority than site-level pages — sites can override any route

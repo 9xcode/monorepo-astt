@@ -4,7 +4,7 @@
   import { Menu, X, PlusCircle, Smartphone, Clock, Heart } from '@lucide/svelte';
   import { navIconMap } from "$lib/icons";
 
-  import Logo from "../ui/Logo.svelte";
+  import Logo from "@site-logo";
   import { siteConfig } from 'virtual:site-config';
 
   let open = $state(false);

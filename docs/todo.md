@@ -48,6 +48,26 @@ letter do ad this : https://www.google.com/preferences/source?q=https://redeemco
   - (Side note: The Javascript interceptor I gave you failed because Svelte/UI frameworks use event delegation that stops the click event before it reaches the document. While fixable with { capture: true }, you are completely right—we should use a proper architectural solution that natively handles all links like about, privacy, etc.)
 
 
+
+---
+### Logo issue
+**Problem:** The Logo.svelte in core/src/components/common/ui/ contains hardcoded SVG paths for your specific brand logo. It's used in:
+- Header.astro — header brand mark
+- MobileMenu.svelte — mobile sidebar header
+- AppHero.astro — app download page
+This IS hardcoded in core. If a new site has a different brand, this breaks.
+
+**Solution:**
+- Each site provides its own Logo.svelte via Vite alias (recommended)
+- The same way we already alias @head-scripts and @body-scripts per-site, we can create a @site-logo alias that points to each site's own Logo.svelte.
+- Core just does `import Logo from '@site-logo'`
+- Each site has its own src/components/Logo.svelte with site-specific SVG
+- Zero changes to SiteConfig — the alias mechanism handles it
+- Template provides a sensible default/placeholder
+
+> But we are not going to implement it because right now we have generic logo that is same in evey sites. 
+> Will implement it when we have different logo for each site.
+
 ===============
 ## Fixes
 
