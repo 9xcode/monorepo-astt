@@ -24,6 +24,9 @@ import { buildWebPageSchema } from "../seo";
 
 const s = coreConfig.support;
 
+const qrImages = import.meta.glob<{ default: { src: string } }>('../assets/images/*.{jpeg,jpg,png,gif,webp}', { eager: true });
+const resolvedQrImage = s.upi.qrImagePath ? (qrImages[s.upi.qrImagePath]?.default?.src || s.upi.qrImagePath) : null;
+
 const seoUrl = new URL('/support', siteConfig.url).href;
 const pageTitle = `Support Us - ${siteConfig.name}`;
 const pageDescription = `${siteConfig.name} is free for everyone. If our tools saved you time, here are a few ways to help keep them that way.`;
@@ -99,10 +102,10 @@ const hasCryptoSection = hasCrypto || hasAggregators;
 		</section>
 
 		<!-- ── Section 2: Recurring ──────────────────────────────────────────── -->
-		{(s.kofi.url || s.githubSponsors.url) && (
+		{(s.kofi.url || s.githubSponsors.url || s.patreon.url) && (
 			<section class="mb-12">
 				<h2 class="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-4">Recurring support</h2>
-				<div class="grid sm:grid-cols-2 gap-3">
+				<div class="grid sm:grid-cols-3 gap-3">
 					{s.kofi.url && (
 						<a
 							href={s.kofi.url}
@@ -127,11 +130,29 @@ const hasCryptoSection = hasCrypto || hasAggregators;
 							class="flex items-center gap-3 p-4 rounded-xl border border-border bg-card hover:bg-muted/60 hover:border-primary/40 transition-all shadow-sm group"
 						>
 							<div class="rounded-lg bg-muted p-2 shrink-0">
-							<Star class="size-4 text-muted-foreground group-hover:text-primary transition-colors" />
-						</div>
+								<Star class="size-4 text-muted-foreground group-hover:text-primary transition-colors" />
+							</div>
 							<div class="flex-1 min-w-0">
 								<p class="text-sm font-semibold group-hover:text-primary transition-colors">GitHub Sponsors</p>
 								<p class="text-xs text-muted-foreground">Monthly or yearly tiers</p>
+							</div>
+						</a>
+					)}
+					{s.patreon.url && (
+						<a
+							href={s.patreon.url}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="flex items-center gap-3 p-4 rounded-xl border border-border bg-card hover:bg-muted/60 hover:border-primary/40 transition-all shadow-sm group"
+						>
+							<div class="rounded-lg bg-muted p-2 shrink-0">
+								<svg viewBox="0 0 24 24" class="size-4 text-muted-foreground group-hover:text-primary transition-colors" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+									<path d="M0 .48v23.04h4.13V.48H0zm13.62 0C8.42.48 4.18 4.72 4.18 9.93c0 5.2 4.24 9.45 9.44 9.45 5.2 0 9.44-4.24 9.44-9.45C23.06 4.72 18.82.48 13.62.48z"/>
+								</svg>
+							</div>
+							<div class="flex-1 min-w-0">
+								<p class="text-sm font-semibold group-hover:text-primary transition-colors">Patreon</p>
+								<p class="text-xs text-muted-foreground">Monthly tiers & benefits</p>
 							</div>
 						</a>
 					)}
@@ -143,28 +164,44 @@ const hasCryptoSection = hasCrypto || hasAggregators;
 		{s.upi.id && (
 			<section class="mb-12">
 				<h2 class="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-4">UPI</h2>
-				<div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-					<div class="flex items-center gap-3 bg-muted rounded-xl px-4 py-3 flex-1 min-w-0">
-						<Smartphone class="size-4 shrink-0 text-muted-foreground" />
-						<code class="text-sm font-mono flex-1 truncate">{s.upi.id}</code>
-						<button
-							data-copy={s.upi.id}
-							onclick="copyVal(this)"
-							class="text-xs font-semibold text-primary hover:underline underline-offset-4 shrink-0 cursor-pointer bg-transparent border-0 p-0"
-						>Copy</button>
-					</div>
-					{s.upi.qrImagePath ? (
-						<img
-							src={s.upi.qrImagePath}
-							alt="UPI QR code"
-							class="w-20 h-20 rounded-xl border border-border object-cover shrink-0"
-							loading="lazy"
-						/>
-					) : (
-						<div class="w-20 h-20 rounded-xl border border-dashed border-border flex items-center justify-center text-[10px] text-muted-foreground text-center leading-tight px-1 shrink-0">
-							QR soon
+				<div class="rounded-xl border border-border bg-card flex flex-row items-stretch overflow-hidden shadow-sm">
+					<div class="p-3 sm:p-4 flex flex-col justify-center flex-1 border-r border-border min-w-0">
+						<div class="flex items-center gap-2 mb-1.5 sm:mb-2">
+							<div class="rounded-md bg-muted p-1 sm:p-1.5 shrink-0 hidden sm:block">
+								<Smartphone class="size-4 text-muted-foreground" />
+							</div>
+							<p class="text-xs sm:text-sm font-semibold leading-none">Pay via UPI</p>
 						</div>
-					)}
+						<p class="text-[11px] sm:text-xs text-muted-foreground mb-2 sm:mb-3 leading-snug">
+							Scan QR or copy the UPI ID to send a tip.
+						</p>
+						<div class="flex items-center gap-2 bg-muted rounded-lg px-2 sm:px-3 py-1.5 sm:py-2">
+							<code class="text-[10px] sm:text-xs font-mono flex-1 truncate text-left">{s.upi.id}</code>
+							<button
+								data-copy={s.upi.id}
+								onclick="copyVal(this)"
+								class="text-[10px] sm:text-xs font-semibold text-primary hover:underline underline-offset-4 shrink-0 cursor-pointer bg-transparent border-0 p-0"
+							>Copy</button>
+						</div>
+					</div>
+					<div class="p-3 sm:p-4 flex items-center justify-center bg-muted/20 shrink-0">
+						{resolvedQrImage ? (
+							<div class="p-1 sm:p-1.5 bg-white rounded-lg shadow-sm border border-border">
+								<img
+									src={resolvedQrImage}
+									alt="UPI QR code"
+									class="w-16 h-16 sm:w-20 sm:h-20 rounded-md object-cover"
+									loading="lazy"
+								/>
+							</div>
+						) : (
+							<div class="p-1 sm:p-1.5 bg-white rounded-lg shadow-sm border border-border opacity-50 grayscale">
+								<div class="w-16 h-16 sm:w-20 sm:h-20 rounded-md border border-dashed border-muted-foreground/40 flex items-center justify-center text-[10px] text-muted-foreground text-center leading-tight px-1">
+									QR soon
+								</div>
+							</div>
+						)}
+					</div>
 				</div>
 			</section>
 		)}
@@ -175,7 +212,7 @@ const hasCryptoSection = hasCrypto || hasAggregators;
 				<h2 class="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-4">Crypto</h2>
 				<div class="space-y-3">
 					{(s.cointree.url || s.xmrchat.url) && (
-						<div class="grid sm:grid-cols-2 gap-3 mb-1">
+						<div class="grid sm:grid-cols-2 gap-3">
 							{s.cointree.url && (
 								<a
 									href={s.cointree.url}

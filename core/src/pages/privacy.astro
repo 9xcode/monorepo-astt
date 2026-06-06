@@ -272,10 +272,9 @@ const pageSchema = buildWebPageSchema({
 			<p>
 				Our website is operated from {siteConfig.contact.location}. The third-party services we
 				use (including Google Analytics, Google Tag Manager, Google AdSense, and our hosting and
-				CDN provider) may process data on servers located in the <strong>United States</strong>.
-				If you access our Service from outside the United States — including from the European
-				Economic Area (EEA), the United Kingdom, Switzerland, or Brazil — your data may be
-				transferred to and processed in the United States.
+				CDN provider) may process data on servers located in various countries, including within the
+				European Union and outside it (such as the United States). These providers may change as we evolve our infrastructure.
+				If you access our Service from the European Economic Area (EEA), the United Kingdom, Switzerland, or Brazil, your data may be transferred to and processed in the third country.
 			</p>
 			<p>
 				Where personal data is transferred from the EEA or UK to a third country, we rely on
@@ -313,7 +312,6 @@ const pageSchema = buildWebPageSchema({
 			<ul>
 				<li><strong>Email:</strong> <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a></li>
 				<li><strong>Website:</strong> <a href="/contact">Contact Page</a></li>
-				<li><strong>Company:</strong> {siteConfig.companyName}</li>
 			</ul>
 		</StandardProse>
 	</main>

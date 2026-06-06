@@ -46,6 +46,8 @@ export interface SupportDonationConfig {
   paypal: SupportPlatformLink;
   /** GitHub Sponsors profile link. */
   githubSponsors: SupportPlatformLink;
+  /** Patreon platform link. */
+  patreon: SupportPlatformLink;
   /** XMR Chat — Monero-based tip/chat platform. */
   xmrchat: SupportPlatformLink;
   /** CoinTr.ee — crypto linktree aggregator page. */

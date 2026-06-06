@@ -14,12 +14,15 @@ export const coreConfig: CoreConfig = {
     githubSponsors: {
       url: "https://github.com/sponsors/yourusername",
     },
+    patreon: {
+      url: "https://patreon.com/yourusername",
+    },
     wishlist: {
       url: "https://www.amazon.in/hz/wishlist/ls/XXXXXXXXXXXXXXXXX",
     },
     upi: {
       id: "yourname@upi",
-      qrImagePath: "",
+      qrImagePath: "",  // eg: ../assets/images/user-1.jpg
     },
     xmrchat: {
       url: "https://xmrchat.com/yourusername",
