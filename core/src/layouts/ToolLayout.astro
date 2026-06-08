@@ -100,7 +100,7 @@ const trayProps = {
 	supportUrl: siteConfig.features.support?.url ?? "",
 	supportLabel: siteConfig.features.support?.label ?? "Support Us",
 	showFeedback: trayConfig?.showFeedback ?? true,
-	showGetApp: trayConfig?.showGetApp ?? true,
+	showGetApp: (trayConfig?.showGetApp ?? true) && (siteConfig.features.getApp?.enabled !== false),
 	getAppHref: trayConfig?.getAppHref ?? "/get-app",
 	favouriteStorageKey: siteConfig.features.favouriteTools?.storageKey ?? "favourites",
 };
@@ -109,6 +109,8 @@ const trayProps = {
 const relatedTools = getRelatedTools(currentSlug, category, tags ?? [], tools);
 
 const showSidebarSupportCard = siteConfig.ui.sidebar.showSupportCard !== false;
+const showRelatedTools = siteConfig.features.toolPage.showRelatedTools !== false;
+const showAuthorCard = siteConfig.features.toolPage.showAuthorCard !== false;
 ---
 
 <BaseLayout title={title} description={description} canonicalURL={seoUrl} image={ogImagePath}>
@@ -189,11 +191,11 @@ const showSidebarSupportCard = siteConfig.ui.sidebar.showSupportCard !== false;
 							</ArticleProse>
 						</ContentSection>
 
-						<AuthorCard authors={authors} />
+						{showAuthorCard && <AuthorCard authors={authors} />}
 
 						<AdPlaceholder slotId="tool-content-middle" label="Sponsored" className="min-h-[100px] my-6" />
 
-						<RelatedTools relatedTools={relatedTools} category={category} />
+						{showRelatedTools && <RelatedTools relatedTools={relatedTools} category={category} />}
 
 						<AdPlaceholder slotId="tool-content-bottom" label="Sponsored" className="min-h-[100px] mt-8" />
 					</div>
@@ -251,11 +253,11 @@ const showSidebarSupportCard = siteConfig.ui.sidebar.showSupportCard !== false;
 					</ArticleProse>
 				</ContentSection>
 
-				<AuthorCard authors={authors} />
+				{showAuthorCard && <AuthorCard authors={authors} />}
 
 				<AdPlaceholder slotId="tool-content-middle" label="Sponsored" className="min-h-[100px] my-6" />
 
-				<RelatedTools relatedTools={relatedTools} category={category} />
+				{showRelatedTools && <RelatedTools relatedTools={relatedTools} category={category} />}
 
 				<AdPlaceholder slotId="tool-content-bottom" label="Sponsored" className="min-h-[100px] mt-8" />
 			</div>

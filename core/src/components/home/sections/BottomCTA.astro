@@ -11,6 +11,9 @@ import { siteConfig } from 'virtual:site-config';
 
 const { getApp, featureRequest, supportUs } = siteConfig.content.components.bottomCta;
 const getAppEnabled = siteConfig.features.getApp?.enabled !== false;
+const showGetApp = siteConfig.features.homepage.bottomCta.showGetApp && getAppEnabled;
+const showFeatureRequest = siteConfig.features.homepage.bottomCta.showFeatureRequest;
+const showSupportCard = siteConfig.features.homepage.bottomCta.showSupportCard;
 ---
 
 <section class="py-20 px-4 relative overflow-hidden bg-background cv-auto cv-intrinsic-h300">
@@ -21,8 +24,8 @@ const getAppEnabled = siteConfig.features.getApp?.enabled !== false;
         {/* 3 Column Grid */}
         <div class="grid md:grid-cols-3 gap-6">
 
-            {/* Mobile App Card — hidden when features.getApp.enabled is false */}
-            {getAppEnabled && (
+            {/* Mobile App Card */}
+            {showGetApp && (
             <div class="group relative overflow-hidden rounded-xl border border-border/50 bg-card/60 backdrop-blur-md p-8 shadow-lg hover:shadow-primary/5 hover:border-primary/30 transition-all text-center flex flex-col items-center justify-between min-h-[280px]">
                 <div class="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <div class="size-16 rounded-xl bg-foreground text-background flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform duration-300">
@@ -43,6 +46,7 @@ const getAppEnabled = siteConfig.features.getApp?.enabled !== false;
             )}
 
             {/* Feature Request Card */}
+            {showFeatureRequest && (
             <div class="group relative overflow-hidden rounded-xl border border-border/50 bg-card/60 backdrop-blur-md p-8 shadow-lg hover:shadow-primary/5 hover:border-primary/30 transition-all text-center flex flex-col items-center justify-between min-h-[280px]">
                 <div class="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <div class="size-16 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform duration-300 border border-primary/20">
@@ -64,8 +68,10 @@ const getAppEnabled = siteConfig.features.getApp?.enabled !== false;
                     </button>
                 </div>
             </div>
+            )}
 
             {/* Buy Me a Coffee Card */}
+            {showSupportCard && siteConfig.features.support.url && (
             <div class="group relative overflow-hidden rounded-xl border border-border/50 bg-card/60 backdrop-blur-md p-8 shadow-lg hover:shadow-warning/5 hover:border-warning/30 transition-all text-center flex flex-col items-center justify-between min-h-[280px]">
                 <div class="absolute inset-0 bg-gradient-to-b from-warning/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <div class="size-16 rounded-xl bg-warning/10 text-warning flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform duration-300 border border-warning/20">
@@ -83,6 +89,7 @@ const getAppEnabled = siteConfig.features.getApp?.enabled !== false;
                     </Button>
                 </div>
             </div>
+            )}
 
         </div>
     </div>

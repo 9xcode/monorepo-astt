@@ -150,6 +150,7 @@ export const siteConfig: SiteConfig = {
       showAllToolsList: true,
       showGetAppCard: false,
       showSupportCard: false,
+      showExploreToolsCard: true,
     },
 
     floatingActions: {
@@ -162,7 +163,17 @@ export const siteConfig: SiteConfig = {
 
     theme: {
       defaultMode: "system",
-      name: "slate",  // Must match a file in core/src/styles/themes/<name>.css
+      name: "slate",      // Must match a file in core/src/styles/themes/<name>.css
+    },
+
+    getApp: {
+      sections: {
+        showFeatures: true,
+        showTools: true,
+        showHowItWorks: true,
+        showTestimonials: true,
+        showFaq: true,
+      },
     },
   },
 
@@ -186,6 +197,11 @@ export const siteConfig: SiteConfig = {
       toolsDiscovery: {
         initialDisplayCount: 20,
       },
+      bottomCta: {
+        showGetApp: true,
+        showFeatureRequest: true,
+        showSupportCard: true,
+      },
     },
 
     toolPage: {
@@ -196,6 +212,8 @@ export const siteConfig: SiteConfig = {
         minHeadings: 3,
         maxDepth: 3,
       },
+      showRelatedTools: true,
+      showAuthorCard: true,
     },
 
     favouriteTools: {
@@ -251,6 +269,8 @@ export const siteConfig: SiteConfig = {
     blog: {
       enabled: true,
       postsPerPage: 12,
+      showRelatedPosts: true,
+      showAuthorCard: true,
     },
 
     getApp: {

@@ -162,7 +162,7 @@ const orgSchema = buildOrganizationSchema({
 		<FloatingActionDock />
 		
 		{/* Global Dialog Singletons — lightweight shells, content lazy-loaded on first trigger */}
-		<SearchDialog client:idle />
+		{siteConfig.features.search.enabled && <SearchDialog client:idle />}
 		<ShareDialog client:idle />
 		<FeatureRequestDialog client:idle />
 	</body>

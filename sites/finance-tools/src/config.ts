@@ -173,6 +173,7 @@ export const siteConfig: SiteConfig = {
       showAllToolsList: true,
       showGetAppCard: false,
       showSupportCard: true,
+      showExploreToolsCard: true,
     },
 
     floatingActions: {
@@ -185,8 +186,17 @@ export const siteConfig: SiteConfig = {
 
     theme: {
       defaultMode: "system",
-//       name: "slate",
-       name: "neutral",
+      name: "neutral",
+    },
+
+    getApp: {
+      sections: {
+        showFeatures: true,
+        showTools: true,
+        showHowItWorks: true,
+        showTestimonials: true,
+        showFaq: true,
+      },
     },
   },
 
@@ -214,6 +224,11 @@ export const siteConfig: SiteConfig = {
       toolsDiscovery: {
         initialDisplayCount: 20,
       },
+      bottomCta: {
+        showGetApp: true,
+        showFeatureRequest: true,
+        showSupportCard: true,
+      },
     },
 
     toolPage: {
@@ -224,6 +239,8 @@ export const siteConfig: SiteConfig = {
         minHeadings: 3,
         maxDepth: 3,
       },
+      showRelatedTools: true,
+      showAuthorCard: true,
     },
 
     favouriteTools: {
@@ -279,10 +296,12 @@ export const siteConfig: SiteConfig = {
     blog: {
       enabled: true,
       postsPerPage: 12,
+      showRelatedPosts: true,
+      showAuthorCard: true,
     },
 
     getApp: {
-      enabled: true,
+      enabled: false,
       appStoreUrl: "https://apps.apple.com/app/id",        // TODO: replace with real App Store link
       playStoreUrl: "https://play.google.com/store/apps/details?id=app.multitools", // TODO: replace with real Play Store link
     },

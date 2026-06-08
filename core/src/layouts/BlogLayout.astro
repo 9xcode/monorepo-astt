@@ -73,6 +73,8 @@ const { publishedAt, updatedAt } = getContentDates('blog', slug);
 // TOC: post.data.toc overrides site global. filterTocHeadings handles all
 // depth/threshold logic — same function as [tool].astro uses.
 const tocHeadings = filterTocHeadings(headings, post.data.toc);
+const showRelatedPosts = siteConfig.features.blog.showRelatedPosts !== false;
+const showAuthorCard = siteConfig.features.blog.showAuthorCard !== false;
 ---
 
 <BaseLayout
@@ -128,10 +130,10 @@ const tocHeadings = filterTocHeadings(headings, post.data.toc);
             </RichArticleProse>
           </ArticleSection>
 
-          <AuthorCard authors={authors} />
+          {showAuthorCard && <AuthorCard authors={authors} />}
         </article>
 
-        <RelatedPosts currentPost={post} />
+        {showRelatedPosts && <RelatedPosts currentPost={post} />}
       </div>
 
       <BlogSidebar />

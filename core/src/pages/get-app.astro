@@ -45,6 +45,8 @@ const appSchema = buildSoftwareAppSchema({
 	priceCurrency: siteConfig.localization.currencyCode || 'USD',
 	url: seoUrl,
 });
+
+const { showFeatures, showTools, showHowItWorks, showTestimonials, showFaq } = siteConfig.ui.getApp.sections;
 ---
 
 <BaseLayout title={pageTitle} canonicalURL={seoUrl} description={pageDescription}>
@@ -54,11 +56,11 @@ const appSchema = buildSoftwareAppSchema({
 	<Header />
 	<main class="flex-1">
 		<AppHero />
-		<AppFeatures />
-		<AppTools />
-		<AppHowItWorks />
-		<AppTestimonials />
-		<AppFAQ />
+		{showFeatures && <AppFeatures />}
+		{showTools && <AppTools />}
+		{showHowItWorks && <AppHowItWorks />}
+		{showTestimonials && <AppTestimonials />}
+		{showFaq && <AppFAQ />}
 		<AppBottomCTA />
 	</main>
 	<Footer />

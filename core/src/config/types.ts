@@ -228,6 +228,8 @@ export interface SidebarConfig {
   showAllToolsList: boolean;
   showGetAppCard: boolean;
   showSupportCard: boolean;
+  /** Show the "Explore Tools" cross-promo card in the blog sidebar */
+  showExploreToolsCard: boolean;
 }
 
 /** Floating actions configuration */
@@ -244,7 +246,23 @@ export interface ThemeConfig {
   /** Default color mode: 'dark' | 'light' | 'system' */
   defaultMode: 'dark' | 'light' | 'system';
   /** The active color theme stylesheet (matches filename in styles/themes/) */
-  name: string;
+  name: string;  // Must match a file in core/src/styles/themes/<name>.css
+}
+
+/** Per-section visibility toggles for the /get-app landing page */
+export interface GetAppUiConfig {
+  sections: {
+    /** AppFeatures — "Why download the app?" 4-feature grid */
+    showFeatures: boolean;
+    /** AppTools — "Everything You Need, In One App" tools grid */
+    showTools: boolean;
+    /** AppHowItWorks — "Simplicity at its finest" 3-step section */
+    showHowItWorks: boolean;
+    /** AppTestimonials — "Loved by Thousands" reviews grid */
+    showTestimonials: boolean;
+    /** AppFAQ — Frequently Asked Questions grid */
+    showFaq: boolean;
+  };
 }
 
 /** Cross-page UI / layout primitives */
@@ -253,6 +271,8 @@ export interface UiConfig {
   sidebar: SidebarConfig;
   floatingActions: FloatingActionsConfig;
   theme: ThemeConfig;
+  /** /get-app landing page UI controls */
+  getApp: GetAppUiConfig;
 }
 
 /** Google AdSense configuration */
@@ -289,6 +309,10 @@ export interface BlogConfig {
   enabled: boolean;
   /** Posts per page on the blog index */
   postsPerPage: number;
+  /** Show "Related Articles" section below each blog post */
+  showRelatedPosts: boolean;
+  /** Show the author card below each blog post */
+  showAuthorCard: boolean;
 }
 
 /** Search feature configuration */
@@ -332,11 +356,23 @@ export interface FeaturesConfig {
       /** 0 = show all; positive = show N then "Show More" */
       initialDisplayCount: number;
     };
+    bottomCta: {
+      /** Show the "Get App / Download App" card in the homepage bottom CTA section */
+      showGetApp: boolean;
+      /** Show the "Feature Request" card in the homepage bottom CTA section */
+      showFeatureRequest: boolean;
+      /** Show the "Support Us / Buy me a Coffee" card in the homepage bottom CTA section */
+      showSupportCard: boolean;
+    };
   };
   toolPage: {
     /** Set default full width for tool page */
     defaultFullWidth: boolean;
     toc: TocConfig;
+    /** Show the "Related Tools" section below the tool article */
+    showRelatedTools: boolean;
+    /** Show the author card below the tool article */
+    showAuthorCard: boolean;
   };
   favouriteTools: {
     enabled: boolean;
