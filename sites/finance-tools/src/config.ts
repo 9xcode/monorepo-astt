@@ -9,6 +9,7 @@
 // (e.g. Astro pages, layouts) continues to work without changes.
 import type {
   SiteConfig,
+  SiteContent,
   NavItem,
   SeoConfig,
   NavigationConfig,
@@ -26,6 +27,7 @@ import type {
 
 export type {
   SiteConfig,
+  SiteContent,
   NavItem,
   SeoConfig,
   NavigationConfig,
@@ -59,12 +61,21 @@ export const siteConfig: SiteConfig = {
 
   // ─── Localization ───────────────────────────────────────────────────────
   localization: {
-    currencySymbol: "₹",
-    currencyCode: "INR",
+    currencySymbol: "$",
+    currencyCode: "USD",
   },
 
   // ─── Legal ──────────────────────────────────────────────────────────────
   companyName: "MultiTools",
+  legal: {
+    lastUpdated: "June 06, 2026",
+    toolDisclaimers: [
+      {
+        category: "Finance & Investment Tools",
+        description: "Results from financial calculators (EMI, SIP, compound interest, loan repayment, etc.) are computed using standard mathematical formulas and are provided for general estimation purposes only. They do not account for individual tax liability, institution-specific charges, variable rate fluctuations, or regulatory changes. Always verify outputs with a qualified financial adviser or your financial institution before making any investment, loan, or financial planning decision.",
+      },
+    ],
+  },
 
   // ─── Contact ────────────────────────────────────────────────────────────
   contact: {
@@ -131,15 +142,17 @@ export const siteConfig: SiteConfig = {
         },
         { label: "Blog",         href: "/blog" },
         { label: "Support",      href: "/support" },
-        { label: "Download App", href: "/mobile-app" },
+        { label: "Download App", href: "/get-app" },
       ],
       footer: [
-        { label: "About Us",   href: "/about" },
-        { label: "Privacy",    href: "/privacy" },
-        { label: "Terms",      href: "/terms" },
-        { label: "Disclaimer", href: "/disclaimer" },
-        { label: "Contact",    href: "/contact" },
-        { label: "Support",    href: "/support" },
+        { label: "About Us",            href: "/about" },
+        { label: "Privacy",             href: "/privacy" },
+        { label: "Terms",               href: "/terms" },
+        { label: "Disclaimer",          href: "/disclaimer" },
+        { label: "Affiliate Disclosure", href: "/affiliate-disclosure" },
+        { label: "DMCA",                href: "/dmca" },
+        { label: "Contact",             href: "/contact" },
+        { label: "Support",             href: "/support" },
       ],
       mobile: [
         { label: "Home",       href: "/" },
@@ -158,8 +171,9 @@ export const siteConfig: SiteConfig = {
 
     sidebar: {
       showAllToolsList: true,
-      showMobileAppCard: false,
+      showGetAppCard: false,
       showSupportCard: true,
+      showExploreToolsCard: true,
     },
 
     floatingActions: {
@@ -172,7 +186,17 @@ export const siteConfig: SiteConfig = {
 
     theme: {
       defaultMode: "system",
-      name: "slate",
+      name: "neutral",
+    },
+
+    getApp: {
+      sections: {
+        showFeatures: true,
+        showTools: true,
+        showHowItWorks: true,
+        showTestimonials: true,
+        showFaq: true,
+      },
     },
   },
 
@@ -190,8 +214,8 @@ export const siteConfig: SiteConfig = {
 
     homepage: {
       toolWidgetSection: {
-        enabled: false,
-        toolSlug: "loan-amortization-calculator",
+        enabled: true,
+        toolSlug: "sip-calculator",
       },
       featuredSection: {
         enabled: true,
@@ -200,15 +224,23 @@ export const siteConfig: SiteConfig = {
       toolsDiscovery: {
         initialDisplayCount: 20,
       },
+      bottomCta: {
+        showGetApp: true,
+        showFeatureRequest: true,
+        showSupportCard: true,
+      },
     },
 
     toolPage: {
+      defaultFullWidth: true,
       toc: {
         enabled: true,
         title: "On this page",
         minHeadings: 3,
         maxDepth: 3,
       },
+      showRelatedTools: true,
+      showAuthorCard: true,
     },
 
     favouriteTools: {
@@ -235,7 +267,7 @@ export const siteConfig: SiteConfig = {
       showSupport: true,
       showFeedback: true,
       showGetApp: true,
-      getAppHref: "/mobile-app",
+      getAppHref: "/get-app",
     },
 
     ads: {
@@ -258,11 +290,153 @@ export const siteConfig: SiteConfig = {
     support: {
       url: "/support",
       label: "Support Us",
+      label2: "Buy me a Coffie",
     },
 
     blog: {
       enabled: true,
       postsPerPage: 12,
+      showRelatedPosts: true,
+      showAuthorCard: true,
     },
+
+    getApp: {
+      enabled: false,
+      appStoreUrl: "https://apps.apple.com/app/id",        // TODO: replace with real App Store link
+      playStoreUrl: "https://play.google.com/store/apps/details?id=app.multitools", // TODO: replace with real Play Store link
+    },
+  },
+  // ─── Content ──────────────────────────────────────────────────────────────────
+  content: {
+
+    pages: {
+
+      home: {
+        title: "MultiTools – Free Online Tools and Calculators",
+      },
+
+      tools: {
+        title: "All Free Online Tools and Calculators – MultiTools",
+        description: "Browse our full collection of free, privacy-focused, and lightning-fast online tools.",
+        heroBadge: "Complete Tools Directory",
+        heroTitle: "All Free Online Tools",
+      },
+
+      blog: {
+        title: "Free Tool Guides and Tutorials – MultiTools Blog",
+        description: "Guides, tips, and tutorials for using our free online tools and calculators.",
+      },
+
+      categories: {
+        title: "All Tool Categories – Free Calculators & Converters",
+        description: "Explore our complete collection of free, private, and fast tools organized by category to find the perfect calculator or utility for your needs.",
+        heroBadge: "All Utilities Directory",
+        heroTitle: "Browse by Category",
+      },
+
+      categoryPage: {
+        titleTemplate: "Free {category} Tools Online",
+        descriptionTemplate: "Explore our collection of fast and free {category} tools. No tracking, just pure privacy-first utility.",
+        heroBadge: "Collection Directory",
+      },
+
+      getApp: {
+        title: "Download MultiTools App – Free iOS & Android App",
+        description: "Get the MultiTools app for iOS and Android. Offline access, zero tracking, and all our tools directly on your device.",
+      },
+
+    },
+
+    components: {
+
+      hero: {
+        headline: "Faster than AI,",
+        headline2: "Safer ",
+        headlineAccent: "than Cloud",
+        subtitle: "Lightning-fast, free tools to edit, format, calculate, convert, and more",
+      },
+
+      bottomCta: {
+        getApp: {
+          title: "Mobile App",
+          description: "Fast, offline calculations natively on iOS & Android.",
+          buttonLabel: "Download Free",
+        },
+        featureRequest: {
+          title: "Missing a Tool?",
+          description: "Tell us what to build next. We monitor community feedback.",
+          buttonLabel: "Request Feature",
+        },
+        supportUs: {
+          title: "Support Us",
+          description: "Tools are built for free. Help fuel the developer with caffeine!",
+        },
+      },
+
+      toolsGrid: {
+        sectionTitle: "Discover Tools",
+        sectionSubtitle: "Find the perfect tool for your needs",
+      },
+
+      toolPage: {
+        aboutSectionTitle: "About this Tool",
+      },
+
+      getAppCard: {
+        description: "Calculate offline with zero tracking. Get the premium experience on your phone.",
+      },
+
+      sidebar: {
+        exploreToolsDescription: "Try our free financial calculators and converters.",
+      },
+
+      search: {
+        placeholder: "Search tools, calculators, articles...",
+      },
+
+      getApp: {
+        hero: {
+          userCount: "10,000+",
+          ratingText: "4.9/5 on App Stores",
+        },
+        tools: {
+          subtitle: "Access over 50+ financial, mathematical, and everyday tools directly from your pocket.",
+          items: [
+            { label: "SIP Calculator" },
+            { label: "EMI Calculator" },
+            { label: "GST & Tax Tools" },
+            { label: "Health & BMI" },
+            { label: "Age Calculator" },
+            { label: "Percentage Tools" },
+            { label: "Discount Tools" },
+            { label: "And 40+ More" },
+          ],
+        },
+        testimonials: [
+          {
+            quote: "This app is an absolute lifesaver. I use it daily and the fact that it works offline is amazing. Zero ads, pure functionality, exactly what I needed.",
+            initials: "AJ",
+            name: "Amit J.",
+            platform: "App Store Review",
+            rating: 5,
+          },
+          {
+            quote: "Finally, a perfectly designed toolset that respects my privacy. I uninstalled 4 different calculator apps after finding this one. It has literally everything I need.",
+            initials: "SM",
+            name: "Sarah M.",
+            platform: "Play Store Review",
+            rating: 5,
+          },
+          {
+            quote: "Extremely fast and snappy. The UI is gorgeous and the dark mode is perfect. Would give it 5 stars if they added a dedicated scientific calculator, but it's great!",
+            initials: "RJ",
+            name: "Rahul J.",
+            platform: "Play Store Review",
+            rating: 4,
+          },
+        ],
+      },
+    },
+
   },
 };

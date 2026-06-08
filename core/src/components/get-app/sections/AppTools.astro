@@ -1,0 +1,42 @@
+---
+/**
+ * AppTools — Available tools grid section for the get-app landing page.
+ *
+ * Items are driven by siteConfig.content.components.getApp.tools.
+ * The last item in the items array gets special "primary" pill styling
+ * (typically used for "And X+ More").
+ */
+import { ChartPie, Calculator, FileText, Activity, Zap, Globe, MoveRight } from '@lucide/svelte';
+import { siteConfig } from 'virtual:site-config';
+
+const { subtitle, items } = siteConfig.content.components.getApp.tools;
+---
+
+<section class="py-24 px-4 bg-muted/30 border-y border-border/50 cv-auto cv-intrinsic-h400">
+	<div class="container mx-auto">
+		<div class="text-center max-w-2xl mx-auto mb-16 space-y-4">
+			<h2 class="text-3xl md:text-4xl font-bold tracking-tight">Everything You Need, In One App</h2>
+			<p class="text-lg text-muted-foreground">{subtitle}</p>
+		</div>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {items.map((item: { label: string }, index: number) => {
+                const isLast = index === items.length - 1;
+                const iconIndex = isLast ? -1 : index % 6;
+                return (
+                    <div class={`p-6 rounded-xl border hover:shadow-md transition-all flex flex-col items-center text-center gap-4 group cursor-pointer ${isLast ? 'bg-primary text-primary-foreground border-primary' : 'bg-card border-border/60 hover:border-primary/50'}`}>
+                        <div class={`size-12 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform ${isLast ? 'bg-primary-foreground/20 text-primary-foreground' : 'bg-primary/10 text-primary'}`}>
+                            {isLast             && <MoveRight class="size-6" />}
+                            {iconIndex === 0    && <ChartPie  class="size-6" />}
+                            {iconIndex === 1    && <Calculator class="size-6" />}
+                            {iconIndex === 2    && <FileText   class="size-6" />}
+                            {iconIndex === 3    && <Activity   class="size-6" />}
+                            {iconIndex === 4    && <Zap        class="size-6" />}
+                            {iconIndex === 5    && <Globe      class="size-6" />}
+                        </div>
+                        <span class="font-medium">{item.label}</span>
+                    </div>
+                );
+            })}
+        </div>
+	</div>
+</section>

@@ -14,7 +14,7 @@
     supportLabel = "Support Us",
     showFeedback = true,
     showGetApp = true,
-    getAppHref = "/mobile-app",
+    getAppHref = "/get-app",
     favouriteStorageKey = "favourites",
   } = $props<{
     slug: string;

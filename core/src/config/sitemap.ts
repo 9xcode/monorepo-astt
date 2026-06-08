@@ -240,7 +240,7 @@ function makeClassifiers(siteUrl: string) {
   const isCategoryIndex       = (url: string) => url === new URL('/categories', siteUrl).href;
   const isCategoryPage        = (url: string) => /\/categories\/[^/]+\/?$/.test(url);
   const isAuthorPage          = (url: string) => /\/authors\/[^/]+\/?$/.test(url);
-  const isLegalPage           = (url: string) => /\/(privacy|terms|disclaimer|dmca|gdpr|cookie)/.test(url);
+  const isLegalPage           = (url: string) => /\/(privacy|terms|disclaimer|dmca|affiliate-disclosure|gdpr|cookie)/.test(url);
   const isErrorPage           = (url: string) => /\/(404|500)\/?$/.test(url);
   return { isHomepage, isToolPage, isToolsIndex, isBlogIndex, isBlogPost,
            isBlogCategoryArchive, isBlogTagArchive, isBlogPagination,
@@ -288,7 +288,7 @@ export function makeSitemapConfig(siteConfig: SiteConfig) {
     if (c.isBlogIndex(url))           return 0.8;
     if (c.isBlogPost(url))            return 0.7;
     if (c.isAuthorPage(url))          return 0.6;
-    if (/\/(support|contact|mobile-app)/.test(url)) return 0.6;
+    if (/\/(support|contact|get-app)/.test(url)) return 0.6;
     if (c.isBlogCategoryArchive(url)) return 0.5;
     if (c.isLegalPage(url))           return 0.3;
     return 0.5; // /about and any future pages
@@ -298,7 +298,7 @@ export function makeSitemapConfig(siteConfig: SiteConfig) {
   function getChangefreq(url: string): ChangeFreqEnum {
     if (c.isLegalPage(url)) return ChangeFreqEnum.YEARLY;
     if (c.isAuthorPage(url) || c.isBlogCategoryArchive(url)) return ChangeFreqEnum.MONTHLY;
-    if (/\/(support|contact|mobile-app|about)/.test(url)) return ChangeFreqEnum.MONTHLY;
+    if (/\/(support|contact|get-app|about)/.test(url)) return ChangeFreqEnum.MONTHLY;
     return ChangeFreqEnum.WEEKLY;
   }
 
@@ -345,6 +345,7 @@ export function makeSitemapConfig(siteConfig: SiteConfig) {
     // ── Filter ────────────────────────────────────────────────────────────────
     filter(page: string): boolean {
       if (!siteConfig.features.blog?.enabled && page.includes('/blog')) return false;
+      if (!siteConfig.features.getApp?.enabled && page.includes('/get-app')) return false;
       if (c.isErrorPage(page))      return false;
       if (c.isBlogTagArchive(page)) return false;
       if (c.isBlogPagination(page)) return false;

@@ -4,15 +4,24 @@
   "type": "module",
   "scripts": {
     "dev": "turbo dev",
+    "dev:finance": "turbo dev --filter=@mtools/finance-tools",
+
     "build": "turbo build",
+    "build:finance": "turbo build --filter=@mtools/finance-tools",
+
     "preview": "turbo preview",
+    "preview:finance": "turbo preview --filter=@mtools/finance-tools",
+
     "check": "turbo check:astro check:svelte check:tsc",
+    "check:core": "turbo check --filter=@mtools/core",
+    "check:finance": "turbo check --filter=@mtools/finance-tools",
     "check:astro": "turbo check:astro",
     "check:svelte": "turbo check:svelte",
     "check:tsc": "turbo check:tsc",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "validate": "eslint . && echo '─── CHECKS ───' && turbo check:astro check:svelte check:tsc && echo '─── BUILD ───' && turbo build",
+    
     "preinstall": "npx only-allow pnpm",
     "nuke": "./scripts/nuke.sh",
     "reinstall": "./scripts/nuke.sh && pnpm install"

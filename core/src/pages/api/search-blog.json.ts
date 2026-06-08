@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { siteConfig } from 'virtual:site-config';
-// Phase 10: both type and utility now come from core
+// both type and utility now come from core
 import type { SearchItem } from '@mtools/core/utils/search';
 import { getAllPostSummaries } from '@mtools/core/utils/blog';
 

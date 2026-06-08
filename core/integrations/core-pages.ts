@@ -20,11 +20,13 @@ const CORE_ROUTES = [
   { pattern: '/',               entrypoint: `${pagesDir}/index.astro`        },
   { pattern: '/about',          entrypoint: `${pagesDir}/about.astro`         },
   { pattern: '/contact',        entrypoint: `${pagesDir}/contact.astro`       },
-  { pattern: '/privacy',        entrypoint: `${pagesDir}/privacy.astro`       },
-  { pattern: '/terms',          entrypoint: `${pagesDir}/terms.astro`         },
-  { pattern: '/disclaimer',     entrypoint: `${pagesDir}/disclaimer.astro`    },
-  { pattern: '/support',        entrypoint: `${pagesDir}/support.astro`       },
-  { pattern: '/mobile-app',     entrypoint: `${pagesDir}/mobile-app.astro`    },
+  { pattern: '/privacy',              entrypoint: `${pagesDir}/privacy.astro`             },
+  { pattern: '/terms',                entrypoint: `${pagesDir}/terms.astro`               },
+  { pattern: '/disclaimer',          entrypoint: `${pagesDir}/disclaimer.astro`           },
+  { pattern: '/affiliate-disclosure', entrypoint: `${pagesDir}/affiliate-disclosure.astro` },
+  { pattern: '/dmca',                entrypoint: `${pagesDir}/dmca.astro`                },
+  { pattern: '/support',             entrypoint: `${pagesDir}/support.astro`             },
+  { pattern: '/get-app',        entrypoint: `${pagesDir}/get-app.astro`      },
   { pattern: '/404',            entrypoint: `${pagesDir}/404.astro`           },
   { pattern: '/500',            entrypoint: `${pagesDir}/500.astro`           },
   { pattern: '/llms-full.txt',  entrypoint: `${pagesDir}/llms-full.txt.ts`   },
@@ -91,6 +93,12 @@ export function corePages(): AstroIntegration {
         const bodyScriptsPath = fileURLToPath(
           new URL('src/components/integrations/BodyScripts.astro', config.root)
         );
+        // @site-logo → each site's own src/components/common/ui/Logo.svelte.
+        // Sites copy the SVG from core (or replace with their own brand mark).
+        // Core components import from '@site-logo' — never directly from the file system.
+        const siteLogoPath = fileURLToPath(
+          new URL('src/components/common/ui/Logo.svelte', config.root)
+        );
         updateConfig({
           vite: {
             resolve: {
@@ -98,6 +106,7 @@ export function corePages(): AstroIntegration {
                 '@widget-renderer': widgetRendererPath,
                 '@head-scripts':    headScriptsPath,
                 '@body-scripts':    bodyScriptsPath,
+                '@site-logo':       siteLogoPath,
               },
             },
           },
@@ -105,6 +114,7 @@ export function corePages(): AstroIntegration {
         logger.debug(`@mtools/core-pages: @widget-renderer → ${widgetRendererPath}`);
         logger.debug(`@mtools/core-pages: @head-scripts → ${headScriptsPath}`);
         logger.debug(`@mtools/core-pages: @body-scripts → ${bodyScriptsPath}`);
+        logger.debug(`@mtools/core-pages: @site-logo → ${siteLogoPath}`);
 
         // ── 2. Inject shared routes ──────────────────────────────────────────
         // Lower priority than site-level pages — sites can override any route

@@ -31,16 +31,16 @@ const seoUrl = new URL('/tools', siteConfig.url).href;
 // CollectionPage schema — marks this as a curated directory page.
 const pageSchema = buildWebPageSchema({
 	type: 'CollectionPage',
-	name: `All Free Online Tools - ${siteConfig.name}`,
-	description: 'Browse our complete directory of free, privacy-focused, and lightning-fast online tools. No sign-up required.',
+	name: siteConfig.content.pages.tools.title,
+	description: siteConfig.content.pages.tools.description,
 	url: seoUrl,
 	websiteUrl: siteConfig.url,
 });
 
 // ItemList schema — lists every published tool for Google's rich results.
 const itemListSchema = buildItemListSchema({
-	name: `All Free Online Tools - ${siteConfig.name}`,
-	description: 'A comprehensive directory of privacy-focused calculators, converters, and utilities.',
+	name: siteConfig.content.pages.tools.title,
+	description: siteConfig.content.pages.tools.description,
 	url: seoUrl,
 	items: allTools.map(tool => ({
 		name:            tool.data.title,
@@ -53,8 +53,8 @@ const itemListSchema = buildItemListSchema({
 ---
 
 <BaseLayout
-	title={`All Free Online Tools and Calculators - ${siteConfig.name}`}
-	description="Browse our complete directory of free, privacy-focused, and lightning-fast online tools. Calculators, converters, text tools, and more. No sign-up required."
+	title={siteConfig.content.pages.tools.title}
+	description={siteConfig.content.pages.tools.description}
 	canonicalURL={seoUrl}
 >
 	<Fragment slot="head">
@@ -65,9 +65,9 @@ const itemListSchema = buildItemListSchema({
 	<Header />
 	<main class="flex-1">
 		<CategoryHeroSection
-			badge="Complete Tools Directory"
-			title="All Free Online Tools"
-			subtitle="Browse our full collection of privacy-focused, lightning-fast tools. No tracking, no sign-up. Just pure utility."
+			badge={siteConfig.content.pages.tools.heroBadge}
+			title={siteConfig.content.pages.tools.heroTitle}
+			subtitle={siteConfig.content.pages.tools.description}
 		/>
 
 		<div class="container mx-auto px-4 py-16 space-y-24">

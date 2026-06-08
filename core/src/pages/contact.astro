@@ -2,7 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Header from "../components/common/sections/Header.astro";
 import Footer from "../components/common/sections/Footer.astro";
-import { Mail, MapPin } from '@lucide/svelte';
+import { Mail, MapPin, Clock, CircleDot } from '@lucide/svelte';
 import ContactForm from "../components/common/forms/ContactForm.svelte";
 import ErrorBoundary from "../components/common/ui/ErrorBoundary.svelte";
 import { siteConfig } from 'virtual:site-config';
@@ -11,7 +11,7 @@ import { buildWebPageSchema } from "../seo";
 
 const seoUrl = new URL('/contact', siteConfig.url).href;
 const pageTitle = `Contact Us - ${siteConfig.name}`;
-const pageDescription = `Get in touch with the ${siteConfig.name} team.`;
+const pageDescription = `Send a message to the ${siteConfig.name} team. We read every message and reply to bug reports, tool requests, and general questions.`;
 
 const contactSchema = buildWebPageSchema({
 	type: 'ContactPage',
@@ -20,6 +20,36 @@ const contactSchema = buildWebPageSchema({
 	url: seoUrl,
 	websiteUrl: siteConfig.url,
 });
+
+const faqs = [
+	{
+		q: "How long does it take to get a reply?",
+		a: "We usually reply within 1-3 business days. Complex bug reports or feature requests may take a bit longer if we need to investigate.",
+	},
+	{
+		q: "Are the tools really free?",
+		a: `Yes. All tools on ${siteConfig.name} are free to use. The site is supported by non-intrusive ads and occasional affiliate links. If you want to go further, you can also support us directly on our support page.`,
+		link: { href: "/support", text: "Support Us" },
+	},
+	{
+		q: "Is my data safe when I use the tools?",
+		a: `Almost everything on ${siteConfig.name} runs directly in your browser. Your files and inputs are processed locally on your device and never uploaded to our servers. You can read the full details in our Privacy Policy.`,
+		link: { href: "/privacy", text: "Read Privacy Policy" },
+	},
+	{
+		q: "Do you have a business or partnership enquiry?",
+		a: `For advertising, sponsorships, or any partnership-related discussions, reach out to us directly by email. We will get back to you within a few business days.`,
+		link: { href: `mailto:${siteConfig.contact.email}`, text: "Send an email" },
+	},
+	{
+		q: "I found a bug. What information should I include?",
+		a: "Please include the name of the tool, what you were trying to do, what happened instead, and your browser and operating system. A screenshot helps a lot if you can attach one.",
+	},
+	{
+		q: "Can I request a new tool?",
+		a: "Yes, we welcome tool requests. Just describe what the tool should do and what you would use it for. We cannot promise to build everything, but we do read every suggestion.",
+	},
+];
 ---
 <BaseLayout title={pageTitle} canonicalURL={seoUrl} description={pageDescription}>
 	<Fragment slot="head">
@@ -29,33 +59,105 @@ const contactSchema = buildWebPageSchema({
 	<main class="flex-1 container mx-auto px-4 py-16 max-w-5xl">
 		<div class="text-center space-y-4 mb-12">
 			<h1 class="text-4xl font-bold tracking-tight">Contact Us</h1>
-			<p class="text-lg text-muted-foreground">Have a question? We'd love to hear from you.</p>
+			<p class="text-lg text-muted-foreground">We read every message. Fill out the form and we will get back to you.</p>
 		</div>
 
 		<div class="grid md:grid-cols-2 gap-12 items-start">
-			<div class="space-y-8">
+			<div class="space-y-6">
 				<div class="space-y-6 bg-card border rounded-xl p-8 shadow-sm">
 					<div>
 						<h3 class="text-xl font-semibold mb-2">Get in Touch</h3>
-						<p class="text-muted-foreground">Fill out the form and our team will get back to you within 24 hours.</p>
+						<p class="text-muted-foreground">
+							Use the form to send us a message. We typically respond within 1-3 business days.
+						</p>
 					</div>
-					
+
 					<div class="space-y-4">
 						<div class="flex items-center gap-3 text-muted-foreground">
-							<Mail class="size-5 text-primary" />
-							<span>{siteConfig.contact.email}</span>
+							<Mail class="size-5 text-primary flex-shrink-0" />
+							<a href={`mailto:${siteConfig.contact.email}`} class="hover:text-foreground transition-colors">
+								{siteConfig.contact.email}
+							</a>
 						</div>
 						<div class="flex items-center gap-3 text-muted-foreground">
-							<MapPin class="size-5 text-primary" />
+							<MapPin class="size-5 text-primary flex-shrink-0" />
 							<span>{siteConfig.contact.location}</span>
+						</div>
+						<div class="flex items-center gap-3 text-muted-foreground">
+							<Clock class="size-5 text-primary flex-shrink-0" />
+							<span>Response within 1-3 business days</span>
 						</div>
 					</div>
 				</div>
+
+				<div class="bg-card border rounded-xl p-8 shadow-sm">
+					<h3 class="text-xl font-semibold mb-4">What Can You Write to Us About?</h3>
+					<ul class="space-y-3 text-muted-foreground">
+						<li class="flex items-start gap-3">
+							<CircleDot class="size-5 text-primary flex-shrink-0 mt-0.5" />
+							<div>
+								<span class="font-medium text-foreground">Bug reports</span>
+								<p class="text-sm">A tool giving wrong results, something broken, or a page not loading correctly.</p>
+							</div>
+						</li>
+						<li class="flex items-start gap-3">
+							<CircleDot class="size-5 text-primary flex-shrink-0 mt-0.5" />
+							<div>
+								<span class="font-medium text-foreground">Tool requests</span>
+								<p class="text-sm">If there is a tool you need and cannot find a good free version of, tell us.</p>
+							</div>
+						</li>
+						<li class="flex items-start gap-3">
+							<CircleDot class="size-5 text-primary flex-shrink-0 mt-0.5" />
+							<div>
+								<span class="font-medium text-foreground">General questions</span>
+								<p class="text-sm">Privacy questions, feedback, or anything else on your mind.</p>
+							</div>
+						</li>
+					</ul>
+				</div>
 			</div>
 
-			<ErrorBoundary client:load>
-				<ContactForm client:visible />
-			</ErrorBoundary>
+			<div class="space-y-6">
+				<div>
+					<ErrorBoundary client:load>
+						<ContactForm client:visible />
+					</ErrorBoundary>
+				</div>
+
+				<div class="flex flex-col sm:flex-row sm:items-center md:flex-col lg:flex-row justify-between gap-4 md:gap-3 lg:gap-6 md:items-start lg:items-center bg-muted/40 border border-dashed rounded-xl px-6 py-4">
+					<div>
+						<p class="text-sm font-medium">Prefer to stay anonymous?</p>
+						<p class="text-xs text-muted-foreground mt-0.5">Send a tool request or message without leaving your name or email.</p>
+					</div>
+					<button
+						onclick="window.dispatchEvent(new CustomEvent('open-feature-request'))"
+						class="shrink-0 text-sm font-medium text-primary hover:underline underline-offset-4 cursor-pointer bg-transparent border-0 p-0 whitespace-nowrap"
+					>
+						Send anonymously &rarr;
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="mt-20">
+			<div class="text-center mb-10">
+				<h2 class="text-3xl font-bold tracking-tight">Frequently Asked Questions</h2>
+				<p class="text-muted-foreground mt-2">Quick answers before you hit send.</p>
+			</div>
+			<div class="grid md:grid-cols-2 gap-6">
+				{faqs.map((faq) => (
+					<div class="bg-card border rounded-xl p-6 shadow-sm space-y-2">
+						<h3 class="font-semibold text-base">{faq.q}</h3>
+						<p class="text-sm text-muted-foreground leading-relaxed">{faq.a}</p>
+						{faq.link && (
+							<a href={faq.link.href} class="text-sm text-primary hover:underline inline-block pt-1">
+								{faq.link.text} &rarr;
+							</a>
+						)}
+					</div>
+				))}
+			</div>
 		</div>
 	</main>
 	<Footer />

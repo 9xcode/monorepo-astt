@@ -8,6 +8,7 @@
 // Re-export all types so site-level code imports from './config' as normal.
 import type {
   SiteConfig,
+  SiteContent,
   NavItem,
   SeoConfig,
   NavigationConfig,
@@ -25,6 +26,7 @@ import type {
 
 export type {
   SiteConfig,
+  SiteContent,
   NavItem,
   SeoConfig,
   NavigationConfig,
@@ -61,8 +63,21 @@ export const siteConfig: SiteConfig = {
     currencyCode: "USD",
   },
 
-  // ─── Legal ──────────────────────────────────────────────────────────────
+  // ─── Legal ──────────────────────────────────────────────────────────────────
   companyName: "PLACEHOLDER_COMPANY",
+
+  legal: {
+    /** Displayed as "Last updated" on all legal pages. Format: "Month YYYY" */
+    lastUpdated: "June 2025",
+    /**
+     * Site-specific tool disclaimer entries appended to the Disclaimer page.
+     * These supplement the shared defaults (Calculators, File Processing, Code, Text).
+     * Leave as [] if the shared defaults are sufficient for this site.
+     * Example entry:
+     *   { category: "Finance & Investment Tools", description: "..." }
+     */
+    toolDisclaimers: [],
+  },
 
   // ─── Contact ────────────────────────────────────────────────────────────
   contact: {
@@ -116,11 +131,13 @@ export const siteConfig: SiteConfig = {
         { label: "Contact", href: "/contact" },
       ],
       footer: [
-        { label: "About Us",   href: "/about" },
-        { label: "Privacy",    href: "/privacy" },
-        { label: "Terms",      href: "/terms" },
-        { label: "Disclaimer", href: "/disclaimer" },
-        { label: "Contact",    href: "/contact" },
+        { label: "About Us",            href: "/about" },
+        { label: "Privacy",             href: "/privacy" },
+        { label: "Terms",               href: "/terms" },
+        { label: "Disclaimer",          href: "/disclaimer" },
+        { label: "Affiliate Disclosure", href: "/affiliate-disclosure" },
+        { label: "DMCA",                href: "/dmca" },
+        { label: "Contact",             href: "/contact" },
       ],
       mobile: [
         { label: "Home",  href: "/" },
@@ -131,8 +148,9 @@ export const siteConfig: SiteConfig = {
 
     sidebar: {
       showAllToolsList: true,
-      showMobileAppCard: false,
+      showGetAppCard: false,
       showSupportCard: false,
+      showExploreToolsCard: true,
     },
 
     floatingActions: {
@@ -145,7 +163,17 @@ export const siteConfig: SiteConfig = {
 
     theme: {
       defaultMode: "system",
-      name: "slate",  // Must match a file in core/src/styles/themes/<name>.css
+      name: "slate",      // Must match a file in core/src/styles/themes/<name>.css
+    },
+
+    getApp: {
+      sections: {
+        showFeatures: true,
+        showTools: true,
+        showHowItWorks: true,
+        showTestimonials: true,
+        showFaq: true,
+      },
     },
   },
 
@@ -169,15 +197,23 @@ export const siteConfig: SiteConfig = {
       toolsDiscovery: {
         initialDisplayCount: 20,
       },
+      bottomCta: {
+        showGetApp: true,
+        showFeatureRequest: true,
+        showSupportCard: true,
+      },
     },
 
     toolPage: {
+      defaultFullWidth: false,
       toc: {
         enabled: true,
         title: "On this page",
         minHeadings: 3,
         maxDepth: 3,
       },
+      showRelatedTools: true,
+      showAuthorCard: true,
     },
 
     favouriteTools: {
@@ -204,7 +240,7 @@ export const siteConfig: SiteConfig = {
       showSupport: false,
       showFeedback: true,
       showGetApp: false,
-      getAppHref: "/mobile-app",
+      getAppHref: "/get-app",
     },
 
     ads: {
@@ -227,11 +263,152 @@ export const siteConfig: SiteConfig = {
     support: {
       url: "",        // Set to "/support" to enable; "" hides all support CTAs
       label: "Support Us",
+      label2: "Buy me a Coffie",
     },
 
     blog: {
       enabled: true,
       postsPerPage: 12,
+      showRelatedPosts: true,
+      showAuthorCard: true,
     },
+
+    getApp: {
+      // Set enabled: true and fill store URLs to activate the /get-app landing page
+      enabled: false,
+      appStoreUrl: "",   // e.g. "https://apps.apple.com/app/id..."
+      playStoreUrl: "",  // e.g. "https://play.google.com/store/apps/details?id=..."
+    },
+  },
+  // ─── Content ──────────────────────────────────────────────────────────────────
+  // Replace all PLACEHOLDER_ values before launching a new site.
+  content: {
+
+    pages: {
+
+      home: {
+        title: "PLACEHOLDER_HOME_TITLE",                   // e.g. "QR Tools – Free Online QR Code Generator"
+      },
+
+      tools: {
+        title: "PLACEHOLDER_TOOLS_TITLE",                  // e.g. "All Free QR Tools"
+        description: "PLACEHOLDER_TOOLS_DESCRIPTION",
+        heroBadge: "PLACEHOLDER_TOOLS_HERO_BADGE",          // e.g. "Complete Directory"
+        heroTitle: "PLACEHOLDER_TOOLS_HERO_TITLE",          // e.g. "All Free Tools"
+      },
+
+      blog: {
+        title: "PLACEHOLDER_BLOG_TITLE",
+        description: "PLACEHOLDER_BLOG_DESCRIPTION",
+      },
+
+      categories: {
+        title: "PLACEHOLDER_CATEGORIES_TITLE",
+        description: "PLACEHOLDER_CATEGORIES_DESCRIPTION",
+        heroBadge: "PLACEHOLDER_CATEGORIES_HERO_BADGE",
+        heroTitle: "PLACEHOLDER_CATEGORIES_HERO_TITLE",
+      },
+
+      // Use {category} as a placeholder — replaced at render time.
+      categoryPage: {
+        titleTemplate: "PLACEHOLDER: Free {category} Tools",
+        descriptionTemplate: "PLACEHOLDER: Explore our free {category} tools.",
+        heroBadge: "PLACEHOLDER_CATEGORY_PAGE_BADGE",       // e.g. "Collection"
+      },
+
+      getApp: {
+        title: "PLACEHOLDER_GET_APP_TITLE",            // e.g. "Download MyApp – Free iOS & Android App"
+        description: "PLACEHOLDER_GET_APP_DESCRIPTION", // e.g. "Get MyApp for iOS and Android..."
+      },
+
+    },
+
+    components: {
+
+      hero: {
+        headline: "PLACEHOLDER_HERO_HEADLINE",              // first line of the hero H1
+        headline2: "PLACEHOLDER_HERO_HEADLINE2",            // prefix for the second line (e.g. 'Safer ')
+        headlineAccent: "PLACEHOLDER_HERO_ACCENT",          // second line (italic gradient)
+        subtitle: "PLACEHOLDER_HERO_SUBTITLE",              // paragraph below the H1
+      },
+
+      bottomCta: {
+        getApp: {
+          title: "PLACEHOLDER_BOTTOM_CTA_TITLE",
+          description: "PLACEHOLDER_BOTTOM_CTA_DESCRIPTION",
+          buttonLabel: "PLACEHOLDER_BUTTON",
+        },
+        featureRequest: {
+          title: "PLACEHOLDER_CTA_FEATURE_TITLE",
+          description: "PLACEHOLDER_CTA_FEATURE_DESCRIPTION",
+          buttonLabel: "PLACEHOLDER_CTA_FEATURE_BUTTON",    // e.g. "Request Feature"
+        },
+        supportUs: {
+          title: "PLACEHOLDER_CTA_SUPPORT_TITLE",
+          description: "PLACEHOLDER_CTA_SUPPORT_DESCRIPTION",
+        },
+      },
+
+      toolsGrid: {
+        sectionTitle: "PLACEHOLDER_GRID_TITLE",             // e.g. "Discover Tools"
+        sectionSubtitle: "PLACEHOLDER_GRID_SUBTITLE",
+      },
+
+      toolPage: {
+        aboutSectionTitle: "PLACEHOLDER_ABOUT_SECTION_TITLE", // e.g. "About this Tool"
+      },
+
+      getAppCard: {
+        description: "PLACEHOLDER_APP_CARD_DESCRIPTION",    // sidebar app promo card text
+      },
+
+      sidebar: {
+        exploreToolsDescription: "PLACEHOLDER_SIDEBAR_EXPLORE", // blog sidebar card text
+      },
+
+      search: {
+        placeholder: "PLACEHOLDER_SEARCH_PLACEHOLDER",      // search dialog input placeholder
+      },
+
+      getApp: {
+        hero: {
+          userCount: "PLACEHOLDER_USER_COUNT",    // e.g. "10,000+"
+          ratingText: "PLACEHOLDER_RATING_TEXT",  // e.g. "4.9/5 on App Stores"
+        },
+        tools: {
+          subtitle: "PLACEHOLDER_TOOLS_SUBTITLE",  // e.g. "Access over 50+ tools..."
+          items: [
+            { label: "PLACEHOLDER_TOOL_1" },
+            { label: "PLACEHOLDER_TOOL_2" },
+            { label: "PLACEHOLDER_TOOL_3" },
+            { label: "And More" },
+          ],
+        },
+        testimonials: [
+          {
+            quote: "PLACEHOLDER_REVIEW_1",
+            initials: "AB",
+            name: "PLACEHOLDER_NAME_1",
+            platform: "App Store Review",
+            rating: 5,
+          },
+          {
+            quote: "PLACEHOLDER_REVIEW_2",
+            initials: "CD",
+            name: "PLACEHOLDER_NAME_2",
+            platform: "Play Store Review",
+            rating: 5,
+          },
+          {
+            quote: "PLACEHOLDER_REVIEW_3",
+            initials: "EF",
+            name: "PLACEHOLDER_NAME_3",
+            platform: "Play Store Review",
+            rating: 4,
+          },
+        ],
+      },
+    },
+
   },
 };

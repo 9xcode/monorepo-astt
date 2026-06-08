@@ -9,7 +9,7 @@ import { buildWebPageSchema } from "../seo";
 
 const seoUrl = new URL(Astro.url.pathname, siteConfig.url).href;
 const pageTitle = `Terms & Conditions - ${siteConfig.name}`;
-const pageDescription = `Terms and conditions for using ${siteConfig.name}.`;
+const pageDescription = `Terms and Conditions for using ${siteConfig.name}. Please read carefully before using our tools and services.`;
 const pageSchema = buildWebPageSchema({
 	type: 'WebPage',
 	name: pageTitle,
@@ -25,20 +25,199 @@ const pageSchema = buildWebPageSchema({
 	<Header />
 	<main class="flex-1 container mx-auto px-4 py-16 max-w-4xl">
 		<StandardProse>
-			<h1>Terms & Conditions</h1>
-			<p class="lead">Last updated: May 2026</p>
-			
-			<h2>1. Acceptance of Terms</h2>
-			<p>By accessing and using {siteConfig.name}, you agree to be bound by these Terms and Conditions. If you disagree with any part of these terms, please do not use our website.</p>
-			
-			<h2>2. Disclaimer of Warranties</h2>
-			<p>The calculators and tools provided on this website are for educational and informational purposes only. While we strive for accuracy, we make no guarantees regarding the exactness of the results. You should not make financial decisions based solely on our calculators without consulting a qualified financial advisor.</p>
-			
-			<h2>3. Use License</h2>
-			<p>Permission is granted to use our web-based tools and download our mobile app for personal, non-commercial use. You may not attempt to reverse engineer any software contained on the website without explicit permission.</p>
-			
-			<h2>4. Modifications</h2>
-			<p>We may revise these terms of service at any time without notice. By using this website, you are agreeing to be bound by the then-current version of these Terms of Service.</p>
+			<h1>Terms &amp; Conditions</h1>
+			<p class="lead">Last updated: {siteConfig.legal.lastUpdated}</p>
+
+			<p>
+				Please read these Terms and Conditions ("Terms") carefully before using {siteConfig.name},
+				operated by <strong>{siteConfig.companyName}</strong> ("we", "us", or "our") at
+				<strong>{siteConfig.domain}</strong> (the "Service").
+			</p>
+			<p>
+				By accessing or using the Service, you confirm that you are at least 13 years old, that you
+				have read and understood these Terms, and that you agree to be bound by them. If you do not
+				agree to these Terms, you must not use the Service.
+			</p>
+
+			<h2>1. Description of Service</h2>
+			<p>
+				{siteConfig.name} provides a collection of free, browser-based utility tools. These tools
+				are provided on an <strong>"as-is" and "as-available"</strong> basis, free of charge, for
+				personal and professional use. We reserve the right to add, modify, suspend, or discontinue
+				any tool or feature at any time without prior notice.
+			</p>
+
+			<h2>2. Acceptance of Terms</h2>
+			<p>
+				Your access to and use of the Service is conditioned on your acceptance of and compliance
+				with these Terms. These Terms apply to all visitors, users, and others who access or use
+				the Service. By using the Service, you agree that these Terms form a legally binding
+				agreement between you and {siteConfig.companyName}.
+			</p>
+			<p>
+				We reserve the right to update or modify these Terms at any time. The "Last updated" date at
+				the top of this page reflects when changes were last made. Your continued use of the Service
+				after any modification constitutes acceptance of the revised Terms. It is your responsibility
+				to review these Terms periodically.
+			</p>
+
+			<h2>3. Permitted Use and Licence</h2>
+			<p>
+				Subject to these Terms, we grant you a limited, non-exclusive, non-transferable, revocable
+				licence to access and use the Service for your personal or internal business purposes.
+				This licence does not include the right to:
+			</p>
+			<ul>
+				<li>Resell or commercially exploit the Service or its outputs in a manner that competes with us</li>
+				<li>Download, copy, or scrape any portion of the Service for redistribution</li>
+				<li>Use the Service to build a substantially similar product or service</li>
+				<li>Modify, adapt, translate, or create derivative works based on the Service</li>
+				<li>Reverse engineer, decompile, or attempt to extract source code from the Service</li>
+				<li>Frame or mirror any part of the Service without our express written permission</li>
+			</ul>
+
+			<h2>4. Intellectual Property</h2>
+			<p>
+				The Service and all its original content, features, design, algorithms, software code, and
+				user interface elements are and will remain the exclusive property of {siteConfig.companyName}
+				and its licensors. Our trademarks, brand names, and service marks may not be used in
+				connection with any product or service without our prior written consent.
+			</p>
+			<p>
+				<strong>Your content:</strong> You retain ownership of any content you input into our tools.
+				Because all tool processing is performed locally in your browser, your content is never
+				transmitted to our servers. We make no claim to ownership of your files, data, or outputs.
+			</p>
+			<p>
+				<strong>Feedback:</strong> If you submit ideas, suggestions, or feedback about the Service,
+				you grant us a royalty-free, irrevocable, perpetual licence to use those ideas to improve the
+				Service, without any obligation to you.
+			</p>
+
+			<h2>5. Prohibited Conduct</h2>
+			<p>You agree not to use the Service to:</p>
+			<ul>
+				<li>Violate any applicable local, national, or international law or regulation</li>
+				<li>Infringe the intellectual property rights of any third party</li>
+				<li>Transmit or distribute malware, viruses, or any other malicious or harmful code</li>
+				<li>Attempt to gain unauthorised access to our servers, systems, or any connected networks</li>
+				<li>Use automated tools, bots, or scrapers to access the Service at a rate that places an
+					excessive or unreasonable load on our infrastructure</li>
+				<li>Conduct denial-of-service (DoS or DDoS) attacks against the Service</li>
+				<li>Use the Service for any fraudulent, abusive, or deceptive purpose</li>
+				<li>Harvest or collect data from the Service in an automated manner without our express
+					written permission</li>
+				<li>Impersonate any person or entity or falsely state or misrepresent your affiliation</li>
+			</ul>
+			<p>
+				We reserve the right, at our sole discretion, to restrict or terminate your access to the
+				Service if you violate any of these prohibitions, without notice or liability to you.
+			</p>
+
+			<h2>6. Disclaimer of Warranties</h2>
+			<p>
+				THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EITHER
+				EXPRESS OR IMPLIED. TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW, {siteConfig.companyName.toUpperCase()}
+				EXPRESSLY DISCLAIMS ALL WARRANTIES, INCLUDING BUT NOT LIMITED TO:
+			</p>
+			<ul>
+				<li>The implied warranties of merchantability, fitness for a particular purpose, and non-infringement</li>
+				<li>That the Service will be uninterrupted, error-free, or completely secure</li>
+				<li>That the results obtained from use of the Service will be accurate, complete, or reliable</li>
+				<li>That any errors in the Service will be corrected</li>
+			</ul>
+			<p>
+				You acknowledge that the tools on {siteConfig.name} are provided for general informational,
+				educational, and convenience purposes only. Results produced by our tools should be
+				independently verified before being relied upon for any consequential decision. See our
+				<a href="/disclaimer">Disclaimer</a> for the full scope of limitations.
+			</p>
+
+			<h2>7. Limitation of Liability</h2>
+			<p>
+				TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL {siteConfig.companyName.toUpperCase()},
+				ITS DIRECTORS, EMPLOYEES, PARTNERS, AGENTS, SUPPLIERS, OR AFFILIATES BE LIABLE FOR ANY:
+			</p>
+			<ul>
+				<li>Indirect, incidental, special, consequential, or punitive damages</li>
+				<li>Loss of profits, revenue, data, goodwill, or other intangible losses</li>
+				<li>Damages resulting from your reliance on results produced by our tools</li>
+				<li>Damages resulting from unauthorized access to or alteration of your data</li>
+				<li>Any other damages arising out of or related to your use of or inability to use the Service</li>
+			</ul>
+			<p>
+				Even if we have been advised of the possibility of such damages. In jurisdictions that do not
+				allow the exclusion or limitation of incidental or consequential damages, our liability shall
+				be limited to the maximum extent permitted by law.
+			</p>
+
+			<h2>8. Indemnification</h2>
+			<p>
+				You agree to defend, indemnify, and hold harmless {siteConfig.companyName} and its directors,
+				employees, and agents from and against any claims, liabilities, damages, losses, and expenses
+				(including reasonable legal fees) arising out of or in any way connected with your access to
+				or use of the Service, your violation of these Terms, or your violation of any third-party
+				rights.
+			</p>
+
+			<h2>9. Third-Party Links and Services</h2>
+			<p>
+				Our Service may contain links to third-party websites or services. These links are provided
+				for your convenience only. We have no control over the content, privacy policies, or
+				practices of any third-party sites and accept no responsibility for them. We strongly advise
+				you to review the terms and privacy policy of any third-party site you visit.
+			</p>
+
+			<h2>10. Availability and Modifications</h2>
+			<p>
+				We do not guarantee that the Service will be available at all times. We reserve the right
+				to modify, suspend, or discontinue the Service (or any part of it) at any time, for any
+				reason, with or without notice. We shall not be liable to you or any third party for any
+				modification, suspension, or discontinuation of the Service.
+			</p>
+
+			<h2>11. Governing Law and Dispute Resolution</h2>
+			<p>
+				These Terms shall be governed by and construed in accordance with the laws of the jurisdiction
+				in which {siteConfig.companyName} is registered, without regard to its conflict of law
+				provisions.
+			</p>
+			<p>
+				Any dispute arising from or relating to these Terms or the Service shall first be attempted
+				to be resolved through good-faith negotiation. If negotiation fails, disputes shall be
+				subject to the exclusive jurisdiction of the courts in {siteConfig.contact.location}.
+			</p>
+			<p>
+				If you are a consumer in the European Union, you may also have the right to refer disputes
+				to your local consumer protection authority or the EU Online Dispute Resolution platform at
+				<a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener noreferrer">ec.europa.eu/consumers/odr</a>.
+			</p>
+
+			<h2>12. Severability</h2>
+			<p>
+				If any provision of these Terms is found to be unenforceable or invalid under applicable
+				law, that provision shall be limited or eliminated to the minimum extent necessary, and the
+				remaining provisions of these Terms shall continue in full force and effect.
+			</p>
+
+			<h2>13. Entire Agreement</h2>
+			<p>
+				These Terms, together with our <a href="/privacy">Privacy Policy</a>,
+				<a href="/disclaimer">Disclaimer</a>,
+				<a href="/affiliate-disclosure">Affiliate Disclosure</a>, and
+				<a href="/dmca">DMCA Policy</a>, constitute the entire agreement between you and
+				{siteConfig.companyName} regarding the use of the Service and supersede all prior
+				agreements and understandings.
+			</p>
+
+			<h2>14. Contact Us</h2>
+			<p>
+				If you have any questions about these Terms, please contact us:
+			</p>
+			<ul>
+				<li><strong>Email:</strong> <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a></li>
+				<li><strong>Website:</strong> <a href="/contact">Contact Page</a></li>
+			</ul>
 		</StandardProse>
 	</main>
 	<Footer />

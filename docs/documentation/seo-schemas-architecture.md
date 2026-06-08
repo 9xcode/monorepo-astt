@@ -54,7 +54,7 @@ src/components/common/seo/
 | `/privacy` | `WebPage` | `page.ts` |
 | `/terms` | `WebPage` | `page.ts` |
 | `/disclaimer` | `WebPage` | `page.ts` |
-| `/mobile-app` | `SoftwareApplication` | `software-app.ts` |
+| `/get-app` | `SoftwareApplication` | `software-app.ts` |
 | `/404` | None (noindex) | — |
 
 *\* FAQPage and HowTo are conditional — only rendered when the tool's markdown contains the matching sections.*

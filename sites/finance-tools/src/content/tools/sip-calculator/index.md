@@ -7,7 +7,7 @@ icon: "Calculator"
 featured: true
 order: 1
 tags: ["investment", "savings", "retirement", "compound-interest"]
-fullWidth: true
+fullWidth: false
 hasMath: true
 publishedAt: '2025-03-15'
 updatedAt: '2026-04-09'

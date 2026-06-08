@@ -58,8 +58,8 @@ const seoUrl = new URL(Astro.url.pathname, siteConfig.url).href;
 
 // Create an ItemList schema for the highlighted tools
 const itemListSchema = buildItemListSchema({
-	name: 'Featured Tools',
-	description: 'Our most popular and essential software tools.',
+	name: siteConfig.content.pages.home.title,
+	description: siteConfig.seo.description,
 	url: seoUrl,
 	items: featuredTools.map(tool => ({
 		name: tool.data.title,
@@ -72,7 +72,7 @@ const itemListSchema = buildItemListSchema({
 ---
 
 <BaseLayout 
-	title={`${siteConfig.name} - Free Online Tools and Calculators`}
+	title={siteConfig.content.pages.home.title}
 	description={siteConfig.seo.description}
 	canonicalURL={seoUrl}
 >
@@ -124,8 +124,8 @@ const itemListSchema = buildItemListSchema({
 						tools={gridTools}
 						{categories} 
 						initialDisplayCount={siteConfig.features.homepage.toolsDiscovery.initialDisplayCount}
-						sectionTitle="Discover Tools"
-						sectionSubtitle="Find the perfect tool for your needs"
+						sectionTitle={siteConfig.content.components.toolsGrid.sectionTitle}
+						sectionSubtitle={siteConfig.content.components.toolsGrid.sectionSubtitle}
 					>
 						<ToolGridSkeleton slot="fallback" />
 					</FilterableToolGrid>

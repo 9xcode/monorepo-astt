@@ -3,7 +3,7 @@
  * RelatedTools — Grid of related tool cards.
  * Extracted from ToolLayout.astro (was duplicated 2× for fullWidth/normal modes).
  */
-import { iconMap, Calculator } from "$lib/icons";
+import { iconMap, Wrench } from "$lib/icons";
 import { categoryToSlug } from "@mtools/core/utils/slug";
 
 type Tool = {
@@ -31,10 +31,10 @@ const { relatedTools, category } = Astro.props;
 	</div>
 	<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 		{relatedTools.map(tool => {
-			const Icon = tool.data.icon ? iconMap[tool.data.icon] : Calculator;
+			const Icon = tool.data.icon ? iconMap[tool.data.icon] : Wrench;
 			return (
 				<a href={`/tools/${tool.slug}`} class="group flex items-start gap-4 p-5 bg-card border border-border/60 rounded-xl hover:border-primary/50 hover:shadow-md transition-all duration-200">
-					<div class="p-3 bg-primary/10 rounded-xl text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors shrink-0">{Icon ? <Icon class="size-6" /> : <Calculator class="size-6" />}</div>
+					<div class="p-3 bg-primary/10 rounded-xl text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors shrink-0">{Icon ? <Icon class="size-6" /> : <Wrench class="size-6" />}</div>
 					<div class="flex flex-col flex-1 min-w-0 justify-center">
 						<span class="font-bold text-base text-foreground group-hover:text-primary transition-colors truncate">{tool.data.title}</span>
 						<span class="text-sm text-muted-foreground line-clamp-2 mt-1 leading-relaxed">{tool.data.description}</span>

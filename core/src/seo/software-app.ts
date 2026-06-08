@@ -4,7 +4,7 @@
  * Builds a Schema.org SoftwareApplication JSON-LD schema
  * for the mobile app landing page.
  *
- * Previously inline in mobile-app.astro L18-31.
+ * Previously inline in get-app.astro.
  */
 
 import type { SoftwareAppSchemaInput } from "./types";

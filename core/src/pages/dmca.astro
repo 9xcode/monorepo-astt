@@ -1,0 +1,202 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/common/sections/Header.astro";
+import Footer from "../components/common/sections/Footer.astro";
+import StandardProse from "../components/common/typography/StandardProse.astro";
+import { siteConfig } from 'virtual:site-config';
+import JsonLd from "../seo/JsonLd.astro";
+import { buildWebPageSchema } from "../seo";
+
+const seoUrl = new URL(Astro.url.pathname, siteConfig.url).href;
+const pageTitle = `DMCA Policy - ${siteConfig.name}`;
+const pageDescription = `DMCA copyright policy for ${siteConfig.name}. Learn how to report copyright infringement and how we handle takedown notices.`;
+const pageSchema = buildWebPageSchema({
+	type: 'WebPage',
+	name: pageTitle,
+	description: pageDescription,
+	url: seoUrl,
+	websiteUrl: siteConfig.url,
+});
+---
+<BaseLayout title={pageTitle} canonicalURL={seoUrl} description={pageDescription}>
+	<Fragment slot="head">
+		<JsonLd schema={pageSchema} />
+	</Fragment>
+	<Header />
+	<main class="flex-1 container mx-auto px-4 py-16 max-w-4xl">
+		<StandardProse>
+			<h1>DMCA Policy</h1>
+			<p class="lead">Last updated: {siteConfig.legal.lastUpdated}</p>
+
+			<p>
+				{siteConfig.companyName} ("{siteConfig.name}") respects the intellectual property rights
+				of others and expects users of our Service to do the same. This policy outlines our
+				procedures for responding to claims of copyright infringement under the
+				<strong>Digital Millennium Copyright Act (DMCA)</strong>, 17 U.S.C. § 512.
+			</p>
+			<p>
+				By complying with the DMCA's notice-and-takedown procedure, we maintain our status as a
+				"service provider" entitled to safe harbor protection from copyright liability. We take
+				all valid copyright complaints seriously and will act promptly on legitimate notices.
+			</p>
+
+			<h2>1. What the DMCA Covers</h2>
+			<p>
+				The DMCA provides a mechanism for copyright owners (or their authorised agents) to notify
+				online service providers about content that allegedly infringes their copyright. Upon
+				receiving a valid notification, we are required to act expeditiously to remove or disable
+				access to the allegedly infringing material.
+			</p>
+			<p>
+				The DMCA also protects users from wrongful takedowns through a "counter-notification"
+				process. If your content is removed in response to a complaint you believe is invalid,
+				you have the right to file a counter-notice.
+			</p>
+
+			<h2>2. Before Filing a Complaint</h2>
+			<p>
+				Please consider the following before submitting a DMCA notice:
+			</p>
+			<ul>
+				<li>
+					<strong>Fair Use:</strong> Not all use of copyrighted material constitutes infringement.
+					Uses for commentary, criticism, education, news reporting, or transformative purposes
+					may qualify as fair use under U.S. copyright law. If you are unsure, consult a legal
+					professional before filing.
+				</li>
+				<li>
+					<strong>Own the Rights:</strong> You must be the copyright owner or an authorised agent
+					of the copyright owner to file a valid DMCA notice. Filing a false DMCA notice can
+					expose you to liability under 17 U.S.C. § 512(f).
+				</li>
+				<li>
+					<strong>Correct Material:</strong> Please verify that the material you are reporting is
+					actually hosted on {siteConfig.domain} and that you have identified the correct content.
+				</li>
+			</ul>
+
+			<h2>3. How to Submit a DMCA Takedown Notice</h2>
+			<p>
+				To file a valid DMCA takedown notice, your written notification must include
+				<strong>all of the following</strong>:
+			</p>
+			<ol>
+				<li>
+					<strong>Your identity:</strong> Your full legal name, mailing address, telephone number,
+					and email address. If you are acting as an agent, identify the copyright owner on whose
+					behalf you are acting.
+				</li>
+				<li>
+					<strong>Identification of the copyrighted work:</strong> A description of the copyrighted
+					work you claim has been infringed. If multiple works are covered, a representative list.
+				</li>
+				<li>
+					<strong>Identification of the infringing material:</strong> A description of the specific
+					content you claim is infringing, including its exact URL(s) on {siteConfig.domain} so
+					that we can locate it. Vague or incomplete descriptions cannot be actioned.
+				</li>
+				<li>
+					<strong>A statement of good faith:</strong> "I have a good faith belief that the use of
+					the described material in the manner complained of is not authorized by the copyright
+					owner, its agent, or the law."
+				</li>
+				<li>
+					<strong>A statement of accuracy and authority:</strong> "I swear, under penalty of
+					perjury, that the information in this notification is accurate and that I am the copyright
+					owner or am authorized to act on behalf of the owner of an exclusive right that is
+					allegedly infringed."
+				</li>
+				<li>
+					<strong>Your physical or electronic signature.</strong>
+				</li>
+			</ol>
+			<p>Send your completed notice to our designated copyright agent at:</p>
+			<ul>
+				<li><strong>Email:</strong> <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a></li>
+				<li><strong>Subject line:</strong> DMCA Takedown Notice – [Your Name]</li>
+			</ul>
+			<p>
+				Please allow <strong>5–10 business days</strong> for us to review and respond to your notice.
+				Incomplete notices will not be processed.
+			</p>
+
+			<h2>4. Our Response to Valid Notices</h2>
+			<p>Upon receiving a complete and valid DMCA notice, we will:</p>
+			<ul>
+				<li>Review the notice for accuracy, validity, and completeness</li>
+				<li>Remove or disable access to the allegedly infringing material if the notice is valid</li>
+				<li>Notify the user who posted the content (where applicable) that the material has been
+					removed and provide them with a copy of the notice</li>
+				<li>Inform the user of their right to file a counter-notice if they believe the removal
+					was in error</li>
+			</ul>
+
+			<h2>5. DMCA Counter-Notice</h2>
+			<p>
+				If your content was removed in response to a DMCA notice and you believe the removal was
+				incorrect (for example, because you have a licence to use the material, or the use
+				qualifies as fair use), you may file a counter-notice. Your counter-notice must include:
+			</p>
+			<ol>
+				<li>Your full legal name, mailing address, telephone number, and email address</li>
+				<li>Identification of the material that was removed and its location before removal</li>
+				<li>
+					A statement under penalty of perjury that you have a good faith belief that the
+					material was removed as a result of mistake or misidentification
+				</li>
+				<li>
+					A statement that you consent to the jurisdiction of the Federal District Court for your
+					judicial district (or, if outside the U.S., to any judicial district where the service
+					provider may be found), and that you will accept service of process from the person who
+					submitted the original notice
+				</li>
+				<li>Your physical or electronic signature</li>
+			</ol>
+			<p>
+				Send your counter-notice to the same contact address listed in Section 3 above. Upon
+				receipt of a valid counter-notice, we will forward it to the original complainant. If the
+				complainant does not file a court action within 10–14 business days, we may restore the
+				removed content at our discretion.
+			</p>
+
+			<h2>6. Repeat Infringers</h2>
+			<p>
+				It is our policy to terminate access to the Service for users who are found to be repeat
+				infringers of intellectual property rights, in appropriate circumstances and at our sole
+				discretion.
+			</p>
+
+			<h2>7. Misuse of the DMCA Process</h2>
+			<p>
+				Filing a materially false DMCA notice is a serious matter. Under 17 U.S.C. § 512(f), any
+				person who knowingly and materially misrepresents that material is infringing — or that
+				material was removed by mistake — may be liable for damages, costs, and attorneys' fees
+				incurred by the alleged infringer or the service provider.
+			</p>
+
+			<h2>8. Copyright Ownership of Our Content</h2>
+			<p>
+				All original content created by {siteConfig.companyName} on {siteConfig.domain} —
+				including but not limited to source code, tool interfaces, blog articles, illustrations,
+				and design elements — is protected by copyright law. Unauthorised reproduction or
+				distribution of our original content may constitute copyright infringement.
+			</p>
+
+			<h2>9. Changes to This Policy</h2>
+			<p>
+				We may update this DMCA Policy from time to time. Changes will be reflected by the
+				"Last updated" date at the top of this page.
+			</p>
+
+			<h2>10. Contact</h2>
+			<p>
+				For all DMCA-related enquiries:
+			</p>
+			<ul>
+				<li><strong>Email:</strong> <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a></li>
+				<li><strong>Website:</strong> <a href="/contact">Contact Page</a></li>
+			</ul>
+		</StandardProse>
+	</main>
+	<Footer />
+</BaseLayout>

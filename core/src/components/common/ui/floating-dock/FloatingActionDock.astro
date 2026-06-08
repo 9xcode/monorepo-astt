@@ -13,7 +13,8 @@ import SearchAction from "./SearchAction.astro";
 import ShareAction from "./ShareAction.astro";
 import TocAction from "./TocAction.astro";
 
-const { enabled, showSearch, showBackToTop, showShare, showToc } = siteConfig.ui.floatingActions;
+const { enabled, showBackToTop, showShare, showToc } = siteConfig.ui.floatingActions;
+const showSearch = siteConfig.ui.floatingActions.showSearch && siteConfig.features.search.enabled;
 
 if (!enabled) {
   return;

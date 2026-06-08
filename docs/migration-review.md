@@ -136,7 +136,7 @@
 │   │   │   │       ├── FeaturedTools.astro
 │   │   │   │       ├── HeroSection.astro
 │   │   │   │       └── ToolWidgetSection.astro
-│   │   │   ├── mobile-app
+│   │   │   ├── get-app
 │   │   │   │   └── sections
 │   │   │   │       ├── AppBottomCTA.astro
 │   │   │   │       ├── AppFAQ.astro
@@ -212,7 +212,7 @@
 │   │   │   ├── disclaimer.astro
 │   │   │   ├── index.astro
 │   │   │   ├── llms-full.txt.ts
-│   │   │   ├── mobile-app.astro
+│   │   │   ├── get-app.astro
 │   │   │   ├── privacy.astro
 │   │   │   ├── support.astro
 │   │   │   ├── terms.astro
@@ -271,7 +271,7 @@
 ├── docs
 │   └── todo.md
 ├── eslint.config.js                                    [DONE] improved
-├── mobile-apps
+├── get-apps
 │   ├── finance-tools
 │   │   ├── capacitor.config.ts
 │   │   ├── package.json
@@ -429,7 +429,7 @@ The following files from the single repo were not found in the monorepo:
 The monorepo introduces several improvements not present in the single repo:
 - **Turborepo:** `turbo.json` for high-performance task execution and caching.
 - **PNPM Workspaces:** `pnpm-workspace.yaml` and `catalog:` feature for shared dependency management.
-- **Mobile Support:** New `mobile-apps/` directory with Capacitor configs (ready for mobile migration).
+- **Mobile Support:** New `get-apps/` directory with Capacitor configs (ready for mobile migration).
 - **Injection Middleware:** `core/src/middleware/config-injector.ts` to dynamically handle site configurations.
 - **Graphify:** Added `.graphifyignore` and support for knowledge graph generation.
 

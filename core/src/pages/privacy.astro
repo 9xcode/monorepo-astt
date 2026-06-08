@@ -9,7 +9,7 @@ import { buildWebPageSchema } from "../seo";
 
 const seoUrl = new URL(Astro.url.pathname, siteConfig.url).href;
 const pageTitle = `Privacy Policy - ${siteConfig.name}`;
-const pageDescription = `Privacy Policy for ${siteConfig.name}. We believe in absolute privacy.`;
+const pageDescription = `Privacy Policy for ${siteConfig.name}. Learn how we handle your data, what we collect, and your rights as a user.`;
 const pageSchema = buildWebPageSchema({
 	type: 'WebPage',
 	name: pageTitle,
@@ -26,21 +26,293 @@ const pageSchema = buildWebPageSchema({
 	<main class="flex-1 container mx-auto px-4 py-16 max-w-4xl">
 		<StandardProse>
 			<h1>Privacy Policy</h1>
-			<p class="lead">Last updated: May 2026</p>
-			
-			<p>At {siteConfig.name}, we built our platform with a fundamental belief: <strong>your data is yours, and we do not want it.</strong></p>
-			
-			<h2>1. Zero Tracking Policy</h2>
-			<p>We do not use any analytics trackers, pixels, cookies, or third-party monitoring tools capable of identifying you or tracking your usage behavior.</p>
-			
-			<h2>2. Local Computations</h2>
-			<p>Every tool, calculator, and converter on {siteConfig.name} runs entirely client-side (in your browser). We do not send the data you input to our servers. Any financial or personal data you calculate stays on your device.</p>
-			
-			<h2>3. App Privacy</h2>
-			<p>Our mobile app conforms to the same strict zero-tracking standards as our website. It requests no intrusive permissions and stores everything locally.</p>
-			
-			<h2>4. Contact Us</h2>
-			<p>If you have any questions about our privacy practices, you can contact us via our <a href="/contact">Contact Page</a>.</p>
+			<p class="lead">Last updated: {siteConfig.legal.lastUpdated}</p>
+
+			<p>
+				At <strong>{siteConfig.name}</strong> ("{siteConfig.name}", "we", "us", or "our"), your privacy
+				is not a feature — it is the foundation our platform is built on. This Privacy Policy explains
+				what information we collect, why we collect it, how it is used, and what rights you have over it.
+			</p>
+			<p>
+				Please read this policy carefully. For non-essential data processing (such as analytics or
+				advertising cookies), we rely on your explicit consent where required by law — not on your
+				continued use of the Service. If you do not agree with this policy, please stop using the Service.
+			</p>
+
+			<h2>1. Who We Are (Data Controller)</h2>
+			<p>
+				The data controller responsible for your personal data is <strong>{siteConfig.companyName}</strong>,
+				operating the website at <strong>{siteConfig.domain}</strong>.
+				For all privacy-related enquiries, contact us at: <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a>.
+			</p>
+
+			<h2>2. The Core Principle: Client-Side Processing</h2>
+			<p>
+				Every tool on {siteConfig.name} is designed to run <strong>entirely inside your web browser</strong>.
+				Files you open, text you enter, images you process, codes you generate, and any other data you
+				provide to our tools are <strong>never uploaded to, transmitted to, or stored on our servers</strong>.
+				All computation happens locally on your device. When you close the tab, that data is gone.
+			</p>
+			<p>
+				This is a technical guarantee, not just a policy statement. Our servers never see your tool inputs.
+			</p>
+
+			<h2>3. Information We Collect</h2>
+			<p>
+				Despite our client-side architecture, we may collect a small amount of technical information
+				through standard web infrastructure. Here is exactly what that includes:
+			</p>
+
+			<h3>3.1 Automatically Collected Technical Data</h3>
+			<p>
+				When you visit our website, our hosting infrastructure may automatically record standard server
+				log data including:
+			</p>
+			<ul>
+				<li>Your IP address (anonymized where possible)</li>
+				<li>Browser type and version</li>
+				<li>Operating system</li>
+				<li>Referring URL</li>
+				<li>Pages visited and timestamps</li>
+				<li>Device type (desktop, mobile, tablet)</li>
+			</ul>
+			<p>
+				This data is used solely for security monitoring, preventing abuse, and diagnosing technical
+				problems. It is not used to build personal profiles or for marketing.
+			</p>
+
+			<h3>3.2 Cookies and Local Storage</h3>
+			<p>
+				We use minimal browser storage technologies to improve your experience:
+			</p>
+			<ul>
+				<li>
+					<strong>Functional / Strictly Necessary:</strong> We store your preferences such as color
+					theme (dark/light mode), recently used tools, and favourite tools in your browser's
+					<code>localStorage</code>. This data never leaves your device and requires no consent
+					under any privacy law.
+				</li>
+				<li>
+					<strong>Analytics Cookies (if enabled):</strong> If we use a web analytics service
+					(such as Google Analytics or a privacy-respecting alternative), it may set cookies to
+					help us understand aggregate traffic patterns — such as which tools are most popular and
+					where visitors come from. This data is anonymized and aggregated. We do not use it to
+					identify individual users.
+				</li>
+				<li>
+					<strong>Advertising Cookies (if enabled):</strong> If advertising is active on the site,
+					third-party ad networks (such as Google AdSense) may use cookies to serve relevant
+					advertisements based on your prior visits to this or other websites. See Section 5 for
+					details and opt-out options.
+				</li>
+			</ul>
+
+			<h3>3.3 Information You Voluntarily Provide</h3>
+			<p>
+				If you contact us through our contact form or by email, we collect your name, email address,
+				and the content of your message. This is used solely to respond to your enquiry and is not
+				shared with any third party.
+			</p>
+			<p>
+				<strong>Providing personal data is not mandatory.</strong> You are not required to provide
+				any personal data to use our tools. However, if you choose not to provide certain
+				information (such as your email address on the contact form), we may not be able to respond
+				to your enquiry.
+			</p>
+
+			<h2>4. How We Use Your Information</h2>
+			<p>We use the information we collect for the following purposes:</p>
+			<ul>
+				<li>To operate, maintain, and improve the Service</li>
+				<li>To diagnose technical issues and ensure the security of our infrastructure</li>
+				<li>To respond to your support requests and enquiries</li>
+				<li>To understand how visitors use the site in aggregate (analytics)</li>
+				<li>To serve advertisements (if applicable), which funds the free operation of this service</li>
+				<li>To comply with applicable legal obligations</li>
+			</ul>
+			<p>
+				We do <strong>not</strong> sell, rent, or trade your personal data. We do not use your data for
+				automated profiling or decision-making that has a legal or significant effect on you.
+			</p>
+
+			<h2>5. Third-Party Services</h2>
+			<p>
+				We may use the following categories of third-party services. Each operates under its own
+				privacy policy and, where applicable, a Data Processing Agreement (DPA) with us:
+			</p>
+			<ul>
+				<li>
+					<strong>Google Tag Manager (GTM):</strong> We use Google Tag Manager to manage and
+					deploy analytics and marketing scripts on our website. GTM itself does not set cookies
+					or collect personal data independently, but it may load scripts (such as Google Analytics
+					or ad tracking) that do. When GTM loads, it makes a connection to Google servers which
+					may transmit technical data such as your IP address. For EEA users, we ensure GTM and
+					its triggered tags only fire after you have provided valid consent.
+					<a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a>.
+				</li>
+				<li>
+					<strong>Google Analytics:</strong> We may use Google Analytics to understand aggregate
+					usage patterns — such as which tools are most popular and how visitors find us. This
+					service collects data including page views, session duration, device type, and approximate
+					geographic location. We use IP anonymization where available. You can opt out via the
+					<a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer">Google Analytics Opt-out Browser Add-on</a>
+					or by managing your consent preferences on our site.
+				</li>
+				<li>
+					<strong>Google Search Console:</strong> We use Google Search Console to monitor our
+					website's search performance. This service processes aggregate data about how our site
+					appears in Google Search. It does not set cookies on your browser.
+				</li>
+				<li>
+					<strong>Advertising Networks (Google AdSense and others):</strong> We display
+					advertisements served by Google AdSense and may use other ad networks. These services
+					use cookies to serve ads based on your prior visits to this or other websites. You can
+					opt out of personalised advertising by visiting
+					<a href="https://myadcenter.google.com/" target="_blank" rel="noopener noreferrer">Google's Ad Settings</a>,
+					<a href="https://www.aboutads.info/" target="_blank" rel="noopener noreferrer">aboutads.info</a>,
+					or <a href="https://www.youronlinechoices.eu/" target="_blank" rel="noopener noreferrer">youronlinechoices.eu</a> (EU users).
+				</li>
+				<li>
+					<strong>Affiliate Networks:</strong> We participate in affiliate programmes (including
+					the Amazon Associates Programme and others). When you click an affiliate link, the
+					merchant's tracking system records that referral. We do not receive your personal data
+					from these clicks — only aggregate commission reports. See our
+					<a href="/affiliate-disclosure">Affiliate Disclosure</a> for full details.
+				</li>
+				<li>
+					<strong>Contact Form:</strong> Our contact form may be powered by a third-party service
+					(such as Web3Forms). Only the data you enter into the form is transmitted to that service
+					for delivery to us. It is not used for marketing.
+				</li>
+				<li>
+					<strong>Hosting &amp; CDN:</strong> Our site is delivered via a web host and content
+					delivery network which may process technical access logs as described in Section 3.1.
+				</li>
+			</ul>
+			<p>
+				We do not use social media tracking pixels or share your personal data with social media
+				companies without your explicit consent.
+			</p>
+
+			<h2>6. Legal Basis for Processing</h2>
+			<h3>6.1 EU GDPR and UK GDPR</h3>
+			<p>
+				If you are located in the European Economic Area (EEA) or the United Kingdom (UK), we
+				process your data under the following legal bases as defined in Article 6 of the EU GDPR
+				and the UK GDPR:
+			</p>
+			<ul>
+				<li><strong>Legitimate Interests (Art. 6(1)(f)):</strong> Processing server logs for security monitoring and abuse prevention.</li>
+				<li><strong>Consent (Art. 6(1)(a)):</strong> Setting non-essential analytics or advertising cookies — where applicable, only after you have provided valid, prior, informed consent.</li>
+				<li><strong>Contract (Art. 6(1)(b)):</strong> Processing your contact details to respond to your enquiry.</li>
+				<li><strong>Legal Obligation (Art. 6(1)(c)):</strong> Retaining data as required by applicable law.</li>
+			</ul>
+			<h3>6.2 Brazil LGPD</h3>
+			<p>
+				If you are located in Brazil, we process your personal data under the legal bases established
+				by the Lei Geral de Proteção de Dados (LGPD). The applicable bases are:
+				<strong>consent</strong> (for analytics and advertising cookies),
+				<strong>legitimate interest</strong> (for security logging), and
+				<strong>exercising rights in judicial, administrative or arbitration proceedings</strong>
+				where applicable. Your LGPD rights are listed in Section 8 below.
+			</p>
+			<h3>6.3 Switzerland (FADP/nDSG)</h3>
+			<p>
+				If you are located in Switzerland, we process your personal data in accordance with the
+				Federal Act on Data Protection (FADP, entered into force September 2023). The FADP generally
+				follows similar principles to the GDPR. Data transfers from Switzerland are governed by
+				safeguards equivalent to Standard Contractual Clauses as recognised by the Swiss Federal
+				Data Protection and Information Commissioner (FDPIC).
+			</p>
+
+			<h2>7. Data Retention</h2>
+			<p>
+				We retain personal data only for as long as necessary to fulfil the purposes described in this
+				policy. Server log data is typically retained for up to 90 days. Contact form submissions are
+				retained only for as long as needed to resolve your enquiry. Cookies expire according to the
+				schedule set by each specific cookie (typically 30 days to 2 years for analytics).
+			</p>
+			<p>
+				Local storage data (your preferences, favourites, recent tools) is stored on your device
+				indefinitely until you clear your browser storage or use the in-app reset option.
+			</p>
+
+			<h2>8. Your Privacy Rights</h2>
+			<p>
+				Depending on your jurisdiction, you may have the following rights regarding your personal data.
+				To exercise any of these rights, contact us at <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a>.
+				We will respond to verified requests within <strong>30 days</strong> (or within any shorter
+				period required by applicable law).
+			</p>
+			<ul>
+				<li><strong>Right to Access:</strong> Request a copy of the personal data we hold about you.</li>
+				<li><strong>Right to Rectification:</strong> Request correction of inaccurate or incomplete data.</li>
+				<li><strong>Right to Erasure:</strong> Request deletion of your personal data ("right to be forgotten"). Under LGPD, this also includes the right to request anonymization of your data.</li>
+				<li><strong>Right to Restrict Processing:</strong> Request that we limit how we use your data.</li>
+				<li><strong>Right to Data Portability:</strong> Receive your data in a structured, machine-readable format.</li>
+				<li><strong>Right to Object:</strong> Object to processing based on legitimate interests or for direct marketing.</li>
+				<li><strong>Right to Withdraw Consent:</strong> Withdraw consent at any time where processing is based on consent, without affecting the lawfulness of prior processing before withdrawal.</li>
+				<li><strong>Right to Information About Sharing:</strong> Request information about which third parties we have shared your data with (applicable under LGPD and CCPA).</li>
+				<li><strong>CCPA/CPRA Rights (California residents):</strong> The right to know what personal information we collect, the right to delete it, the right to correct it, and the right to opt out of sale or sharing for cross-context behavioural advertising (we do not sell personal data; our use of ad networks may constitute "sharing" as defined by CPRA).</li>
+			</ul>
+			<p>
+				You also have the right to lodge a complaint with your local data protection supervisory
+				authority. This includes: the ICO (United Kingdom), your national DPA (EU), the FDPIC
+				(Switzerland), or the ANPD (Brazil).
+			</p>
+
+			<h2>9. Children's Privacy</h2>
+			<p>
+				Our Service is not directed to children under the age of 13 (or 16 in the EEA). We do not
+				knowingly collect personal information from children. If you believe a child has provided us
+				with personal data, please contact us immediately and we will delete it.
+			</p>
+
+			<h2>10. International Data Transfers</h2>
+			<p>
+				Our website is operated from {siteConfig.contact.location}. The third-party services we
+				use (including Google Analytics, Google Tag Manager, Google AdSense, and our hosting and
+				CDN provider) may process data on servers located in various countries, including within the
+				European Union and outside it (such as the United States). These providers may change as we evolve our infrastructure.
+				If you access our Service from the European Economic Area (EEA), the United Kingdom, Switzerland, or Brazil, your data may be transferred to and processed in the third country.
+			</p>
+			<p>
+				Where personal data is transferred from the EEA or UK to a third country, we rely on
+				appropriate transfer safeguards, including:
+			</p>
+			<ul>
+				<li><strong>EU Standard Contractual Clauses (SCCs)</strong> approved by the European Commission (Decision 2021/914)</li>
+				<li><strong>UK International Data Transfer Agreements (IDTAs)</strong> or UK Addendum to EU SCCs</li>
+				<li><strong>EU-U.S. Data Privacy Framework</strong> — Google LLC is certified under this framework</li>
+				<li><strong>Swiss SCCs</strong> as recognised by the FDPIC for transfers under the Swiss FADP</li>
+			</ul>
+
+			<h2>11. Security</h2>
+			<p>
+				We take reasonable technical and organisational measures to protect information against
+				unauthorised access, loss, or destruction. Our site is served over HTTPS. However, no method
+				of internet transmission is 100% secure, and we cannot guarantee absolute security.
+			</p>
+
+			<h2>12. Changes to This Policy</h2>
+			<p>
+				We may update this Privacy Policy from time to time. When we do, we will update the
+				"Last updated" date at the top of this page. Where a change is material — for example,
+				a new category of data we collect or a new third-party service — we will take reasonable
+				steps to notify you (such as a notice on our website). We encourage you to review this
+				policy periodically. If changes affect processing based on your consent, we will request
+				your consent again where required by law.
+			</p>
+
+			<h2>13. Contact Us</h2>
+			<p>
+				If you have any questions, concerns, or requests regarding this Privacy Policy or your personal
+				data, please contact us:
+			</p>
+			<ul>
+				<li><strong>Email:</strong> <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a></li>
+				<li><strong>Website:</strong> <a href="/contact">Contact Page</a></li>
+			</ul>
 		</StandardProse>
 	</main>
 	<Footer />

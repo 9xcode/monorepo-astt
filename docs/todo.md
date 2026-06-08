@@ -44,11 +44,29 @@ letter do ad this : https://www.google.com/preferences/source?q=https://redeemco
 
 ## Fix (I will tell you what to fix, don't choose by yourself)
 
-- [] change support page completley
-
 - [ ] **Mobile App Issue**: Capacitor's internal web server is not as smart as a cloud server (like Vercel). When Astro generates your web app, it creates folders with index.html files inside (e.g., dist/tools/sip-calculator/index.html). On the web, if you visit /tools/sip-calculator, Vercel is smart enough to serve the index.html file silently. However, Capacitor's local Android server strictly maps URLs to literal files. When it receives a request for /tools/sip-calculator, it looks for a file named exactly sip-calculator. When it doesn't find it, it 404s, and its built-in SPA-fallback mechanism reloads the homepage index.html instead.
   - (Side note: The Javascript interceptor I gave you failed because Svelte/UI frameworks use event delegation that stops the click event before it reaches the document. While fixable with { capture: true }, you are completely right—we should use a proper architectural solution that natively handles all links like about, privacy, etc.)
 
+
+
+---
+### Logo issue
+**Problem:** The Logo.svelte in core/src/components/common/ui/ contains hardcoded SVG paths for your specific brand logo. It's used in:
+- Header.astro — header brand mark
+- MobileMenu.svelte — mobile sidebar header
+- AppHero.astro — app download page
+This IS hardcoded in core. If a new site has a different brand, this breaks.
+
+**Solution:**
+- Each site provides its own Logo.svelte via Vite alias (recommended)
+- The same way we already alias @head-scripts and @body-scripts per-site, we can create a @site-logo alias that points to each site's own Logo.svelte.
+- Core just does `import Logo from '@site-logo'`
+- Each site has its own src/components/Logo.svelte with site-specific SVG
+- Zero changes to SiteConfig — the alias mechanism handles it
+- Template provides a sensible default/placeholder
+
+> But we are not going to implement it because right now we have generic logo that is same in evey sites. 
+> Will implement it when we have different logo for each site.
 
 ===============
 ## Fixes
@@ -56,4 +74,12 @@ letter do ad this : https://www.google.com/preferences/source?q=https://redeemco
 
 --------
 
+- [ ] Implement cookie consent banner (CMP)
+- [ ] Implement short affilaite disclosor only on the pages where we have affliate links and use ("paid link") as mention in disclosor policy, and also build complete affiliate solution
 
+
+
+---------
+- animation: a "Rolling Slide Swap" (or Vertical Scroll Reveal).
+- animation: the "Offset Ghost Shadow" effect.
+- "Jelly Squish & Bounce" animation.

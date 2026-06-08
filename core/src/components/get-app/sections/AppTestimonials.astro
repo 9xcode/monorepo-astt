@@ -1,0 +1,49 @@
+---
+/**
+ * AppTestimonials — User testimonials section for the get-app landing page.
+ *
+ * Testimonials are driven by siteConfig.content.components.getApp.testimonials.
+ * Each entry has: quote, initials, name, platform, rating (1–5 stars).
+ */
+import { Star } from '@lucide/svelte';
+import { siteConfig } from 'virtual:site-config';
+
+type Testimonial = {
+	quote: string;
+	initials: string;
+	name: string;
+	platform: string;
+	rating: number;
+};
+
+const testimonials = siteConfig.content.components.getApp.testimonials as Testimonial[];
+const starIndices = [0, 1, 2, 3, 4];
+---
+
+<section class="py-24 px-4 bg-background cv-auto cv-intrinsic-h400">
+	<div class="container mx-auto">
+		<div class="text-center max-w-2xl mx-auto mb-16 space-y-4">
+			<h2 class="text-3xl md:text-4xl font-bold tracking-tight">Loved by Thousands</h2>
+			<p class="text-lg text-muted-foreground">See what our users have to say about their experience with the {siteConfig.name} app.</p>
+		</div>
+        <div class="grid md:grid-cols-3 gap-8">
+            {testimonials.map((t: Testimonial) => (
+                <div class="bg-card p-8 rounded-xl border border-border/50 shadow-sm relative flex flex-col">
+                    <div class="flex gap-1 mb-4 text-warning">
+                        {starIndices.map((i: number) => (
+                            <Star class={`size-5 ${i < t.rating ? 'fill-current' : 'fill-transparent text-muted/30'}`} />
+                        ))}
+                    </div>
+                    <p class="text-muted-foreground leading-relaxed mb-6 flex-1">"{t.quote}"</p>
+                    <div class="flex items-center gap-4">
+                        <div class="size-12 rounded-full bg-muted flex items-center justify-center font-bold text-muted-foreground shrink-0">{t.initials}</div>
+                        <div>
+                            <div class="font-semibold text-foreground">{t.name}</div>
+                            <div class="text-sm text-muted-foreground">{t.platform}</div>
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </div>
+	</div>
+</section>

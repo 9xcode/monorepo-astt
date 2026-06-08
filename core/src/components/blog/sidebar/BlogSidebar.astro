@@ -8,18 +8,21 @@ import SupportCard from '../../engagement/SupportCard.astro';
 import { siteConfig } from 'virtual:site-config';
 
 const showSupportCard = siteConfig.ui.sidebar.showSupportCard !== false;
+const showExploreToolsCard = siteConfig.ui.sidebar.showExploreToolsCard !== false;
+const { exploreToolsDescription } = siteConfig.content.components.sidebar;
 ---
 
 <aside class="space-y-6 mt-8 lg:mt-0">
   <div class="sticky top-24 space-y-8">
-    {/* Cross-promotion: Explore Tools */}
+    {showExploreToolsCard && (
     <div class="rounded-xl border border-border/60 p-5 bg-card shadow-sm">
       <h3 class="font-semibold text-lg mb-2 tracking-tight">Explore Tools</h3>
-      <p class="text-sm text-muted-foreground mb-4">Try our free financial calculators and converters.</p>
+      <p class="text-sm text-muted-foreground mb-4">{exploreToolsDescription}</p>
       <a href="/categories" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors w-full justify-center">
         Browse All Tools
       </a>
     </div>
+    )}
     {showSupportCard && <SupportCard />}
   </div>
 </aside>

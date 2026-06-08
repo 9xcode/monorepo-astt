@@ -1,0 +1,67 @@
+---
+/**
+ * /get-app — App Download Landing Page (Core Default)
+ *
+ * This is the shared fallback page for the /get-app route across all sites.
+ * It renders a full marketing landing page:
+ *   Hero → Features → Tools → How It Works → Testimonials → FAQ → Bottom CTA
+ *
+ * ─── Per-Site Override ─────────────────────────────────────────────────────
+ * Create `sites/<your-site>/src/pages/get-app.astro`.
+ * Astro gives local src/pages/ files higher priority than injected core routes —
+ * your local page completely replaces this one, no conflicts.
+ *
+ * Use a local override when:
+ *   - Your app has a different feature set than the generic defaults
+ *   - You need platform-specific screenshots or mockups
+ *   - You want a completely different page structure or layout
+ * ───────────────────────────────────────────────────────────────────────────
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/common/sections/Header.astro";
+import Footer from "../components/common/sections/Footer.astro";
+
+import AppHero from "../components/get-app/sections/AppHero.astro";
+import AppFeatures from "../components/get-app/sections/AppFeatures.astro";
+import AppTools from "../components/get-app/sections/AppTools.astro";
+import AppHowItWorks from "../components/get-app/sections/AppHowItWorks.astro";
+import AppTestimonials from "../components/get-app/sections/AppTestimonials.astro";
+import AppFAQ from "../components/get-app/sections/AppFAQ.astro";
+import AppBottomCTA from "../components/get-app/sections/AppBottomCTA.astro";
+
+import { siteConfig } from 'virtual:site-config';
+import JsonLd from "../seo/JsonLd.astro";
+import { buildSoftwareAppSchema } from "../seo";
+
+const seoUrl = new URL('/get-app', siteConfig.url).href;
+const pageTitle = siteConfig.content.pages.getApp.title;
+const pageDescription = siteConfig.content.pages.getApp.description;
+
+const appSchema = buildSoftwareAppSchema({
+	name: `${siteConfig.name} Mobile App`,
+	description: pageDescription,
+	operatingSystem: 'Android, iOS',
+	applicationCategory: 'UtilitiesApplication',
+	priceCurrency: siteConfig.localization.currencyCode || 'USD',
+	url: seoUrl,
+});
+
+const { showFeatures, showTools, showHowItWorks, showTestimonials, showFaq } = siteConfig.ui.getApp.sections;
+---
+
+<BaseLayout title={pageTitle} canonicalURL={seoUrl} description={pageDescription}>
+	<Fragment slot="head">
+		<JsonLd schema={appSchema} />
+	</Fragment>
+	<Header />
+	<main class="flex-1">
+		<AppHero />
+		{showFeatures && <AppFeatures />}
+		{showTools && <AppTools />}
+		{showHowItWorks && <AppHowItWorks />}
+		{showTestimonials && <AppTestimonials />}
+		{showFaq && <AppFAQ />}
+		<AppBottomCTA />
+	</main>
+	<Footer />
+</BaseLayout>

@@ -12,9 +12,9 @@
  * Uses centralized schema builders instead of inline JSON-LD construction.
  * Props interface is identical to the original ToolSEOSchemas.astro.
  *
- * Phase 9: siteConfig now comes from virtual:site-config (build-time constant).
+ * siteConfig now comes from virtual:site-config (build-time constant).
  */
-// Phase 9: replaced `import { siteConfig } from '../../../config'` 
+// replaced `import { siteConfig } from '../../../config'` 
 import { siteConfig } from 'virtual:site-config';
 import { categoryToSlug } from '../utils/slug';
 import JsonLd from './JsonLd.astro';
@@ -70,7 +70,7 @@ const categoryMapping = siteConfig.seo.categoryMappings[category] || { appCatego
 const toolSchema = buildWebApplicationSchema({
 	name: toolTitle,
 	url: seoUrl,
-	description: description || `Use the ${toolTitle} to quickly calculate or convert values online.`,
+	description: description || `Use the ${toolTitle} online – fast, free, and private.`,
 	screenshotUrl: ogImageUrl,
 	datePublished: publishedAt,
 	dateModified: updatedAt,
@@ -93,11 +93,11 @@ const toolSchema = buildWebApplicationSchema({
 });
 
 // --- Article Schema ---
-const articleHeadline = `${toolTitle.endsWith('Calculator') ? toolTitle : `${toolTitle} Calculator`} Guide`;
+const articleHeadline = `${toolTitle} – Guide`;
 
 const articleSchema = buildArticleSchema({
 	headline: articleHeadline,
-	description: description || `Use the ${toolTitle} to quickly calculate or convert values online.`,
+	description: description || `Use the ${toolTitle} online – fast, free, and private.`,
 	imageUrl: ogImageUrl,
 	datePublished: publishedAt,
 	dateModified: updatedAt,

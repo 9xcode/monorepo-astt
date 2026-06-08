@@ -87,7 +87,7 @@ const trayConfig = siteConfig.features.toolActionTray;
 const trayEnabled = trayConfig?.enabled ?? false;
 const sidebarConfig = siteConfig.ui.sidebar;
 const showSidebarAllTools = sidebarConfig.showAllToolsList ?? true;
-const showSidebarAppCard = sidebarConfig.showMobileAppCard ?? true;
+const showSidebarAppCard = sidebarConfig.showGetAppCard ?? true;
 const trayProps = {
 	slug: currentSlug,
 	toolTitle: processedToolTitle,
@@ -100,8 +100,8 @@ const trayProps = {
 	supportUrl: siteConfig.features.support?.url ?? "",
 	supportLabel: siteConfig.features.support?.label ?? "Support Us",
 	showFeedback: trayConfig?.showFeedback ?? true,
-	showGetApp: trayConfig?.showGetApp ?? true,
-	getAppHref: trayConfig?.getAppHref ?? "/mobile-app",
+	showGetApp: (trayConfig?.showGetApp ?? true) && (siteConfig.features.getApp?.enabled !== false),
+	getAppHref: trayConfig?.getAppHref ?? "/get-app",
 	favouriteStorageKey: siteConfig.features.favouriteTools?.storageKey ?? "favourites",
 };
 
@@ -109,6 +109,8 @@ const trayProps = {
 const relatedTools = getRelatedTools(currentSlug, category, tags ?? [], tools);
 
 const showSidebarSupportCard = siteConfig.ui.sidebar.showSupportCard !== false;
+const showRelatedTools = siteConfig.features.toolPage.showRelatedTools !== false;
+const showAuthorCard = siteConfig.features.toolPage.showAuthorCard !== false;
 ---
 
 <BaseLayout title={title} description={description} canonicalURL={seoUrl} image={ogImagePath}>
@@ -183,17 +185,17 @@ const showSidebarSupportCard = siteConfig.ui.sidebar.showSupportCard !== false;
 				{/* Zone 2 — 3-col grid: article + sidebar */}
 				<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 					<div class="lg:col-span-2 space-y-6">
-						<ContentSection title="About this Tool" category={category} tocHeadings={tocHeadings} tocTitle={tocTitle} tags={tags}>
+						<ContentSection title={siteConfig.content.components.toolPage.aboutSectionTitle} category={category} tocHeadings={tocHeadings} tocTitle={tocTitle} tags={tags}>
 							<ArticleProse>
 								<slot name="content" />
 							</ArticleProse>
 						</ContentSection>
 
-						<AuthorCard authors={authors} />
+						{showAuthorCard && <AuthorCard authors={authors} />}
 
 						<AdPlaceholder slotId="tool-content-middle" label="Sponsored" className="min-h-[100px] my-6" />
 
-						<RelatedTools relatedTools={relatedTools} category={category} />
+						{showRelatedTools && <RelatedTools relatedTools={relatedTools} category={category} />}
 
 						<AdPlaceholder slotId="tool-content-bottom" label="Sponsored" className="min-h-[100px] mt-8" />
 					</div>
@@ -245,17 +247,17 @@ const showSidebarSupportCard = siteConfig.ui.sidebar.showSupportCard !== false;
 
 				<AdPlaceholder slotId="tool-content-top" label="Sponsored" className="min-h-[100px]" />
 
-				<ContentSection title="About this Tool" category={category} tocHeadings={tocHeadings} tocTitle={tocTitle} tags={tags}>
+				<ContentSection title={siteConfig.content.components.toolPage.aboutSectionTitle} category={category} tocHeadings={tocHeadings} tocTitle={tocTitle} tags={tags}>
 					<ArticleProse>
 						<slot name="content" />
 					</ArticleProse>
 				</ContentSection>
 
-				<AuthorCard authors={authors} />
+				{showAuthorCard && <AuthorCard authors={authors} />}
 
 				<AdPlaceholder slotId="tool-content-middle" label="Sponsored" className="min-h-[100px] my-6" />
 
-				<RelatedTools relatedTools={relatedTools} category={category} />
+				{showRelatedTools && <RelatedTools relatedTools={relatedTools} category={category} />}
 
 				<AdPlaceholder slotId="tool-content-bottom" label="Sponsored" className="min-h-[100px] mt-8" />
 			</div>

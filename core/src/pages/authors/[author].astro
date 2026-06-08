@@ -27,7 +27,7 @@ import { buildPersonSchema } from '../../seo/primitives';
 import { buildBreadcrumbSchema } from '../../seo/index';
 import { getBlogSlug } from '../../utils/blog';
 import { getToolSlug } from '../../utils/tools';
-import { iconMap, Calculator } from '$lib/icons';
+import { iconMap, Wrench } from '$lib/icons';
 
 export async function getStaticPaths() {
   const authors = await getAllAuthors();
@@ -96,7 +96,7 @@ const breadcrumbSchema = buildBreadcrumbSchema([
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {tools.map((tool) => {
             const slug = getToolSlug(tool);
-            const Icon = tool.data.icon ? (iconMap[tool.data.icon] ?? Calculator) : Calculator;
+            const Icon = tool.data.icon ? (iconMap[tool.data.icon] ?? Wrench) : Wrench;
             return (
               <a
                 href={`/tools/${slug}`}

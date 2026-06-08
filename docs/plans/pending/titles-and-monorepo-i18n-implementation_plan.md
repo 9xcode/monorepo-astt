@@ -34,7 +34,7 @@ These are the actual strings found in the live codebase that assume this is a "c
 | `src/pages/404.astro:12` | `"browse our free calculators and tools"` | 404 description |
 | `src/components/blog/sidebar/BlogSidebar.astro:18` | `"free financial calculators and converters"` | Blog sidebar CTA |
 | `src/components/common/seo/ToolPageSchemas.astro:70,92` | `"calculate or convert"`, appends "Calculator Guide" suffix | Schema.org structured data |
-| `src/components/mobile-app/*` | SIP Calculator, EMI Calculator, GST Tools, "financial, mathematical" | Mobile app showcase page |
+| `src/components/get-app/*` | SIP Calculator, EMI Calculator, GST Tools, "financial, mathematical" | Mobile app showcase page |
 | `src/components/common/dialogs/SearchDialogContent.svelte:65` | `"Search tools, calculators, articles..."` | Search placeholder text |
 
 ### Two distinct problem types
@@ -147,12 +147,12 @@ This page currently has hard financial legalese baked in. Two options:
 
 Option 1 is cleaner — keep the legal prose in the `.astro` file as conditional `{#if}` blocks.
 
-#### The `mobile-app/` section
-The `/mobile-app` page (AppTools.astro, AppTestimonials.astro, AppHero.astro) has **SIP, EMI, GST** tools hardcoded. These are **demo/showcase content** and should either:
-- Be driven from `siteConfig.features.mobileApp.featuredTools: string[]` (list of tool slugs to showcase)
-- Or accepted as-is since every niche site will have its own `mobile-app` showcase content customized per niche
+#### The `get-app/` section
+The `/get-app` page (AppTools.astro, AppTestimonials.astro, AppHero.astro) has **SIP, EMI, GST** tools hardcoded. These are **demo/showcase content** and should either:
+- Be driven from `siteConfig.features.getApp.featuredTools: string[]` (list of tool slugs to showcase)
+- Or accepted as-is since every niche site will have its own `get-app` showcase content customized per niche
 
-**Recommendation:** Leave `mobile-app/` components as niche-specific per site — they're marketing pages, not data-driven.
+**Recommendation:** Leave `get-app/` components as niche-specific per site — they're marketing pages, not data-driven.
 
 ---
 
@@ -190,7 +190,7 @@ my-tools-monorepo/
 | Common UI (Breadcrumb, Button, SearchDialog, etc.) | `@tools/ui` | — |
 | Utility functions (seo.ts, slug.ts, og.ts, etc.) | `@tools/utils` | — |
 | Content collection schemas | `@tools/content-types` | — |
-| Niche-specific pages (about, disclaimer, mobile-app) | — | Per-site `src/pages/` |
+| Niche-specific pages (about, disclaimer, get-app) | — | Per-site `src/pages/` |
 | Tool widgets (Svelte) | — | Per-site `src/widgets/` |
 | Actual tool content (`.md` files) | — | Per-site `src/content/tools/` |
 | `config.ts` (the actual values) | — | Per-site root `src/config.ts` |
@@ -450,7 +450,7 @@ graph TD
 > This decision affects how Stage A2 is structured.
 
 > [!NOTE]
-> **Q4: The mobile-app showcase page**
+> **Q4: The get-app showcase page**
 > It has hardcoded SIP/EMI/GST tools. Should it be made data-driven (driven by config), or left as a per-site marketing page that each niche customizes manually? Leaving it manual is simpler.
 
 ---

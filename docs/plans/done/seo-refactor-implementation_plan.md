@@ -13,7 +13,7 @@ Centralize all scattered, hardcoded JSON-LD structured data into a single, typed
 > **3 pages currently have NO schemas at all** — `privacy.astro`, `terms.astro`, `disclaimer.astro`. This plan adds `WebPage` schemas to them. Additionally, `categories/index.astro` has no schema — we'll add a `CollectionPage` schema.
 
 > [!IMPORTANT]
-> **`seo_guide_final.md` has inaccuracies.** It doesn't document the `support.astro` WebPage schema or the `mobile-app.astro` SoftwareApplication schema. The new doc we create in Phase 7 will be the single source of truth.
+> **`seo_guide_final.md` has inaccuracies.** It doesn't document the `support.astro` WebPage schema or the `get-app.astro` SoftwareApplication schema. The new doc we create in Phase 7 will be the single source of truth.
 
 ---
 
@@ -88,7 +88,7 @@ When you add `/blog/`, you'll create `components/blog/seo/BlogPageSchemas.astro`
 | 8 | `src/pages/privacy.astro` | **ADD** missing `WebPage` schema via `buildWebPageSchema()` + `<JsonLd>` |
 | 9 | `src/pages/terms.astro` | **ADD** missing `WebPage` schema via `buildWebPageSchema()` + `<JsonLd>` |
 | 10 | `src/pages/disclaimer.astro` | **ADD** missing `WebPage` schema via `buildWebPageSchema()` + `<JsonLd>` |
-| 11 | `src/pages/mobile-app.astro` | Replace inline `appSchema` with `buildSoftwareAppSchema()` + `<JsonLd>` |
+| 11 | `src/pages/get-app.astro` | Replace inline `appSchema` with `buildSoftwareAppSchema()` + `<JsonLd>` |
 | 12 | `src/pages/index.astro` | Replace inline `itemListSchema` with `buildItemListSchema()` + `<JsonLd>` |
 | 13 | `src/pages/categories/[category].astro` | Replace inline `itemListSchema` with `buildItemListSchema()` + `<JsonLd>` |
 
@@ -304,7 +304,7 @@ Both pages currently duplicate the same `categoryMapping` → `schemaType` → `
 
 #### [NEW] `src/components/common/seo/software-app.ts`
 
-Extracts from [mobile-app.astro L18-31](file:///media/kumar/code/my-business/webprojects/multitools-astssl-1/src/pages/mobile-app.astro#L18-L31):
+Extracts from [get-app.astro L18-31](file:///media/kumar/code/my-business/webprojects/multitools-astssl-1/src/pages/get-app.astro#L18-L31):
 
 - `buildSoftwareAppSchema(input)` → returns `SoftwareApplication` JSON-LD
 
@@ -592,7 +592,7 @@ const pageSchema = buildWebPageSchema({
 
 ### Phase 7: List Page + Mobile App Migration, Cleanup, Documentation
 
-**Goal:** Deduplicate ItemList logic, migrate mobile-app, verify everything, create docs.
+**Goal:** Deduplicate ItemList logic, migrate get-app, verify everything, create docs.
 
 ---
 
@@ -626,7 +626,7 @@ const pageSchema = buildWebPageSchema({
 
 ---
 
-#### [MODIFY] [src/pages/mobile-app.astro](file:///media/kumar/code/my-business/webprojects/multitools-astssl-1/src/pages/mobile-app.astro)
+#### [MODIFY] [src/pages/get-app.astro](file:///media/kumar/code/my-business/webprojects/multitools-astssl-1/src/pages/get-app.astro)
 
 **Remove:** Lines 18-31 (inline `appSchema`)  
 **Add:**
@@ -672,7 +672,7 @@ Document covering:
 | Inline `aboutSchema` in about.astro | Replaced by `buildWebPageSchema()` call |
 | Inline `contactSchema` in contact.astro | Replaced by `buildWebPageSchema()` call |
 | Inline `supportSchema` in support.astro | Replaced by `buildWebPageSchema()` call |
-| Inline `appSchema` in mobile-app.astro | Replaced by `buildSoftwareAppSchema()` call |
+| Inline `appSchema` in get-app.astro | Replaced by `buildSoftwareAppSchema()` call |
 | Inline `itemListSchema` in index.astro | Replaced by `buildItemListSchema()` call |
 | Inline `itemListSchema` in [category].astro | Replaced by `buildItemListSchema()` call |
 | Inline WebSite JSON-LD in BaseLayout.astro | Replaced by `buildWebSiteSchema()` call |

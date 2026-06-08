@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { iconMap, Calculator, ArrowRight } from '$lib/icons';
+    import { iconMap, Wrench, ArrowRight } from '$lib/icons';
 
     interface Tool {
         slug: string;
@@ -16,7 +16,7 @@
         isHidden?: boolean;
     }>();
 
-    const Icon = $derived(tool.data.icon ? (iconMap[tool.data.icon] ?? Calculator) : Calculator);
+    const Icon = $derived(tool.data.icon ? (iconMap[tool.data.icon] ?? Wrench) : Wrench);
 </script>
 
 <a

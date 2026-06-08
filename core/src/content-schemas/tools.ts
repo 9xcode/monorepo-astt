@@ -59,7 +59,7 @@ export function makeToolSchema(
     isDraft: z.boolean().default(false),
     canonical: z.string().optional(),
     widgetSlug: z.string().optional(),
-    fullWidth: z.boolean().default(false),
+    fullWidth: z.boolean().optional(),
     hasMath: z.boolean().default(false),
     toc: z.boolean().optional(),
     order: z.number().optional(),
