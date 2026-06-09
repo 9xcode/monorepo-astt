@@ -1,5 +1,5 @@
 // ────────────────────────────────────────────────────────────────────────────
-// Finance-Tools Site Configuration
+// Online QR Code Scanner Site Configuration
 //
 // All type-only exports re-exported from core — no duplicate type definitions.
 // Documentation: see @mtools/core/config/types for the full SiteConfig shape.
@@ -46,17 +46,16 @@ export type {
 export const siteConfig: SiteConfig = {
 
   // ─── Core Identity ──────────────────────────────────────────────────────
-  name: "MultiTools",
-  domain: "multitools.app",
-  url: "https://multitools.app",
-  // url: "http://localhost:4321",
-  version: "1.0.0",
-  localStoragePrefix: "mt_",
+  name: "Online QR Code Scanner",
+  domain: "onlineqrcodescanner.com",
+  url: "https://onlineqrcodescanner.com",
+  version: "1.0.1",
+  localStoragePrefix: "oqcs_",
 
   // ─── Brand & Voice ─────────────────────────────────────────────────────
   brand: {
-    shortName: "MultiTools",
-    tagline: "Faster than AI, Safer than Cloud.",
+    shortName: "QR Scanner",
+    tagline: "Free, Fast, and 100% Private QR Code Scanner & Generator.",
   },
 
   // ─── Localization ───────────────────────────────────────────────────────
@@ -66,20 +65,20 @@ export const siteConfig: SiteConfig = {
   },
 
   // ─── Legal ──────────────────────────────────────────────────────────────
-  companyName: "MultiTools",
+  companyName: "Online QR Code Scanner",
   legal: {
-    lastUpdated: "June 06, 2026",
+    lastUpdated: "June 08, 2026",
     toolDisclaimers: [
       {
-        category: "Finance & Investment Tools",
-        description: "Results from financial calculators (EMI, SIP, compound interest, loan repayment, etc.) are computed using standard mathematical formulas and are provided for general estimation purposes only. They do not account for individual tax liability, institution-specific charges, variable rate fluctuations, or regulatory changes. Always verify outputs with a qualified financial adviser or your financial institution before making any investment, loan, or financial planning decision.",
+        category: "QR Tools",
+        description: "All QR Code scanning and generation processes are executed client-side inside your browser. No image data, scanned content, or camera feed is transmitted to our servers. While we strive to ensure the accuracy and security of scanned links and data, please verify target URLs before visiting them.",
       },
     ],
   },
 
   // ─── Contact ────────────────────────────────────────────────────────────
   contact: {
-    email: "support@multitools.app",
+    email: "support@onlineqrcodescanner.com",
     location: "San Francisco, CA",
   },
 
@@ -91,9 +90,9 @@ export const siteConfig: SiteConfig = {
 
   // ─── SEO ────────────────────────────────────────────────────────────────
   seo: {
-    description: "Discover a premium collection of privacy-focused, lightning-fast, free tools to edit, format, calculate, convert, and much more.",
+    description: "Scan QR codes and barcodes directly from your browser or camera. Create custom QR codes for Wi-Fi, vCards, URLs, and more. Free, fast, and secure.",
     language: "en",
-    defaultKeywords: ["tools", "calculators", "utilities", "free tools", "privacy-focused"],
+    defaultKeywords: ["qr code scanner", "online qr code scanner", "scan qr code", "scan qr code online", "qr code generator", "free qr scanner", "barcode scanner", "wifi qr code", "scan barcode online", "online qr code generator", "online qr code reader", "create qr code"],
 
     defaultAuthorSlug: "abhishek",
     twitterHandle: "@Abhishek_Patni",
@@ -101,28 +100,25 @@ export const siteConfig: SiteConfig = {
     softwareApplication: {
       operatingSystem: "Windows, macOS, Linux, iOS, Android",
       isAccessibleForFree: true,
-      browserRequirements: "Requires JavaScript",
+      browserRequirements: "Requires JavaScript and Camera access (for scanning)",
     },
 
     organization: {
-      knowsAbout: ["Data Conversion", "Software Applications", "Personal Finance", "Web Development", "Productivity Tools"],
+      knowsAbout: ["QR Codes", "Barcodes", "Computer Vision", "Web Development", "Privacy Tools"],
     },
 
     categoryMappings: {
-      "Finance/Tax": { appCategory: "FinanceApplication", additionalType: "FinancialProduct" },
-      "Calculators": { appCategory: "UtilitiesApplication", additionalType: "SoftwareApplication" },
-      "Text Tools":  { appCategory: "DeveloperApplication", additionalType: "SoftwareApplication" },
-      "Converters":  { appCategory: "UtilitiesApplication", additionalType: "DataConverter" },
-      "Dummy":       { appCategory: "UtilitiesApplication" },
+      "QR Tools": { appCategory: "UtilitiesApplication", additionalType: "SoftwareApplication" },
+      "Barcode Tools": { appCategory: "UtilitiesApplication", additionalType: "SoftwareApplication" },
+      "Utilities": { appCategory: "UtilitiesApplication", additionalType: "SoftwareApplication" },
     },
 
     titleSeparator: "-",
     titleDescriptors: {
-      "Finance/Tax":  "Free Tax & Finance Calculator",
-      "Calculators":  "Free Online Calculator",
-      "Converters":   "Free Online Converter",
-      "Text Tools":   "Free Online Text Tool",
-      "_default":     "Free Online Tool",
+      "QR Tools": "Free Online QR Code Tool",
+      "Barcode Tools": "Free Online Barcode Tool",
+      "Utilities": "Free Online QR Code Utility",
+      "_default": "Free Online QR Code Scanner Tool",
     },
   },
 
@@ -130,42 +126,38 @@ export const siteConfig: SiteConfig = {
   ui: {
     navigation: {
       header: [
-        { label: "Home",         href: "/" },
-        {
-          label: "Categories",   href: "/categories",
-          children: [
-            { label: "Calculators",   href: "/categories/calculators" },
-            { label: "Converters",    href: "/categories/converters" },
-            { label: "Finance / Tax", href: "/categories/finance-tax" },
-            { label: "Text Tools",   href: "/categories/text-tools" },
-          ],
-        },
-        { label: "Blog",         href: "/blog" },
-        { label: "Support",      href: "/support" },
-        { label: "Download App", href: "/get-app" },
-      ],
-      footer: [
-        { label: "About Us",            href: "/about" },
-        { label: "Privacy",             href: "/privacy" },
-        { label: "Terms",               href: "/terms" },
-        { label: "Disclaimer",          href: "/disclaimer" },
-        { label: "Affiliate Disclosure", href: "/affiliate-disclosure" },
-        { label: "DMCA",                href: "/dmca" },
-        { label: "Contact",             href: "/contact" },
-        { label: "Support",             href: "/support" },
-      ],
-      mobile: [
-        { label: "Home",       href: "/" },
+        { label: "Home", href: "/" },
         {
           label: "Categories", href: "/categories",
           children: [
-            { label: "Calculators",   href: "/categories/calculators" },
-            { label: "Converters",    href: "/categories/converters" },
-            { label: "Finance / Tax", href: "/categories/finance-tax" },
-            { label: "Text Tools",   href: "/categories/text-tools" },
+            { label: "QR Tools", href: "/categories/qr-tools" },
+            { label: "Barcode Tools", href: "/categories/barcode-tools" },
+            { label: "Utilities", href: "/categories/utilities" },
           ],
         },
-        { label: "Blog",       href: "/blog" },
+        { label: "Blog", href: "/blog" },
+        { label: "Support", href: "/support" },
+      ],
+      footer: [
+        { label: "About Us", href: "/about" },
+        { label: "Privacy", href: "/privacy" },
+        { label: "Terms", href: "/terms" },
+        { label: "Disclaimer", href: "/disclaimer" },
+        { label: "DMCA", href: "/dmca" },
+        { label: "Contact", href: "/contact" },
+        { label: "Support", href: "/support" },
+      ],
+      mobile: [
+        { label: "Home", href: "/" },
+        {
+          label: "Categories", href: "/categories",
+          children: [
+            { label: "QR Tools", href: "/categories/qr-tools" },
+            { label: "Barcode Tools", href: "/categories/barcode-tools" },
+            { label: "Utilities", href: "/categories/utilities" },
+          ],
+        },
+        { label: "Blog", href: "/blog" },
       ],
     },
 
@@ -215,7 +207,7 @@ export const siteConfig: SiteConfig = {
     homepage: {
       toolWidgetSection: {
         enabled: true,
-        toolSlug: "sip-calculator",
+        toolSlug: "qr-code-scanner",
       },
       featuredSection: {
         enabled: true,
@@ -225,7 +217,7 @@ export const siteConfig: SiteConfig = {
         initialDisplayCount: 20,
       },
       bottomCta: {
-        showGetApp: true,
+        showGetApp: false,
         showFeatureRequest: true,
         showSupportCard: true,
       },
@@ -266,7 +258,7 @@ export const siteConfig: SiteConfig = {
       showShare: true,
       showSupport: true,
       showFeedback: true,
-      showGetApp: true,
+      showGetApp: false,
       getAppHref: "/get-app",
     },
 
@@ -302,8 +294,8 @@ export const siteConfig: SiteConfig = {
 
     getApp: {
       enabled: false,
-      appStoreUrl: "https://apps.apple.com/app/id",        // TODO: replace with real App Store link
-      playStoreUrl: "https://play.google.com/store/apps/details?id=app.multitools", // TODO: replace with real Play Store link
+      appStoreUrl: "https://apps.apple.com/app/id",
+      playStoreUrl: "https://play.google.com/store/apps/details?id=app.onlineqrcodescanner",
     },
   },
   // ─── Content ──────────────────────────────────────────────────────────────────
@@ -312,37 +304,37 @@ export const siteConfig: SiteConfig = {
     pages: {
 
       home: {
-        title: "MultiTools – Free Online Tools and Calculators",
+        title: "Online QR Code Scanner – Free Online QR Scanner & Generator",
       },
 
       tools: {
-        title: "All Free Online Tools and Calculators – MultiTools",
-        description: "Browse our full collection of free, privacy-focused, and lightning-fast online tools.",
+        title: "All Free QR & Barcode Tools – Online QR Code Scanner",
+        description: "Browse our full collection of free, private, and lightning-fast QR code and barcode utilities.",
         heroBadge: "Complete Tools Directory",
-        heroTitle: "All Free Online Tools",
+        heroTitle: "All Free QR & Barcode Tools",
       },
 
       blog: {
-        title: "Free Tool Guides and Tutorials – MultiTools Blog",
-        description: "Guides, tips, and tutorials for using our free online tools and calculators.",
+        title: "QR Code Guides and Tutorials – Online QR Code Scanner Blog",
+        description: "Guides, tips, and tutorials for using QR codes, barcodes, and online tools.",
       },
 
       categories: {
-        title: "All Tool Categories – Free Calculators & Converters",
-        description: "Explore our complete collection of free, private, and fast tools organized by category to find the perfect calculator or utility for your needs.",
+        title: "All Tool Categories – QR & Barcode Utilities",
+        description: "Explore our complete collection of free, private, and fast tools organized by category to find the perfect QR code scanner, generator, or reader.",
         heroBadge: "All Utilities Directory",
         heroTitle: "Browse by Category",
       },
 
       categoryPage: {
-        titleTemplate: "Free {category} Tools Online",
-        descriptionTemplate: "Explore our collection of fast and free {category} tools. No tracking, just pure privacy-first utility.",
+        titleTemplate: "Free {category} Online",
+        descriptionTemplate: "Explore our collection of fast and free {category}. No tracking, just pure privacy-first utility.",
         heroBadge: "Collection Directory",
       },
 
       getApp: {
-        title: "Download MultiTools App – Free iOS & Android App",
-        description: "Get the MultiTools app for iOS and Android. Offline access, zero tracking, and all our tools directly on your device.",
+        title: "Download QR Scanner App – Free iOS & Android App",
+        description: "Get the QR Code Scanner app for iOS and Android. Offline access, zero tracking, and fast scanning on your device.",
       },
 
     },
@@ -350,16 +342,16 @@ export const siteConfig: SiteConfig = {
     components: {
 
       hero: {
-        headline: "Faster than AI,",
-        headline2: "Safer ",
-        headlineAccent: "than Cloud",
-        subtitle: "Lightning-fast, free tools to edit, format, calculate, convert, and more",
+        headline: "Free, Fast, and",
+        headline2: "100% ",
+        headlineAccent: "Private",
+        subtitle: "Scan and generate QR codes directly in your browser. No data ever leaves your device.",
       },
 
       bottomCta: {
         getApp: {
           title: "Mobile App",
-          description: "Fast, offline calculations natively on iOS & Android.",
+          description: "Fast, offline scanning natively on iOS & Android.",
           buttonLabel: "Download Free",
         },
         featureRequest: {
@@ -374,8 +366,8 @@ export const siteConfig: SiteConfig = {
       },
 
       toolsGrid: {
-        sectionTitle: "Discover Tools",
-        sectionSubtitle: "Find the perfect tool for your needs",
+        sectionTitle: "Discover QR Tools",
+        sectionSubtitle: "Find the perfect QR scanner, generator, or utility",
       },
 
       toolPage: {
@@ -383,15 +375,15 @@ export const siteConfig: SiteConfig = {
       },
 
       getAppCard: {
-        description: "Calculate offline with zero tracking. Get the premium experience on your phone.",
+        description: "Scan QR codes offline with zero tracking. Get the premium experience on your phone.",
       },
 
       sidebar: {
-        exploreToolsDescription: "Try our free financial calculators and converters.",
+        exploreToolsDescription: "Try our free online QR scanners, generators, and barcode readers.",
       },
 
       search: {
-        placeholder: "Search tools, calculators, articles...",
+        placeholder: "Search tools, guides, articles...",
       },
 
       getApp: {
@@ -400,16 +392,16 @@ export const siteConfig: SiteConfig = {
           ratingText: "4.9/5 on App Stores",
         },
         tools: {
-          subtitle: "Access over 50+ financial, mathematical, and everyday tools directly from your pocket.",
+          subtitle: "Access over 10+ specialized QR and barcode tools directly from your pocket.",
           items: [
-            { label: "SIP Calculator" },
-            { label: "EMI Calculator" },
-            { label: "GST & Tax Tools" },
-            { label: "Health & BMI" },
-            { label: "Age Calculator" },
-            { label: "Percentage Tools" },
-            { label: "Discount Tools" },
-            { label: "And 40+ More" },
+            { label: "Camera QR Scanner" },
+            { label: "Image QR Reader" },
+            { label: "URL QR Generator" },
+            { label: "Wi-Fi QR Generator" },
+            { label: "vCard QR Generator" },
+            { label: "Barcode Reader" },
+            { label: "Barcode Generator" },
+            { label: "And More" },
           ],
         },
         testimonials: [
@@ -421,18 +413,18 @@ export const siteConfig: SiteConfig = {
             rating: 5,
           },
           {
-            quote: "Finally, a perfectly designed toolset that respects my privacy. I uninstalled 4 different calculator apps after finding this one. It has literally everything I need.",
+            quote: "Finally, a perfectly designed toolset that respects my privacy. I uninstalled 4 different scanner apps after finding this one. It has literally everything I need.",
             initials: "SM",
             name: "Sarah M.",
             platform: "Play Store Review",
             rating: 5,
           },
           {
-            quote: "Extremely fast and snappy. The UI is gorgeous and the dark mode is perfect. Would give it 5 stars if they added a dedicated scientific calculator, but it's great!",
+            quote: "Extremely fast and snappy. The UI is gorgeous and the dark mode is perfect. Highly recommended!",
             initials: "RJ",
             name: "Rahul J.",
             platform: "Play Store Review",
-            rating: 4,
+            rating: 5,
           },
         ],
       },

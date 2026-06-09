@@ -263,7 +263,7 @@ export const siteConfig: SiteConfig = {
     support: {
       url: "",        // Set to "/support" to enable; "" hides all support CTAs
       label: "Support Us",
-      label2: "Buy me a Coffie",
+      label2: "Buy me a Coffee",
     },
 
     blog: {

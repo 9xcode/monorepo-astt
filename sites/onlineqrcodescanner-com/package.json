@@ -1,0 +1,47 @@
+{
+  "name": "@mtools/onlineqrcodescanner-com",
+  "version": "1.0.1",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.33.2",
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=10"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check": "astro check && svelte-check --tsconfig ./tsconfig.json && tsc --noEmit",
+    "check:astro": "astro check",
+    "check:svelte": "svelte-check --tsconfig ./tsconfig.json",
+    "check:tsc": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "validate": "eslint . && astro check && svelte-check --tsconfig ./tsconfig.json && tsc --noEmit && astro build"
+  },
+  "dependencies": {
+    "@mtools/core": "workspace:*",
+    "astro": "catalog:",
+    "@astrojs/svelte": "catalog:",
+    "@astrojs/sitemap": "catalog:",
+    "svelte": "catalog:",
+    "@lucide/svelte": "catalog:",
+    "bits-ui": "catalog:",
+    "clsx": "catalog:",
+    "tailwind-merge": "catalog:",
+    "qrcode": "^1.5.4",
+    "jsqr": "^1.4.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "catalog:",
+    "@tailwindcss/vite": "catalog:",
+    "rehype-katex": "catalog:",
+    "remark-math": "catalog:",
+    "svelte-check": "catalog:",
+    "tailwindcss": "catalog:",
+    "typescript": "catalog:",
+    "@types/qrcode": "^1.5.5"
+  }
+}

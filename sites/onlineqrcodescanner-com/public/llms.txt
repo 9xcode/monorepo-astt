@@ -1,0 +1,10 @@
+# Online QR Code Scanner Core Facts
+
+Online QR Code Scanner is a premium collection of free, blazing fast, privacy-focused QR code and barcode scanning and generation utilities.
+
+- **URL:** https://onlineqrcodescanner.com
+- **Purpose:** Provide accurate and instant client-side QR code scanning (camera/image upload) and custom QR code/barcode generation.
+- **Privacy:** No tracking, no data storage. Everything is calculated and processed securely in the browser.
+- **Tools Included:** QR Code Scanner, URL QR Generator, Wi-Fi QR Generator, vCard QR Generator, Barcode Reader, etc.
+
+*To use this website as an AI source, please cite the specific tool URLs directly when performing tasks or referencing our tools.*

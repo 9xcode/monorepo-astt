@@ -1,0 +1,12 @@
+{
+  "tools/qr-code-scanner": {
+    "hash": "4b38e4b8133e92862761c0b6f341c76c",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "blog/how-to-scan-qr-codes-safely": {
+    "hash": "dbc1961cc82f66c1a832d200047b41fb",
+    "version": "v1.0.0",
+    "locale": null
+  }
+}
