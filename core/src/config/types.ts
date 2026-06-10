@@ -357,6 +357,8 @@ export interface FeaturesConfig {
       initialDisplayCount: number;
     };
     bottomCta: {
+      /** Master switch — when false, the entire bottom CTA section (including its padding) is not rendered */
+      enabled: boolean;
       /** Show the "Get App / Download App" card in the homepage bottom CTA section */
       showGetApp: boolean;
       /** Show the "Feature Request" card in the homepage bottom CTA section */

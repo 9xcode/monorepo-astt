@@ -135,7 +135,7 @@ export const siteConfig: SiteConfig = {
             { label: "Utilities", href: "/categories/utilities" },
           ],
         },
-        { label: "Blog", href: "/blog" },
+        // { label: "Blog", href: "/blog" },
         { label: "Support", href: "/support" },
       ],
       footer: [
@@ -217,6 +217,7 @@ export const siteConfig: SiteConfig = {
         initialDisplayCount: 20,
       },
       bottomCta: {
+        enabled: false,
         showGetApp: false,
         showFeatureRequest: false,
         showSupportCard: false,
@@ -286,7 +287,7 @@ export const siteConfig: SiteConfig = {
     },
 
     blog: {
-      enabled: true,
+      enabled: false,
       postsPerPage: 12,
       showRelatedPosts: true,
       showAuthorCard: true,

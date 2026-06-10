@@ -225,6 +225,7 @@ export const siteConfig: SiteConfig = {
         initialDisplayCount: 20,
       },
       bottomCta: {
+        enabled: true,
         showGetApp: true,
         showFeatureRequest: true,
         showSupportCard: true,
