@@ -178,7 +178,7 @@ export const siteConfig: SiteConfig = {
 
     theme: {
       defaultMode: "system",
-      name: "neutral",
+      name: "emerald",
     },
 
     getApp: {
@@ -210,7 +210,7 @@ export const siteConfig: SiteConfig = {
         toolSlug: "qr-code-scanner",
       },
       featuredSection: {
-        enabled: true,
+        enabled: false,
         maxTools: 3,
       },
       toolsDiscovery: {
@@ -218,8 +218,8 @@ export const siteConfig: SiteConfig = {
       },
       bottomCta: {
         showGetApp: false,
-        showFeatureRequest: true,
-        showSupportCard: true,
+        showFeatureRequest: false,
+        showSupportCard: false,
       },
     },
 
@@ -236,7 +236,7 @@ export const siteConfig: SiteConfig = {
     },
 
     favouriteTools: {
-      enabled: true,
+      enabled: false,
       storageKey: "favourites",
       showInMobileMenu: true,
       maxDisplayHomepage: 6,
@@ -244,7 +244,7 @@ export const siteConfig: SiteConfig = {
     },
 
     recentTools: {
-      enabled: true,
+      enabled: false,
       maxItems: 6,
       storageKey: "recents",
       showInMobileMenu: true,

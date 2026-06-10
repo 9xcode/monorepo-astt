@@ -151,26 +151,45 @@
     }
   }
 
-  function scanFrame() {
+  async function scanFrame() {
     if (!isScanning) return;
 
     if (videoEl && canvasEl) {
       try {
         const ctx = canvasEl.getContext('2d');
         if (ctx && videoEl.readyState === videoEl.HAVE_ENOUGH_DATA) {
-          const width = videoEl.videoWidth;
+          const width  = videoEl.videoWidth;
           const height = videoEl.videoHeight;
-          
+
           if (width > 0 && height > 0) {
-            canvasEl.width = width;
+            canvasEl.width  = width;
             canvasEl.height = height;
             ctx.drawImage(videoEl, 0, 0, width, height);
 
+            // Strategy 1: BarcodeDetector (native, handles dense codes)
+            if (hasBarcodeDetector) {
+              try {
+                const bitmap = await createImageBitmap(canvasEl);
+                // @ts-ignore
+                const detector = new BarcodeDetector({ formats: ['qr_code'] });
+                const codes = await detector.detect(bitmap);
+                bitmap.close();
+                if (codes.length > 0 && codes[0].rawValue) {
+                  scannerResult = codes[0].rawValue;
+                  stopCamera();
+                  triggerSuccessBeep();
+                  return;
+                }
+              } catch {
+                // Fall through to jsQR
+              }
+            }
+
+            // Strategy 2: jsQR
             const imageData = ctx.getImageData(0, 0, width, height);
             const code = jsQR(imageData.data, imageData.width, imageData.height, {
               inversionAttempts: 'attemptBoth'
             });
-
             if (code) {
               scannerResult = code.data;
               stopCamera();
@@ -180,10 +199,10 @@
           }
         }
       } catch (err) {
-        console.error("Frame scanning error:", err);
+        console.error('Frame scanning error:', err);
       }
     }
-    animationFrameId = requestAnimationFrame(scanFrame);
+    animationFrameId = requestAnimationFrame(() => { void scanFrame(); });
   }
 
   function triggerSuccessBeep() {
@@ -206,47 +225,102 @@
 
   // ─── Image Upload ─────────────────────────────────────────────────────────────
 
-  function handleImageUpload(event: Event) {
+  /** Check if the browser-native BarcodeDetector API is available */
+  const hasBarcodeDetector = typeof window !== 'undefined' && 'BarcodeDetector' in window;
+
+  /**
+   * Apply contrast enhancement to a canvas context before passing to jsQR.
+   * Boosts contrast so jsQR can resolve modules in dense QR codes.
+   */
+  function enhanceContrast(ctx: CanvasRenderingContext2D, w: number, h: number) {
+    const img = ctx.getImageData(0, 0, w, h);
+    const d = img.data;
+    // Simple contrast stretch: darken dark pixels, lighten light pixels
+    for (let i = 0; i < d.length; i += 4) {
+      const lum = 0.299 * (d[i] ?? 0) + 0.587 * (d[i + 1] ?? 0) + 0.114 * (d[i + 2] ?? 0);
+      const v = lum < 128 ? Math.max(0, lum - 40) : Math.min(255, lum + 40);
+      d[i] = d[i + 1] = d[i + 2] = v;
+    }
+    ctx.putImageData(img, 0, 0);
+  }
+
+  /**
+   * Attempt jsQR decode at multiple scales.
+   * Resizing large images helps jsQR find finder patterns in dense codes.
+   */
+  function tryJsQR(src: HTMLImageElement | HTMLCanvasElement): string | null {
+    const scales = [1, 0.75, 1.5, 0.5];
+    const tmp = document.createElement('canvas');
+    const tctx = tmp.getContext('2d')!;
+
+    const srcW = src instanceof HTMLImageElement ? src.naturalWidth  : src.width;
+    const srcH = src instanceof HTMLImageElement ? src.naturalHeight : src.height;
+
+    for (const scale of scales) {
+      const w = Math.round(srcW * scale);
+      const h = Math.round(srcH * scale);
+      tmp.width  = w;
+      tmp.height = h;
+      tctx.drawImage(src, 0, 0, w, h);
+
+      // Try raw then contrast-enhanced
+      for (let pass = 0; pass < 2; pass++) {
+        if (pass === 1) enhanceContrast(tctx, w, h);
+        const id = tctx.getImageData(0, 0, w, h);
+        const code = jsQR(id.data, id.width, id.height, { inversionAttempts: 'attemptBoth' });
+        if (code?.data) return code.data;
+      }
+    }
+    return null;
+  }
+
+  async function handleImageUpload(event: Event) {
     const input = event.target as HTMLInputElement;
     errorMsg = '';
     scannerResult = '';
 
-    if (input.files && input.files[0]) {
-      const file = input.files[0];
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const img = new Image();
-        img.onload = () => {
-          if (canvasEl) {
-            const ctx = canvasEl.getContext('2d');
-            if (ctx) {
-              canvasEl.width = img.width;
-              canvasEl.height = img.height;
-              ctx.drawImage(img, 0, 0);
+    if (!input.files?.[0]) return;
+    const file = input.files[0];
+    // Reset so same file can be re-uploaded
+    input.value = '';
 
-              const imageData = ctx.getImageData(0, 0, canvasEl.width, canvasEl.height);
-              const code = jsQR(imageData.data, imageData.width, imageData.height, {
-                inversionAttempts: 'attemptBoth'
-              });
-
-              if (code) {
-                scannerResult = code.data;
-                triggerSuccessBeep();
-              } else {
-                errorMsg = 'No QR code found in the image. Make sure the QR code is clear, well-lit, and fully visible.';
-              }
-            }
-          }
-        };
-        img.onerror = () => {
-          errorMsg = 'Could not read the image file. Please try a different image.';
-        };
-        img.src = e.target?.result as string;
-      };
-      reader.readAsDataURL(file);
-      // Reset the input so the same file can be re-uploaded
-      input.value = '';
+    // ── Strategy 1: BarcodeDetector (native, best for dense QR codes) ──
+    if (hasBarcodeDetector) {
+      try {
+        // @ts-ignore — BarcodeDetector is not in all TS libs yet
+        const detector = new BarcodeDetector({ formats: ['qr_code'] });
+        const bitmap   = await createImageBitmap(file);
+        const codes    = await detector.detect(bitmap);
+        bitmap.close();
+        if (codes.length > 0 && codes[0].rawValue) {
+          scannerResult = codes[0].rawValue;
+          triggerSuccessBeep();
+          return;
+        }
+      } catch {
+        // BarcodeDetector failed — fall through to jsQR
+      }
     }
+
+    // ── Strategy 2: jsQR with multi-scale + contrast enhancement ──
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const result = tryJsQR(img);
+        if (result) {
+          scannerResult = result;
+          triggerSuccessBeep();
+        } else {
+          errorMsg = 'No QR code found. Try uploading a higher-resolution image or improve lighting/contrast.';
+        }
+      };
+      img.onerror = () => {
+        errorMsg = 'Could not read the image file. Please try a different image.';
+      };
+      img.src = e.target?.result as string;
+    };
+    reader.readAsDataURL(file);
   }
 
   // ─── Actions ─────────────────────────────────────────────────────────────────
@@ -362,7 +436,6 @@
             )}>
 
               <!-- Camera Preview Video -->
-              <!-- svelte-ignore a11y_media_has_caption -->
               <video
                 bind:this={videoEl}
                 class={cn(
@@ -545,7 +618,7 @@
 
             {#if scannerResult}
               <div class="space-y-3">
-                <label class="text-xs font-semibold uppercase tracking-wider text-muted-foreground block">Decoded Content</label>
+                <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground block">Decoded Content</p>
                 <div class="w-full min-h-[140px] max-h-[220px] overflow-y-auto p-4 rounded-xl border border-border/80 bg-muted/50 font-mono text-sm break-all leading-relaxed whitespace-pre-wrap selection:bg-emerald-500/20 select-text">
                   {scannerResult}
                 </div>

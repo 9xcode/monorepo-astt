@@ -8,5 +8,10 @@
     "hash": "dbc1961cc82f66c1a832d200047b41fb",
     "version": "v1.0.0",
     "locale": null
+  },
+  "tools/qr-code-generator": {
+    "hash": "5930e944c4d1d0cc4ca0b01d94ea09af",
+    "version": "v1.0.0",
+    "locale": null
   }
 }
