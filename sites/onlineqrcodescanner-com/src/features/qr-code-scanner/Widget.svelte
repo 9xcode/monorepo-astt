@@ -5,7 +5,10 @@
   import { cn } from "$lib/utils";
 
   // Lucide Svelte imports
-  import { Camera, Upload, Copy, ExternalLink, RefreshCw, AlertTriangle, Check, CameraOff, ShieldCheck } from '@lucide/svelte';
+  import { 
+    Camera, Upload, Copy, ExternalLink, RefreshCw, AlertTriangle, Check, CameraOff, ShieldCheck,
+    Link, Contact, Wifi, Mail, Phone, MessageSquare, MessageCircle, Bitcoin, Type, Download
+  } from '@lucide/svelte';
 
   // ─── State ────────────────────────────────────────────────────────────────────
 
@@ -27,9 +30,91 @@
 
   // ─── Derived ──────────────────────────────────────────────────────────────────
 
-  let isUrl = $derived(
-    scannerResult.startsWith('http://') || scannerResult.startsWith('https://')
-  );
+  function parseQR(text: string) {
+    if (!text) return null;
+    const t = text.trim();
+    
+    // URL
+    if (t.match(/^https?:\/\//i) && !t.toLowerCase().includes('wa.me/')) {
+      return { type: 'url', icon: Link, title: 'Website URL', mainValue: t, fields: [], action: { label: 'Open Link', icon: ExternalLink, href: t } };
+    }
+    
+    // Wi-Fi
+    if (t.toUpperCase().startsWith('WIFI:')) {
+      const ssidMatch = t.match(/S:(.*?);/i);
+      const passMatch = t.match(/P:(.*?);/i);
+      const typeMatch = t.match(/T:(.*?);/i);
+      const ssid = ssidMatch ? ssidMatch[1] : 'Unknown Network';
+      return {
+        type: 'wifi', icon: Wifi, title: 'Wi-Fi Network', mainValue: ssid,
+        fields: [
+          { label: 'Network Name (SSID)', value: ssid },
+          { label: 'Password', value: passMatch ? passMatch[1] : 'None' },
+          { label: 'Security', value: typeMatch ? typeMatch[1] : 'WPA' }
+        ].filter(f => f.value),
+        action: null
+      };
+    }
+    
+    // vCard
+    if (t.toUpperCase().startsWith('BEGIN:VCARD')) {
+      const fnMatch = t.match(/\nFN:(.*?)(?:\r?\n|$)/i) || t.match(/^FN:(.*?)(?:\r?\n|$)/mi);
+      const telMatch = t.match(/\nTEL.*?:(.*?)(?:\r?\n|$)/i);
+      const emailMatch = t.match(/\nEMAIL.*?:(.*?)(?:\r?\n|$)/i);
+      const orgMatch = t.match(/\nORG:(.*?)(?:\r?\n|$)/i);
+      return {
+        type: 'vcard', icon: Contact, title: 'Contact Card', mainValue: fnMatch ? fnMatch[1] : 'Contact',
+        fields: [
+          { label: 'Name', value: fnMatch ? fnMatch[1] : '' },
+          { label: 'Phone', value: telMatch ? telMatch[1] : '' },
+          { label: 'Email', value: emailMatch ? emailMatch[1] : '' },
+          { label: 'Organization', value: orgMatch ? orgMatch[1] : '' }
+        ].filter(f => f.value),
+        action: { label: 'Save Contact', icon: Download, isVcard: true, href: '' }
+      };
+    }
+    
+    // Email
+    if (t.toLowerCase().startsWith('mailto:')) {
+      const email = t.substring(7).split('?')[0];
+      return { type: 'email', icon: Mail, title: 'Email Address', mainValue: email, fields: [{ label: 'To', value: email }], action: { label: 'Send Email', icon: Mail, href: t } };
+    }
+    
+    // Phone
+    if (t.toLowerCase().startsWith('tel:')) {
+      const phone = t.substring(4);
+      return { type: 'phone', icon: Phone, title: 'Phone Number', mainValue: phone, fields: [{ label: 'Number', value: phone }], action: { label: 'Call Number', icon: Phone, href: t } };
+    }
+    
+    // SMS
+    if (t.toLowerCase().startsWith('smsto:')) {
+      const parts = t.substring(6).split(':');
+      return {
+        type: 'sms', icon: MessageSquare, title: 'SMS Message', mainValue: parts[0],
+        fields: [
+          { label: 'To', value: parts[0] },
+          { label: 'Message', value: parts.slice(1).join(':') || '' }
+        ].filter(f => f.value),
+        action: { label: 'Send SMS', icon: MessageSquare, href: t }
+      };
+    }
+    
+    // WhatsApp
+    if (t.toLowerCase().startsWith('https://wa.me/') || t.toLowerCase().startsWith('whatsapp:')) {
+      return { type: 'whatsapp', icon: MessageCircle, title: 'WhatsApp', mainValue: 'WhatsApp Chat', fields: [{ label: 'Link', value: t }], action: { label: 'Open WhatsApp', icon: MessageCircle, href: t } };
+    }
+    
+    // Bitcoin
+    if (t.toLowerCase().startsWith('bitcoin:')) {
+      const addr = t.substring(8).split('?')[0];
+      return { type: 'bitcoin', icon: Bitcoin, title: 'Bitcoin Address', mainValue: addr, fields: [{ label: 'Address', value: addr }], action: null };
+    }
+    
+    // Plain Text
+    return { type: 'text', icon: Type, title: 'Plain Text', mainValue: t.length > 30 ? t.substring(0, 30) + '...' : t, fields: [], action: null };
+  }
+
+  let parsedData = $derived(parseQR(scannerResult));
 
   // Show the "Allow Camera" prompt when: permission is unknown/prompt and camera not active
   let showPermissionPrompt = $derived(
@@ -335,6 +420,17 @@
     }
   }
 
+  function downloadVcard() {
+    if (!scannerResult) return;
+    const blob = new Blob([scannerResult], { type: 'text/vcard;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'contact.vcf';
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 100);
+  }
+
   function resetScanner() {
     scannerResult = '';
     errorMsg = '';
@@ -616,12 +712,84 @@
               </div>
             {/if}
 
-            {#if scannerResult}
-              <div class="space-y-3">
-                <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground block">Decoded Content</p>
-                <div class="w-full min-h-[140px] max-h-[220px] overflow-y-auto p-4 rounded-xl border border-border/80 bg-muted/50 font-mono text-sm break-all leading-relaxed whitespace-pre-wrap selection:bg-emerald-500/20 select-text">
-                  {scannerResult}
+            {#if scannerResult && parsedData}
+              <div class="space-y-6">
+                <!-- Parsed Structured Output -->
+                {#if parsedData.type !== 'text'}
+                  <div class="w-full bg-card border border-border/80 rounded-2xl p-5 shadow-sm space-y-4">
+                    <!-- Header -->
+                    <div class="flex items-center gap-3.5 pb-4 border-b border-border/40">
+                      <div class="w-12 h-12 shrink-0 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center">
+                        <svelte:component this={parsedData.icon} class="w-6 h-6" />
+                      </div>
+                      <div class="min-w-0 flex-1">
+                        <p class="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{parsedData.title}</p>
+                        <p class="text-base font-semibold text-foreground truncate mt-0.5">{parsedData.mainValue}</p>
+                      </div>
+                    </div>
+
+                    <!-- Fields -->
+                    {#if parsedData.fields.length > 0}
+                      <div class="grid gap-3 pt-1">
+                        {#each parsedData.fields as field (field.label)}
+                          <div class="flex flex-col">
+                            <span class="text-[10px] font-bold uppercase text-muted-foreground mb-0.5">{field.label}</span>
+                            <span class="text-sm font-medium text-foreground break-words">{field.value}</span>
+                          </div>
+                        {/each}
+                      </div>
+                    {/if}
+
+                    <!-- Actions -->
+                    {#if parsedData.action}
+                      <div class="pt-2">
+                        {#if parsedData.action.isVcard}
+                          <button
+                            onclick={downloadVcard}
+                            class="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-semibold bg-emerald-600 text-white hover:bg-emerald-500 shadow-sm transition-all duration-300 active:scale-[0.98]"
+                          >
+                            <svelte:component this={parsedData.action.icon} class="w-4 h-4" />
+                            {parsedData.action.label}
+                          </button>
+                        {:else}
+                          <a
+                            href={parsedData.action.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-semibold bg-emerald-600 text-white hover:bg-emerald-500 shadow-sm transition-all duration-300 active:scale-[0.98]"
+                          >
+                            <svelte:component this={parsedData.action.icon} class="w-4 h-4" />
+                            {parsedData.action.label}
+                          </a>
+                        {/if}
+                      </div>
+                    {/if}
+                  </div>
+                {/if}
+
+                <!-- Raw Data & Copy -->
+                <div class="space-y-3">
+                  <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground block">
+                    {parsedData.type === 'text' ? 'Decoded Text' : 'Raw Data'}
+                  </p>
+                  <div class="relative group">
+                    <div class="w-full min-h-[100px] max-h-[220px] overflow-y-auto p-4 pr-12 rounded-xl border border-border/80 bg-muted/50 font-mono text-sm break-all leading-relaxed whitespace-pre-wrap selection:bg-emerald-500/20 select-text">
+                      {scannerResult}
+                    </div>
+                    <button
+                      onclick={copyToClipboard}
+                      title="Copy to clipboard"
+                      class="absolute top-3 right-3 p-2 rounded-lg bg-background border border-border/80 text-muted-foreground hover:text-foreground shadow-sm transition-all duration-200 active:scale-95"
+                    >
+                      {#if isCopied}
+                        <Check class="w-4 h-4 text-emerald-500" />
+                      {:else}
+                        <Copy class="w-4 h-4" />
+                      {/if}
+                    </button>
+                  </div>
                 </div>
+
               </div>
             {:else if !errorMsg || activeTab === 'camera'}
               <div class="h-full flex flex-col items-center justify-center text-center p-6 space-y-3">
@@ -647,38 +815,6 @@
 
           {#if scannerResult}
             <div class="space-y-3 pt-4 border-t border-border/40">
-              <div class="flex gap-2">
-                <button
-                  onclick={copyToClipboard}
-                  class={cn(
-                    "flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-semibold shadow-sm transition-all duration-300 active:scale-95",
-                    isCopied
-                      ? "bg-emerald-600 text-white"
-                      : "bg-primary text-primary-foreground hover:bg-primary/90"
-                  )}
-                >
-                  {#if isCopied}
-                    <Check class="w-4 h-4" />
-                    Copied!
-                  {:else}
-                    <Copy class="w-4 h-4" />
-                    Copy Content
-                  {/if}
-                </button>
-
-                {#if isUrl}
-                  <a
-                    href={scannerResult}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-semibold bg-emerald-600 text-white hover:bg-emerald-500 shadow-sm transition-all duration-300 active:scale-95"
-                  >
-                    <ExternalLink class="w-4 h-4" />
-                    Open Link
-                  </a>
-                {/if}
-              </div>
-
               <button
                 onclick={resetScanner}
                 class="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-semibold border border-input hover:bg-accent hover:text-accent-foreground transition-all duration-300 active:scale-95"

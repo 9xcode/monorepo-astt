@@ -54,7 +54,7 @@ export const siteConfig: SiteConfig = {
 
   // ─── Brand & Voice ─────────────────────────────────────────────────────
   brand: {
-    shortName: "QR Scanner",
+    shortName: "Online QR Code Scanner",
     tagline: "Free, Fast, and 100% Private QR Code Scanner & Generator.",
   },
 
