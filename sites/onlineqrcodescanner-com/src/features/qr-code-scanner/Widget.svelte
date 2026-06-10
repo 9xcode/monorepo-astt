@@ -716,11 +716,12 @@
               <div class="space-y-6">
                 <!-- Parsed Structured Output -->
                 {#if parsedData.type !== 'text'}
+                  {@const ParsedIcon = parsedData.icon}
                   <div class="w-full bg-card border border-border/80 rounded-2xl p-5 shadow-sm space-y-4">
                     <!-- Header -->
                     <div class="flex items-center gap-3.5 pb-4 border-b border-border/40">
                       <div class="w-12 h-12 shrink-0 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center">
-                        <svelte:component this={parsedData.icon} class="w-6 h-6" />
+                        <ParsedIcon class="w-6 h-6" />
                       </div>
                       <div class="min-w-0 flex-1">
                         <p class="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{parsedData.title}</p>
@@ -742,13 +743,14 @@
 
                     <!-- Actions -->
                     {#if parsedData.action}
+                      {@const ActionIcon = parsedData.action.icon}
                       <div class="pt-2">
                         {#if parsedData.action.isVcard}
                           <button
                             onclick={downloadVcard}
                             class="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-semibold bg-emerald-600 text-white hover:bg-emerald-500 shadow-sm transition-all duration-300 active:scale-[0.98]"
                           >
-                            <svelte:component this={parsedData.action.icon} class="w-4 h-4" />
+                            <ActionIcon class="w-4 h-4" />
                             {parsedData.action.label}
                           </button>
                         {:else}
@@ -758,7 +760,7 @@
                             rel="noopener noreferrer"
                             class="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-semibold bg-emerald-600 text-white hover:bg-emerald-500 shadow-sm transition-all duration-300 active:scale-[0.98]"
                           >
-                            <svelte:component this={parsedData.action.icon} class="w-4 h-4" />
+                            <ActionIcon class="w-4 h-4" />
                             {parsedData.action.label}
                           </a>
                         {/if}
