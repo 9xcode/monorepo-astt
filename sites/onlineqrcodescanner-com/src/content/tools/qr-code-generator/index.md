@@ -2,7 +2,7 @@
 title: "QR Code Generator"
 description: "Generate QR codes instantly for URLs, plain text, Wi-Fi networks, and vCard contacts. Free, private, and 100% browser-based — no data ever leaves your device."
 shortDescription: "Create custom QR codes for URLs, text, Wi-Fi, and contacts"
-category: "QR Tools"
+category: "QR Generator"
 tags: ["qr-generator", "generator", "url-qr", "wifi-qr", "vcard-qr"]
 icon: "QrCode"
 featured: true

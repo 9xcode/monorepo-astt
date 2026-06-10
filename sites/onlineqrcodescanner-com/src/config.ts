@@ -70,15 +70,19 @@ export const siteConfig: SiteConfig = {
     lastUpdated: "June 08, 2026",
     toolDisclaimers: [
       {
-        category: "QR Tools",
-        description: "All QR Code scanning and generation processes are executed client-side inside your browser. No image data, scanned content, or camera feed is transmitted to our servers. While we strive to ensure the accuracy and security of scanned links and data, please verify target URLs before visiting them.",
+        category: "QR Scanner",
+        description: "All QR Code scanning processes are executed client-side inside your browser. No image data, scanned content, or camera feed is transmitted to our servers. While we strive to ensure the accuracy and security of scanned links and data, please verify target URLs before visiting them.",
+      },
+      {
+        category: "QR Generator",
+        description: "All QR Code generation is performed entirely within your browser. No input data, Wi-Fi credentials, contact details, or any other content is transmitted to our servers.",
       },
     ],
   },
 
   // ─── Contact ────────────────────────────────────────────────────────────
   contact: {
-    email: "support@onlineqrcodescanner.com",
+    email: "contactwithtag@gmail.com",
     location: "San Francisco, CA",
   },
 
@@ -108,17 +112,19 @@ export const siteConfig: SiteConfig = {
     },
 
     categoryMappings: {
-      "QR Tools": { appCategory: "UtilitiesApplication", additionalType: "SoftwareApplication" },
+      "QR Scanner": { appCategory: "UtilitiesApplication", additionalType: "SoftwareApplication" },
+      "QR Generator": { appCategory: "UtilitiesApplication", additionalType: "SoftwareApplication" },
       "Barcode Tools": { appCategory: "UtilitiesApplication", additionalType: "SoftwareApplication" },
       "Utilities": { appCategory: "UtilitiesApplication", additionalType: "SoftwareApplication" },
     },
 
     titleSeparator: "-",
     titleDescriptors: {
-      "QR Tools": "Free Online QR Code Tool",
+      "QR Scanner": "Free Online QR Code Scanner",
+      "QR Generator": "Free Online QR Code Generator",
       "Barcode Tools": "Free Online Barcode Tool",
       "Utilities": "Free Online QR Code Utility",
-      "_default": "Free Online QR Code Scanner Tool",
+      "_default": "Free Online QR Code Tool",
     },
   },
 
@@ -130,9 +136,8 @@ export const siteConfig: SiteConfig = {
         {
           label: "Categories", href: "/categories",
           children: [
-            { label: "QR Tools", href: "/categories/qr-tools" },
-            { label: "Barcode Tools", href: "/categories/barcode-tools" },
-            { label: "Utilities", href: "/categories/utilities" },
+            { label: "QR Scanner", href: "/categories/qr-scanner" },
+            { label: "QR Generator", href: "/categories/qr-generator" },
           ],
         },
         // { label: "Blog", href: "/blog" },
@@ -152,12 +157,11 @@ export const siteConfig: SiteConfig = {
         {
           label: "Categories", href: "/categories",
           children: [
-            { label: "QR Tools", href: "/categories/qr-tools" },
-            { label: "Barcode Tools", href: "/categories/barcode-tools" },
-            { label: "Utilities", href: "/categories/utilities" },
+            { label: "QR Scanner", href: "/categories/qr-scanner" },
+            { label: "QR Generator", href: "/categories/qr-generator" },
           ],
         },
-        { label: "Blog", href: "/blog" },
+        // { label: "Blog", href: "/blog" },
       ],
     },
 
@@ -309,8 +313,8 @@ export const siteConfig: SiteConfig = {
       },
 
       tools: {
-        title: "All Free QR & Barcode Tools – Online QR Code Scanner",
-        description: "Browse our full collection of free, private, and lightning-fast QR code and barcode utilities.",
+        title: "All Free QR Code Tools – Online QR Code Scanner & Generator",
+        description: "Browse our full collection of free, private, and lightning-fast QR code scanner and generator tools.",
         heroBadge: "Complete Tools Directory",
         heroTitle: "All Free QR & Barcode Tools",
       },
@@ -343,9 +347,9 @@ export const siteConfig: SiteConfig = {
     components: {
 
       hero: {
-        headline: "Free, Fast, and",
-        headline2: "100% ",
-        headlineAccent: "Private",
+        headline: "Free, Fast, and 100% Private",
+        headline2: "Online ",
+        headlineAccent: "QR Code Scanner",
         subtitle: "Scan and generate QR codes directly in your browser. No data ever leaves your device.",
       },
 

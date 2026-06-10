@@ -2,9 +2,9 @@
 title: "Online QR Code Scanner"
 description: "Scan QR codes instantly from your webcam, camera, or by uploading an image. A secure, free, and 100% private QR code reader that runs entirely in your browser."
 shortDescription: "Scan QR codes instantly from your camera or image uploads"
-category: "QR Tools"
+category: "QR Scanner"
 tags: ["qr-scanner", "scanner", "reader"]
-icon: "Scan"
+icon: "Camera"
 featured: true
 order: 1
 ---

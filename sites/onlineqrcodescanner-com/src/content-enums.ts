@@ -13,7 +13,8 @@
 // ── Tools ─────────────────────────────────────────────────────────────────────
 
 export const TOOL_CATEGORIES = [
-  'QR Tools',
+  'QR Scanner',
+  'QR Generator',
   'Barcode Tools',
   'Utilities',
 ] as const;

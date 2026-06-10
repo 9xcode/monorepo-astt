@@ -28,6 +28,16 @@ import {
   Wrench,
   Code,
   BookOpen,
+  QrCode,
+  Camera,
+  Link,
+  Wifi,
+  Contact,
+  Mail,
+  Phone,
+  MessageSquare,
+  MessageCircle,
+  Bitcoin,
 } from '@lucide/svelte';
 
 /** Map of icon string names (from content frontmatter) to Lucide components */
@@ -55,6 +65,16 @@ export const iconMap: Record<string, any> = {
   History,
   Landmark,
   Wrench,
+  QrCode,
+  Camera,
+  Link,
+  Wifi,
+  Contact,
+  Mail,
+  Phone,
+  MessageSquare,
+  MessageCircle,
+  Bitcoin,
 };
 
 /** Map of icon string names used in mobile navigation config */
