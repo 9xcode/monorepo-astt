@@ -21,6 +21,13 @@
   let cameraPermission      = $state<CameraPermission>('unknown');
   let isRequestingPermission = $state(false);
   let isInsecureContext     = $state(false);
+  let activeResultTab       = $state<'formatted' | 'raw'>('formatted');
+
+  $effect(() => {
+    if (scannerResult) {
+      activeResultTab = 'formatted';
+    }
+  });
 
   let videoEl         = $state<HTMLVideoElement | null>(null);
   let canvasEl        = $state<HTMLCanvasElement | null>(null);
@@ -618,6 +625,8 @@
           {:else}
             <!-- Image Upload / Options Unified Content -->
             <div
+              role="region"
+              aria-label="File drop zone"
               ondragover={handleDragOver}
               ondragleave={handleDragLeave}
               ondrop={handleDrop}
@@ -672,7 +681,7 @@
     <!-- Right Side: Results Panel -->
     <div class="md:col-span-3 flex flex-col justify-stretch">
       <Card class="flex-1 border border-border/80 shadow-md bg-card flex flex-col justify-between">
-        <CardHeader class="pb-3 border-b border-border/40">
+        <CardHeader class="pb-3 border-b border-border/40 flex flex-row items-center justify-between space-y-0">
           <CardTitle class="text-base font-semibold flex items-center gap-2">
             <span class={cn(
               "w-2.5 h-2.5 rounded-full transition-colors duration-300",
@@ -680,6 +689,14 @@
             )}></span>
             Scan Result
           </CardTitle>
+          {#if scannerResult}
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+              <svg class="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                <path d="M3 5h2M7 5h1M12 5h1M16 5h2M3 12h2M7 12h1M12 12h1M16 12h2M3 19h2M7 19h1M12 19h1M16 19h2"/>
+              </svg>
+              {detectedFormat || 'Barcode'}
+            </span>
+          {/if}
         </CardHeader>
         <CardContent class="flex-1 p-6 flex flex-col justify-between space-y-6">
           <div class="space-y-4 flex-1">
@@ -694,51 +711,90 @@
 
             {#if scannerResult}
               <div class="space-y-4">
-                <!-- Format Badge -->
-                {#if detectedFormat}
-                  <div class="flex items-center gap-2">
-                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-                      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-                        <path d="M3 5h2M7 5h1M12 5h1M16 5h2M3 12h2M7 12h1M12 12h1M16 12h2M3 19h2M7 19h1M12 19h1M16 19h2"/>
-                      </svg>
-                      {detectedFormat}
-                    </span>
-                    <span class="text-[10px] text-muted-foreground">Format detected</span>
-                  </div>
-                {/if}
-
-                <!-- Decoded Value -->
-                <div class="space-y-2">
-                  <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Decoded Value</p>
-                  <div class="relative group">
-                    <div class="w-full min-h-[80px] max-h-[200px] overflow-y-auto p-4 pr-12 rounded-xl border border-border/80 bg-muted/50 font-mono text-sm break-all leading-relaxed whitespace-pre-wrap selection:bg-emerald-500/20 select-text">
-                      {scannerResult}
-                    </div>
-                    <button
-                      onclick={copyToClipboard}
-                      title="Copy to clipboard"
-                      class="absolute top-3 right-3 p-2 rounded-lg bg-background border border-border/80 text-muted-foreground hover:text-foreground shadow-sm transition-all duration-200 active:scale-95"
-                    >
-                      {#if isCopied}
-                        <Check class="w-4 h-4 text-emerald-500" />
-                      {:else}
-                        <Copy class="w-4 h-4" />
-                      {/if}
-                    </button>
-                  </div>
+                <!-- Sub-tabs for Results -->
+                <div class="flex p-0.5 bg-muted rounded-lg border border-border/40 max-w-[200px]">
+                  <button
+                    onclick={() => activeResultTab = 'formatted'}
+                    class={cn(
+                      "flex-1 py-1.5 px-3 text-xs font-semibold rounded-md transition-all duration-200",
+                      activeResultTab === 'formatted'
+                        ? "bg-background text-foreground shadow-sm"
+                        : "text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    Formatted
+                  </button>
+                  <button
+                    onclick={() => activeResultTab = 'raw'}
+                    class={cn(
+                      "flex-1 py-1.5 px-3 text-xs font-semibold rounded-md transition-all duration-200",
+                      activeResultTab === 'raw'
+                        ? "bg-background text-foreground shadow-sm"
+                        : "text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    Raw Data
+                  </button>
                 </div>
 
-                <!-- Open Link action (only when result is a URL) -->
-                {#if resultIsUrl}
-                  <a
-                    href={scannerResult}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm font-semibold bg-emerald-600 text-white hover:bg-emerald-500 shadow-sm transition-all duration-300 active:scale-[0.98]"
-                  >
-                    <ExternalLink class="w-4 h-4" />
-                    Open Link
-                  </a>
+                {#if activeResultTab === 'raw'}
+                  <!-- Raw Data & Copy -->
+                  <div class="space-y-3">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground block">Raw Data</p>
+                    <div class="relative group">
+                      <div class="w-full min-h-[80px] max-h-[200px] overflow-y-auto p-4 pr-12 rounded-xl border border-border/80 bg-muted/50 font-mono text-sm break-all leading-relaxed whitespace-pre-wrap selection:bg-emerald-500/20 select-text">
+                        {scannerResult}
+                      </div>
+                      <button
+                        onclick={copyToClipboard}
+                        title="Copy to clipboard"
+                        class="absolute top-3 right-3 p-2 rounded-lg bg-background border border-border/80 text-muted-foreground hover:text-foreground shadow-sm transition-all duration-200 active:scale-95"
+                      >
+                        {#if isCopied}
+                          <Check class="w-4 h-4 text-emerald-500" />
+                        {:else}
+                          <Copy class="w-4 h-4" />
+                        {/if}
+                      </button>
+                    </div>
+                  </div>
+                {:else}
+                  <!-- Formatted Output -->
+                  <div class="space-y-4">
+                    <!-- Decoded Value -->
+                    <div class="space-y-2">
+                      <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Decoded Value</p>
+                      <div class="relative group">
+                        <div class="w-full min-h-[80px] max-h-[200px] overflow-y-auto p-4 pr-12 rounded-xl border border-border/80 bg-muted/50 font-mono text-sm break-all leading-relaxed whitespace-pre-wrap selection:bg-emerald-500/20 select-text">
+                          {scannerResult}
+                        </div>
+                        <button
+                          onclick={copyToClipboard}
+                          title="Copy to clipboard"
+                          class="absolute top-3 right-3 p-2 rounded-lg bg-background border border-border/80 text-muted-foreground hover:text-foreground shadow-sm transition-all duration-200 active:scale-95"
+                        >
+                          {#if isCopied}
+                            <Check class="w-4 h-4 text-emerald-500" />
+                          {:else}
+                            <Copy class="w-4 h-4" />
+                          {/if}
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- Open Link action (only when result is a URL) -->
+                    {#if resultIsUrl}
+                      <a
+                        href={scannerResult}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm font-semibold bg-emerald-600 text-white hover:bg-emerald-500 shadow-sm transition-all duration-300 active:scale-[0.98]"
+                      >
+                        <ExternalLink class="w-4 h-4" />
+                        Open Link
+                      </a>
+                    {/if}
+                  </div>
                 {/if}
               </div>
             {:else if !errorMsg || activeTab === 'camera'}
@@ -779,45 +835,19 @@
     </div>
   </div>
 
-  <!-- Supported Formats Strip -->
-  <div class="mt-6 rounded-2xl border border-border/60 bg-muted/40 p-5 space-y-5">
-    <span class="text-xs font-bold uppercase tracking-widest text-muted-foreground">Supported Formats</span>
-
-    <!-- 1D Linear -->
-    <div class="space-y-2">
-      <p class="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">1D Linear Barcodes</p>
-      <div class="flex flex-wrap gap-1.5">
-        {#each [
-          'Code 128', 'Code 39', 'Code 93', 'Codabar',
-          'EAN-13', 'EAN-8', 'UPC-A', 'UPC-E', 'ITF',
-          'RSS-14', 'RSS Expanded'
-        ] as fmt (fmt)}
-          <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/25">
-            <svg class="w-2.5 h-2.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-              <path d="M3 5h2M7 5h1M12 5h1M16 5h2M3 12h2M7 12h1M12 12h1M16 12h2M3 19h2M7 19h1M12 19h1M16 19h2"/>
-            </svg>
-            {fmt}
-          </span>
-        {/each}
-      </div>
-    </div>
-
-    <!-- 2D Matrix -->
-    <div class="space-y-2">
-      <p class="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">2D Matrix &amp; Stacked</p>
-      <div class="flex flex-wrap gap-1.5">
-        {#each [
-          'QR Code', 'Data Matrix', 'PDF 417', 'Aztec', 'MaxiCode', 'UPC/EAN Extension'
-        ] as fmt (fmt)}
-          <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-blue-500/10 text-blue-700 dark:text-blue-400 border border-blue-500/25">
-            <svg class="w-2.5 h-2.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5"/>
-              <path d="M7 7h.01M17 7h.01M7 17h.01M17 17h.01M12 7v10M7 12h10"/>
-            </svg>
-            {fmt}
-          </span>
-        {/each}
-      </div>
+  <!-- Supported Formats -->
+  <div class="mt-8 pt-6 border-t border-border/40 space-y-3">
+    <p class="text-[10px] font-bold uppercase tracking-widest text-muted-foreground text-center">Supported Barcode Formats</p>
+    <div class="flex flex-wrap gap-1.5 justify-center max-w-2xl mx-auto">
+      {#each [
+        'Code 128', 'Code 39', 'Code 93', 'Code 11', 'Codabar',
+        'EAN-13', 'EAN-8', 'UPC-A', 'UPC-E', 'ITF',
+        'RSS-14', 'RSS Expanded', 'Data Matrix', 'MSI Plessey', 
+        'Pharmacode', 'Telepen', 'PDF 417', 'Aztec', 'MaxiCode',
+        'GS1 DataBar', 'UPC/EAN Extension', 'many more'
+      ] as fmt (fmt)}
+        <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-muted/60 text-muted-foreground border border-border/40">{fmt}</span>
+      {/each}
     </div>
   </div>
 </div>

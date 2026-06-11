@@ -23,6 +23,13 @@
   let cameraPermission = $state<CameraPermission>('unknown');
   let isRequestingPermission = $state(false);
   let isInsecureContext = $state(false);
+  let activeResultTab = $state<'formatted' | 'raw'>('formatted');
+
+  $effect(() => {
+    if (scannerResult) {
+      activeResultTab = 'formatted';
+    }
+  });
 
   let videoEl = $state<HTMLVideoElement | null>(null);
   let canvasEl = $state<HTMLCanvasElement | null>(null);
@@ -59,17 +66,30 @@
     
     // vCard
     if (t.toUpperCase().startsWith('BEGIN:VCARD')) {
-      const fnMatch = t.match(/\nFN:(.*?)(?:\r?\n|$)/i) || t.match(/^FN:(.*?)(?:\r?\n|$)/mi);
-      const telMatch = t.match(/\nTEL.*?:(.*?)(?:\r?\n|$)/i);
-      const emailMatch = t.match(/\nEMAIL.*?:(.*?)(?:\r?\n|$)/i);
-      const orgMatch = t.match(/\nORG:(.*?)(?:\r?\n|$)/i);
+      const fnMatch = t.match(/^FN:(.*?)(?:\r?\n|$)/mi);
+      const telMatch = t.match(/^TEL.*?:(.*?)(?:\r?\n|$)/mi);
+      const emailMatch = t.match(/^EMAIL.*?:(.*?)(?:\r?\n|$)/mi);
+      const orgMatch = t.match(/^ORG:(.*?)(?:\r?\n|$)/mi);
+      const titleMatch = t.match(/^TITLE:(.*?)(?:\r?\n|$)/mi) || t.match(/^ROLE:(.*?)(?:\r?\n|$)/mi);
+      const adrMatch = t.match(/^ADR.*?:(.*?)(?:\r?\n|$)/mi);
+      const urlMatch = t.match(/^URL.*?:(.*?)(?:\r?\n|$)/mi);
+      const noteMatch = t.match(/^NOTE:(.*?)(?:\r?\n|$)/mi);
+
+      const address = adrMatch?.[1]
+        ? adrMatch[1].replace(/;+/g, ' ').replace(/\s+/g, ' ').trim()
+        : '';
+
       return {
-        type: 'vcard', icon: Contact, title: 'Contact Card', mainValue: fnMatch ? fnMatch[1] : 'Contact',
+        type: 'vcard', icon: Contact, title: 'Contact Card', mainValue: fnMatch?.[1]?.trim() ?? 'Contact',
         fields: [
-          { label: 'Name', value: fnMatch ? fnMatch[1] : '' },
-          { label: 'Phone', value: telMatch ? telMatch[1] : '' },
-          { label: 'Email', value: emailMatch ? emailMatch[1] : '' },
-          { label: 'Organization', value: orgMatch ? orgMatch[1] : '' }
+          { label: 'Name', value: fnMatch?.[1]?.trim() ?? '' },
+          { label: 'Phone', value: telMatch?.[1]?.trim() ?? '' },
+          { label: 'Email', value: emailMatch?.[1]?.trim() ?? '' },
+          { label: 'Organization', value: orgMatch?.[1]?.trim() ?? '' },
+          { label: 'Title / Role', value: titleMatch?.[1]?.trim() ?? '' },
+          { label: 'Address', value: address },
+          { label: 'Website', value: urlMatch?.[1]?.trim() ?? '' },
+          { label: 'Note', value: noteMatch?.[1]?.trim() ?? '' }
         ].filter(f => f.value),
         action: { label: 'Save Contact', icon: Download, isVcard: true, href: '' }
       };
@@ -703,6 +723,8 @@
           {:else}
             <!-- Image Upload / Options Unified Content -->
             <div
+              role="region"
+              aria-label="File drop zone"
               ondragover={handleDragOver}
               ondragleave={handleDragLeave}
               ondrop={handleDrop}
@@ -757,7 +779,7 @@
     <!-- Right Side: Status and Results Panel -->
     <div class="md:col-span-3 flex flex-col justify-stretch">
       <Card class="flex-1 border border-border/80 shadow-md bg-card flex flex-col justify-between">
-        <CardHeader class="pb-3 border-b border-border/40">
+        <CardHeader class="pb-3 border-b border-border/40 flex flex-row items-center justify-between space-y-0">
           <CardTitle class="text-base font-semibold flex items-center gap-2">
             <span class={cn(
               "w-2.5 h-2.5 rounded-full transition-colors duration-300",
@@ -765,6 +787,15 @@
             )}></span>
             Scan Result
           </CardTitle>
+          {#if scannerResult}
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+              <svg class="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5"/>
+                <path d="M7 7h.01M17 7h.01M7 17h.01M17 17h.01M12 7v10M7 12h10"/>
+              </svg>
+              QR Code
+            </span>
+          {/if}
         </CardHeader>
         <CardContent class="flex-1 p-6 flex flex-col justify-between space-y-6">
           <div class="space-y-4 flex-1">
@@ -778,9 +809,60 @@
             {/if}
 
             {#if scannerResult && parsedData}
-              <div class="space-y-6">
-                <!-- Parsed Structured Output -->
+              <div class="space-y-4">
                 {#if parsedData.type !== 'text'}
+                  <!-- Sub-tabs for Results -->
+                  <div class="flex p-0.5 bg-muted rounded-lg border border-border/40 max-w-[200px]">
+                    <button
+                      onclick={() => activeResultTab = 'formatted'}
+                      class={cn(
+                        "flex-1 py-1.5 px-3 text-xs font-semibold rounded-md transition-all duration-200",
+                        activeResultTab === 'formatted'
+                          ? "bg-background text-foreground shadow-sm"
+                          : "text-muted-foreground hover:text-foreground"
+                      )}
+                    >
+                      Formatted
+                    </button>
+                    <button
+                      onclick={() => activeResultTab = 'raw'}
+                      class={cn(
+                        "flex-1 py-1.5 px-3 text-xs font-semibold rounded-md transition-all duration-200",
+                        activeResultTab === 'raw'
+                          ? "bg-background text-foreground shadow-sm"
+                          : "text-muted-foreground hover:text-foreground"
+                      )}
+                    >
+                      Raw Data
+                    </button>
+                  </div>
+                {/if}
+
+                {#if parsedData.type === 'text' || activeResultTab === 'raw'}
+                  <!-- Raw Data & Copy -->
+                  <div class="space-y-3">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground block">
+                      {parsedData.type === 'text' ? 'Decoded Text' : 'Raw Data'}
+                    </p>
+                    <div class="relative group">
+                      <div class="w-full min-h-[100px] max-h-[220px] overflow-y-auto p-4 pr-12 rounded-xl border border-border/80 bg-muted/50 font-mono text-sm break-all leading-relaxed whitespace-pre-wrap selection:bg-emerald-500/20 select-text">
+                        {scannerResult}
+                      </div>
+                      <button
+                        onclick={copyToClipboard}
+                        title="Copy to clipboard"
+                        class="absolute top-3 right-3 p-2 rounded-lg bg-background border border-border/80 text-muted-foreground hover:text-foreground shadow-sm transition-all duration-200 active:scale-95"
+                      >
+                        {#if isCopied}
+                          <Check class="w-4 h-4 text-emerald-500" />
+                        {:else}
+                          <Copy class="w-4 h-4" />
+                        {/if}
+                      </button>
+                    </div>
+                  </div>
+                {:else if activeResultTab === 'formatted'}
+                  <!-- Parsed Structured Output -->
                   {@const ParsedIcon = parsedData.icon}
                   <div class="w-full bg-card border border-border/80 rounded-2xl p-5 shadow-sm space-y-4">
                     <!-- Header -->
@@ -833,30 +915,6 @@
                     {/if}
                   </div>
                 {/if}
-
-                <!-- Raw Data & Copy -->
-                <div class="space-y-3">
-                  <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground block">
-                    {parsedData.type === 'text' ? 'Decoded Text' : 'Raw Data'}
-                  </p>
-                  <div class="relative group">
-                    <div class="w-full min-h-[100px] max-h-[220px] overflow-y-auto p-4 pr-12 rounded-xl border border-border/80 bg-muted/50 font-mono text-sm break-all leading-relaxed whitespace-pre-wrap selection:bg-emerald-500/20 select-text">
-                      {scannerResult}
-                    </div>
-                    <button
-                      onclick={copyToClipboard}
-                      title="Copy to clipboard"
-                      class="absolute top-3 right-3 p-2 rounded-lg bg-background border border-border/80 text-muted-foreground hover:text-foreground shadow-sm transition-all duration-200 active:scale-95"
-                    >
-                      {#if isCopied}
-                        <Check class="w-4 h-4 text-emerald-500" />
-                      {:else}
-                        <Copy class="w-4 h-4" />
-                      {/if}
-                    </button>
-                  </div>
-                </div>
-
               </div>
             {:else if !errorMsg || activeTab === 'camera'}
               <div class="h-full flex flex-col items-center justify-center text-center p-6 space-y-3">
@@ -896,33 +954,19 @@
     </div>
   </div>
 
-  <!-- Supported Format Strip -->
-  <div class="mt-6 rounded-2xl border border-border/60 bg-muted/40 p-5 space-y-4">
-    <div class="flex items-center gap-2">
-      <span class="text-xs font-bold uppercase tracking-widest text-muted-foreground">Supported Format</span>
-    </div>
-    <div class="flex flex-wrap gap-2 items-center">
-      <!-- Format badge -->
-      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/25 ring-1 ring-emerald-500/10">
-        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="2" y="2" width="20" height="20" rx="5"/>
-          <path d="M7 7h.01M17 7h.01M7 17h.01M17 17h.01M12 7v10M7 12h10"/>
-        </svg>
-        QR Code
-      </span>
-    </div>
-    <!-- Data types this scanner recognises -->
-    <div class="space-y-2">
-      <p class="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Recognises QR data types</p>
-      <div class="flex flex-wrap gap-1.5">
-        {#each [
-          'URL / Link', 'Wi-Fi Network', 'Contact (vCard)',
-          'Email', 'Phone Number', 'SMS',
-          'WhatsApp', 'Bitcoin Address', 'Plain Text'
-        ] as type (type)}
-          <span class="px-2 py-0.5 rounded-md text-[11px] font-medium bg-background border border-border/70 text-muted-foreground">{type}</span>
-        {/each}
-      </div>
+  <!-- Supported Formats & Types -->
+  <div class="mt-8 pt-6 border-t border-border/40 space-y-3">
+    <p class="text-[10px] font-bold uppercase tracking-widest text-muted-foreground text-center">Recognized QR Code Formats & Data Types</p>
+    <div class="flex flex-wrap gap-1.5 justify-center max-w-2xl mx-auto">
+      {#each [
+        'URL / Link', 'Wi-Fi Network', 'Contact (vCard)',
+        'Email', 'Phone Number', 'SMS / Text',
+        'WhatsApp / Chat', 'Location (Geo)', 'Calendar Event',
+        'Bitcoin / Crypto', 'UPI / Payment', 'Plain Text',
+        'Social Media', 'many more'
+      ] as type (type)}
+        <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-muted/60 text-muted-foreground border border-border/40">{type}</span>
+      {/each}
     </div>
   </div>
 </div>
