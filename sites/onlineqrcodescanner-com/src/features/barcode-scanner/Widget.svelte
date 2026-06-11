@@ -11,7 +11,8 @@
 
   type CameraPermission = 'unknown' | 'prompt' | 'granted' | 'denied';
 
-  let activeTab             = $state<'camera' | 'upload'>('camera');
+  let activeTab             = $state<'camera' | 'upload'>('upload');
+  let isDragging            = $state(false);
   let scannerResult         = $state('');
   let detectedFormat        = $state('');
   let isScanning            = $state(false);
@@ -368,6 +369,23 @@
     }
   }
 
+  function handleDragOver(e: DragEvent) {
+    e.preventDefault();
+    isDragging = true;
+  }
+
+  function handleDragLeave() {
+    isDragging = false;
+  }
+
+  async function handleDrop(e: DragEvent) {
+    e.preventDefault();
+    isDragging = false;
+    if (e.dataTransfer?.files?.[0]) {
+      await processImageFile(e.dataTransfer.files[0]);
+    }
+  }
+
   // ─── Actions ─────────────────────────────────────────────────────────────────
 
   function copyToClipboard() {
@@ -437,40 +455,12 @@
 </script>
 
 <div class="w-full max-w-4xl mx-auto space-y-6">
-  <!-- Tabs Navigation -->
-  <div class="flex p-1 bg-muted/80 backdrop-blur-md rounded-xl max-w-sm mx-auto">
-    <button
-      onclick={() => setTab('camera')}
-      class={cn(
-        "flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-medium rounded-lg transition-all duration-300",
-        activeTab === 'camera'
-          ? "bg-background text-foreground shadow-sm"
-          : "text-muted-foreground hover:text-foreground"
-      )}
-    >
-      <Camera class="w-4 h-4" />
-      Scan Camera
-    </button>
-    <button
-      onclick={() => setTab('upload')}
-      class={cn(
-        "flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-medium rounded-lg transition-all duration-300",
-        activeTab === 'upload'
-          ? "bg-background text-foreground shadow-sm"
-          : "text-muted-foreground hover:text-foreground"
-      )}
-    >
-      <Upload class="w-4 h-4" />
-      Upload Image
-    </button>
-  </div>
-
   <!-- Hidden canvas for barcode processing -->
   <canvas bind:this={canvasEl} class="hidden"></canvas>
 
   <div class="grid gap-6 md:grid-cols-5">
     <!-- Main Interactive Area -->
-    <div class="md:col-span-3">
+    <div class="md:col-span-2">
       <Card class="overflow-hidden border border-border/80 shadow-lg bg-card">
         <CardContent class="p-0 relative">
           {#if activeTab === 'camera'}
@@ -489,6 +479,17 @@
                   isScanning ? "opacity-100" : "opacity-0"
                 )}
               ></video>
+
+              <!-- Stop Camera Button Overlay -->
+              {#if isScanning}
+                <button
+                  onclick={() => setTab('upload')}
+                  class="absolute top-4 right-4 z-10 p-2 rounded-lg bg-black/60 hover:bg-black/80 text-white backdrop-blur-sm border border-white/10 transition-all duration-200 active:scale-95 flex items-center gap-1.5 text-xs font-medium"
+                >
+                  <CameraOff class="w-3.5 h-3.5" />
+                  Stop Camera
+                </button>
+              {/if}
 
               <!-- Scan Overlay Frame -->
               {#if isScanning && !scannerResult}
@@ -615,31 +616,61 @@
             </div>
 
           {:else}
-            <!-- Image Upload Tab -->
-            <label class="flex flex-col items-center justify-center aspect-[4/3] bg-gradient-to-br from-emerald-500/5 via-muted/30 to-emerald-500/5 dark:from-emerald-500/10 dark:via-neutral-900/60 dark:to-emerald-500/10 p-6 border-2 border-dashed border-border/80 rounded-b-xl hover:border-emerald-500/40 transition-colors duration-300 relative group cursor-pointer">
+            <!-- Image Upload / Options Unified Content -->
+            <div
+              ondragover={handleDragOver}
+              ondragleave={handleDragLeave}
+              ondrop={handleDrop}
+              class={cn(
+                "flex flex-col items-center justify-center aspect-[4/3] p-6 border-2 border-dashed rounded-xl transition-all duration-300 relative text-center",
+                isDragging
+                  ? "border-emerald-500 bg-emerald-500/10 dark:bg-emerald-500/15 scale-[0.99]"
+                  : "border-border/80 bg-gradient-to-br from-emerald-500/5 via-muted/30 to-emerald-500/5 dark:from-emerald-500/10 dark:via-neutral-900/60 dark:to-emerald-500/10 hover:border-emerald-500/40"
+              )}
+            >
               <input
+                id="barcode-file-upload"
                 type="file"
                 accept="image/*"
                 onchange={handleImageUpload}
                 class="sr-only"
               />
-              <div class="flex flex-col items-center space-y-3 text-center">
-                <div class="p-4 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-full group-hover:scale-110 transition-transform duration-300">
-                  <Upload class="w-8 h-8" />
+              <div class="flex flex-col items-center space-y-3.5 w-full max-w-[260px]">
+                <div class="p-3 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-full">
+                  <Camera class="w-6 h-6" />
                 </div>
                 <div>
-                  <p class="text-sm font-semibold text-foreground">Drag & drop, paste, or click to upload</p>
-                  <p class="text-xs text-muted-foreground mt-1">Supports PNG, JPG, JPEG, WebP, or clipboard paste</p>
+                  <p class="text-sm font-semibold text-foreground">Scan Barcode</p>
+                  <p class="text-xs text-muted-foreground mt-1">Scan using your camera or upload an image file</p>
                 </div>
+                <div class="flex flex-col gap-2 w-full pt-1">
+                  <button
+                    onclick={() => setTab('camera')}
+                    class="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-xl text-xs font-semibold bg-emerald-600 text-white hover:bg-emerald-500 shadow-sm transition-all duration-200 active:scale-95"
+                  >
+                    <Camera class="w-3.5 h-3.5" />
+                    Scan with Camera
+                  </button>
+                  <label
+                    for="barcode-file-upload"
+                    class="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-xl text-xs font-semibold border border-input bg-background hover:bg-accent hover:text-accent-foreground shadow-sm transition-all duration-200 active:scale-95 cursor-pointer"
+                  >
+                    <Upload class="w-3.5 h-3.5" />
+                    Upload Image
+                  </label>
+                </div>
+                <p class="text-[10px] text-muted-foreground leading-normal mt-0.5">
+                  or drag & drop your image here, or paste from clipboard
+                </p>
               </div>
-            </label>
+            </div>
           {/if}
         </CardContent>
       </Card>
     </div>
 
     <!-- Right Side: Results Panel -->
-    <div class="md:col-span-2 flex flex-col justify-stretch">
+    <div class="md:col-span-3 flex flex-col justify-stretch">
       <Card class="flex-1 border border-border/80 shadow-md bg-card flex flex-col justify-between">
         <CardHeader class="pb-3 border-b border-border/40">
           <CardTitle class="text-base font-semibold flex items-center gap-2">
