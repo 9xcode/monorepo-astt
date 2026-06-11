@@ -6,7 +6,6 @@ shortDescription: "Create a QR code that opens a pre-filled SMS text message"
 category: "QR Generator"
 tags: ["qr-generator", "generator", "utility"]
 icon: "MessageSquare"
-widgetSlug: "qr-code-generator"
 order: 9
 ---
 

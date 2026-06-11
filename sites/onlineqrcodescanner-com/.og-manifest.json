@@ -1,6 +1,6 @@
 {
   "tools/qr-code-scanner": {
-    "hash": "4b38e4b8133e92862761c0b6f341c76c",
+    "hash": "12f0da7df7dcede8c81184646b639e3e",
     "version": "v1.0.0",
     "locale": null
   },
@@ -10,7 +10,52 @@
     "locale": null
   },
   "tools/qr-code-generator": {
-    "hash": "5930e944c4d1d0cc4ca0b01d94ea09af",
+    "hash": "ff8833da66e5793255f11d3879ea7506",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/bitcoin-qr-code-generator": {
+    "hash": "a52167b7a381dc736dfa4643af7ae289",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/email-qr-code-generator": {
+    "hash": "57b6e814f5955b4985c1c69923145e7b",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/phone-qr-code-generator": {
+    "hash": "1777d33ea505642c03da38251c80d820",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/sms-qr-code-generator": {
+    "hash": "b70eb2dcba93c6e8406e93562dce3219",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/text-qr-code-generator": {
+    "hash": "bcf19a4a3ad8027eb16a0ebd26ad6347",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/url-qr-code-generator": {
+    "hash": "39103d68d4edea08c1a53e91855a7393",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/vcard-qr-code-generator": {
+    "hash": "edf6de8646e73af566e3618f953952a7",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/whatsapp-qr-code-generator": {
+    "hash": "a4ec8a8543770b7451480cff3fb18a4d",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/wifi-qr-code-generator": {
+    "hash": "9f4457f00425ea68d6ac35554bbd565b",
     "version": "v1.0.0",
     "locale": null
   }

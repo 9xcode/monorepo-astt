@@ -6,7 +6,6 @@ shortDescription: "Share your contact card by QR scan — no app required"
 category: "QR Generator"
 tags: ["qr-generator", "vcard-qr", "generator"]
 icon: "Contact"
-widgetSlug: "qr-code-generator"
 order: 6
 ---
 

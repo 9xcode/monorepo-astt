@@ -6,7 +6,6 @@ shortDescription: "Let guests connect to your Wi-Fi by scanning a QR code"
 category: "QR Generator"
 tags: ["qr-generator", "wifi-qr", "generator"]
 icon: "Wifi"
-widgetSlug: "qr-code-generator"
 order: 5
 ---
 

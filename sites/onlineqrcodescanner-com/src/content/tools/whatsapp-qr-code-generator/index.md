@@ -6,7 +6,6 @@ shortDescription: "Open a WhatsApp chat instantly with a pre-filled message via 
 category: "QR Generator"
 tags: ["qr-generator", "generator", "utility"]
 icon: "MessageCircle"
-widgetSlug: "qr-code-generator"
 order: 10
 ---
 

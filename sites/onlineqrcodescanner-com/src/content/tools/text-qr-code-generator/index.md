@@ -6,7 +6,6 @@ shortDescription: "Encode any plain text or message into a scannable QR code"
 category: "QR Generator"
 tags: ["qr-generator", "generator", "utility"]
 icon: "Type"
-widgetSlug: "qr-code-generator"
 order: 4
 ---
 

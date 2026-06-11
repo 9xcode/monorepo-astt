@@ -6,7 +6,6 @@ shortDescription: "Create a QR code that opens a pre-addressed email draft"
 category: "QR Generator"
 tags: ["qr-generator", "generator", "utility"]
 icon: "Mail"
-widgetSlug: "qr-code-generator"
 order: 7
 ---
 

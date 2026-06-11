@@ -6,7 +6,6 @@ shortDescription: "Create a Bitcoin payment request QR code in BIP-21 format"
 category: "QR Generator"
 tags: ["qr-generator", "generator", "utility"]
 icon: "Bitcoin"
-widgetSlug: "qr-code-generator"
 order: 11
 ---
 

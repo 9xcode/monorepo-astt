@@ -24,6 +24,12 @@
   type ErrorLevel = 'L' | 'M' | 'Q' | 'H';
   type QrFormat   = 'png' | 'webp' | 'svg';
 
+  // ─── Props ─────────────────────────────────────────────────────────────────────
+  // initialMode: allows thin adapter wrappers (per-sub-tool Widget.svelte files) to
+  // pre-select a specific tab when the widget mounts. Defaults to 'url' so the
+  // hub page (qr-code-generator) behaviour is completely unchanged.
+  let { initialMode = 'url' }: { initialMode?: TabId } = $props();
+
   // ─── Tabs ──────────────────────────────────────────────────────────────────────
   const tabs: { id: TabId; label: string; icon: any; hint: string }[] = [
     { id: 'url',      label: 'URL',      icon: Link,          hint: 'Any website link'      },
@@ -38,7 +44,8 @@
   ];
 
   // ─── State ─────────────────────────────────────────────────────────────────────
-  let activeTab    = $state<TabId>('url');
+  // svelte-ignore state_referenced_locally
+  let activeTab    = $state<TabId>(initialMode);
   let content      = $state('');
   let qrDataUrl    = $state('');   // PNG data URL (also used for SVG preview via data URI)
   let qrSvgString  = $state('');   // Raw SVG markup for download

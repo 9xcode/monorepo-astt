@@ -6,7 +6,6 @@ shortDescription: "Turn any URL or website link into a downloadable QR code"
 category: "QR Generator"
 tags: ["qr-generator", "url-qr", "generator"]
 icon: "Link"
-widgetSlug: "qr-code-generator"
 order: 3
 ---
 

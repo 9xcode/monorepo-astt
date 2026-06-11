@@ -6,7 +6,6 @@ shortDescription: "Create a QR code that instantly dials your phone number"
 category: "QR Generator"
 tags: ["qr-generator", "generator", "utility"]
 icon: "Phone"
-widgetSlug: "qr-code-generator"
 order: 8
 ---
 
