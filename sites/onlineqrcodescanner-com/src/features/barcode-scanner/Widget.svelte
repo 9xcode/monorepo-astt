@@ -286,15 +286,10 @@
 
   // ─── Image Upload ─────────────────────────────────────────────────────────────
 
-  async function handleImageUpload(event: Event) {
-    const input = event.target as HTMLInputElement;
+  async function processImageFile(file: File) {
     errorMsg       = '';
     scannerResult  = '';
     detectedFormat = '';
-
-    if (!input.files?.[0]) return;
-    const file = input.files[0];
-    input.value = '';
 
     // Strategy 1: Native BarcodeDetector — all formats
     if (hasBarcodeDetector) {
@@ -339,6 +334,38 @@
       img.src = e.target?.result as string;
     };
     reader.readAsDataURL(file);
+  }
+
+  async function handleImageUpload(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.[0]) return;
+    const file = input.files[0];
+    input.value = '';
+    await processImageFile(file);
+  }
+
+  async function handlePaste(event: ClipboardEvent) {
+    // Avoid intercepting if focus is in an input/textarea
+    const target = event.target as HTMLElement;
+    if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) {
+      return;
+    }
+
+    const items = event.clipboardData?.items;
+    if (!items) return;
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      if (item && item.type.indexOf('image') !== -1) {
+        const file = item.getAsFile();
+        if (file) {
+          event.preventDefault();
+          // Switch to upload tab for visual feedback
+          await setTab('upload');
+          await processImageFile(file);
+          break;
+        }
+      }
+    }
   }
 
   // ─── Actions ─────────────────────────────────────────────────────────────────
@@ -391,13 +418,22 @@
     const status = await checkPermissionStatus();
     cameraPermission = status;
 
+    if (typeof window !== 'undefined') {
+      window.addEventListener('paste', handlePaste);
+    }
+
     if (activeTab === 'camera') {
       await tick();
       if (status === 'granted') startCamera();
     }
   });
 
-  onDestroy(() => { stopCamera(); });
+  onDestroy(() => {
+    stopCamera();
+    if (typeof window !== 'undefined') {
+      window.removeEventListener('paste', handlePaste);
+    }
+  });
 </script>
 
 <div class="w-full max-w-4xl mx-auto space-y-6">
@@ -592,8 +628,8 @@
                   <Upload class="w-8 h-8" />
                 </div>
                 <div>
-                  <p class="text-sm font-semibold text-foreground">Drag and drop or click to upload</p>
-                  <p class="text-xs text-muted-foreground mt-1">Supports PNG, JPG, JPEG, and WebP</p>
+                  <p class="text-sm font-semibold text-foreground">Drag & drop, paste, or click to upload</p>
+                  <p class="text-xs text-muted-foreground mt-1">Supports PNG, JPG, JPEG, WebP, or clipboard paste</p>
                 </div>
               </div>
             </label>
