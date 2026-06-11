@@ -1,122 +1,33 @@
 <script lang="ts">
   import { onMount, onDestroy, tick } from 'svelte';
-  import jsQR from 'jsqr';
   import { Card, CardContent, CardHeader, CardTitle } from "$lib/components/ui/card";
   import { cn } from "$lib/utils";
 
-  // Lucide Svelte imports
-  import { 
+  import {
     Camera, Upload, Copy, ExternalLink, RefreshCw, AlertTriangle, Check, CameraOff, ShieldCheck,
-    Link, Contact, Wifi, Mail, Phone, MessageSquare, MessageCircle, Bitcoin, Type, Download
   } from '@lucide/svelte';
 
   // ─── State ────────────────────────────────────────────────────────────────────
 
   type CameraPermission = 'unknown' | 'prompt' | 'granted' | 'denied';
 
-  let activeTab = $state<'camera' | 'upload'>('camera');
-  let scannerResult = $state('');
-  let isScanning = $state(false);
-  let errorMsg = $state('');
-  let isCopied = $state(false);
-  let cameraPermission = $state<CameraPermission>('unknown');
+  let activeTab             = $state<'camera' | 'upload'>('camera');
+  let scannerResult         = $state('');
+  let detectedFormat        = $state('');
+  let isScanning            = $state(false);
+  let errorMsg              = $state('');
+  let isCopied              = $state(false);
+  let cameraPermission      = $state<CameraPermission>('unknown');
   let isRequestingPermission = $state(false);
-  let isInsecureContext = $state(false);
+  let isInsecureContext     = $state(false);
 
-  let videoEl = $state<HTMLVideoElement | null>(null);
-  let canvasEl = $state<HTMLCanvasElement | null>(null);
-  let stream = $state<MediaStream | null>(null);
+  let videoEl         = $state<HTMLVideoElement | null>(null);
+  let canvasEl        = $state<HTMLCanvasElement | null>(null);
+  let stream          = $state<MediaStream | null>(null);
   let animationFrameId = $state<number | null>(null);
 
   // ─── Derived ──────────────────────────────────────────────────────────────────
 
-  function parseQR(text: string) {
-    if (!text) return null;
-    const t = text.trim();
-    
-    // URL
-    if (t.match(/^https?:\/\//i) && !t.toLowerCase().includes('wa.me/')) {
-      return { type: 'url', icon: Link, title: 'Website URL', mainValue: t, fields: [], action: { label: 'Open Link', icon: ExternalLink, href: t } };
-    }
-    
-    // Wi-Fi
-    if (t.toUpperCase().startsWith('WIFI:')) {
-      const ssidMatch = t.match(/S:(.*?);/i);
-      const passMatch = t.match(/P:(.*?);/i);
-      const typeMatch = t.match(/T:(.*?);/i);
-      const ssid = ssidMatch ? ssidMatch[1] : 'Unknown Network';
-      return {
-        type: 'wifi', icon: Wifi, title: 'Wi-Fi Network', mainValue: ssid,
-        fields: [
-          { label: 'Network Name (SSID)', value: ssid },
-          { label: 'Password', value: passMatch ? passMatch[1] : 'None' },
-          { label: 'Security', value: typeMatch ? typeMatch[1] : 'WPA' }
-        ].filter(f => f.value),
-        action: null
-      };
-    }
-    
-    // vCard
-    if (t.toUpperCase().startsWith('BEGIN:VCARD')) {
-      const fnMatch = t.match(/\nFN:(.*?)(?:\r?\n|$)/i) || t.match(/^FN:(.*?)(?:\r?\n|$)/mi);
-      const telMatch = t.match(/\nTEL.*?:(.*?)(?:\r?\n|$)/i);
-      const emailMatch = t.match(/\nEMAIL.*?:(.*?)(?:\r?\n|$)/i);
-      const orgMatch = t.match(/\nORG:(.*?)(?:\r?\n|$)/i);
-      return {
-        type: 'vcard', icon: Contact, title: 'Contact Card', mainValue: fnMatch ? fnMatch[1] : 'Contact',
-        fields: [
-          { label: 'Name', value: fnMatch ? fnMatch[1] : '' },
-          { label: 'Phone', value: telMatch ? telMatch[1] : '' },
-          { label: 'Email', value: emailMatch ? emailMatch[1] : '' },
-          { label: 'Organization', value: orgMatch ? orgMatch[1] : '' }
-        ].filter(f => f.value),
-        action: { label: 'Save Contact', icon: Download, isVcard: true, href: '' }
-      };
-    }
-    
-    // Email
-    if (t.toLowerCase().startsWith('mailto:')) {
-      const email = t.substring(7).split('?')[0];
-      return { type: 'email', icon: Mail, title: 'Email Address', mainValue: email, fields: [{ label: 'To', value: email }], action: { label: 'Send Email', icon: Mail, href: t } };
-    }
-    
-    // Phone
-    if (t.toLowerCase().startsWith('tel:')) {
-      const phone = t.substring(4);
-      return { type: 'phone', icon: Phone, title: 'Phone Number', mainValue: phone, fields: [{ label: 'Number', value: phone }], action: { label: 'Call Number', icon: Phone, href: t } };
-    }
-    
-    // SMS
-    if (t.toLowerCase().startsWith('smsto:')) {
-      const parts = t.substring(6).split(':');
-      return {
-        type: 'sms', icon: MessageSquare, title: 'SMS Message', mainValue: parts[0],
-        fields: [
-          { label: 'To', value: parts[0] },
-          { label: 'Message', value: parts.slice(1).join(':') || '' }
-        ].filter(f => f.value),
-        action: { label: 'Send SMS', icon: MessageSquare, href: t }
-      };
-    }
-    
-    // WhatsApp
-    if (t.toLowerCase().startsWith('https://wa.me/') || t.toLowerCase().startsWith('whatsapp:')) {
-      return { type: 'whatsapp', icon: MessageCircle, title: 'WhatsApp', mainValue: 'WhatsApp Chat', fields: [{ label: 'Link', value: t }], action: { label: 'Open WhatsApp', icon: MessageCircle, href: t } };
-    }
-    
-    // Bitcoin
-    if (t.toLowerCase().startsWith('bitcoin:')) {
-      const addr = t.substring(8).split('?')[0];
-      return { type: 'bitcoin', icon: Bitcoin, title: 'Bitcoin Address', mainValue: addr, fields: [{ label: 'Address', value: addr }], action: null };
-    }
-    
-    // Plain Text
-    return { type: 'text', icon: Type, title: 'Plain Text', mainValue: t.length > 30 ? t.substring(0, 30) + '...' : t, fields: [], action: null };
-  }
-
-  let parsedData = $derived(parseQR(scannerResult));
-
-  // Show the "Allow Camera" prompt when: permission is unknown/prompt and camera not active
   let showPermissionPrompt = $derived(
     activeTab === 'camera' &&
     !isScanning &&
@@ -124,7 +35,6 @@
     (cameraPermission === 'unknown' || cameraPermission === 'prompt')
   );
 
-  // Show denied state
   let showPermissionDenied = $derived(
     activeTab === 'camera' &&
     !isScanning &&
@@ -132,7 +42,77 @@
     cameraPermission === 'denied'
   );
 
-  // ─── Camera Permission Check ───────────────────────────────────────────────────
+  // Is the result a URL? (useful for "Open Link" action on barcode results)
+  let resultIsUrl = $derived(
+    !!scannerResult && /^https?:\/\//i.test(scannerResult.trim())
+  );
+
+  // ─── Barcode Helpers ──────────────────────────────────────────────────────────
+
+  /** Returns a human-readable format name from either BarcodeDetector or @zxing naming conventions */
+  function formatBarcodeFormatName(fmt: string): string {
+    const key = fmt.toUpperCase().replace(/-/g, '_');
+    const map: Record<string, string> = {
+      AZTEC: 'Aztec',             CODE_128: 'Code 128',      CODE_39: 'Code 39',
+      CODE_93: 'Code 93',        CODABAR: 'Codabar',        DATA_MATRIX: 'Data Matrix',
+      EAN_13: 'EAN-13',          EAN_8: 'EAN-8',            ITF: 'ITF',
+      PDF_417: 'PDF 417',        QR_CODE: 'QR Code',        UPC_A: 'UPC-A',
+      UPC_E: 'UPC-E',            MAXICODE: 'MaxiCode',      RSS_14: 'RSS-14',
+      RSS_EXPANDED: 'RSS Expanded', UPC_EAN_EXTENSION: 'UPC/EAN Extension', UNKNOWN: 'Unknown',
+    };
+    return map[key] ?? fmt.replace(/_/g, ' ');
+  }
+
+  /** Returns all barcode formats supported by the native BarcodeDetector — cached after first query */
+  let cachedBarcodeFormats: string[] | null = null;
+  async function getAllBarcodeFormats(): Promise<string[]> {
+    if (cachedBarcodeFormats !== null) return cachedBarcodeFormats;
+    try {
+      // @ts-ignore — BarcodeDetector.getSupportedFormats not in all TS libs
+      cachedBarcodeFormats = await BarcodeDetector.getSupportedFormats();
+      return cachedBarcodeFormats!;
+    } catch {
+      return (cachedBarcodeFormats = []);
+    }
+  }
+
+  /** Check if the browser-native BarcodeDetector API is available */
+  const hasBarcodeDetector = typeof window !== 'undefined' && 'BarcodeDetector' in window;
+
+  /** Lazy singleton @zxing/browser reader — loaded once, reused across frames */
+  let zxingReaderInstance: any = null;
+
+  /**
+   * Decode any barcode from a canvas element via @zxing/browser (cross-browser, cross-platform).
+   * Returns null when no barcode is found — NotFoundException is a normal scanning state.
+   */
+  async function decodeWithZxing(canvas: HTMLCanvasElement): Promise<{ text: string; format: string } | null> {
+    try {
+      const [{ BrowserMultiFormatReader }, { BarcodeFormat }] = await Promise.all([
+        import('@zxing/browser'),
+        import('@zxing/library'),
+      ]);
+      if (!zxingReaderInstance) {
+        zxingReaderInstance = new BrowserMultiFormatReader();
+      }
+      const result = await (zxingReaderInstance as InstanceType<typeof BrowserMultiFormatReader>).decodeFromCanvas(canvas);
+      const fmtKey = BarcodeFormat[result.getBarcodeFormat()] ?? '';
+      return { text: result.getText(), format: formatBarcodeFormatName(fmtKey) };
+    } catch (err: any) {
+      // NotFoundException = no barcode visible — completely normal during continuous scanning
+      if (
+        err?.name === 'NotFoundException' ||
+        err?.message?.includes('No MultiFormat') ||
+        err?.message?.includes('not found')
+      ) {
+        return null;
+      }
+      console.error('zxing decode error:', err);
+      return null;
+    }
+  }
+
+  // ─── Camera Permission ────────────────────────────────────────────────────────
 
   async function checkPermissionStatus(): Promise<CameraPermission> {
     if (typeof navigator === 'undefined' || !navigator.permissions) return 'unknown';
@@ -140,7 +120,6 @@
       const status = await navigator.permissions.query({ name: 'camera' as PermissionName });
       return status.state as CameraPermission;
     } catch {
-      // Firefox and Safari don't support querying camera permission directly via query
       return 'unknown';
     }
   }
@@ -151,12 +130,12 @@
     await tick();
     errorMsg = '';
     scannerResult = '';
+    detectedFormat = '';
     isScanning = false;
     isRequestingPermission = true;
 
     if (stream) stopCamera();
 
-    // Check for secure context compatibility
     if (typeof navigator === 'undefined' || !navigator.mediaDevices) {
       isRequestingPermission = false;
       cameraPermission = 'denied';
@@ -165,7 +144,6 @@
       return;
     }
 
-    // High compatibility constraints array
     const constraintOptions = [
       { video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } } },
       { video: { facingMode: 'environment' } },
@@ -177,7 +155,7 @@
     for (const constraints of constraintOptions) {
       try {
         stream = await navigator.mediaDevices.getUserMedia(constraints);
-        break; // Found working stream
+        break;
       } catch (err) {
         lastError = err;
       }
@@ -185,15 +163,13 @@
 
     if (!stream) {
       isRequestingPermission = false;
-      console.error("All getUserMedia attempts failed:", lastError);
-
-      if (lastError && (lastError.name === 'NotAllowedError' || lastError.name === 'PermissionDeniedError')) {
+      if (lastError?.name === 'NotAllowedError' || lastError?.name === 'PermissionDeniedError') {
         cameraPermission = 'denied';
         errorMsg = '';
-      } else if (lastError && (lastError.name === 'NotFoundError' || lastError.name === 'DevicesNotFoundError')) {
+      } else if (lastError?.name === 'NotFoundError' || lastError?.name === 'DevicesNotFoundError') {
         cameraPermission = 'denied';
         errorMsg = 'No camera found on this device. Please upload an image instead.';
-      } else if (lastError && (lastError.name === 'NotReadableError' || lastError.name === 'TrackStartError')) {
+      } else if (lastError?.name === 'NotReadableError' || lastError?.name === 'TrackStartError') {
         errorMsg = 'Camera is already in use by another application. Please close it and try again.';
         cameraPermission = 'granted';
       } else {
@@ -209,13 +185,13 @@
     try {
       if (videoEl) {
         videoEl.srcObject = stream;
-        videoEl.setAttribute('playsinline', 'true'); // required for iOS
+        videoEl.setAttribute('playsinline', 'true');
         await videoEl.play();
         isScanning = true;
         scanFrame();
       }
     } catch (playErr) {
-      console.error("Video play failed:", playErr);
+      console.error('Video play failed:', playErr);
       errorMsg = 'Failed to start video stream playback.';
       isScanning = false;
     }
@@ -251,32 +227,32 @@
             canvasEl.height = height;
             ctx.drawImage(videoEl, 0, 0, width, height);
 
-            // Strategy 1: BarcodeDetector (native, handles dense codes)
+            // Strategy 1: Native BarcodeDetector — hardware-accelerated, all formats
             if (hasBarcodeDetector) {
               try {
-                const bitmap = await createImageBitmap(canvasEl);
+                const formats = await getAllBarcodeFormats();
+                const bitmap  = await createImageBitmap(canvasEl);
                 // @ts-ignore
-                const detector = new BarcodeDetector({ formats: ['qr_code'] });
-                const codes = await detector.detect(bitmap);
+                const detector = new BarcodeDetector({ formats: formats.length ? formats : undefined });
+                const codes   = await detector.detect(bitmap);
                 bitmap.close();
                 if (codes.length > 0 && codes[0].rawValue) {
-                  scannerResult = codes[0].rawValue;
+                  scannerResult  = codes[0].rawValue;
+                  detectedFormat = formatBarcodeFormatName(codes[0].format ?? '');
                   stopCamera();
                   triggerSuccessBeep();
                   return;
                 }
               } catch {
-                // Fall through to jsQR
+                // Fall through to @zxing
               }
             }
 
-            // Strategy 2: jsQR
-            const imageData = ctx.getImageData(0, 0, width, height);
-            const code = jsQR(imageData.data, imageData.width, imageData.height, {
-              inversionAttempts: 'attemptBoth'
-            });
-            if (code) {
-              scannerResult = code.data;
+            // Strategy 2: @zxing/browser — cross-browser, cross-platform fallback
+            const zxResult = await decodeWithZxing(canvasEl);
+            if (zxResult) {
+              scannerResult  = zxResult.text;
+              detectedFormat = zxResult.format;
               stopCamera();
               triggerSuccessBeep();
               return;
@@ -294,13 +270,13 @@
     try {
       const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
       const oscillator = audioCtx.createOscillator();
-      const fontGain = audioCtx.createGain();
-      oscillator.connect(fontGain);
-      fontGain.connect(audioCtx.destination);
+      const gainNode   = audioCtx.createGain();
+      oscillator.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
       oscillator.type = 'sine';
       oscillator.frequency.setValueAtTime(1046, audioCtx.currentTime);
-      fontGain.gain.setValueAtTime(0.07, audioCtx.currentTime);
-      fontGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+      gainNode.gain.setValueAtTime(0.07, audioCtx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
       oscillator.start();
       oscillator.stop(audioCtx.currentTime + 0.15);
     } catch {
@@ -310,98 +286,55 @@
 
   // ─── Image Upload ─────────────────────────────────────────────────────────────
 
-  /** Check if the browser-native BarcodeDetector API is available */
-  const hasBarcodeDetector = typeof window !== 'undefined' && 'BarcodeDetector' in window;
-
-  /**
-   * Apply contrast enhancement to a canvas context before passing to jsQR.
-   * Boosts contrast so jsQR can resolve modules in dense QR codes.
-   */
-  function enhanceContrast(ctx: CanvasRenderingContext2D, w: number, h: number) {
-    const img = ctx.getImageData(0, 0, w, h);
-    const d = img.data;
-    // Simple contrast stretch: darken dark pixels, lighten light pixels
-    for (let i = 0; i < d.length; i += 4) {
-      const lum = 0.299 * (d[i] ?? 0) + 0.587 * (d[i + 1] ?? 0) + 0.114 * (d[i + 2] ?? 0);
-      const v = lum < 128 ? Math.max(0, lum - 40) : Math.min(255, lum + 40);
-      d[i] = d[i + 1] = d[i + 2] = v;
-    }
-    ctx.putImageData(img, 0, 0);
-  }
-
-  /**
-   * Attempt jsQR decode at multiple scales.
-   * Resizing large images helps jsQR find finder patterns in dense codes.
-   */
-  function tryJsQR(src: HTMLImageElement | HTMLCanvasElement): string | null {
-    const scales = [1, 0.75, 1.5, 0.5];
-    const tmp = document.createElement('canvas');
-    const tctx = tmp.getContext('2d')!;
-
-    const srcW = src instanceof HTMLImageElement ? src.naturalWidth  : src.width;
-    const srcH = src instanceof HTMLImageElement ? src.naturalHeight : src.height;
-
-    for (const scale of scales) {
-      const w = Math.round(srcW * scale);
-      const h = Math.round(srcH * scale);
-      tmp.width  = w;
-      tmp.height = h;
-      tctx.drawImage(src, 0, 0, w, h);
-
-      // Try raw then contrast-enhanced
-      for (let pass = 0; pass < 2; pass++) {
-        if (pass === 1) enhanceContrast(tctx, w, h);
-        const id = tctx.getImageData(0, 0, w, h);
-        const code = jsQR(id.data, id.width, id.height, { inversionAttempts: 'attemptBoth' });
-        if (code?.data) return code.data;
-      }
-    }
-    return null;
-  }
-
   async function handleImageUpload(event: Event) {
     const input = event.target as HTMLInputElement;
-    errorMsg = '';
-    scannerResult = '';
+    errorMsg       = '';
+    scannerResult  = '';
+    detectedFormat = '';
 
     if (!input.files?.[0]) return;
     const file = input.files[0];
-    // Reset so same file can be re-uploaded
     input.value = '';
 
-    // ── Strategy 1: BarcodeDetector (native, best for dense QR codes) ──
+    // Strategy 1: Native BarcodeDetector — all formats
     if (hasBarcodeDetector) {
       try {
-        // @ts-ignore — BarcodeDetector is not in all TS libs yet
-        const detector = new BarcodeDetector({ formats: ['qr_code'] });
+        const formats = await getAllBarcodeFormats();
+        // @ts-ignore
+        const detector = new BarcodeDetector({ formats: formats.length ? formats : undefined });
         const bitmap   = await createImageBitmap(file);
         const codes    = await detector.detect(bitmap);
         bitmap.close();
         if (codes.length > 0 && codes[0].rawValue) {
-          scannerResult = codes[0].rawValue;
+          scannerResult  = codes[0].rawValue;
+          detectedFormat = formatBarcodeFormatName(codes[0].format ?? '');
           triggerSuccessBeep();
           return;
         }
       } catch {
-        // BarcodeDetector failed — fall through to jsQR
+        // Fall through to @zxing
       }
     }
 
-    // ── Strategy 2: jsQR with multi-scale + contrast enhancement ──
+    // Strategy 2: @zxing/browser — draw image to canvas then decode
     const reader = new FileReader();
     reader.onload = (e) => {
       const img = new Image();
-      img.onload = () => {
-        const result = tryJsQR(img);
-        if (result) {
-          scannerResult = result;
+      img.onerror = () => { errorMsg = 'Could not read the image file. Please try a different image.'; };
+      img.onload = async () => {
+        const tmp  = document.createElement('canvas');
+        tmp.width  = img.naturalWidth;
+        tmp.height = img.naturalHeight;
+        const tctx = tmp.getContext('2d')!;
+        tctx.drawImage(img, 0, 0);
+        const zxResult = await decodeWithZxing(tmp);
+        if (zxResult) {
+          scannerResult  = zxResult.text;
+          detectedFormat = zxResult.format;
           triggerSuccessBeep();
         } else {
-          errorMsg = 'No QR code found. Try uploading a higher-resolution image or improve lighting/contrast.';
+          errorMsg = 'No barcode found. Try uploading a clearer, higher-resolution image.';
         }
-      };
-      img.onerror = () => {
-        errorMsg = 'Could not read the image file. Please try a different image.';
       };
       img.src = e.target?.result as string;
     };
@@ -412,58 +345,44 @@
 
   function copyToClipboard() {
     if (scannerResult) {
-      navigator.clipboard.writeText(scannerResult).catch(() => {
-        // Fallback
-      });
+      navigator.clipboard.writeText(scannerResult).catch(() => {});
       isCopied = true;
       setTimeout(() => { isCopied = false; }, 2000);
     }
   }
 
-  function downloadVcard() {
-    if (!scannerResult) return;
-    const blob = new Blob([scannerResult], { type: 'text/vcard;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'contact.vcf';
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 100);
-  }
-
   function resetScanner() {
-    scannerResult = '';
-    errorMsg = '';
-    if (activeTab === 'camera') {
-      startCamera();
-    }
+    scannerResult  = '';
+    detectedFormat = '';
+    errorMsg       = '';
+    if (activeTab === 'camera') startCamera();
   }
 
   async function setTab(tab: 'camera' | 'upload') {
     if (activeTab === tab) return;
     stopCamera();
-    scannerResult = '';
-    errorMsg = '';
-    activeTab = tab;
+    scannerResult  = '';
+    detectedFormat = '';
+    errorMsg       = '';
+    activeTab      = tab;
 
     if (tab === 'camera') {
       await tick();
-      // On tab switch, if permission status was already queryable as granted, auto start
-      if (cameraPermission === 'granted' && !isInsecureContext) {
-        startCamera();
-      }
+      if (cameraPermission === 'granted' && !isInsecureContext) startCamera();
     }
   }
 
-  function requestCameraPermission() {
-    startCamera();
-  }
+  function requestCameraPermission() { startCamera(); }
 
   // ─── Lifecycle ────────────────────────────────────────────────────────────────
 
   onMount(async () => {
-    // Check for Secure Context
-    if (typeof window !== 'undefined' && window.location.protocol === 'http:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+    if (
+      typeof window !== 'undefined' &&
+      window.location.protocol === 'http:' &&
+      window.location.hostname !== 'localhost' &&
+      window.location.hostname !== '127.0.0.1'
+    ) {
       isInsecureContext = true;
       cameraPermission = 'denied';
       return;
@@ -474,15 +393,11 @@
 
     if (activeTab === 'camera') {
       await tick();
-      if (status === 'granted') {
-        startCamera();
-      }
+      if (status === 'granted') startCamera();
     }
   });
 
-  onDestroy(() => {
-    stopCamera();
-  });
+  onDestroy(() => { stopCamera(); });
 </script>
 
 <div class="w-full max-w-4xl mx-auto space-y-6">
@@ -514,7 +429,7 @@
     </button>
   </div>
 
-  <!-- Hidden canvas for QR processing -->
+  <!-- Hidden canvas for barcode processing -->
   <canvas bind:this={canvasEl} class="hidden"></canvas>
 
   <div class="grid gap-6 md:grid-cols-5">
@@ -523,11 +438,10 @@
       <Card class="overflow-hidden border border-border/80 shadow-lg bg-card">
         <CardContent class="p-0 relative">
           {#if activeTab === 'camera'}
-            <!-- Aspect Ratio Box on desktop / Auto-adjusting with minimum height on mobile -->
             <div class={cn(
               "relative w-full flex items-center justify-center overflow-hidden transition-all duration-500",
-              isScanning 
-                ? "aspect-[4/3] bg-black" 
+              isScanning
+                ? "aspect-[4/3] bg-black"
                 : "min-h-[320px] md:aspect-[4/3] py-8 px-4 bg-gradient-to-br from-emerald-500/5 via-muted/30 to-emerald-500/5 dark:from-emerald-500/10 dark:via-neutral-900/60 dark:to-emerald-500/10"
             )}>
 
@@ -543,17 +457,16 @@
               <!-- Scan Overlay Frame -->
               {#if isScanning && !scannerResult}
                 <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <div class="relative w-64 h-64 max-w-[75%] max-h-[75%]">
+                  <div class="relative w-72 h-48 max-w-[85%]">
                     <!-- Animated scan line -->
                     <div class="absolute inset-x-4 top-0 h-0.5 bg-gradient-to-r from-transparent via-emerald-400 to-transparent shadow-[0_0_8px_rgba(16,185,129,0.9)]" style="animation: scanline 1.8s ease-in-out infinite;"></div>
 
-                    <!-- Corner brackets -->
+                    <!-- Corner brackets — wider rectangle for barcodes -->
                     <div class="absolute -top-0.5 -left-0.5 w-7 h-7 border-t-[3px] border-l-[3px] border-emerald-400 rounded-tl-md"></div>
                     <div class="absolute -top-0.5 -right-0.5 w-7 h-7 border-t-[3px] border-r-[3px] border-emerald-400 rounded-tr-md"></div>
                     <div class="absolute -bottom-0.5 -left-0.5 w-7 h-7 border-b-[3px] border-l-[3px] border-emerald-400 rounded-bl-md"></div>
                     <div class="absolute -bottom-0.5 -right-0.5 w-7 h-7 border-b-[3px] border-r-[3px] border-emerald-400 rounded-br-md"></div>
 
-                    <!-- Center hint -->
                     <div class="absolute inset-0 border border-dashed border-emerald-500/20 rounded-sm"></div>
                   </div>
                 </div>
@@ -561,11 +474,11 @@
                 <!-- Scanning status pill -->
                 <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-sm border border-white/10 text-white text-xs font-medium">
                   <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                  Scanning for QR code…
+                  Scanning for barcodes…
                 </div>
               {/if}
 
-              <!-- Permission Prompt (not yet asked or awaiting user gesture) -->
+              <!-- Permission Prompt -->
               {#if showPermissionPrompt}
                 <div class="z-10 flex flex-col items-center text-center space-y-4 px-6 md:px-8">
                   <div class="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/20 dark:border-emerald-500/25 flex items-center justify-center">
@@ -574,7 +487,7 @@
                   <div class="space-y-1">
                     <p class="text-foreground font-semibold text-sm">Camera Access Required</p>
                     <p class="text-muted-foreground text-xs leading-relaxed max-w-[240px]">
-                      Allow camera access to scan QR codes in real time. No image or stream data is ever saved or sent online.
+                      Allow camera access to scan barcodes in real time. No image or stream data is ever saved or sent online.
                     </p>
                   </div>
                   <button
@@ -599,7 +512,7 @@
                 </div>
               {/if}
 
-              <!-- Permission Denied State (or Insecure HTTP State) -->
+              <!-- Permission Denied -->
               {#if showPermissionDenied}
                 <div class="z-10 flex flex-col items-center text-center space-y-4 px-6 md:px-8">
                   <div class="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-destructive/10 border border-destructive/20 flex items-center justify-center">
@@ -610,9 +523,9 @@
                       {isInsecureContext ? 'Secure Connection Required' : 'Camera Access Blocked'}
                     </p>
                     <p class="text-muted-foreground text-xs leading-relaxed max-w-[240px]">
-                      {isInsecureContext 
-                        ? 'Web browsers disable camera access over plain HTTP connections. Please switch to an HTTPS url or run on localhost to test live camera scanning.' 
-                        : 'Camera permission was denied. Please change browser permissions or reset site setting block in your browser address bar.'}
+                      {isInsecureContext
+                        ? 'Web browsers disable camera access over plain HTTP. Please switch to an HTTPS URL or run on localhost.'
+                        : 'Camera permission was denied. Please reset the site permissions in your browser address bar.'}
                     </p>
                   </div>
                   {#if !isInsecureContext}
@@ -633,7 +546,7 @@
                 </div>
               {/if}
 
-              <!-- General error (device busy, not found, etc.) — only shown when permission is not denied -->
+              <!-- General error -->
               {#if errorMsg && !showPermissionDenied && activeTab === 'camera'}
                 <div class="z-10 flex flex-col items-center text-center space-y-4 px-6 md:px-8">
                   <div class="w-12 h-12 rounded-2xl bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center">
@@ -656,7 +569,7 @@
                 </div>
               {/if}
 
-              <!-- Requesting permission loading state -->
+              <!-- Loading state -->
               {#if isRequestingPermission && !isScanning}
                 <div class="z-20 absolute inset-0 flex flex-col items-center justify-center gap-3 bg-background/90 backdrop-blur-sm">
                   <RefreshCw class="w-7 h-7 text-emerald-500 animate-spin" />
@@ -666,7 +579,7 @@
             </div>
 
           {:else}
-            <!-- Image Upload Tab Content -->
+            <!-- Image Upload Tab -->
             <label class="flex flex-col items-center justify-center aspect-[4/3] bg-gradient-to-br from-emerald-500/5 via-muted/30 to-emerald-500/5 dark:from-emerald-500/10 dark:via-neutral-900/60 dark:to-emerald-500/10 p-6 border-2 border-dashed border-border/80 rounded-b-xl hover:border-emerald-500/40 transition-colors duration-300 relative group cursor-pointer">
               <input
                 type="file"
@@ -689,7 +602,7 @@
       </Card>
     </div>
 
-    <!-- Right Side: Status and Results Panel -->
+    <!-- Right Side: Results Panel -->
     <div class="md:col-span-2 flex flex-col justify-stretch">
       <Card class="flex-1 border border-border/80 shadow-md bg-card flex flex-col justify-between">
         <CardHeader class="pb-3 border-b border-border/40">
@@ -704,7 +617,7 @@
         <CardContent class="flex-1 p-6 flex flex-col justify-between space-y-6">
           <div class="space-y-4 flex-1">
 
-            <!-- Upload tab error shown here -->
+            <!-- Upload tab error -->
             {#if errorMsg && activeTab === 'upload'}
               <div class="flex gap-3 p-4 bg-destructive/10 text-destructive border border-destructive/20 rounded-xl text-sm leading-relaxed">
                 <AlertTriangle class="w-5 h-5 shrink-0 mt-0.5" />
@@ -712,70 +625,26 @@
               </div>
             {/if}
 
-            {#if scannerResult && parsedData}
-              <div class="space-y-6">
-                <!-- Parsed Structured Output -->
-                {#if parsedData.type !== 'text'}
-                  {@const ParsedIcon = parsedData.icon}
-                  <div class="w-full bg-card border border-border/80 rounded-2xl p-5 shadow-sm space-y-4">
-                    <!-- Header -->
-                    <div class="flex items-center gap-3.5 pb-4 border-b border-border/40">
-                      <div class="w-12 h-12 shrink-0 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center">
-                        <ParsedIcon class="w-6 h-6" />
-                      </div>
-                      <div class="min-w-0 flex-1">
-                        <p class="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{parsedData.title}</p>
-                        <p class="text-base font-semibold text-foreground truncate mt-0.5">{parsedData.mainValue}</p>
-                      </div>
-                    </div>
-
-                    <!-- Fields -->
-                    {#if parsedData.fields.length > 0}
-                      <div class="grid gap-3 pt-1">
-                        {#each parsedData.fields as field (field.label)}
-                          <div class="flex flex-col">
-                            <span class="text-[10px] font-bold uppercase text-muted-foreground mb-0.5">{field.label}</span>
-                            <span class="text-sm font-medium text-foreground break-words">{field.value}</span>
-                          </div>
-                        {/each}
-                      </div>
-                    {/if}
-
-                    <!-- Actions -->
-                    {#if parsedData.action}
-                      {@const ActionIcon = parsedData.action.icon}
-                      <div class="pt-2">
-                        {#if parsedData.action.isVcard}
-                          <button
-                            onclick={downloadVcard}
-                            class="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-semibold bg-emerald-600 text-white hover:bg-emerald-500 shadow-sm transition-all duration-300 active:scale-[0.98]"
-                          >
-                            <ActionIcon class="w-4 h-4" />
-                            {parsedData.action.label}
-                          </button>
-                        {:else}
-                          <a
-                            href={parsedData.action.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-semibold bg-emerald-600 text-white hover:bg-emerald-500 shadow-sm transition-all duration-300 active:scale-[0.98]"
-                          >
-                            <ActionIcon class="w-4 h-4" />
-                            {parsedData.action.label}
-                          </a>
-                        {/if}
-                      </div>
-                    {/if}
+            {#if scannerResult}
+              <div class="space-y-4">
+                <!-- Format Badge -->
+                {#if detectedFormat}
+                  <div class="flex items-center gap-2">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                        <path d="M3 5h2M7 5h1M12 5h1M16 5h2M3 12h2M7 12h1M12 12h1M16 12h2M3 19h2M7 19h1M12 19h1M16 19h2"/>
+                      </svg>
+                      {detectedFormat}
+                    </span>
+                    <span class="text-[10px] text-muted-foreground">Format detected</span>
                   </div>
                 {/if}
 
-                <!-- Raw Data & Copy -->
-                <div class="space-y-3">
-                  <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground block">
-                    {parsedData.type === 'text' ? 'Decoded Text' : 'Raw Data'}
-                  </p>
+                <!-- Decoded Value -->
+                <div class="space-y-2">
+                  <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Decoded Value</p>
                   <div class="relative group">
-                    <div class="w-full min-h-[100px] max-h-[220px] overflow-y-auto p-4 pr-12 rounded-xl border border-border/80 bg-muted/50 font-mono text-sm break-all leading-relaxed whitespace-pre-wrap selection:bg-emerald-500/20 select-text">
+                    <div class="w-full min-h-[80px] max-h-[200px] overflow-y-auto p-4 pr-12 rounded-xl border border-border/80 bg-muted/50 font-mono text-sm break-all leading-relaxed whitespace-pre-wrap selection:bg-emerald-500/20 select-text">
                       {scannerResult}
                     </div>
                     <button
@@ -792,6 +661,18 @@
                   </div>
                 </div>
 
+                <!-- Open Link action (only when result is a URL) -->
+                {#if resultIsUrl}
+                  <a
+                    href={scannerResult}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm font-semibold bg-emerald-600 text-white hover:bg-emerald-500 shadow-sm transition-all duration-300 active:scale-[0.98]"
+                  >
+                    <ExternalLink class="w-4 h-4" />
+                    Open Link
+                  </a>
+                {/if}
               </div>
             {:else if !errorMsg || activeTab === 'camera'}
               <div class="h-full flex flex-col items-center justify-center text-center p-6 space-y-3">
@@ -801,14 +682,14 @@
                 <p class="text-sm text-muted-foreground">
                   {#if activeTab === 'camera'}
                     {#if isScanning}
-                      Align a QR code in the camera frame
+                      Align a barcode in the camera frame
                     {:else if showPermissionDenied}
                       Camera access is blocked
                     {:else}
                       Grant camera access to start scanning
                     {/if}
                   {:else}
-                    Upload an image containing a QR code
+                    Upload an image containing a barcode
                   {/if}
                 </p>
               </div>
@@ -831,31 +712,43 @@
     </div>
   </div>
 
-  <!-- Supported Format Strip -->
-  <div class="mt-6 rounded-2xl border border-border/60 bg-muted/40 p-5 space-y-4">
-    <div class="flex items-center gap-2">
-      <span class="text-xs font-bold uppercase tracking-widest text-muted-foreground">Supported Format</span>
-    </div>
-    <div class="flex flex-wrap gap-2 items-center">
-      <!-- Format badge -->
-      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/25 ring-1 ring-emerald-500/10">
-        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="2" y="2" width="20" height="20" rx="5"/>
-          <path d="M7 7h.01M17 7h.01M7 17h.01M17 17h.01M12 7v10M7 12h10"/>
-        </svg>
-        QR Code
-      </span>
-    </div>
-    <!-- Data types this scanner recognises -->
+  <!-- Supported Formats Strip -->
+  <div class="mt-6 rounded-2xl border border-border/60 bg-muted/40 p-5 space-y-5">
+    <span class="text-xs font-bold uppercase tracking-widest text-muted-foreground">Supported Formats</span>
+
+    <!-- 1D Linear -->
     <div class="space-y-2">
-      <p class="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Recognises QR data types</p>
+      <p class="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">1D Linear Barcodes</p>
       <div class="flex flex-wrap gap-1.5">
         {#each [
-          'URL / Link', 'Wi-Fi Network', 'Contact (vCard)',
-          'Email', 'Phone Number', 'SMS',
-          'WhatsApp', 'Bitcoin Address', 'Plain Text'
-        ] as type (type)}
-          <span class="px-2 py-0.5 rounded-md text-[11px] font-medium bg-background border border-border/70 text-muted-foreground">{type}</span>
+          'Code 128', 'Code 39', 'Code 93', 'Codabar',
+          'EAN-13', 'EAN-8', 'UPC-A', 'UPC-E', 'ITF',
+          'RSS-14', 'RSS Expanded'
+        ] as fmt (fmt)}
+          <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/25">
+            <svg class="w-2.5 h-2.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+              <path d="M3 5h2M7 5h1M12 5h1M16 5h2M3 12h2M7 12h1M12 12h1M16 12h2M3 19h2M7 19h1M12 19h1M16 19h2"/>
+            </svg>
+            {fmt}
+          </span>
+        {/each}
+      </div>
+    </div>
+
+    <!-- 2D Matrix -->
+    <div class="space-y-2">
+      <p class="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">2D Matrix &amp; Stacked</p>
+      <div class="flex flex-wrap gap-1.5">
+        {#each [
+          'QR Code', 'Data Matrix', 'PDF 417', 'Aztec', 'MaxiCode', 'UPC/EAN Extension'
+        ] as fmt (fmt)}
+          <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-blue-500/10 text-blue-700 dark:text-blue-400 border border-blue-500/25">
+            <svg class="w-2.5 h-2.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5"/>
+              <path d="M7 7h.01M17 7h.01M7 17h.01M17 17h.01M12 7v10M7 12h10"/>
+            </svg>
+            {fmt}
+          </span>
         {/each}
       </div>
     </div>
@@ -865,7 +758,7 @@
 <style>
   @keyframes scanline {
     0%   { transform: translateY(0); opacity: 1; }
-    45%  { transform: translateY(256px); opacity: 1; }
+    45%  { transform: translateY(192px); opacity: 1; }
     50%  { opacity: 0; }
     55%  { transform: translateY(0); opacity: 0; }
     60%  { opacity: 1; }

@@ -58,5 +58,10 @@
     "hash": "9f4457f00425ea68d6ac35554bbd565b",
     "version": "v1.0.0",
     "locale": null
+  },
+  "tools/barcode-scanner": {
+    "hash": "eb63439f051e764efb34071201de2231",
+    "version": "v1.0.0",
+    "locale": null
   }
 }

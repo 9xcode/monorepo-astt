@@ -70,12 +70,8 @@ export const siteConfig: SiteConfig = {
     lastUpdated: "June 08, 2026",
     toolDisclaimers: [
       {
-        category: "QR Scanner",
-        description: "All QR Code scanning processes are executed client-side inside your browser. No image data, scanned content, or camera feed is transmitted to our servers. While we strive to ensure the accuracy and security of scanned links and data, please verify target URLs before visiting them.",
-      },
-      {
-        category: "QR Generator",
-        description: "All QR Code generation is performed entirely within your browser. No input data, Wi-Fi credentials, contact details, or any other content is transmitted to our servers.",
+        category: "All Tools",
+        description: "All tools on Online QR Code Scanner — including QR code scanners, barcode scanners, and QR code generators — operate entirely within your browser using client-side processing. No camera feeds, uploaded images, scanned data, generated codes, Wi-Fi credentials, contact details, or any other input or output is transmitted to, stored on, or processed by our servers at any time. All scanning is performed locally on your device using your browser's built-in capabilities and JavaScript libraries. While we strive to ensure the accuracy and reliability of decoded content, scanned links and data should be verified before use. We are not responsible for the content of third-party URLs or data encoded within barcodes and QR codes.",
       },
     ],
   },
@@ -138,6 +134,7 @@ export const siteConfig: SiteConfig = {
           children: [
             { label: "QR Scanner", href: "/categories/qr-scanner" },
             { label: "QR Generator", href: "/categories/qr-generator" },
+            { label: "Barcode Tools", href: "/categories/barcode-tools" },
           ],
         },
         // { label: "Blog", href: "/blog" },
@@ -159,6 +156,7 @@ export const siteConfig: SiteConfig = {
           children: [
             { label: "QR Scanner", href: "/categories/qr-scanner" },
             { label: "QR Generator", href: "/categories/qr-generator" },
+            { label: "Barcode Tools", href: "/categories/barcode-tools" },
           ],
         },
         // { label: "Blog", href: "/blog" },
