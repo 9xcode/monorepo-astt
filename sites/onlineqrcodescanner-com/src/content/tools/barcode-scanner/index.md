@@ -6,7 +6,8 @@ shortDescription: "Scan all barcode formats instantly from your camera or image"
 category: "Barcode Tools"
 tags: ["barcode-scanner", "scanner", "reader"]
 icon: "ScanBarcode"
-order: 1
+featured: true
+order: 3
 ---
 
 ## Online Barcode Scanner – All Formats, Zero Tracking

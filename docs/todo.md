@@ -57,6 +57,9 @@ letter do ad this : https://www.google.com/preferences/source?q=https://redeemco
 - [ ] Implement cookie consent banner (CMP)
 - [ ] Implement short affilaite disclosor only on the pages where we have affliate links and use ("paid link") as mention in disclosor policy, and also build complete affiliate solution
 
+- qr scanner and barcode scanner doing same work so if code is same and if possiblity of create ceterlize tool and use then try it.
+- create more content about all the possible barcode scanners
+
 
 
 ---------

@@ -55,14 +55,9 @@ export const siteConfig: SiteConfig = {
   // ─── Brand & Voice ─────────────────────────────────────────────────────
   brand: {
     shortName: "Online QR Code Scanner",
-    tagline: "Free, Fast, and 100% Private QR Code Scanner & Generator.",
+    tagline: "Free, Fast, and 100% Private.",
   },
 
-  // ─── Localization ───────────────────────────────────────────────────────
-  localization: {
-    currencySymbol: "$",
-    currencyCode: "USD",
-  },
 
   // ─── Legal ──────────────────────────────────────────────────────────────
   companyName: "Online QR Code Scanner",
@@ -70,7 +65,7 @@ export const siteConfig: SiteConfig = {
     lastUpdated: "June 08, 2026",
     toolDisclaimers: [
       {
-        category: "All Tools",
+        category: "QR Code Tools",
         description: "All tools on Online QR Code Scanner — including QR code scanners, barcode scanners, and QR code generators — operate entirely within your browser using client-side processing. No camera feeds, uploaded images, scanned data, generated codes, Wi-Fi credentials, contact details, or any other input or output is transmitted to, stored on, or processed by our servers at any time. All scanning is performed locally on your device using your browser's built-in capabilities and JavaScript libraries. While we strive to ensure the accuracy and reliability of decoded content, scanned links and data should be verified before use. We are not responsible for the content of third-party URLs or data encoded within barcodes and QR codes.",
       },
     ],
@@ -80,6 +75,12 @@ export const siteConfig: SiteConfig = {
   contact: {
     email: "contactwithtag@gmail.com",
     location: "San Francisco, CA",
+  },
+
+  // ─── Localization ───────────────────────────────────────────────────────
+  localization: {
+    currencySymbol: "$",
+    currencyCode: "USD",
   },
 
   // ─── API Keys ───────────────────────────────────────────────────────────
@@ -212,7 +213,7 @@ export const siteConfig: SiteConfig = {
         toolSlug: "qr-code-scanner",
       },
       featuredSection: {
-        enabled: false,
+        enabled: true,
         maxTools: 3,
       },
       toolsDiscovery: {
