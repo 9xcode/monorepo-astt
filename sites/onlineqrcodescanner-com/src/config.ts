@@ -25,6 +25,8 @@ import type {
   FeaturesConfig,
 } from '@mtools/core/config/types';
 
+import type { ToolCategory } from './content-enums.ts';
+
 export type {
   SiteConfig,
   SiteContent,
@@ -43,7 +45,7 @@ export type {
   FeaturesConfig,
 };
 
-export const siteConfig: SiteConfig = {
+export const siteConfig: SiteConfig<ToolCategory> = {
 
   // ─── Core Identity ──────────────────────────────────────────────────────
   name: "Online QR Code Scanner",

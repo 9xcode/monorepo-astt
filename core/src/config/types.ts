@@ -173,8 +173,14 @@ export interface NavItem {
   children?: Omit<NavItem, 'children'>[];
 }
 
-/** All SEO-related config: meta, schemas, and author */
-export interface SeoConfig {
+/**
+ * All SEO-related config: meta, schemas, and author.
+ *
+ * TC — the site's ToolCategory union (e.g. 'Finance/Tax' | 'Calculators').
+ * Pass it from SiteConfig<TC> to enforce that every category has a mapping.
+ * Defaults to `string` so core-level code that doesn't know the categories still compiles.
+ */
+export interface SeoConfig<TC extends string = string> {
   /** Default page description (used when a page doesn't provide its own) */
   description: string;
   /** HTML lang attribute and OG locale */
@@ -199,18 +205,23 @@ export interface SeoConfig {
   organization: {
     knowsAbout: string[];
   };
-  /** Maps tool category slugs to appCategory / additionalType values */
-  categoryMappings: Record<string, { appCategory: string; additionalType?: string }>;
   /**
-   * Separator used between tool/page title and the descriptor suffix in SERP <title> tags.
+   * Maps every tool category to its Schema.org appCategory (and optional additionalType).
+   * TC enforces exhaustiveness — adding a category to TOOL_CATEGORIES without adding it
+   * here is a compile-time error.
    */
+  categoryMappings: Record<TC, { appCategory: string; additionalType?: string }>;
+  /** Separator used between tool title and descriptor suffix in SERP <title> tags. */
   titleSeparator: string;
   /**
-   * Keyword-rich descriptor appended to tool page titles that have no custom seoTitle.
-   * Keyed by category name (must match categoryMappings keys). Use "_default" as fallback.
+   * Keyword-rich suffix appended to tool page <title> when no custom seoTitle is set.
+   * Keyed by category name. Must cover every TC category key + the special '_default' key as fallback.
+   *
+   * '_default' is required — it is the safe fallback used by buildToolTitle() when the
+   * runtime category string doesn't match any key (e.g. future-proofing, edge cases).
    * Do NOT include the separator here — buildToolTitle() prepends it automatically.
    */
-  titleDescriptors: Record<string, string>;
+  titleDescriptors: Record<TC | '_default', string>;
 }
 
 /** Header, footer, and mobile sidebar navigation */
@@ -411,8 +422,15 @@ export interface FeaturesConfig {
   getApp: GetAppConfig;
 }
 
-/** Root site configuration shape — every site must satisfy this contract */
-export interface SiteConfig {
+/**
+ * Root site configuration shape — every site must satisfy this contract.
+ *
+ * TC — the site's ToolCategory union from content-enums.ts.
+ * Pass it to get compile-time enforcement that categoryMappings and
+ * titleDescriptors cover every category in the constant.
+ * Example:  export const siteConfig: SiteConfig<ToolCategory> = { ... }
+ */
+export interface SiteConfig<TC extends string = string> {
   // ── Core Identity ──────────────────────────────────────────────────────────
   name: string;
   domain: string;
@@ -468,7 +486,7 @@ export interface SiteConfig {
   };
 
   // ── SEO ────────────────────────────────────────────────────────────────────
-  seo: SeoConfig;
+  seo: SeoConfig<TC>;
 
   // ── UI / Layout ────────────────────────────────────────────────────────────
   ui: UiConfig;
