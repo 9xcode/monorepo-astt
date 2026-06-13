@@ -50,19 +50,12 @@ export const siteConfig: SiteConfig = {
   domain: "multitools.app",
   url: "https://multitools.app",
   // url: "http://localhost:4321",
-  version: "1.0.0",
   localStoragePrefix: "mt_",
 
   // ─── Brand & Voice ─────────────────────────────────────────────────────
   brand: {
     shortName: "MultiTools",
     tagline: "Faster than AI, Safer than Cloud.",
-  },
-
-  // ─── Localization ───────────────────────────────────────────────────────
-  localization: {
-    currencySymbol: "$",
-    currencyCode: "USD",
   },
 
   // ─── Legal ──────────────────────────────────────────────────────────────
@@ -82,6 +75,12 @@ export const siteConfig: SiteConfig = {
     email: "support@multitools.app",
     location: "San Francisco, CA",
   },
+
+  // ─── Localization ───────────────────────────────────────────────────────
+  localization: {
+    currencySymbol: "$",
+    currencyCode: "USD",
+  },  
 
   // ─── API Keys ───────────────────────────────────────────────────────────
   apiKeys: {
@@ -268,7 +267,6 @@ export const siteConfig: SiteConfig = {
       showSupport: true,
       showFeedback: true,
       showGetApp: true,
-      getAppHref: "/get-app",
     },
 
     ads: {
@@ -303,6 +301,7 @@ export const siteConfig: SiteConfig = {
 
     getApp: {
       enabled: false,
+      landingPageUrl: "/get-app",
       appStoreUrl: "https://apps.apple.com/app/id",        // TODO: replace with real App Store link
       playStoreUrl: "https://play.google.com/store/apps/details?id=app.multitools", // TODO: replace with real Play Store link
     },

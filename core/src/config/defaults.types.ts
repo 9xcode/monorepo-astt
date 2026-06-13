@@ -6,7 +6,7 @@
  * — or serve as sensible shared defaults.
  *
  * Import directly in Astro pages/components (build-time only):
- *   import { coreConfig } from '../config/core-config.ts';
+ *   import { coreConfig } from '../config/defaults.ts';
  */
 
 // ── Support & Donations ───────────────────────────────────────────────────────
@@ -64,6 +64,11 @@ export interface SupportDonationConfig {
 
 /** Root shape for the shared core configuration. */
 export interface CoreConfig {
+  /**
+   * Core platform version — used in Schema.org softwareVersion for WebApplication JSON-LD.
+   * Bump this when core features/tools change, not per-site content updates.
+   */
+  version: string;
   /** Support/donation platform configuration. */
   support: SupportDonationConfig;
 }

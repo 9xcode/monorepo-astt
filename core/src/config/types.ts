@@ -330,6 +330,8 @@ export interface SearchConfig {
 export interface GetAppConfig {
   /** Master switch — when false, hides all get-app UI across the entire site */
   enabled: boolean;
+  /** Internal URL path for the Get App landing page — e.g. "/get-app" */
+  landingPageUrl: string;
   /** iOS App Store deep link — e.g. "https://apps.apple.com/app/id..." */
   appStoreUrl: string;
   /** Google Play Store deep link — e.g. "https://play.google.com/store/apps/details?id=..." */
@@ -398,7 +400,6 @@ export interface FeaturesConfig {
     showSupport: boolean;
     showFeedback: boolean;
     showGetApp: boolean;
-    getAppHref: string;
   };
   /** Google AdSense — opt-in monetisation feature */
   ads: AdsConfig;
@@ -416,7 +417,6 @@ export interface SiteConfig {
   name: string;
   domain: string;
   url: string;
-  version: string;
   /** Prefix for all localStorage keys — ensures uniqueness per deployment */
   localStoragePrefix: string;
 
@@ -425,12 +425,6 @@ export interface SiteConfig {
     shortName: string;
     /** Brand tagline / value proposition */
     tagline: string;
-  };
-
-  // ── Localization ───────────────────────────────────────────────────────────
-  localization: {
-    currencySymbol: string;
-    currencyCode: string;
   };
 
   // ── Legal ──────────────────────────────────────────────────────────────────
@@ -459,6 +453,12 @@ export interface SiteConfig {
   contact: {
     email: string;
     location: string;
+  };
+
+  // ── Localization ───────────────────────────────────────────────────────────
+  localization: {
+    currencySymbol: string;
+    currencyCode: string;
   };
 
   // ── API Keys ───────────────────────────────────────────────────────────────

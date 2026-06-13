@@ -101,7 +101,7 @@ const trayProps = {
 	supportLabel: siteConfig.features.support?.label ?? "Support Us",
 	showFeedback: trayConfig?.showFeedback ?? true,
 	showGetApp: (trayConfig?.showGetApp ?? true) && (siteConfig.features.getApp?.enabled !== false),
-	getAppHref: trayConfig?.getAppHref ?? "/get-app",
+	getAppHref: siteConfig.features.getApp?.landingPageUrl ?? "/get-app",
 	favouriteStorageKey: siteConfig.features.favouriteTools?.storageKey ?? "favourites",
 };
 

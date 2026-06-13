@@ -49,7 +49,6 @@ export const siteConfig: SiteConfig = {
   name: "Online QR Code Scanner",
   domain: "onlineqrcodescanner.com",
   url: "https://onlineqrcodescanner.com",
-  version: "1.0.1",
   localStoragePrefix: "oqcs_",
 
   // ─── Brand & Voice ─────────────────────────────────────────────────────
@@ -263,7 +262,6 @@ export const siteConfig: SiteConfig = {
       showSupport: true,
       showFeedback: true,
       showGetApp: false,
-      getAppHref: "/get-app",
     },
 
     ads: {
@@ -298,6 +296,7 @@ export const siteConfig: SiteConfig = {
 
     getApp: {
       enabled: false,
+      landingPageUrl: "/get-app",
       appStoreUrl: "https://apps.apple.com/app/id",
       playStoreUrl: "https://play.google.com/store/apps/details?id=app.onlineqrcodescanner",
     },
