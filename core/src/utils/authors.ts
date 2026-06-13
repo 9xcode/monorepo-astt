@@ -52,7 +52,11 @@ export async function getAuthorBySlug(slug: string): Promise<AuthorEntry | undef
  *
  * Falls back to siteConfig.seo.defaultAuthorSlug when:
  * - The entry has no author field set (undefined)
- * - The referenced author file doesn't exist (defensive)
+ * - The referenced author file doesn't exist
+ *
+ * When an explicit slug is provided but no matching file is found, a warning is
+ * emitted so the problem is visible at build time rather than silently showing
+ * the wrong author.
  *
  * @throws Never — always returns a valid AuthorEntry.
  *         If the fallback slug is also missing, throws with a clear message.
@@ -64,6 +68,15 @@ export async function resolveAuthor(
   if (authorRef) {
     const author = await getEntry('authors', authorRef.id);
     if (author) return author;
+
+    // The slug was set but no matching file exists — warn loudly so this is
+    // never silently wrong. We still fall back to the default author so the
+    // build doesn't fail, but this must be fixed.
+    console.warn(
+      `[authors.ts] Author "${authorRef.id}" not found in src/content/authors/. ` +
+      `Falling back to default author "${siteConfig.seo.defaultAuthorSlug}". ` +
+      `Create src/content/authors/${authorRef.id}/ to fix this, or correct the slug in frontmatter.`
+    );
   }
 
   // Fall back to the site-wide default author
@@ -86,6 +99,11 @@ export async function resolveAuthor(
  * Returns an array always containing at least one author (the primary, which
  * falls back to defaultAuthorSlug if not set). Co-authors are appended in the
  * order they are listed in frontmatter.
+ *
+ * Guarantees:
+ * - No duplicate authors — if the same slug appears as both primary and
+ *   co-author (or twice in coAuthors), the duplicate is dropped.
+ * - Missing co-author slugs emit a warning and are skipped, not silently dropped.
  */
 export async function resolveAuthors(
   authorRef?: { collection: string; id: string } | undefined,
@@ -97,11 +115,34 @@ export async function resolveAuthors(
     return [primary];
   }
 
-  // Resolve all co-authors in parallel — skip any with missing files (defensive)
-  const coAuthors = await Promise.all(
-    coAuthorRefs.map((ref) => getEntry('authors', ref.id))
+  // Resolve all co-authors in parallel
+  const resolved = await Promise.all(
+    coAuthorRefs.map((ref) => getEntry('authors', ref.id).then((entry: AuthorEntry | undefined) => ({ ref, entry })))
   );
-  const validCoAuthors = coAuthors.filter((a): a is AuthorEntry => a !== undefined);
+
+  const validCoAuthors: AuthorEntry[] = [];
+  for (const { ref, entry } of resolved) {
+    if (!entry) {
+      // Warn loudly — a missing co-author is a content error, not a silent no-op
+      console.warn(
+        `[authors.ts] Co-author "${ref.id}" not found in src/content/authors/. ` +
+        `This credit will be omitted. Create src/content/authors/${ref.id}/ or correct the slug in frontmatter.`
+      );
+      continue;
+    }
+    // Deduplicate — skip if this slug is already in the result set
+    const alreadyIncluded =
+      entry.id === primary.id ||
+      validCoAuthors.some((a) => a.id === entry.id);
+    if (alreadyIncluded) {
+      console.warn(
+        `[authors.ts] Duplicate author "${entry.id}" in coAuthors — ` +
+        `this slug already appears as primary or earlier co-author and will be skipped.`
+      );
+      continue;
+    }
+    validCoAuthors.push(entry);
+  }
 
   return [primary, ...validCoAuthors];
 }

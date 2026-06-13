@@ -27,7 +27,8 @@
     
     "preinstall": "npx only-allow pnpm",
     "nuke": "./scripts/nuke.sh",
-    "reinstall": "./scripts/nuke.sh && pnpm install"
+    "reinstall": "./scripts/nuke.sh && pnpm install",
+    "validate:authors": "node scripts/validate-authors.js"
   },
   "devDependencies": {
     "typescript": "catalog:",

@@ -98,7 +98,8 @@ export const siteConfig: SiteConfig<ToolCategory> = {
     language: "en",
     defaultKeywords: ["tools", "free tools", "PLACEHOLDER_NICHE"],
 
-    defaultAuthorSlug: "PLACEHOLDER_AUTHOR_SLUG", // Must match src/content/authors/<slug>.md
+    // defaultAuthorSlug: "PLACEHOLDER_AUTHOR_SLUG", // Must match src/content/authors/<slug>.md
+    defaultAuthorSlug: "example-author", 
     twitterHandle: "@PLACEHOLDER_TWITTER",
 
     softwareApplication: {

@@ -29,29 +29,49 @@ const { authors, showAvatar = false, linkToProfile = true } = Astro.props;
 // against an empty array to avoid rendering a broken byline
 if (authors.length === 0) return;
 
-
+const lastIndex = authors.length - 1;
 ---
 
-<span class="inline-flex items-center gap-3 flex-wrap">
-  {authors.map((author) => {
+<span class="inline-flex items-center gap-1 flex-wrap">
+  {authors.map((author, index) => {
     const profileUrl = getAuthorUrl(author.id);
+    // Separator logic:
+    //   - Only the first author shows the avatar (if enabled)
+    //   - Between authors: ", " except before the last which gets " & "
+    //   - Single author: no separator at all
+    const separator =
+      index === 0
+        ? null                                          // first — no leading separator
+        : index === lastIndex && lastIndex === 1
+          ? '\u00a0&\u00a0'                            // exactly 2 authors → " & "
+          : index === lastIndex
+            ? ',\u00a0&\u00a0'                         // 3+ authors, last → ", & "
+            : ',\u00a0';                               // middle → ", "
     return (
-      <span class="inline-flex items-center gap-1.5">
-        {showAvatar && (
-          <AuthorAvatar author={author} size="sm" />
+      <>
+        {separator && (
+          <span class="text-muted-foreground select-none" aria-hidden="true">{separator}</span>
         )}
-        {linkToProfile ? (
-          <a
-            href={profileUrl}
-            class="font-medium text-foreground hover:text-primary transition-colors"
-            rel="author"
-          >
-            {author.data.name}
-          </a>
-        ) : (
-          <span class="font-medium text-foreground">{author.data.name}</span>
-        )}
-      </span>
+        <span class="inline-flex items-center gap-1.5">
+          
+          {/* Avatar: only shown next to the first author to keep the byline compact.
+               To show an avatar next to every author instead, remove the `index === 0 &&` condition. */}
+          {index === 0 && showAvatar && (
+            <AuthorAvatar author={author} size="sm" />
+          )}
+          {linkToProfile ? (
+            <a
+              href={profileUrl}
+              class="font-medium text-foreground hover:text-primary transition-colors"
+              rel="author"
+            >
+              {author.data.name}
+            </a>
+          ) : (
+            <span class="font-medium text-foreground">{author.data.name}</span>
+          )}
+        </span>
+      </>
     );
   })}
 </span>

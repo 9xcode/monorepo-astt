@@ -4,7 +4,6 @@ description: "Exploring how Artificial Intelligence is revolutionizing the way w
 publishedAt: 2024-03-15
 category: "News"
 tags: ["productivity"]
-author: demo
 featured: false
 
 ---

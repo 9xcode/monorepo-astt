@@ -8,13 +8,13 @@ tags: ["utility", "text"]
 icon: "Wrench"
 publishedAt: "2026-02-08T08:00:00"
 updatedAt: 2026-02-15T14:24:33
-author: example-author
-coAuthors: ["example-author-2", "example-author-3"]
+# author: example-author
+# coAuthors: ["example-author-2", "example-author-3"]
 # widgetSlug: "example-tool-widget"
 canonical: "/tools/example-tool"
 toc: true
 hasMath: true
-isDraft: true
+isDraft: false
 fullWidth: true
 featured: true
 order: 99
