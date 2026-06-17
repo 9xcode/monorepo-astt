@@ -13,5 +13,10 @@
     "hash": "4d576cc9c40d0feb51e615f956a7ac4c",
     "version": "v1.0.0",
     "locale": null
+  },
+  "tools/example-tool": {
+    "hash": "466b5c76989e959adcd538aafc08d93c",
+    "version": "v1.0.0",
+    "locale": null
   }
 }
