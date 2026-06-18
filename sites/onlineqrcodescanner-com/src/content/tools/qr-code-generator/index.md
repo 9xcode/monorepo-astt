@@ -1,7 +1,7 @@
 ---
 title: "QR Code Generator"
 seoTitle: "Free QR Code Generator Online | URL, Wi-Fi, vCard, SMS, Email & More"
-description: "Generate QR codes for URLs, Wi-Fi, vCard contacts, SMS, email, WhatsApp, phone, plain text, and Bitcoin. 100% Free, no signup. Your data never leaves your device."
+description: "Generate QR codes for URLs, Wi-Fi, vCard contacts, SMS, email, WhatsApp, phone, plain text, Bitcoin and More. 100% Free, Your data never leaves your device."
 shortDescription: "Create QR codes for URLs, Wi-Fi, contacts, messages, and more"
 category: "QR Generator"
 tags: ["qr-generator", "generator", "url-qr", "wifi-qr", "vcard-qr", "email-qr", "sms-qr", "bitcoin-qr", "whatsapp-qr", "phone-qr", "text-qr"]
@@ -14,17 +14,17 @@ order: 2
 
 A QR code generator is a tool that takes whatever data you give it and encodes it into a scannable image. The image itself is nothing exotic. It is a grid of black and white squares with a specific pattern the camera can read. What matters is the data inside.
 
-This tool covers nine types:
+This tool covers many types of QR codes formats:
 
-- **URL**: any website link
+- **URL**: any website link, social media links, domain links, product links, event links, etc.
 - **Plain text**: a message, coupon code, anything you want typed into someone's phone
-- **E-mail**: a `mailto:` link that pre-fills recipient, subject, and body
+- **E-mail**: a `mailto:` link that pre-fills recipient, subject, and body for any email service like gmail, outlook, yahoo, protonmail or your own hosted email.
 - **Phone**: a `tel:` link that opens the dialer with a number ready to call
-- **SMS**: a pre-written text message ready to send
-- **WhatsApp**: a `wa.me` link that opens a WhatsApp chat
-- **vCard**: a full contact entry that saves directly to the phone's contacts
-- **Wi-Fi**: network credentials that let someone join without typing a password
-- **Bitcoin**: a BIP-21 payment request with address, optional amount, and label
+- **SMS**: a pre-written text message ready to send, also work with google RCS message.
+- **WhatsApp**: a `wa.me` link that opens a WhatsApp chat along with pre-written message.
+- **vCard**: a full contact entry that saves directly to the phone's contacts.
+- **Wi-Fi**: network credentials that let someone join without typing a password.
+- **Bitcoin**: a BIP-21 payment request with address, optional amount, and label.
 
 All processing runs in your browser. Nothing you enter is sent to a server, stored, or logged anywhere.
 
@@ -38,7 +38,7 @@ All processing runs in your browser. Nothing you enter is sent to a server, stor
 
 That is the whole workflow. Under a minute from start to download.
 
-## The nine QR code types, explained
+## QR code types explained
 
 ### URL QR codes
 

@@ -1,11 +1,6 @@
 User-agent: *
 Allow: /
 
-# ── Block SEO audit & competitor intelligence bots ──────────────────────────
-# These services scrape keyword data and backlink profiles that competitors
-# can use to replicate your strategy. Blocking them via robots.txt cuts off
-# the free tier data they collect. Note: disallow only affects compliant bots.
-
 # Ahrefs
 User-agent: AhrefsBot
 Disallow: /
@@ -58,9 +53,6 @@ Disallow: /
 User-agent: Applebot-Extended
 Disallow: /
 
-# ── Explicitly allow AI crawlers ─────────────────────────────────────────────
-# Allow AI indexing for GEO (Generative Engine Optimization) citations.
-# Some CDN / WAF configs block unknown bots — listing them here ensures allow.
 
 User-agent: GPTBot
 Allow: /
@@ -86,5 +78,5 @@ Allow: /
 User-agent: FacebookBot
 Allow: /
 
-# ── Sitemap ───────────────────────────────────────────────────────────────────
+# ── Sitemap 
 Sitemap: https://onlineqrcodescanner.com/sitemap-index.xml

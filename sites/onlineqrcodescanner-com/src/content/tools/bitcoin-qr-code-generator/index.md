@@ -1,8 +1,8 @@
 ---
 title: "Bitcoin QR Code Generator"
-seoTitle: "Free Bitcoin QR Code Generator Online | BIP-21 Payment QR Codes"
-description: "Generate a Bitcoin payment QR code from any wallet address instantly. Set an optional BTC amount and label. BIP-21 compatible, private, and 100% browser-based."
-shortDescription: "Create a Bitcoin payment request QR code in BIP-21 format"
+seoTitle: "Free Bitcoin QR Code Generator Online | BTC QRCode Generator"
+description: "Generate a Bitcoin payment QR code from any wallet address instantly. Set an optional BTC amount and label. BIP-21 compatible, private, and 100% free."
+shortDescription: "Create a Bitcoin wallet payment request QR code"
 category: "QR Generator"
 tags: ["qr-generator", "generator", "utility"]
 icon: "Bitcoin"
@@ -32,7 +32,6 @@ This is why Bitcoin QR codes (also called BTC QR codes) show up in so many diffe
 - Optional label field so the sender sees context inside their wallet
 - Fully client-side processing, your wallet address and payment details never touch our servers
 - Export as PNG, WEBP, or scalable SVG
-- No account, no signup, no tracking
 
 ## Where People Actually Use Bitcoin QR Codes
 

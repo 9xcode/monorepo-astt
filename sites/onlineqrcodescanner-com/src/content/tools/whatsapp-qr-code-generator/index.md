@@ -1,6 +1,6 @@
 ---
 title: "WhatsApp QR Code Generator"
-seoTitle: "Free WhatsApp QR Code Generator | Create WhatsApp Chat Link QR Codes"
+seoTitle: "Free WhatsApp QR Code Generator Online | Create WhatsApp Chat Link QR Codes"
 description: "Generate a QR code that opens a WhatsApp chat with your number and an optional pre-filled message. Free, browser-based, works with personal and Business accounts."
 shortDescription: "Create a QR code that opens a WhatsApp chat with a pre-filled message"
 category: "QR Generator"

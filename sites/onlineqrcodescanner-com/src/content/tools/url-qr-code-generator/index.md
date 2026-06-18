@@ -1,8 +1,8 @@
 ---
 title: "URL QR Code Generator"
-seoTitle: "Free URL QR Code Generator | Turn Any Link Into a QR Code Online"
-description: "Convert any website URL into a scannable QR code instantly. Customize size, colors, and format. Free, browser-based, no signup required."
-shortDescription: "Turn any URL or website link into a downloadable QR code"
+seoTitle: "Free URL QR Code Generator | Turn Any Link Into QR Code Online"
+description: "Convert any website URL, social media and any link into a scannable QR code instantly. Customize size, colors, and format, 100% free, no signup required."
+shortDescription: "Convert any URL or website link into a downloadable QR code"
 category: "QR Generator"
 tags: ["qr-generator", "url-qr", "generator"]
 icon: "Link"
@@ -10,7 +10,7 @@ icon: "Link"
 
 ## What is a URL QR Code?
 
-A URL QR code encodes a website link so anyone who scans it goes straight to that page in their browser. No typing, no searching, no copying a long address from a poster into a phone. Point the camera, scan, done.
+A URL QR code encodes a website link so anyone who scans it goes straight to that page in their browser. No typing, no searching, no copying a long address from a poster into a phone. Point the camera and scan it.
 
 The format the tool encodes is simple: whatever URL you paste gets written into the QR pattern. When a phone reads it, it sees the `https://` prefix and opens the link in the default browser. There is nothing proprietary about this. Any QR scanner, any phone camera, any country.
 

@@ -115,7 +115,7 @@ tags: ["tag-1", "tag-2"]
 ---
 
 ## What is a [Tool Concept]?
-[Direct Answer]: A [Tool Concept] is a [clear, factual definition in 30-80 words].
+A [Tool Concept] is a [clear, factual definition in 30-80 words].
 [Add 1-2 additional context paragraphs conceptually.]
 
 ## How to Use This Tool

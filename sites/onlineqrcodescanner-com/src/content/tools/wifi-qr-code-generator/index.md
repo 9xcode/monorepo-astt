@@ -1,6 +1,6 @@
 ---
 title: "Wi-Fi QR Code Generator"
-seoTitle: "Free Wi-Fi QR Code Generator | Share Network Password by QR Scan"
+seoTitle: "Free Wi-Fi QR Code Generator Online | Create Wifi QR Code"
 description: "Create a Wi-Fi QR code so guests can join your network by scanning, no password typing needed. Supports WPA/WPA2, WEP, open networks, and hidden SSIDs."
 shortDescription: "Let guests connect to your Wi-Fi by scanning a QR code"
 category: "QR Generator"
@@ -11,8 +11,6 @@ icon: "Wifi"
 ## What is a Wi-Fi QR code?
 
 A Wi-Fi QR code stores your network name (SSID), password, and security type in a standard format. When someone scans it with a smartphone, the phone reads those credentials and prompts them to join the network. They tap Connect, and they are on.
-
-No typing. No reading out a password letter by letter. No one squinting at a router sticker.
 
 The encoded format looks like this: `WIFI:T:WPA;S:YourNetwork;P:YourPassword;H:false;;`. That string is what gets packed into the QR pattern. The phone's camera app decodes it and handles the rest. It is a format that iOS and Android both understand natively, no third-party app required.
 

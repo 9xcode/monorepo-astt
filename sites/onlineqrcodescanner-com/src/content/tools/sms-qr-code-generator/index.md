@@ -1,7 +1,7 @@
 ---
 title: "SMS QR Code Generator"
 seoTitle: "Free SMS QR Code Generator | Create Text Message QR Codes Online"
-description: "Generate a QR code that opens a pre-filled SMS text message when scanned. Set the recipient number and optional message body. Free, browser-based, private."
+description: "Generate a QR code that opens a pre-filled SMS text message when scanned. Set the recipient number and optional message body"
 shortDescription: "Create a QR code that opens a pre-filled SMS text message"
 category: "QR Generator"
 tags: ["qr-generator", "generator", "utility"]
@@ -29,7 +29,7 @@ The pre-filled body is optional. You can encode just a number with no message, w
 - Works with the default Messages app on any phone, no third-party app required
 - Fully browser-based, your phone number and message text never leave your device
 - Export as PNG, WEBP, or scalable SVG
-- No account, no signup
+- No account, no signup and completely free
 
 ## When an SMS QR Code Is the Right Choice
 

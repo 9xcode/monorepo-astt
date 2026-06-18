@@ -1,7 +1,7 @@
 ---
 title: "Email QR Code Generator"
-seoTitle: "Free Email QR Code Generator | Create Mailto QR Codes Online"
-description: "Generate a QR code that opens a pre-filled email compose window when scanned. Set the recipient, subject, and body. Browser-based, private, no signup."
+seoTitle: "Free Email QR Code Generator Online | Create QR Code for gmail, outlook, protonmail"
+description: "Generate a QR code that opens a pre-filled email compose window when scanned. Set the recipient, subject, and body. You can create QR for mailto, gmail, outlook."
 shortDescription: "Create a QR code that opens a pre-addressed email draft"
 category: "QR Generator"
 tags: ["qr-generator", "generator", "utility"]
@@ -32,7 +32,7 @@ One thing worth understanding before you use it: the QR code does not send any e
 - Works with Gmail, Outlook, Apple Mail, Thunderbird, and any app registered as the device's default email handler
 - Fully browser-based, your email address and message content are never sent to a server
 - Export as PNG, WEBP, or scalable SVG
-- No account required
+- Free and No signup required
 
 
 ## Where Email QR Codes Actually Work Well

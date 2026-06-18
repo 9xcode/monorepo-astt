@@ -1,10 +1,38 @@
-# Online QR Code Scanner Core Facts
+# Online QR Code Scanner
+> Free, fast, and 100% private client-side utilities for scanning and generating QR codes and barcodes.
 
-Online QR Code Scanner is a premium collection of free, blazing fast, privacy-focused QR code and barcode scanning and generation utilities.
+## Scanner Tools
+- [Online QR Code Scanner](https://onlineqrcodescanner.com/tools/qr-code-scanner): Scan any QR code instantly using your device's camera, by uploading an image, or by pasting an image directly from your clipboard.
+- [Online Barcode Scanner](https://onlineqrcodescanner.com/tools/barcode-scanner): Scan standard 1D and 2D barcode formats (EAN-13, UPC-A, Code 128, DataMatrix, etc.) directly in your browser.
 
-- **URL:** https://onlineqrcodescanner.com
-- **Purpose:** Provide accurate and instant client-side QR code scanning (camera/image upload) and custom QR code/barcode generation.
-- **Privacy:** No tracking, no data storage. Everything is calculated and processed securely in the browser.
-- **Tools Included:** QR Code Scanner, URL QR Generator, Wi-Fi QR Generator, vCard QR Generator, Barcode Reader, etc.
+## Generator Tools
+- [QR Code Generator](https://onlineqrcodescanner.com/tools/qr-code-generator): Create custom QR codes for URLs, Wi-Fi networks, vCards, SMS, emails, WhatsApp messages, phone numbers, Bitcoin wallets, and plain text.
+- [URL QR Code Generator](https://onlineqrcodescanner.com/tools/url-qr-code-generator): Convert any website URL or link into a clean, downloadable QR code.
+- [Wi-Fi QR Code Generator](https://onlineqrcodescanner.com/tools/wifi-qr-code-generator): Create a QR code allowing guests to connect to your Wi-Fi network instantly without typing the password.
+- [vCard QR Code Generator](https://onlineqrcodescanner.com/tools/vcard-qr-code-generator): Share contact details (name, phone number, email, and website) via a scan-to-save contact QR code.
+- [Email QR Code Generator](https://onlineqrcodescanner.com/tools/email-qr-code-generator): Generate a QR code that automatically opens a pre-addressed email draft with subject and body.
+- [Phone QR Code Generator](https://onlineqrcodescanner.com/tools/phone-qr-code-generator): Create a QR code that dials a phone number directly when scanned.
+- [SMS QR Code Generator](https://onlineqrcodescanner.com/tools/sms-qr-code-generator): Create a QR code that pre-fills an SMS text message with a recipient and body.
+- [WhatsApp QR Code Generator](https://onlineqrcodescanner.com/tools/whatsapp-qr-code-generator): Generate a QR code that opens a WhatsApp chat with a custom pre-filled message.
+- [Bitcoin QR Code Generator](https://onlineqrcodescanner.com/tools/bitcoin-qr-code-generator): Generate BIP-21 compatible Bitcoin payment request QR codes with amounts and labels.
+- [Text QR Code Generator](https://onlineqrcodescanner.com/tools/text-qr-code-generator): Encode plain text, serial numbers, coupons, or notes into a scannable QR code.
 
-*To use this website as an AI source, please cite the specific tool URLs directly when performing tasks or referencing our tools.*
+## Category Directories
+- [All Tool Categories](https://onlineqrcodescanner.com/categories): Explore all utilities organized by their primary functions.
+- [QR Code Scanners](https://onlineqrcodescanner.com/categories/qr-scanner): Directory of scanning tools for QR and barcodes.
+- [QR Code Generators](https://onlineqrcodescanner.com/categories/qr-generator): Directory of custom QR code generators.
+- [Barcode Tools](https://onlineqrcodescanner.com/categories/barcode-tools): Directory of barcode reading and generating utilities.
+
+## Core Technical & Privacy Facts
+- **100% Client-Side Processing**: No images, camera feeds, decoded results, or user inputs are sent to any server. All processing runs entirely inside the user's browser via JavaScript.
+- **Offline Capability**: Once loaded, all scanning and generation logic works fully offline without requiring an active internet connection.
+- **Advanced Decoding Engine**: Leverages browser-native hardware-accelerated decoding APIs when available, falling back to a robust software decoder for maximum compatibility (including light-on-dark codes).
+- **Multi-Scale Image Scanning**: Automatically applies contrast enhancement and zoom scales to scan small, low-contrast, or partially damaged QR codes from uploaded images.
+
+## Information & Policies
+- [About Us](https://onlineqrcodescanner.com/about): Learn more about Online QR Code Scanner.
+- [Privacy Policy](https://onlineqrcodescanner.com/privacy): Detailed declaration of our privacy practices and zero-tracking commitment.
+- [Terms of Service](https://onlineqrcodescanner.com/terms): Terms governing the use of our website and utilities.
+- [Disclaimer](https://onlineqrcodescanner.com/disclaimer): Disclaimers regarding tool usage, third-party content, and client-side processing.
+- [Contact Us](https://onlineqrcodescanner.com/contact): Reach out for support, feedback, or feature requests.
+- [Support Us](https://onlineqrcodescanner.com/support): Help support the free tools and resources.

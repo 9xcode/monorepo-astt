@@ -1,24 +1,22 @@
 ---
 title: "Online QR Code Scanner"
 seoTitle: "Free Online QR Code Scanner | Scan QR Codes from Camera or Image"
-description: "Scan any QR code instantly from your webcam or by uploading an image. Reads URLs, Wi-Fi, contacts, payments, social media, and more. 100% private, no app needed."
-shortDescription: "Scan any QR code from your camera or image upload"
+description: "Scan any QR code instantly from your webcam, by pasting or by uploading an image. Reads URLs, Wi-Fi, contacts, payments, social media, and more. 100% private, no app needed."
+shortDescription: "Scan any QR code from your camera, pasting or by uploading an image"
 category: "QR Scanner"
-tags: ["qr-scanner", "scanner", "reader", "qr-code-reader", "scan-qr-code"]
+tags: ["qr-scanner", "scanner", "reader"]
 icon: "Camera"
 featured: true
 order: 1
 ---
 
-## What does this QR code scanner do?
-
-It reads QR codes. You point your camera at one, or upload a photo, and the tool tells you what is inside.
+The Online QR Code Scanner can reads any QR codes. You point your camera at one, upload a photo or paste from clipboard, and the tool tells you what is inside.
 
 That sounds simple because it is. The complexity is in what happens after. Most QR scanners give you a raw string and leave you to figure out what it means. This one identifies the type of content, parses the relevant fields, and shows them in a readable format. If it is a Wi-Fi code, you see the network name, password, and security type. If it is a contact, you see the name, phone, email, and organization, with a button to save the .vcf file directly. If it is a URL, you get a direct link to open it.
 
-You also get access to the raw decoded string at any time, so if you want to see the original data before it was parsed, one click shows it.
+You also get access to the raw decoded string at any time, so if you want to see the original data before it was parsed, you just have to clik on "raw data" section and it will shows it.
 
-Everything runs in your browser. No image is uploaded. No camera feed is recorded. No decoded result is transmitted anywhere.
+Everything runs in your browser. No image is uploaded. No camera feed is recorded. No decoded result is transmitted anywhere and its all completely 100% free.
 
 ## How to scan a QR code
 
@@ -34,7 +32,7 @@ Click "Upload Image" and select a file from your device, or drag and drop the im
 
 If your image is high resolution or the QR code takes up a small portion of the frame, the multi-scale processing handles it automatically. The tool tries the image at multiple zoom levels and applies contrast enhancement to pick up patterns that a simple decode would miss.
 
-### Pasting from clipboard
+### Pasting from clipboard (Clipboard QR Code Scanner)
 
 If you have a QR code image copied to your clipboard (from a screenshot or another app), paste it directly into the page with Ctrl+V or Cmd+V. The tool processes whatever image is in the clipboard without needing you to save the file first.
 
@@ -96,13 +94,13 @@ For plain text QR codes, there is no formatted view because plain text is alread
 
 ## Privacy: what happens to your camera and images
 
-Nothing is stored. Nothing is transmitted.
-
 When you scan with the camera, the video feed is processed frame by frame in your browser using a canvas element. The frames are never saved, sent to a server, or stored in memory beyond the current frame. When a code is found, the camera stops and the stream is released. Your browser then shows the permission indicator as inactive.
 
 When you upload an image, the file is processed entirely inside your browser. No network request is made. The image never leaves your device.
 
 The decoded result text is held in browser memory for the duration of your session and cleared when you scan again or close the tab. It is not logged, not sent anywhere, and not retained.
+
+This is also one of the reason that our qr code scanner tool is fastest and secure qr scanner on the internet.
 
 ## When the scanner might not work
 
