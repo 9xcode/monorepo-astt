@@ -45,9 +45,10 @@ on:
       # Trigger when Turborepo pipeline config changes
       - 'turbo.json'
 
-  # Allow manual deployment from the GitHub Actions UI.
-  # Useful for re-deploying after an env var change in Cloudflare, or after
-  # a Cloudflare Pages outage, without touching code.
+  # Allow manual deployment from the GitHub Actions UI — no commit needed.
+  # To trigger: GitHub → Actions tab → "Deploy — onlineqrcodescanner.com"
+  #              → Run workflow → select branch → Run workflow
+  # Useful for re-deploying after a Cloudflare env var change or Pages outage.
   workflow_dispatch:
 
 # Cancel any in-progress deploy for the same branch when a newer push arrives.
@@ -90,6 +91,12 @@ jobs:
         run: pnpm turbo build --filter=@mtools/onlineqrcodescanner-com
         env:
           PUBLIC_WEB3FORMS_ACCESS_KEY: ${{ secrets.PUBLIC_WEB3FORMS_ACCESS_KEY }}
+
+      - name: Install Wrangler globally
+        # wrangler-action@v3 auto-installs wrangler via `pnpm add` which fails
+        # in a pnpm workspace root (needs -w flag, which the action doesn't pass).
+        # Pre-installing globally via npm makes wrangler-action skip its own install.
+        run: npm install -g wrangler
 
       - name: Deploy to Cloudflare Pages
         # cloudflare/wrangler-action is the current official action.
