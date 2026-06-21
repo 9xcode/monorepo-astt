@@ -16,6 +16,7 @@
  */
 // replaced `import { siteConfig } from '../../../config'` 
 import { siteConfig } from 'virtual:site-config';
+import { coreConfig } from '../config/defaults.ts';
 import { categoryToSlug } from '../utils/slug';
 import JsonLd from './JsonLd.astro';
 import {
@@ -78,7 +79,7 @@ const toolSchema = buildWebApplicationSchema({
 	operatingSystem: siteConfig.seo.softwareApplication.operatingSystem,
 	browserRequirements: siteConfig.seo.softwareApplication.browserRequirements,
 	isAccessibleForFree: siteConfig.seo.softwareApplication.isAccessibleForFree,
-	softwareVersion: siteConfig.version || "1.0.0",
+	softwareVersion: coreConfig.version,
 	creator: {
 		name: siteConfig.companyName,
 		url: siteConfig.url,

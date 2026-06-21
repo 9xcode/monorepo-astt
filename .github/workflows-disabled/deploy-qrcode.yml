@@ -1,0 +1,107 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Deploy — onlineqrcodescanner.com → Cloudflare Pages
+#
+# STATUS: DISABLED
+# This file lives in .github/workflows-disabled/ intentionally.
+# GitHub Actions only reads .github/workflows/ — this file does nothing here.
+#
+# TO ACTIVATE:
+#   mv .github/workflows-disabled/deploy-qrcode.yml .github/workflows/deploy-qrcode.yml
+#   git add .github/workflows/deploy-qrcode.yml
+#   git commit -m "ci: activate qrcode deploy workflow"
+#
+# PREREQUISITES — add these secrets to your GitHub repo
+# (Settings → Secrets and variables → Actions → New repository secret):
+#
+#   CLOUDFLARE_API_TOKEN      — Create at dash.cloudflare.com → My Profile →
+#                               API Tokens → use "Edit Cloudflare Pages" template
+#   CLOUDFLARE_ACCOUNT_ID     — Found in the right sidebar of your Cloudflare dashboard
+#   PUBLIC_WEB3FORMS_ACCESS_KEY — Your Web3Forms key
+#
+# RELATIONSHIP TO ci.yml:
+#   This file handles deployment only. The shared ci.yml handles quality gates
+#   (lint, type-check, build check) for the whole monorepo. Both files can be
+#   active at the same time — they serve different purposes.
+#
+# PATHS FILTER:
+#   This workflow only runs when files in the QR site or its dependencies
+#   change. Unrelated changes (e.g. to finance-tools) skip this entirely.
+# ─────────────────────────────────────────────────────────────────────────────
+
+name: Deploy — onlineqrcodescanner.com
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      # Trigger when the QR site itself changes
+      - 'sites/onlineqrcodescanner-com/**'
+      # Trigger when the shared core package changes (QR site depends on it)
+      - 'core/**'
+      # Trigger when workspace dependency versions change
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      # Trigger when Turborepo pipeline config changes
+      - 'turbo.json'
+
+  # Allow manual deployment from the GitHub Actions UI.
+  # Useful for re-deploying after an env var change in Cloudflare, or after
+  # a Cloudflare Pages outage, without touching code.
+  workflow_dispatch:
+
+# Cancel any in-progress deploy for the same branch when a newer push arrives.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Build & Deploy to Cloudflare Pages
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      deployments: write  # Required by cloudflare/wrangler-action to create deployment records
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          # Must match packageManager in root package.json exactly
+          version: "10.33.2"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          # Must match engines.node in root package.json (>=22)
+          node-version: "22"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        # Run from workspace root — pnpm workspaces require this.
+        # --frozen-lockfile ensures pnpm-lock.yaml is always in sync.
+        run: pnpm install --frozen-lockfile
+
+      - name: Build QR site
+        # pnpm turbo build --filter runs from workspace root automatically.
+        # Turborepo resolves the @mtools/core dependency graph and builds it
+        # first if needed.
+        run: pnpm turbo build --filter=@mtools/onlineqrcodescanner-com
+        env:
+          PUBLIC_WEB3FORMS_ACCESS_KEY: ${{ secrets.PUBLIC_WEB3FORMS_ACCESS_KEY }}
+
+      - name: Deploy to Cloudflare Pages
+        # cloudflare/wrangler-action is the current official action.
+        # (cloudflare/pages-action@v1 was deprecated.)
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # The 'command' field runs a wrangler CLI command directly.
+          # 'pages deploy' uploads the dist folder to your Pages project.
+          command: pages deploy sites/onlineqrcodescanner-com/dist --project-name=onlineqrcodescanner-com --commit-dirty=true
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}

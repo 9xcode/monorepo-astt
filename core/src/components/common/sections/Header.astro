@@ -16,12 +16,12 @@ import { ChevronDown } from "@lucide/svelte";
 		<div class="flex h-14 items-center justify-between gap-2 sm:gap-4">
 			
 			{/* Left Side: Logo & Desktop Nav */}
-			<div class="flex items-center gap-3 sm:gap-6 md:gap-8 flex-none">
-				<a href="/" class="group flex items-center space-x-2.5 outline-none">
+			<div class="flex items-center gap-3 sm:gap-6 md:gap-8 min-w-0 shrink">
+				<a href="/" class="group flex items-center space-x-2.5 outline-none min-w-0">
 					<div id="header-brand-logo" class="hidden sm:flex items-center justify-center transition-all duration-[800ms] ease-[cubic-bezier(0.34,1.25,0.64,1)] group-hover:rotate-180 group-hover:scale-110 group-hover:-translate-y-0.5 group-hover:duration-300 group-hover:ease-out">
 						<Logo class="size-6 text-foreground group-hover:text-primary transition-colors duration-300" />
 					</div>
-					<span class="font-bold text-lg tracking-tight inline-block text-foreground">
+					<span class="font-bold text-lg tracking-tight text-foreground truncate min-w-0 max-w-[140px] sm:max-w-none">
 						{siteConfig.brand.shortName}
 					</span>
 				</a>
@@ -60,7 +60,7 @@ import { ChevronDown } from "@lucide/svelte";
 			<div class="flex flex-1 items-center justify-end gap-2 sm:gap-4">
 				<div class="flex-1 flex justify-end max-w-[200px] sm:max-w-sm md:max-w-md w-full">
 				{siteConfig.features.search.enabled && (
-					<SearchTrigger triggerMode="input" class="flex h-9 w-full rounded-full bg-muted/30 hover:bg-muted/50 border border-transparent hover:border-border/40 transition-all duration-300" />
+					<SearchTrigger triggerMode="input" class="flex h-9 w-full rounded-full bg-muted/50 hover:bg-muted/70 border border-transparent hover:border-border/60 transition-all duration-300" />
 				)}
 			</div>
 

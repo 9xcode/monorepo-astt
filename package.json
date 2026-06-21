@@ -5,12 +5,15 @@
   "scripts": {
     "dev": "turbo dev",
     "dev:finance": "turbo dev --filter=@mtools/finance-tools",
+    "dev:qrcode": "turbo dev --filter=@mtools/onlineqrcodescanner-com",
 
     "build": "turbo build",
     "build:finance": "turbo build --filter=@mtools/finance-tools",
+    "build:qrcode": "turbo build --filter=@mtools/onlineqrcodescanner-com",
 
     "preview": "turbo preview",
     "preview:finance": "turbo preview --filter=@mtools/finance-tools",
+    "preview:qrcode": "turbo preview --filter=@mtools/onlineqrcodescanner-com",
 
     "check": "turbo check:astro check:svelte check:tsc",
     "check:core": "turbo check --filter=@mtools/core",
@@ -24,7 +27,8 @@
     
     "preinstall": "npx only-allow pnpm",
     "nuke": "./scripts/nuke.sh",
-    "reinstall": "./scripts/nuke.sh && pnpm install"
+    "reinstall": "./scripts/nuke.sh && pnpm install",
+    "validate:authors": "node scripts/validate-authors.js"
   },
   "devDependencies": {
     "typescript": "catalog:",

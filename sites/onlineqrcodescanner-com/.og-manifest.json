@@ -1,0 +1,67 @@
+{
+  "tools/qr-code-scanner": {
+    "hash": "1c4b0270fbc03c815321b07866425af3",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "blog/how-to-scan-qr-codes-safely": {
+    "hash": "dbc1961cc82f66c1a832d200047b41fb",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/qr-code-generator": {
+    "hash": "df4dc71e1cf7f778563b7422083b5ccc",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/bitcoin-qr-code-generator": {
+    "hash": "3804215f9dbf6b78533bad65fc8ec3a3",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/email-qr-code-generator": {
+    "hash": "c147184c9f192e0e67a5c184d1df820e",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/phone-qr-code-generator": {
+    "hash": "ed725076f4711d3cf0dd330d1fde7e57",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/sms-qr-code-generator": {
+    "hash": "33a50f4aab9d9b8941794f11c88c7edd",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/text-qr-code-generator": {
+    "hash": "153dbcaccaa30d8818bab71353df299b",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/url-qr-code-generator": {
+    "hash": "6f8ff2f65c599ca50002ad7758231d21",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/vcard-qr-code-generator": {
+    "hash": "0d395ab0f86eda0ac6dc4dfaf7e150b7",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/whatsapp-qr-code-generator": {
+    "hash": "155d90fb5ea286019012754000c97a3f",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/wifi-qr-code-generator": {
+    "hash": "a5a138c39c1a1f6fde075c0789e2c4ae",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/barcode-scanner": {
+    "hash": "eb63439f051e764efb34071201de2231",
+    "version": "v1.0.0",
+    "locale": null
+  }
+}

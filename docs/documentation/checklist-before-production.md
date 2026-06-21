@@ -4,8 +4,6 @@
 
 - Current `/public/images/og-image.png` is a generated placeholder, Replace with a properly designed branded OG image (1200×630px)
 
-- also add screenshot for screenshot related schema and chanage url
-
 - update ad code, search console code, indexnow api key, etc.
 
 - CI-Workflow: When hosting is decided, move `.github/workflows-disabled/ci.yml` to `.github/workflows/ci.yml` and uncomment the appropriate provider block.

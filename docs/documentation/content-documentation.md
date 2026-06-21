@@ -79,10 +79,7 @@ Our codebase utilizes multiple background Markdown parsers during the build phas
   - Separator logic supports colons (`:`) or hyphens (`-`).
   - (e.g. `1. **Input**: Type your text here.`)
 
-### 3.4. The Direct Answer Parser
-- When attempting to win AI summaries (Perplexity, Google Snippets), use the `[Direct Answer]:` prefix directly before your paragraph. It functions as a powerful manual hook signaling "Bottom Line Up Front" logic.
-
-### 3.5. KaTeX Mathematical Formulas
+### 3.4. KaTeX Mathematical Formulas
 If `hasMath: true` is active in the tools or blog frontmatter:
 - **Use Double Dollars (`$$`)**: Mathematical formulas should reside inside double dollars `$$F = ma$$`.
 - **Single Dollar Disabled**: We intentionally configured `singleDollarText: false` across the Astro build so writing values like `$200 per week` does not break the renderer.
@@ -118,7 +115,7 @@ tags: ["tag-1", "tag-2"]
 ---
 
 ## What is a [Tool Concept]?
-[Direct Answer]: A [Tool Concept] is a [clear, factual definition in 30-80 words].
+A [Tool Concept] is a [clear, factual definition in 30-80 words].
 [Add 1-2 additional context paragraphs conceptually.]
 
 ## How to Use This Tool

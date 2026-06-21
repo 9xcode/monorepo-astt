@@ -6,8 +6,8 @@ category: "Guides"
 tags: ["beginners", "productivity"]
 publishedAt: "2026-05-13T12:00:00Z"
 updatedAt: "2026-05-14T10:00:00Z"
-author: "example-author"
-coAuthors: []
+author: "abhishek"
+coAuthors: ["john", "example-author"]
 # coverImage: "./cover.jpg"
 coverImage: "https://images.unsplash.com/photo-1498050108023-c5249f4df085"
 coverImageAlt: "A clean workspace with a laptop showing code"

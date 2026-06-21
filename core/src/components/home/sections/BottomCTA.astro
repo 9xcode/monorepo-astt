@@ -11,11 +11,13 @@ import { siteConfig } from 'virtual:site-config';
 
 const { getApp, featureRequest, supportUs } = siteConfig.content.components.bottomCta;
 const getAppEnabled = siteConfig.features.getApp?.enabled !== false;
-const showGetApp = siteConfig.features.homepage.bottomCta.showGetApp && getAppEnabled;
-const showFeatureRequest = siteConfig.features.homepage.bottomCta.showFeatureRequest;
-const showSupportCard = siteConfig.features.homepage.bottomCta.showSupportCard;
+const bottomCtaEnabled = siteConfig.features.homepage.bottomCta.enabled !== false;
+const showGetApp = bottomCtaEnabled && siteConfig.features.homepage.bottomCta.showGetApp && getAppEnabled;
+const showFeatureRequest = bottomCtaEnabled && siteConfig.features.homepage.bottomCta.showFeatureRequest;
+const showSupportCard = bottomCtaEnabled && siteConfig.features.homepage.bottomCta.showSupportCard;
 ---
 
+{bottomCtaEnabled && (
 <section class="py-20 px-4 relative overflow-hidden bg-background cv-auto cv-intrinsic-h300">
     {/* Box Grid Background with Radial Fade */}
     <div class="absolute inset-0 -z-20 h-full w-full grid-bg grid-mask-bottom-cta opacity-50"></div>
@@ -94,5 +96,5 @@ const showSupportCard = siteConfig.features.homepage.bottomCta.showSupportCard;
         </div>
     </div>
 </section>
-
+)}
 

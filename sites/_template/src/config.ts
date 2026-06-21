@@ -24,6 +24,8 @@ import type {
   FeaturesConfig,
 } from '@mtools/core/config/types';
 
+import type { ToolCategory } from './content-enums.ts';
+
 export type {
   SiteConfig,
   SiteContent,
@@ -42,25 +44,18 @@ export type {
   FeaturesConfig,
 };
 
-export const siteConfig: SiteConfig = {
+export const siteConfig: SiteConfig<ToolCategory> = {
 
   // ─── Core Identity ──────────────────────────────────────────────────────
   name: "PLACEHOLDER_SITE_NAME",          // e.g. "PDF Tools"
   domain: "PLACEHOLDER_DOMAIN",           // e.g. "pdftools.app"
   url: "https://PLACEHOLDER_DOMAIN",      // e.g. "https://pdftools.app"
-  version: "1.0.0",
   localStoragePrefix: "PLACEHOLDER_PREFIX_", // e.g. "pdf_" — keep short, must be unique per site
 
   // ─── Brand & Voice ─────────────────────────────────────────────────────
   brand: {
     shortName: "PLACEHOLDER_SITE_NAME",
     tagline: "PLACEHOLDER_TAGLINE",       // e.g. "The fastest PDF tools on the web."
-  },
-
-  // ─── Localization ───────────────────────────────────────────────────────
-  localization: {
-    currencySymbol: "$",
-    currencyCode: "USD",
   },
 
   // ─── Legal ──────────────────────────────────────────────────────────────────
@@ -85,6 +80,12 @@ export const siteConfig: SiteConfig = {
     location: "PLACEHOLDER_LOCATION",
   },
 
+  // ─── Localization ───────────────────────────────────────────────────────
+  localization: {
+    currencySymbol: "$",
+    currencyCode: "USD",
+  },
+
   // ─── API Keys ───────────────────────────────────────────────────────────
   apiKeys: {
     web3Forms: import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY,
@@ -97,7 +98,8 @@ export const siteConfig: SiteConfig = {
     language: "en",
     defaultKeywords: ["tools", "free tools", "PLACEHOLDER_NICHE"],
 
-    defaultAuthorSlug: "PLACEHOLDER_AUTHOR_SLUG", // Must match src/content/authors/<slug>.md
+    // defaultAuthorSlug: "PLACEHOLDER_AUTHOR_SLUG", // Must match src/content/authors/<slug>.md
+    defaultAuthorSlug: "example-author", 
     twitterHandle: "@PLACEHOLDER_TWITTER",
 
     softwareApplication: {
@@ -117,6 +119,7 @@ export const siteConfig: SiteConfig = {
 
     titleSeparator: "-",
     titleDescriptors: {
+      "General":  "Free Online Tool",
       "_default": "Free Online Tool",
     },
   },
@@ -198,6 +201,7 @@ export const siteConfig: SiteConfig = {
         initialDisplayCount: 20,
       },
       bottomCta: {
+        enabled: true,
         showGetApp: true,
         showFeatureRequest: true,
         showSupportCard: true,
@@ -240,7 +244,6 @@ export const siteConfig: SiteConfig = {
       showSupport: false,
       showFeedback: true,
       showGetApp: false,
-      getAppHref: "/get-app",
     },
 
     ads: {
@@ -263,7 +266,7 @@ export const siteConfig: SiteConfig = {
     support: {
       url: "",        // Set to "/support" to enable; "" hides all support CTAs
       label: "Support Us",
-      label2: "Buy me a Coffie",
+      label2: "Buy me a Coffee",
     },
 
     blog: {
@@ -276,6 +279,7 @@ export const siteConfig: SiteConfig = {
     getApp: {
       // Set enabled: true and fill store URLs to activate the /get-app landing page
       enabled: false,
+      landingPageUrl: "/get-app",
       appStoreUrl: "",   // e.g. "https://apps.apple.com/app/id..."
       playStoreUrl: "",  // e.g. "https://play.google.com/store/apps/details?id=..."
     },

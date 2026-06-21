@@ -1,6 +1,7 @@
-import type { CoreConfig } from './core-config-types.ts';
+import type { CoreConfig } from './defaults.types.ts';
 
 export const coreConfig: CoreConfig = {
+  version: "1.0.1",
   support: {
     buyMeACoffee: {
       url: "https://buymeacoffee.com/yourusername",
