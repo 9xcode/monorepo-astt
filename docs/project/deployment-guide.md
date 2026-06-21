@@ -178,7 +178,9 @@ Your monorepo must be on GitHub (private or public — both work with Cloudflare
 
 ---
 
-### Step 3 — Create Cloudflare Pages Project
+### Step 3 — Create Cloudflare Pages Project (Method A — Connect to Git)
+
+> **This is Method A.** Cloudflare connects directly to GitHub and handles builds itself. If you prefer GitHub Actions to control the build (better for monorepos with multiple sites), skip to **Step 7** instead.
 
 1. Go to [dash.cloudflare.com](https://dash.cloudflare.com) → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**
 
@@ -293,16 +295,86 @@ In your Cloudflare dashboard for the domain:
 
 ---
 
-### Step 7 — Set Up Automatic Deployments via GitHub Actions (Optional but Recommended)
+### Step 7 — Automatic Deployments via GitHub Actions (Method B — Recommended for Monorepos)
 
-The Cloudflare Pages Git integration already auto-deploys on every push to `main`. However, using GitHub Actions gives you more control — path filters mean the deploy only runs when relevant files change, not on every single push.
+> **Two deployment methods exist.** Step 3 covered **Method A** (Cloudflare Connect to Git). This step covers **Method B** (GitHub Actions + Direct Upload). Pick one — do not run both at the same time or you will get duplicate deployments on every push.
 
-**Workflow files** (both live in `.github/workflows-disabled/` — move to `.github/workflows/` to activate):
+#### Which method should you use?
 
-- **`ci.yml`** — Shared quality gate. Runs on every push: install, lint, type-check, build affected packages. Applies to the whole monorepo.
-- **`deploy-qrcode.yml`** — QR site deploy only. Triggers only when QR site or core files change. Builds and pushes to Cloudflare Pages.
+| | Method A — Connect to Git | Method B — GitHub Actions |
+|---|---|---|
+| **How it works** | Cloudflare clones your repo and builds it | GitHub builds, then pushes the `dist/` to Cloudflare via API |
+| **Setup** | Simpler — just fill out a form | Requires API token + GitHub secrets |
+| **Path filters** | ❌ Deploys on every push to `main` regardless of what changed | ✅ Only deploys when QR site or its dependencies change |
+| **Build environment** | Cloudflare's runners (less control) | GitHub Actions runners (full control, Node 22 guaranteed) |
+| **Manual re-deploy** | Trigger from Cloudflare dashboard | Trigger from GitHub Actions UI — no commit needed |
+| **Best for** | Single-site repos | ✅ Monorepos with multiple sites |
 
-Both files are already written and ready. Here is what `deploy-qrcode.yml` does:
+**Recommendation: use Method B if you have multiple sites in the monorepo.** Path filters prevent the QR deploy from running when you push changes to an unrelated site. With Method A, every push to `main` triggers a full rebuild of the QR site even if you only edited a finance-tools file.
+
+---
+
+#### Method B — Setup
+
+**Part 1 — Create a Cloudflare Pages project (Direct Upload mode)**
+
+Do NOT use "Connect to Git" for this method. Instead:
+
+1. Go to [dash.cloudflare.com](https://dash.cloudflare.com) → **Workers & Pages** → **Create** → **Pages** tab → **Upload assets**
+2. Set **Project name** to `onlineqrcodescanner-com` (must match exactly — this is what the workflow references)
+3. Upload any placeholder `index.html` file (content does not matter — GitHub Actions will overwrite it on first deploy)
+4. Click **Deploy site**
+
+The project is now created in Direct Upload mode. Cloudflare will not touch your repo — all builds happen in GitHub Actions.
+
+> If you previously set up a project via "Connect to Git", go to that project → **Settings** → **Build & deployments** → **Disconnect Git** before proceeding. Or delete it and recreate via Upload assets above.
+
+---
+
+**Part 2 — Create a Cloudflare API Token**
+
+1. Go to [dash.cloudflare.com](https://dash.cloudflare.com) → Click your profile icon (top right) → **My Profile**
+2. Left sidebar → **API Tokens** → **Create Token**
+3. Click **Create Custom Token** (the "Edit Cloudflare Pages" template no longer exists in the UI)
+4. Set **Token name**: `github-pages-deploy` (or any name)
+5. Under **Permissions**, add:
+   - **Account** → **Cloudflare Pages** → **Edit**
+6. Under **Account Resources**: **Include** → **All accounts**
+7. Click **Continue to summary** → **Create Token**
+8. **Copy the token immediately** — it is only shown once
+
+---
+
+**Part 3 — Add GitHub Secrets**
+
+Go to your GitHub repo → **Settings** → **Secrets and variables** → **Actions** → **New repository secret**. Add all three:
+
+| Secret Name | Where to get it |
+|---|---|
+| `CLOUDFLARE_API_TOKEN` | The token you copied in Part 2 |
+| `CLOUDFLARE_ACCOUNT_ID` | dash.cloudflare.com → click any domain → right sidebar → "Account ID" (long hex string) |
+| `PUBLIC_WEB3FORMS_ACCESS_KEY` | Your Web3Forms key — copy from local `.env` file |
+
+---
+
+**Part 4 — Activate the workflows**
+
+Two workflow files live in `.github/workflows-disabled/` and need to be moved to `.github/workflows/`:
+
+- **`ci.yml`** — Monorepo-wide quality gate. Runs on every push to `main`: install, lint, type-check, build affected packages.
+- **`deploy-onlineqrcodescanner-com.yml`** — QR site deploy. Triggers only when relevant files change. Builds the site then pushes `dist/` to Cloudflare Pages via wrangler.
+
+```bash
+mv .github/workflows-disabled/ci.yml .github/workflows/ci.yml
+mv .github/workflows-disabled/deploy-onlineqrcodescanner-com.yml .github/workflows/deploy-onlineqrcodescanner-com.yml
+git add .github/workflows/
+git commit -m "ci: activate CI and qrcode deploy workflows"
+git push origin main
+```
+
+> **Important:** This commit only changes workflow files. The `deploy-onlineqrcodescanner-com.yml` paths filter does not include `.github/workflows/**`, so the deploy job will be **skipped** on this push. This is expected. Trigger it manually in Part 5 below.
+
+What `deploy-onlineqrcodescanner-com.yml` does (full workflow):
 
 ```yaml
 name: Deploy — onlineqrcodescanner.com
@@ -311,8 +383,8 @@ on:
   push:
     branches: [main]
     paths:
-      - 'sites/onlineqrcodescanner-com/**'
-      - 'core/**'
+      - 'sites/onlineqrcodescanner-com/**'  # QR site files
+      - 'core/**'                            # shared core package
       - 'pnpm-lock.yaml'
       - 'pnpm-workspace.yaml'
       - 'turbo.json'
@@ -329,8 +401,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - uses: pnpm/action-setup@v4
-        with:
-          version: "10.33.2"
+        # reads pnpm version from packageManager field in root package.json automatically
 
       - uses: actions/setup-node@v4
         with:
@@ -344,8 +415,13 @@ jobs:
         env:
           PUBLIC_WEB3FORMS_ACCESS_KEY: ${{ secrets.PUBLIC_WEB3FORMS_ACCESS_KEY }}
 
+      - name: Install Wrangler globally
+        # wrangler-action tries to install wrangler via `pnpm add` without -w,
+        # which pnpm blocks at workspace root. Pre-installing globally skips that.
+        run: npm install -g wrangler
+
       - name: Deploy to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3   # pages-action@v1 is deprecated
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -353,22 +429,17 @@ jobs:
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-**GitHub Secrets to add** (Settings → Secrets → Actions):
-- `CLOUDFLARE_API_TOKEN` — Go to dash.cloudflare.com → Click your profile icon (top right) → My Profile → API Tokens → Create Token → click "Create Custom Token" → Set name (e.g. `github-pages-deploy`) → Permissions: Account → Cloudflare Pages → Edit → Account Resources: Include → All accounts → click "Continue to summary" → click "Create Token" → copy it immediately (shown only once)
+---
 
-- `CLOUDFLARE_ACCOUNT_ID` — Go to dash.cloudflare.com → Click any domain on the home page → Scroll down the right sidebar — you'll see "Account ID" as a long hex string → Copy it
-- `PUBLIC_WEB3FORMS_ACCESS_KEY` — your Web3Forms key (can be copied from the local `.env` file)
+**Part 5 — Trigger manually (no commit needed)**
 
-**To activate both workflows:**
-```bash
-mv .github/workflows-disabled/ci.yml .github/workflows/ci.yml
-mv .github/workflows-disabled/deploy-qrcode.yml .github/workflows/deploy-qrcode.yml
-git add .github/workflows/
-git commit -m "ci: activate CI and qrcode deploy workflows"
-git push origin main
-```
+After activating the workflows, trigger the first real deploy manually:
 
-> With the paths filter, if you only change a file in `mobile/` or `finance-tools/`, the QR deploy is skipped entirely. The CI job still runs (it is intentionally monorepo-wide).
+**GitHub → Actions tab → "Deploy — onlineqrcodescanner.com" → Run workflow button (top right) → select `main` → Run workflow**
+
+This is also how you re-deploy after changing a Cloudflare env var, rolling back, or forcing a fresh deploy without touching code.
+
+> With the paths filter active, future pushes that only change files in `mobile/` or `finance-tools/` will skip the QR deploy entirely. The `ci.yml` quality gate still runs on every push (intentional — it is monorepo-wide).
 
 ---
 

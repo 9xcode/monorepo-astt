@@ -1,20 +1,21 @@
 # ─────────────────────────────────────────────────────────────────────────────
 # Deploy — onlineqrcodescanner.com → Cloudflare Pages
 #
-# STATUS: DISABLED
-# This file lives in .github/workflows-disabled/ intentionally.
-# GitHub Actions only reads .github/workflows/ — this file does nothing here.
+# STATUS: ACTIVE
+# This file is live in .github/workflows/ and deploys on every push to main
+# that touches QR site or shared core files (see paths filter below).
 #
-# TO ACTIVATE:
-#   mv .github/workflows-disabled/deploy-qrcode.yml .github/workflows/deploy-qrcode.yml
-#   git add .github/workflows/deploy-qrcode.yml
-#   git commit -m "ci: activate qrcode deploy workflow"
+# TO DEACTIVATE:
+#   mv .github/workflows/deploy-onlineqrcodescanner-com.yml .github/workflows-disabled/deploy-onlineqrcodescanner-com.yml
+#   git add .github/workflows-disabled/deploy-onlineqrcodescanner-com.yml
+#   git commit -m "ci: deactivate qrcode deploy workflow"
 #
 # PREREQUISITES — add these secrets to your GitHub repo
 # (Settings → Secrets and variables → Actions → New repository secret):
 #
 #   CLOUDFLARE_API_TOKEN      — Create at dash.cloudflare.com → My Profile →
-#                               API Tokens → use "Edit Cloudflare Pages" template
+#                               API Tokens → Create Token → Create Custom Token
+#                               Permissions: Account → Cloudflare Pages → Edit
 #   CLOUDFLARE_ACCOUNT_ID     — Found in the right sidebar of your Cloudflare dashboard
 #   PUBLIC_WEB3FORMS_ACCESS_KEY — Your Web3Forms key
 #

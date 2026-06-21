@@ -1,24 +1,23 @@
 # ─────────────────────────────────────────────────────────────────────────────
 # CI Pipeline — @mtools Monorepo
 #
-# STATUS: DISABLED
-# This file lives in .github/workflows-disabled/ intentionally.
-# GitHub Actions only reads .github/workflows/ — this file does nothing here.
+# STATUS: ACTIVE
+# This file is live in .github/workflows/ and runs on every push to main.
 #
-# TO ACTIVATE:
-#   mv .github/workflows-disabled/ci.yml .github/workflows/ci.yml
-#   git add .github/workflows/ci.yml
-#   git commit -m "ci: activate CI pipeline"
+# TO DEACTIVATE:
+#   mv .github/workflows/ci.yml .github/workflows-disabled/ci.yml
+#   git add .github/workflows-disabled/ci.yml
+#   git commit -m "ci: deactivate CI pipeline"
 #
 # PURPOSE: Shared quality gate — runs on every push to main regardless of
-# which site changed. Checks types, lints, and builds affected packages.
+# which site changed. Lints, checks types, and builds affected packages.
 # Deployment is handled separately in per-site deploy-*.yml files.
 #
 # JOBS:
 #   1. ci — Install, lint, type-check, build (Turborepo affected-only)
 #
-# Per-site deploy files (also in workflows-disabled/):
-#   - deploy-qrcode.yml  → onlineqrcodescanner.com
+# Per-site deploy files (in .github/workflows/):
+#   - deploy-onlineqrcodescanner-com.yml  → onlineqrcodescanner.com
 # ─────────────────────────────────────────────────────────────────────────────
 
 name: CI
@@ -43,8 +42,8 @@ concurrency:
 env:
   # Must match engines.node in root package.json (>=22)
   NODE_VERSION: "22"
-  # Must match packageManager in root package.json exactly
-  PNPM_VERSION: "10.33.2"
+  # Note: pnpm version is read automatically from packageManager in package.json
+  # by pnpm/action-setup@v4 — no need to specify it here.
 
 jobs:
   # ───────────────────────────────────────────────────────────────────────────
@@ -84,6 +83,17 @@ jobs:
           key: ${{ runner.os }}-turbo-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-turbo-
+
+      - name: Lint
+        # eslint . is not a turbo task — runs directly and covers the whole repo.
+        # Fails fast on lint errors before spending time on type-checks and builds.
+        run: pnpm lint
+
+      - name: Type-check affected packages
+        # Runs check:astro, check:svelte, check:tsc for packages changed since HEAD~1.
+        # These are separate turbo tasks (not chained to build) — must be run explicitly.
+        # --filter=...[HEAD~1] means: changed packages and all their dependents.
+        run: pnpm turbo check:astro check:svelte check:tsc --filter=...[HEAD~1]
 
       - name: Build affected packages
         # --filter=...[HEAD~1]: only rebuild what changed since the last commit.
