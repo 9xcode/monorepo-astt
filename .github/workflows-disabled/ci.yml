@@ -1,5 +1,5 @@
 # ─────────────────────────────────────────────────────────────────────────────
-# CI/CD Pipeline — @mtools Monorepo
+# CI Pipeline — @mtools Monorepo
 #
 # STATUS: DISABLED
 # This file lives in .github/workflows-disabled/ intentionally.
@@ -8,23 +8,20 @@
 # TO ACTIVATE:
 #   mv .github/workflows-disabled/ci.yml .github/workflows/ci.yml
 #   git add .github/workflows/ci.yml
-#   git commit -m "ci: activate CI/CD pipeline"
+#   git commit -m "ci: activate CI pipeline"
 #
-# TRIGGERS:
-#   - Push to `main` only (PRs, feature branches → no deploy, no build)
-#   - Manual trigger (workflow_dispatch) for on-demand builds
+# PURPOSE: Shared quality gate — runs on every push to main regardless of
+# which site changed. Checks types, lints, and builds affected packages.
+# Deployment is handled separately in per-site deploy-*.yml files.
 #
 # JOBS:
-#   1. ci        — Install, type-check, build (Turborepo affected-only)
-#   2. deploy-*  — One job per site (see DEPLOYMENT SETUP below)
+#   1. ci — Install, lint, type-check, build (Turborepo affected-only)
 #
-# DEPLOYMENT SETUP (fill in before activating):
-#   This pipeline has placeholder deploy jobs. Uncomment the block for your
-#   hosting provider and add the required secrets to your GitHub repo:
-#   Settings → Secrets and variables → Actions → New repository secret
+# Per-site deploy files (also in workflows-disabled/):
+#   - deploy-qrcode.yml  → onlineqrcodescanner.com
 # ─────────────────────────────────────────────────────────────────────────────
 
-name: CI/CD
+name: CI
 
 on:
   # Only trigger on pushes to the main branch.
@@ -34,27 +31,27 @@ on:
       - main
 
   # Allow manual triggering from the GitHub Actions UI.
-  # Useful for deploying without a code change (e.g. after env var update).
+  # Useful for verifying the build without a code change.
   workflow_dispatch:
 
 # Cancel any in-progress run for the same branch when a newer push arrives.
-# Prevents duplicate deploys when you push multiple commits quickly.
+# Prevents duplicate runs when you push multiple commits quickly.
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 env:
-  # Node.js version — must match your local environment
-  NODE_VERSION: "20"
-  # pnpm version — must match packageManager field in root package.json
-  PNPM_VERSION: "10"
+  # Must match engines.node in root package.json (>=22)
+  NODE_VERSION: "22"
+  # Must match packageManager in root package.json exactly
+  PNPM_VERSION: "10.33.2"
 
 jobs:
   # ───────────────────────────────────────────────────────────────────────────
-  # Job 1: CI — Install, Check, Build
+  # Job: CI — Install, Lint, Type-check, Build
   # ───────────────────────────────────────────────────────────────────────────
   ci:
-    name: Install / Check / Build
+    name: Install / Lint / Check / Build
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -62,7 +59,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          # Fetch full history so Turborepo can compare HEAD~1 for affected packages
+          # fetch-depth: 2 is required so Turborepo can compare HEAD~1 for
+          # affected packages. If you change the filter strategy, update this.
           fetch-depth: 2
 
       - name: Setup pnpm
@@ -77,8 +75,8 @@ jobs:
           cache: "pnpm"
 
       - name: Install dependencies
-        # --frozen-lockfile: fail if pnpm-lock.yaml is out of sync
-        # This catches the "works on my machine" problem early
+        # --frozen-lockfile: fail if pnpm-lock.yaml is out of sync.
+        # This catches the "works on my machine" problem early.
         run: pnpm install --frozen-lockfile
 
       - name: Cache Turborepo
@@ -92,103 +90,28 @@ jobs:
       - name: Build affected packages
         # --filter=...[HEAD~1]: only rebuild what changed since the last commit.
         # In a monorepo with multiple sites, this avoids rebuilding everything
-        # every time. If core changes, all sites that depend on it rebuild too.
+        # every time. If core changes, all dependent sites rebuild automatically.
+        #
+        # NOTE: This compares against HEAD~1 (one commit back). Works correctly
+        # for single-commit pushes. If you regularly push multiple commits at
+        # once or use squash merges, consider switching to:
+        #   --filter=...[origin/main]
+        # and setting fetch-depth: 0 above.
         run: pnpm turbo build --filter=...[HEAD~1]
         env:
-          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}       # Optional: Turborepo remote cache
-          TURBO_TEAM: ${{ secrets.TURBO_TEAM }}         # Optional: Turborepo remote cache
+          # Pass all known PUBLIC_ env vars here so any affected site builds
+          # correctly. Sites that don't use a variable will simply ignore it.
+          PUBLIC_WEB3FORMS_ACCESS_KEY: ${{ secrets.PUBLIC_WEB3FORMS_ACCESS_KEY }}
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}  # Optional: Turborepo remote cache
+          TURBO_TEAM: ${{ secrets.TURBO_TEAM }}    # Optional: Turborepo remote cache
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          # Uploads the built dist/ for each site so deploy jobs can use it
-          # without re-building.
+          # Uploads dist/ for each site so deploy jobs in separate workflow
+          # files can download it without re-building.
           name: build-artifacts
           path: |
             sites/*/dist
           retention-days: 1
           if-no-files-found: warn
-
-  # ───────────────────────────────────────────────────────────────────────────
-  # Job 2: Deploy — finance-tools
-  #
-  # Runs only after the CI job passes.
-  # Uncomment ONE of the provider blocks below, add the required secrets,
-  # then remove the other blocks.
-  # ───────────────────────────────────────────────────────────────────────────
-  deploy-finance-tools:
-    name: Deploy finance-tools
-    runs-on: ubuntu-latest
-    needs: ci                         # Only runs if the CI job passes
-    timeout-minutes: 10
-    # Only deploy on direct pushes to main (not on workflow_dispatch dry-runs)
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build-artifacts
-
-      # ── OPTION A: Vercel ───────────────────────────────────────────────────
-      # Required secrets: VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID_FINANCE_TOOLS
-      # Get them from: vercel.com → Project Settings → General
-      #
-      # - name: Deploy to Vercel
-      #   uses: amondnet/vercel-action@v25
-      #   with:
-      #     vercel-token: ${{ secrets.VERCEL_TOKEN }}
-      #     vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-      #     vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_FINANCE_TOOLS }}
-      #     working-directory: sites/finance-tools
-      #     vercel-args: "--prod"
-
-      # ── OPTION B: Netlify ──────────────────────────────────────────────────
-      # Required secrets: NETLIFY_AUTH_TOKEN, NETLIFY_SITE_ID_FINANCE_TOOLS
-      # Get them from: app.netlify.com → Site Settings → General
-      #
-      # - name: Deploy to Netlify
-      #   uses: nwtgck/actions-netlify@v3
-      #   with:
-      #     publish-dir: sites/finance-tools/dist
-      #     production-branch: main
-      #     production-deploy: true
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     deploy-message: "Deploy from GitHub Actions — ${{ github.sha }}"
-      #   env:
-      #     NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-      #     NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_FINANCE_TOOLS }}
-
-      # ── OPTION C: Cloudflare Pages ─────────────────────────────────────────
-      # Required secrets: CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID
-      # Required: set CLOUDFLARE_PROJECT_NAME to your CF Pages project name
-      #
-      # - name: Deploy to Cloudflare Pages
-      #   uses: cloudflare/pages-action@v1
-      #   with:
-      #     apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      #     accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-      #     projectName: finance-tools          # Your CF Pages project name
-      #     directory: sites/finance-tools/dist
-      #     gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-
-      # ── PLACEHOLDER (remove when you uncomment a provider above) ───────────
-      - name: Deploy step not configured
-        run: |
-          echo "⚠️  No deployment provider configured for finance-tools."
-          echo "Open .github/workflows-disabled/ci.yml and uncomment one of:"
-          echo "  - OPTION A: Vercel"
-          echo "  - OPTION B: Netlify"
-          echo "  - OPTION C: Cloudflare Pages"
-          echo "Then move the file to .github/workflows/ci.yml to activate."
-
-  # ───────────────────────────────────────────────────────────────────────────
-  # Add more deploy jobs here as you add more sites.
-  # Copy the deploy-finance-tools job above, rename it, and change:
-  #   - The job name (deploy-my-new-site)
-  #   - working-directory / publish-dir (sites/my-new-site)
-  #   - The project ID / site ID secret name
-  # ───────────────────────────────────────────────────────────────────────────

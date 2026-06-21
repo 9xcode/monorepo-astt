@@ -14,7 +14,7 @@ The Online QR Code Scanner can reads any QR codes. You point your camera at one,
 
 That sounds simple because it is. The complexity is in what happens after. Most QR scanners give you a raw string and leave you to figure out what it means. This one identifies the type of content, parses the relevant fields, and shows them in a readable format. If it is a Wi-Fi code, you see the network name, password, and security type. If it is a contact, you see the name, phone, email, and organization, with a button to save the .vcf file directly. If it is a URL, you get a direct link to open it.
 
-You also get access to the raw decoded string at any time, so if you want to see the original data before it was parsed, you just have to clik on "raw data" section and it will shows it.
+You also get access to the raw decoded string at any time, so if you want to see the original data before it was parsed, you just have to click on "raw data" tab so you can see and copy it.
 
 Everything runs in your browser. No image is uploaded. No camera feed is recorded. No decoded result is transmitted anywhere and its all completely 100% free.
 
@@ -100,7 +100,7 @@ When you upload an image, the file is processed entirely inside your browser. No
 
 The decoded result text is held in browser memory for the duration of your session and cleared when you scan again or close the tab. It is not logged, not sent anywhere, and not retained.
 
-This is also one of the reason that our qr code scanner tool is fastest and secure qr scanner on the internet.
+This is also one of the reasons our QR code scanner is among the fastest and most secure on the internet.
 
 ## When the scanner might not work
 
