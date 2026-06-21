@@ -354,9 +354,10 @@ jobs:
 ```
 
 **GitHub Secrets to add** (Settings → Secrets → Actions):
-- `CLOUDFLARE_API_TOKEN` — create at dash.cloudflare.com → My Profile → API Tokens → "Edit Cloudflare Pages" template
-- `CLOUDFLARE_ACCOUNT_ID` — found in the right sidebar of your Cloudflare dashboard
-- `PUBLIC_WEB3FORMS_ACCESS_KEY` — your Web3Forms key
+- `CLOUDFLARE_API_TOKEN` — Go to dash.cloudflare.com → Click your profile icon (top right) → My Profile → API Tokens → Create Token → click "Create Custom Token" → Set name (e.g. `github-pages-deploy`) → Permissions: Account → Cloudflare Pages → Edit → Account Resources: Include → All accounts → click "Continue to summary" → click "Create Token" → copy it immediately (shown only once)
+
+- `CLOUDFLARE_ACCOUNT_ID` — Go to dash.cloudflare.com → Click any domain on the home page → Scroll down the right sidebar — you'll see "Account ID" as a long hex string → Copy it
+- `PUBLIC_WEB3FORMS_ACCESS_KEY` — your Web3Forms key (can be copied from the local `.env` file)
 
 **To activate both workflows:**
 ```bash
