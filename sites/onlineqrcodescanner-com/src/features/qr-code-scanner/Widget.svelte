@@ -409,47 +409,58 @@
     return null;
   }
 
-  async function processImageFile(file: File) {
+  async function processImageFile(file: File): Promise<void> {
     errorMsg = '';
     scannerResult = '';
+    scannedImage = '';
 
-    // ── Strategy 1: BarcodeDetector (native, best for dense QR codes) ──
-    if (hasBarcodeDetector) {
-      try {
-        // @ts-ignore — BarcodeDetector is not in all TS libs yet
-        const detector = new BarcodeDetector({ formats: ['qr_code'] });
-        const bitmap   = await createImageBitmap(file);
-        const codes    = await detector.detect(bitmap);
-        bitmap.close();
-        if (codes.length > 0 && codes[0].rawValue) {
-          scannerResult = codes[0].rawValue;
-          triggerSuccessBeep();
-          return;
-        }
-      } catch {
-        // BarcodeDetector failed — fall through to jsQR
-      }
-    }
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        const dataUrl = e.target?.result as string;
 
-    // ── Strategy 2: jsQR with multi-scale + contrast enhancement ──
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const img = new Image();
-      img.onload = () => {
-        const result = tryJsQR(img);
-        if (result) {
-          scannerResult = result;
-          triggerSuccessBeep();
-        } else {
-          errorMsg = 'No QR code found. Try uploading a higher-resolution image or improve lighting/contrast.';
+        // ── Strategy 1: BarcodeDetector (native, best for dense QR codes) ──
+        if (hasBarcodeDetector) {
+          try {
+            // @ts-ignore — BarcodeDetector is not in all TS libs yet
+            const detector = new BarcodeDetector({ formats: ['qr_code'] });
+            const bitmap   = await createImageBitmap(file);
+            const codes    = await detector.detect(bitmap);
+            bitmap.close();
+            if (codes.length > 0 && codes[0].rawValue) {
+              scannedImage = dataUrl;
+              scannerResult = codes[0].rawValue;
+              triggerSuccessBeep();
+              resolve();
+              return;
+            }
+          } catch {
+            // BarcodeDetector failed — fall through to jsQR
+          }
         }
+
+        // ── Strategy 2: jsQR with multi-scale + contrast enhancement ──
+        const img = new Image();
+        img.onload = () => {
+          const result = tryJsQR(img);
+          if (result) {
+            scannedImage = dataUrl;
+            scannerResult = result;
+            triggerSuccessBeep();
+          } else {
+            errorMsg = 'No QR code found. Try uploading a higher-resolution image or improve lighting/contrast.';
+          }
+          resolve();
+        };
+        img.onerror = () => {
+          errorMsg = 'Could not read the image file. Please try a different image.';
+          resolve();
+        };
+        img.src = dataUrl;
       };
-      img.onerror = () => {
-        errorMsg = 'Could not read the image file. Please try a different image.';
-      };
-      img.src = e.target?.result as string;
-    };
-    reader.readAsDataURL(file);
+      reader.onerror = () => resolve();
+      reader.readAsDataURL(file);
+    });
   }
 
   async function handleImageUpload(event: Event) {
@@ -817,6 +828,29 @@
                   or drag & drop your image here, or paste from clipboard
                 </p>
               </div>
+              
+              <!-- Scanned Image Snapshot for Upload Tab -->
+              {#if scannedImage}
+                <div class="absolute inset-0 rounded-xl overflow-hidden pointer-events-none z-10 animate-in fade-in duration-300">
+                  <img
+                    src={scannedImage}
+                    alt="Uploaded QR Code"
+                    class="absolute inset-0 w-full h-full object-cover brightness-[0.3]"
+                  />
+                  <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-auto">
+                    <div class="w-16 h-16 rounded-full bg-emerald-500/20 flex items-center justify-center backdrop-blur-md mb-3 border border-emerald-500/30 animate-in zoom-in duration-300">
+                      <Check class="w-8 h-8 text-emerald-500" />
+                    </div>
+                    <button
+                      onclick={resetScanner}
+                      class="mt-6 pointer-events-auto flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold bg-white text-black hover:bg-gray-100 shadow-xl transition-all duration-200 active:scale-95 animate-in zoom-in duration-300"
+                    >
+                      <RefreshCw class="w-4 h-4" />
+                      Upload Another Image
+                    </button>
+                  </div>
+                </div>
+              {/if}
             </div>
           {/if}
         </CardContent>
@@ -985,17 +1019,7 @@
             {/if}
           </div>
 
-          {#if scannerResult && activeTab === 'upload'}
-            <div class="space-y-3 pt-4 border-t border-border/40">
-              <button
-                onclick={resetScanner}
-                class="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-semibold border border-input hover:bg-accent hover:text-accent-foreground transition-all duration-300 active:scale-95"
-              >
-                <RefreshCw class="w-4 h-4" />
-                Scan Another Image
-              </button>
-            </div>
-          {/if}
+          <!-- Button moved to image overlay -->
         </CardContent>
       </Card>
     </div>
