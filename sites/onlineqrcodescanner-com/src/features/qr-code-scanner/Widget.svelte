@@ -17,6 +17,7 @@
   let activeTab = $state<'camera' | 'upload'>('upload');
   let isDragging = $state(false);
   let scannerResult = $state('');
+  let scannedImage = $state('');
   let isScanning = $state(false);
   let errorMsg = $state('');
   let isCopied = $state(false);
@@ -35,6 +36,27 @@
   let canvasEl = $state<HTMLCanvasElement | null>(null);
   let stream = $state<MediaStream | null>(null);
   let animationFrameId = $state<number | null>(null);
+
+  let lastDetectedCode = '';
+  let firstDetectionTime = 0;
+
+  function handleSuccessfulScan(rawValue: string) {
+    if (rawValue === lastDetectedCode) {
+      if (performance.now() - firstDetectionTime > 400) {
+        if (canvasEl) scannedImage = canvasEl.toDataURL('image/jpeg');
+        scannerResult = rawValue;
+        stopCamera();
+        triggerSuccessBeep();
+        lastDetectedCode = '';
+        firstDetectionTime = 0;
+        return true;
+      }
+    } else {
+      lastDetectedCode = rawValue;
+      firstDetectionTime = performance.now();
+    }
+    return false;
+  }
 
   // ─── Derived ──────────────────────────────────────────────────────────────────
 
@@ -172,6 +194,7 @@
     await tick();
     errorMsg = '';
     scannerResult = '';
+    scannedImage = '';
     isScanning = false;
     isRequestingPermission = true;
 
@@ -187,8 +210,10 @@
     }
 
     // High compatibility constraints array
-    const constraintOptions = [
+    const constraintOptions: any[] = [
+      { video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 }, advanced: [{ focusMode: 'continuous' }] } },
       { video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } } },
+      { video: { facingMode: 'environment', advanced: [{ focusMode: 'continuous' }] } },
       { video: { facingMode: 'environment' } },
       { video: { facingMode: 'user' } },
       { video: true }
@@ -272,6 +297,8 @@
             canvasEl.height = height;
             ctx.drawImage(videoEl, 0, 0, width, height);
 
+            let foundCode = null;
+
             // Strategy 1: BarcodeDetector (native, handles dense codes)
             if (hasBarcodeDetector) {
               try {
@@ -281,10 +308,7 @@
                 const codes = await detector.detect(bitmap);
                 bitmap.close();
                 if (codes.length > 0 && codes[0].rawValue) {
-                  scannerResult = codes[0].rawValue;
-                  stopCamera();
-                  triggerSuccessBeep();
-                  return;
+                  foundCode = codes[0].rawValue;
                 }
               } catch {
                 // Fall through to jsQR
@@ -292,15 +316,20 @@
             }
 
             // Strategy 2: jsQR
-            const imageData = ctx.getImageData(0, 0, width, height);
-            const code = jsQR(imageData.data, imageData.width, imageData.height, {
-              inversionAttempts: 'attemptBoth'
-            });
-            if (code) {
-              scannerResult = code.data;
-              stopCamera();
-              triggerSuccessBeep();
-              return;
+            if (!foundCode) {
+              const imageData = ctx.getImageData(0, 0, width, height);
+              const code = jsQR(imageData.data, imageData.width, imageData.height, {
+                inversionAttempts: 'attemptBoth'
+              });
+              if (code && code.data) {
+                foundCode = code.data;
+              }
+            }
+
+            if (foundCode) {
+              if (handleSuccessfulScan(foundCode)) return;
+            } else {
+              lastDetectedCode = '';
             }
           }
         }
@@ -498,6 +527,7 @@
 
   function resetScanner() {
     scannerResult = '';
+    scannedImage = '';
     errorMsg = '';
     if (activeTab === 'camera') {
       startCamera();
@@ -508,6 +538,7 @@
     if (activeTab === tab) return;
     stopCamera();
     scannerResult = '';
+    scannedImage = '';
     errorMsg = '';
     activeTab = tab;
 
@@ -527,8 +558,8 @@
   // ─── Lifecycle ────────────────────────────────────────────────────────────────
 
   onMount(async () => {
-    // Check for Secure Context
-    if (typeof window !== 'undefined' && window.location.protocol === 'http:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+    // Check for Secure Context using the standard API
+    if (typeof window !== 'undefined' && window.isSecureContext === false) {
       isInsecureContext = true;
       cameraPermission = 'denied';
       return;
@@ -570,7 +601,7 @@
             <!-- Aspect Ratio Box on desktop / Auto-adjusting with minimum height on mobile -->
             <div class={cn(
               "relative w-full flex items-center justify-center overflow-hidden transition-all duration-500",
-              isScanning 
+              isScanning || scannedImage
                 ? "aspect-[4/3] bg-black" 
                 : "min-h-[320px] md:aspect-[4/3] py-8 px-4 bg-gradient-to-br from-emerald-500/5 via-muted/30 to-emerald-500/5 dark:from-emerald-500/10 dark:via-neutral-900/60 dark:to-emerald-500/10"
             )}>
@@ -583,6 +614,28 @@
                   isScanning ? "opacity-100" : "opacity-0"
                 )}
               ></video>
+
+              <!-- Scanned Image Snapshot -->
+              {#if scannedImage}
+                <img
+                  src={scannedImage}
+                  alt="Scanned QR Code"
+                  class="absolute inset-0 w-full h-full object-cover brightness-[0.3] transition-opacity duration-300"
+                />
+                <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10 animate-in fade-in zoom-in duration-300">
+                  <div class="w-16 h-16 rounded-full bg-emerald-500/20 flex items-center justify-center backdrop-blur-md mb-3 border border-emerald-500/30">
+                    <Check class="w-8 h-8 text-emerald-500" />
+                  </div>
+                  
+                  <button
+                    onclick={resetScanner}
+                    class="mt-6 pointer-events-auto flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold bg-white text-black hover:bg-gray-100 shadow-xl transition-all duration-200 active:scale-95"
+                  >
+                    <RefreshCw class="w-4 h-4" />
+                    Scan Another QR
+                  </button>
+                </div>
+              {/if}
 
               <!-- Stop Camera Button Overlay -->
               {#if isScanning}
@@ -611,12 +664,6 @@
                     <!-- Center hint -->
                     <div class="absolute inset-0 border border-dashed border-emerald-500/20 rounded-sm"></div>
                   </div>
-                </div>
-
-                <!-- Scanning status pill -->
-                <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-sm border border-white/10 text-white text-xs font-medium">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                  Scanning for QR code…
                 </div>
               {/if}
 
@@ -938,14 +985,14 @@
             {/if}
           </div>
 
-          {#if scannerResult}
+          {#if scannerResult && activeTab === 'upload'}
             <div class="space-y-3 pt-4 border-t border-border/40">
               <button
                 onclick={resetScanner}
                 class="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-semibold border border-input hover:bg-accent hover:text-accent-foreground transition-all duration-300 active:scale-95"
               >
                 <RefreshCw class="w-4 h-4" />
-                Scan Again
+                Scan Another Image
               </button>
             </div>
           {/if}
