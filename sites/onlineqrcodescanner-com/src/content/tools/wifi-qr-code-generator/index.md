@@ -1,6 +1,6 @@
 ---
 title: "Wi-Fi QR Code Generator"
-seoTitle: "Free Wi-Fi QR Code Generator Online | Create Wifi QR Code"
+seoTitle: "Free Wi-Fi QR Code Generator Online | Create Wi-Fi QR"
 description: "Create a Wi-Fi QR code so guests can join your network by scanning, no password typing needed. Supports WPA/WPA2, WEP, open networks, and hidden SSIDs."
 shortDescription: "Let guests connect to your Wi-Fi by scanning a QR code"
 category: "QR Generator"

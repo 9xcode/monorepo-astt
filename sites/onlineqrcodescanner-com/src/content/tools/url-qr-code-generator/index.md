@@ -1,6 +1,6 @@
 ---
 title: "URL QR Code Generator"
-seoTitle: "Free URL QR Code Generator | Turn Any Link Into QR Code Online"
+seoTitle: "Free URL QR Code Generator | Turn Links Into QR"
 description: "Convert any website URL, social media and any link into a scannable QR code instantly. Customize size, colors, and format, 100% free, no signup required."
 shortDescription: "Convert any URL or website link into a downloadable QR code"
 category: "QR Generator"

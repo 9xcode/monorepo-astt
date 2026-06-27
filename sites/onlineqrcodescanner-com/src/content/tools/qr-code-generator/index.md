@@ -1,6 +1,6 @@
 ---
 title: "QR Code Generator"
-seoTitle: "Free QR Code Generator Online | URL, Wi-Fi, vCard, SMS, Email & More"
+seoTitle: "Free Online QR Code Generator | URL, Wi-Fi, vCard"
 description: "Generate QR codes for URLs, Wi-Fi, vCard contacts, SMS, email, WhatsApp, phone, plain text, Bitcoin and More. 100% Free, Your data never leaves your device."
 shortDescription: "Create QR codes for URLs, Wi-Fi, contacts, messages, and more"
 category: "QR Generator"

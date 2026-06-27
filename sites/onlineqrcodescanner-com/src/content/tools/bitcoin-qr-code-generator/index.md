@@ -1,6 +1,6 @@
 ---
 title: "Bitcoin QR Code Generator"
-seoTitle: "Free Bitcoin QR Code Generator Online | BTC QRCode Generator"
+seoTitle: "Free Bitcoin QR Code Generator | BTC Payment QR"
 description: "Generate a Bitcoin payment QR code from any wallet address instantly. Set an optional BTC amount and label. BIP-21 compatible, private, and 100% free."
 shortDescription: "Create a Bitcoin wallet payment request QR code"
 category: "QR Generator"

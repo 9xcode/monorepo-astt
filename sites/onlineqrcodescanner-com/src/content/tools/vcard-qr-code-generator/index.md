@@ -1,7 +1,7 @@
 ---
 title: "vCard QR Code Generator"
-seoTitle: "Free vCard QR Code Generator | Online Business Card QR Code Creator"
-description: "Generate a vCard QR code for your business card or profile. Share your name, phone, email, and website with one scan. Works on iOS and Android 100% Free and Secure."
+seoTitle: "Free vCard QR Code Generator | Business Card QR"
+description: "Generate a free vCard QR code for your business card or profile. Share your name, phone, email, and website with one scan. Works on iOS and Android."
 shortDescription: "Share your contact details with anyone by letting them scan a QR code"
 category: "QR Generator"
 tags: ["qr-generator", "vcard-qr", "generator"]

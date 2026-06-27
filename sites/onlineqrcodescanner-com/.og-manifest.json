@@ -1,6 +1,6 @@
 {
   "tools/qr-code-scanner": {
-    "hash": "1c4b0270fbc03c815321b07866425af3",
+    "hash": "15099d582702f9004ad568a8c5042c9f",
     "version": "v1.0.0",
     "locale": null
   },
@@ -20,7 +20,7 @@
     "locale": null
   },
   "tools/email-qr-code-generator": {
-    "hash": "c147184c9f192e0e67a5c184d1df820e",
+    "hash": "e0d9431c32c2ffdbc4c7c8ca4f98d817",
     "version": "v1.0.0",
     "locale": null
   },
@@ -45,7 +45,7 @@
     "locale": null
   },
   "tools/vcard-qr-code-generator": {
-    "hash": "0d395ab0f86eda0ac6dc4dfaf7e150b7",
+    "hash": "a5d6f036b4e170a07a588ffcebb9a3dd",
     "version": "v1.0.0",
     "locale": null
   },
@@ -60,7 +60,7 @@
     "locale": null
   },
   "tools/barcode-scanner": {
-    "hash": "eb63439f051e764efb34071201de2231",
+    "hash": "1668880d0a01b685e19fa154b1c52cf5",
     "version": "v1.0.0",
     "locale": null
   }

@@ -1,6 +1,6 @@
 ---
 title: "SMS QR Code Generator"
-seoTitle: "Free SMS QR Code Generator | Create Text Message QR Codes Online"
+seoTitle: "Free SMS QR Code Generator | Text Message QR Codes"
 description: "Generate a QR code that opens a pre-filled SMS text message when scanned. Set the recipient number and optional message body"
 shortDescription: "Create a QR code that opens a pre-filled SMS text message"
 category: "QR Generator"

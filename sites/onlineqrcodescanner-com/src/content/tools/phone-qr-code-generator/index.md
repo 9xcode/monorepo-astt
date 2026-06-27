@@ -1,6 +1,6 @@
 ---
 title: "Phone QR Code Generator"
-seoTitle: "Free Phone Number QR Code Generator | Create Call QR Codes Online"
+seoTitle: "Phone Number QR Code Generator Online | Create Call QR"
 description: "Generate a QR code that dials your phone number when scanned. Works on any smartphone. Create a tel: link QR code for business cards, posters, and storefronts"
 shortDescription: "Create a QR code that instantly dials your phone number"
 category: "QR Generator"
