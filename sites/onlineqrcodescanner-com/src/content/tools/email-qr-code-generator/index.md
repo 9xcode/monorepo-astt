@@ -1,7 +1,7 @@
 ---
 title: "Email QR Code Generator"
-seoTitle: "Free Email QR Code Generator Online | Create QR Code for gmail, outlook, protonmail"
-description: "Generate a QR code that opens a pre-filled email compose window when scanned. Set the recipient, subject, and body. You can create QR for mailto, gmail, outlook."
+seoTitle: "Free Email QR Code Generator | Create Gmail QR Online"
+description: "Generate a QR code that opens a pre-filled email compose window when scanned. Set recipient, subject, and body. Works with Gmail, Outlook, and Mailto."
 shortDescription: "Create a QR code that opens a pre-addressed email draft"
 category: "QR Generator"
 tags: ["qr-generator", "generator", "utility"]

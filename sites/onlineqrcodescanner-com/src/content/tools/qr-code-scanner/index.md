@@ -1,7 +1,7 @@
 ---
 title: "Online QR Code Scanner"
-seoTitle: "Free Online QR Code Scanner | Scan QR Codes from Camera or Image"
-description: "Scan any QR code instantly from your webcam, by pasting or by uploading an image. Reads URLs, Wi-Fi, contacts, payments, social media, and more. 100% private, no app needed."
+seoTitle: "Free Online QR Code Scanner | Camera QR Scan"
+description: "Scan any QR code instantly using your webcam or by uploading an image. Reads URLs, Wi-Fi, contacts, Bitcoin and more."
 shortDescription: "Scan any QR code from your camera, pasting or by uploading an image"
 category: "QR Scanner"
 tags: ["qr-scanner", "scanner", "reader"]

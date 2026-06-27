@@ -1,6 +1,6 @@
 ---
 title: "Text QR Code Generator"
-seoTitle: "Free Text QR Code Generator | Encode Any Plain Text Into a QR Code"
+seoTitle: "Free Text QR Code Generator | Plain Text to QR"
 description: "Generate a QR code from any plain text, message, note, coupon code, password, Wi-Fi password, WiFi credentials, serial number, short address, or code 100% Free."
 shortDescription: "Encode any plain text or message into a scannable QR code"
 category: "QR Generator"

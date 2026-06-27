@@ -1,6 +1,6 @@
 ---
 title: "Online Barcode Scanner"
-seoTitle: "Free Online Barcode Scanner – Scan All Barcode Formats Instantly"
+seoTitle: "Free Online Barcode Scanner | Scan All Formats"
 description: "Scan any barcode format online — EAN-13, UPC-A, Code 128, QR Code, PDF 417, Data Matrix, Aztec, and more. Free, private, and 100% browser-based. No app needed."
 shortDescription: "Scan all barcode formats instantly from your camera or image"
 category: "Barcode Tools"

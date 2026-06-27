@@ -13,15 +13,16 @@
 name: Dev Preview — onlineqrcodescanner.com
 
 on:
-  push:
-    branches:
-      - dev
-    paths:
-      - 'sites/onlineqrcodescanner-com/**'
-      - 'core/**'
-      - 'pnpm-lock.yaml'
-      - 'pnpm-workspace.yaml'
-      - 'turbo.json'
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - dev
+  #   paths:
+  #     - 'sites/onlineqrcodescanner-com/**'
+  #     - 'core/**'
+  #     - 'pnpm-lock.yaml'
+  #     - 'pnpm-workspace.yaml'
+  #     - 'turbo.json'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref_name }}
