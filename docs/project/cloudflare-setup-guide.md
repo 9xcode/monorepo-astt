@@ -216,11 +216,38 @@ Do **NOT** add a `Content-Security-Policy` header if you use AdSense. AdSense dy
 
 ---
 
-## 8. `_redirects` File (in `public/`)
+## 8. Redirects (www → root)
 
-Place this in `public/_redirects`. Handles www → root canonical redirect.
+To prevent indexing errors and connection timeouts for `www` URLs (like `www.yourdomain.com/robots.txt`), you must redirect all `www` traffic to your root domain.
 
+### Edge Redirect Rule (Recommended)
+
+Setting this up at the Cloudflare edge is the most reliable method.
+
+> Go to: **Rules → Redirect Rules → Create rule** (Make sure you are on the "Single Redirects" tab, not Bulk)
+
+```text
+Rule name:    Redirect www to non-www
+
+If:           Custom filter expression
+Field:        Hostname
+Operator:     equals
+Value:        www.yourdomain.com
+
+Then:
+  Type:                   Dynamic
+  Expression:             concat("https://yourdomain.com", http.request.uri.path)
+  Status code:            301
+  Preserve query string:  ON
 ```
+
+> **What this does:** Any visitor going to `www.yourdomain.com/anything` will be permanently redirected (301) to `https://yourdomain.com/anything`. Click **Deploy** when finished.
+
+### `_redirects` File (in `public/`)
+
+As an additional fallback, you can place this in `public/_redirects` in your Astro project:
+
+```text
 https://www.yourdomain.com/* https://yourdomain.com/:splat 301!
 ```
 
@@ -317,9 +344,12 @@ Caching
 [ ] Cache Rule 2: /images/* → Edge 1 week, Browser 1 day
 [ ] Cache Rule 3: /api/* → Bypass cache (if applicable)
 
+Redirects
+[ ] Create Single Redirect Rule (www → non-www)
+
 Files in public/
 [ ] _headers (security headers)
-[ ] _redirects (www → root)
+[ ] _redirects (fallback www → root)
 [ ] robots.txt (with AI bot allowlist)
 [ ] llms.txt
 [ ] sitemap.xml / sitemap-index.xml

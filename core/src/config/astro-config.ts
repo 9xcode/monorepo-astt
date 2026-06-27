@@ -102,7 +102,7 @@ export function createAstroConfig(
       // @content-dates Vite alias — must run before corePages and Vite start.
       contentDates(),
       // corePages must be third — it registers middleware + injectRoute + @widget-renderer alias
-      corePages(),
+      corePages(siteConfig),
       // og image generation
       ogCache({
         templateVersion: 'v1.0.0',
