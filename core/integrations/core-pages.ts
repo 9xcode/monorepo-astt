@@ -1,6 +1,7 @@
 import type { AstroIntegration } from 'astro';
 import { fileURLToPath } from 'node:url';
 import { getGeneratedDir } from './widget-map/index.ts';
+import type { SiteConfig } from '../src/config/types.ts';
 
 // Resolve core package root from this file's location.
 // This file: core/integrations/core-pages.ts → one level up = core/
@@ -15,7 +16,7 @@ const pagesDir = `${coreDir}/src/pages`;
  * Injected routes have lower priority than any file the site adds
  * to its own src/pages/ — so sites can always override individual pages.
  */
-const CORE_ROUTES = [
+const BASE_ROUTES = [
   // ── Static pages ──────────────────────────────────────────────────────────
   { pattern: '/',               entrypoint: `${pagesDir}/index.astro`        },
   { pattern: '/about',          entrypoint: `${pagesDir}/about.astro`         },
@@ -39,19 +40,21 @@ const CORE_ROUTES = [
   { pattern: '/categories',              entrypoint: `${pagesDir}/categories/index.astro`        },
   { pattern: '/categories/[category]',   entrypoint: `${pagesDir}/categories/[category].astro`   },
 
-  // ── Blog ──────────────────────────────────────────────────────────────────
-  { pattern: '/blog',                    entrypoint: `${pagesDir}/blog/index.astro`               },
-  { pattern: '/blog/[post]',             entrypoint: `${pagesDir}/blog/[post].astro`              },
-  { pattern: '/blog/page/[page]',        entrypoint: `${pagesDir}/blog/page/[page].astro`         },
-  { pattern: '/blog/category/[category]',entrypoint: `${pagesDir}/blog/category/[category].astro`},
-  { pattern: '/blog/tag/[tag]',          entrypoint: `${pagesDir}/blog/tag/[tag].astro`           },
-
   // ── Authors ───────────────────────────────────────────────────────────────
   { pattern: '/authors/[author]',        entrypoint: `${pagesDir}/authors/[author].astro`         },
 
   // ── API endpoints ─────────────────────────────────────────────────────────
   { pattern: '/api/search-tools.json',   entrypoint: `${pagesDir}/api/search-tools.json.ts`      },
   { pattern: '/api/search-blog.json',    entrypoint: `${pagesDir}/api/search-blog.json.ts`       },
+] as const;
+
+/** Blog routes — only injected when siteConfig.features.blog.enabled is true */
+const BLOG_ROUTES = [
+  { pattern: '/blog',                    entrypoint: `${pagesDir}/blog/index.astro`               },
+  { pattern: '/blog/[post]',             entrypoint: `${pagesDir}/blog/[post].astro`              },
+  { pattern: '/blog/page/[page]',        entrypoint: `${pagesDir}/blog/page/[page].astro`         },
+  { pattern: '/blog/category/[category]',entrypoint: `${pagesDir}/blog/category/[category].astro`},
+  { pattern: '/blog/tag/[tag]',          entrypoint: `${pagesDir}/blog/tag/[tag].astro`           },
 ] as const;
 
 /**
@@ -74,7 +77,7 @@ const CORE_ROUTES = [
  *   import { corePages } from '@mtools/core/integrations/core-pages';
  *   export default defineConfig({ integrations: [corePages()] });
  */
-export function corePages(): AstroIntegration {
+export function corePages(siteConfig?: SiteConfig): AstroIntegration {
   return {
     name: '@mtools/core-pages',
     hooks: {
@@ -119,10 +122,24 @@ export function corePages(): AstroIntegration {
         // ── 2. Inject shared routes ──────────────────────────────────────────
         // Lower priority than site-level pages — sites can override any route
         // by adding their own file at the same pattern in src/pages/.
-        for (const route of CORE_ROUTES) {
+        for (const route of BASE_ROUTES) {
           injectRoute(route);
         }
-        logger.debug(`@mtools/core-pages: injected ${CORE_ROUTES.length} core routes`);
+
+        // Blog routes are only injected when the blog feature is enabled.
+        // When disabled, no blog/* pages exist in the build — no zombie pages,
+        // no wasted crawl budget, no empty tag archives.
+        const blogEnabled = siteConfig?.features?.blog?.enabled ?? true;
+        if (blogEnabled) {
+          for (const route of BLOG_ROUTES) {
+            injectRoute(route);
+          }
+          logger.debug(`@mtools/core-pages: blog routes injected (blog.enabled=true)`);
+        } else {
+          logger.debug(`@mtools/core-pages: blog routes skipped (blog.enabled=false)`);
+        }
+
+        logger.debug(`@mtools/core-pages: injected ${BASE_ROUTES.length} base routes`);
       },
     },
   };
