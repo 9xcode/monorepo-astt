@@ -37,6 +37,7 @@ export const TOOL_TAGS = [
   'text-qr',
   'gps-qr',
   'location-qr',
+  'calendar-qr',
   'scanner',
   'generator',
   'reader',

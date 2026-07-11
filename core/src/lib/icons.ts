@@ -39,6 +39,8 @@ import {
   MessageCircle,
   Bitcoin,
   ScanBarcode,
+  MapPin,
+  CalendarDays,
 } from '@lucide/svelte';
 
 /** Map of icon string names (from content frontmatter) to Lucide components */
@@ -77,6 +79,8 @@ export const iconMap: Record<string, any> = {
   MessageCircle,
   Bitcoin,
   ScanBarcode,
+  MapPin,
+  CalendarDays,
 };
 
 /** Map of icon string names used in mobile navigation config */

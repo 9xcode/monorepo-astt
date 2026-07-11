@@ -6,7 +6,7 @@
 
   import {
     Link, Type, Mail, Phone, MessageSquare, MessageCircle,
-    Contact, Wifi, Bitcoin, Download, Copy, Check, RefreshCw, MapPin,
+    Contact, Wifi, Bitcoin, Download, Copy, Check, RefreshCw, MapPin, CalendarDays,
   } from '@lucide/svelte';
 
   import UrlTab       from './tabs/UrlTab.svelte';
@@ -19,9 +19,10 @@
   import WifiTab      from './tabs/WifiTab.svelte';
   import BitcoinTab   from './tabs/BitcoinTab.svelte';
   import GpsTab       from './tabs/GpsTab.svelte';
+  import CalendarTab  from './tabs/CalendarTab.svelte';
 
   // ─── Types ─────────────────────────────────────────────────────────────────────
-  type TabId    = 'url' | 'text' | 'email' | 'phone' | 'sms' | 'whatsapp' | 'vcard' | 'wifi' | 'bitcoin' | 'gps';
+  type TabId    = 'url' | 'text' | 'email' | 'phone' | 'sms' | 'whatsapp' | 'vcard' | 'wifi' | 'bitcoin' | 'gps' | 'calendar';
   type ErrorLevel = 'L' | 'M' | 'Q' | 'H';
   type QrFormat   = 'png' | 'webp' | 'svg';
 
@@ -43,6 +44,7 @@
     { id: 'wifi',     label: 'Wi-Fi',    icon: Wifi,          hint: 'Network credentials'   },
     { id: 'bitcoin',  label: 'Bitcoin',  icon: Bitcoin,       hint: 'BIP-21 payment URI'    },
     { id: 'gps',      label: 'GPS',      icon: MapPin,        hint: 'Geographic location'    },
+    { id: 'calendar', label: 'Calendar', icon: CalendarDays,  hint: 'Add to calendar event'  },
   ];
 
   // ─── State ─────────────────────────────────────────────────────────────────────
@@ -329,8 +331,10 @@
               <WifiTab bind:content />
             {:else if activeTab === 'bitcoin'}
               <BitcoinTab bind:content />
-            {:else}
+            {:else if activeTab === 'gps'}
               <GpsTab bind:content />
+            {:else}
+              <CalendarTab bind:content />
             {/if}
           {/key}
         </CardContent>
