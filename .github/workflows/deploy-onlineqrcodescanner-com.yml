@@ -69,6 +69,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history needed for per-file git dates (content-dates integration)
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
