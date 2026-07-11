@@ -35,6 +35,8 @@ export const TOOL_TAGS = [
   'whatsapp-qr',
   'phone-qr',
   'text-qr',
+  'gps-qr',
+  'location-qr',
   'scanner',
   'generator',
   'reader',
