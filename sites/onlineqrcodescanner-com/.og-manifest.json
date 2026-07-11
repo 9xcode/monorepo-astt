@@ -63,5 +63,15 @@
     "hash": "1668880d0a01b685e19fa154b1c52cf5",
     "version": "v1.0.0",
     "locale": null
+  },
+  "tools/calendar-qr-code-generator": {
+    "hash": "031bba348211da12d96aafa765e9fee9",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/gps-qr-code-generator": {
+    "hash": "394b9109b406345c3a4644cd01b2955b",
+    "version": "v1.0.0",
+    "locale": null
   }
 }
