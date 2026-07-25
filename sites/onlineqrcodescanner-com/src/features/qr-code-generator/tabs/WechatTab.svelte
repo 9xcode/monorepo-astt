@@ -16,31 +16,21 @@
 
 <div class="space-y-5">
   <div class="space-y-1.5">
-    <label for="url-input" class="block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-      Website URL <span class="text-emerald-500 normal-case tracking-normal font-medium ml-0.5">*</span>
+    <label for="wechat-input" class="block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+      WeChat QR URL (or use image scanner) <span class="text-emerald-500 normal-case tracking-normal font-medium ml-0.5">*</span>
     </label>
     <input
-      id="url-input"
+      id="wechat-input"
       type="url"
       bind:value={url}
-      placeholder="https://your-website.com"
+      placeholder="https://weixin.qq.com/..."
       class={I}
       autocomplete="url"
       spellcheck={false}
     />
     <p class="text-[11px] text-muted-foreground/60 leading-relaxed">
-      Encode any web address — blog, product page, social profile, or any link.
+      Encode a link to your WeChat profile or page.
     </p>
-  </div>
-
-  <div class="flex flex-wrap gap-2 items-center">
-    <span class="text-xs text-muted-foreground shrink-0">Quick prefix:</span>
-    {#each ['https://', 'http://'] as prefix (prefix)}
-      <button
-        onclick={() => { url = prefix; }}
-        class="px-2.5 py-1 rounded-lg border border-border/80 text-xs font-mono text-muted-foreground hover:border-emerald-500/50 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all duration-200 active:scale-95"
-      >{prefix}</button>
-    {/each}
   </div>
 
   {#if computed}

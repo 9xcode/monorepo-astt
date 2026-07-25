@@ -1,0 +1,13 @@
+---
+title: "TikTok QR Code Generator"
+seoTitle: "Free TikTok QR Code Generator Online"
+description: "Generate a QR code that links directly to your TikTok profile or page. Free, browser-based, no sign-up required."
+shortDescription: "Create a QR code for your TikTok profile"
+category: "QR Generator"
+tags: ["qr-generator", "generator", "utility", "tiktok-qr", "social-qr"]
+icon: "Globe"
+---
+
+## TikTok QR Code Generator
+
+This is a free online tool to create a QR code for your TikTok profile. We will write the complete content for this page later.

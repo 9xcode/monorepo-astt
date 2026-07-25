@@ -1,0 +1,13 @@
+---
+title: "Pinterest QR Code Generator"
+seoTitle: "Free Pinterest QR Code Generator Online"
+description: "Generate a QR code that links directly to your Pinterest profile or page. Free, browser-based, no sign-up required."
+shortDescription: "Create a QR code for your Pinterest profile"
+category: "QR Generator"
+tags: ["qr-generator", "generator", "utility", "pinterest-qr", "social-qr"]
+icon: "Globe"
+---
+
+## Pinterest QR Code Generator
+
+This is a free online tool to create a QR code for your Pinterest profile. We will write the complete content for this page later.

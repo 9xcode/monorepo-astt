@@ -7,6 +7,8 @@
   import {
     Link, Type, Mail, Phone, MessageSquare, MessageCircle,
     Contact, Wifi, Bitcoin, Download, Copy, Check, RefreshCw, MapPin, CalendarDays,
+    Globe, Share2, Camera, Cloud, Pin, Send, Headphones, Music, Video, AtSign,
+    PhoneCall, Mic, PlayCircle,
   } from '@lucide/svelte';
 
   import UrlTab       from './tabs/UrlTab.svelte';
@@ -20,9 +22,35 @@
   import BitcoinTab   from './tabs/BitcoinTab.svelte';
   import GpsTab       from './tabs/GpsTab.svelte';
   import CalendarTab  from './tabs/CalendarTab.svelte';
+  import FacebookTab from './tabs/FacebookTab.svelte';
+  import InstagramTab from './tabs/InstagramTab.svelte';
+  import SnapchatTab from './tabs/SnapchatTab.svelte';
+  import LinkedinTab from './tabs/LinkedinTab.svelte';
+  import BlueskyTab from './tabs/BlueskyTab.svelte';
+  import MastodonTab from './tabs/MastodonTab.svelte';
+  import XTwitterTab from './tabs/XTwitterTab.svelte';
+  import PinterestTab from './tabs/PinterestTab.svelte';
+  import TelegramTab from './tabs/TelegramTab.svelte';
+  import DiscordTab from './tabs/DiscordTab.svelte';
+  import KakaotalkTab from './tabs/KakaotalkTab.svelte';
+  import YoutubeTab from './tabs/YoutubeTab.svelte';
+  import SpotifyTab from './tabs/SpotifyTab.svelte';
+  import TiktokTab from './tabs/TiktokTab.svelte';
+  import ThreadsTab from './tabs/ThreadsTab.svelte';
+  import RedditTab from './tabs/RedditTab.svelte';
+  import GithubTab from './tabs/GithubTab.svelte';
+  import GitlabTab from './tabs/GitlabTab.svelte';
+  import WechatTab from './tabs/WechatTab.svelte';
+  import SignalTab from './tabs/SignalTab.svelte';
+  import ViberTab from './tabs/ViberTab.svelte';
+  import LineTab from './tabs/LineTab.svelte';
+  import TwitchTab from './tabs/TwitchTab.svelte';
+  import BerealTab from './tabs/BerealTab.svelte';
+  import ClubhouseTab from './tabs/ClubhouseTab.svelte';
+  import OdyseeTab from './tabs/OdyseeTab.svelte';
 
   // ─── Types ─────────────────────────────────────────────────────────────────────
-  type TabId    = 'url' | 'text' | 'email' | 'phone' | 'sms' | 'whatsapp' | 'vcard' | 'wifi' | 'bitcoin' | 'gps' | 'calendar';
+  type TabId    = 'url' | 'text' | 'email' | 'phone' | 'sms' | 'whatsapp' | 'vcard' | 'wifi' | 'bitcoin' | 'gps' | 'calendar' | 'facebook' | 'instagram' | 'snapchat' | 'linkedin' | 'bluesky' | 'mastodon' | 'x-twitter' | 'pinterest' | 'telegram' | 'discord' | 'kakaotalk' | 'youtube' | 'spotify' | 'tiktok' | 'threads' | 'reddit' | 'github' | 'gitlab' | 'wechat' | 'signal' | 'viber' | 'line' | 'twitch' | 'bereal' | 'clubhouse' | 'odysee';
   type ErrorLevel = 'L' | 'M' | 'Q' | 'H';
   type QrFormat   = 'png' | 'webp' | 'svg';
 
@@ -45,6 +73,32 @@
     { id: 'bitcoin',  label: 'Bitcoin',  icon: Bitcoin,       hint: 'BIP-21 payment URI'    },
     { id: 'gps',      label: 'GPS',      icon: MapPin,        hint: 'Geographic location'    },
     { id: 'calendar', label: 'Calendar', icon: CalendarDays,  hint: 'Add to calendar event'  },
+    { id: 'facebook', label: 'Facebook', icon: Globe, hint: 'Facebook Profile' },
+    { id: 'instagram', label: 'Instagram', icon: Camera, hint: 'Instagram Profile' },
+    { id: 'snapchat', label: 'Snapchat', icon: Camera, hint: 'Snapchat Profile' },
+    { id: 'linkedin', label: 'LinkedIn', icon: Globe, hint: 'LinkedIn Profile' },
+    { id: 'bluesky', label: 'Bluesky', icon: Cloud, hint: 'Bluesky Profile' },
+    { id: 'mastodon', label: 'Mastodon', icon: MessageCircle, hint: 'Mastodon Profile' },
+    { id: 'x-twitter', label: 'X (Twitter)', icon: Share2, hint: 'X (Twitter) Profile' },
+    { id: 'pinterest', label: 'Pinterest', icon: Pin, hint: 'Pinterest Profile' },
+    { id: 'telegram', label: 'Telegram', icon: Send, hint: 'Telegram Chat' },
+    { id: 'discord', label: 'Discord', icon: Headphones, hint: 'Discord Invite' },
+    { id: 'kakaotalk', label: 'KakaoTalk', icon: MessageSquare, hint: 'KakaoTalk Link' },
+    { id: 'youtube', label: 'YouTube', icon: Video, hint: 'YouTube Channel' },
+    { id: 'spotify', label: 'Spotify', icon: Music, hint: 'Spotify Link' },
+    { id: 'tiktok', label: 'TikTok', icon: Video, hint: 'TikTok Profile' },
+    { id: 'threads', label: 'Threads', icon: AtSign, hint: 'Threads Profile' },
+    { id: 'reddit', label: 'Reddit', icon: MessageCircle, hint: 'Reddit Link' },
+    { id: 'github', label: 'GitHub', icon: Link, hint: 'GitHub Profile' },
+    { id: 'gitlab', label: 'GitLab', icon: Link, hint: 'GitLab Profile' },
+    { id: 'wechat', label: 'WeChat', icon: MessageCircle, hint: 'WeChat Link' },
+    { id: 'signal', label: 'Signal', icon: MessageSquare, hint: 'Signal Profile' },
+    { id: 'viber', label: 'Viber', icon: PhoneCall, hint: 'Viber Contact' },
+    { id: 'line', label: 'LINE', icon: MessageCircle, hint: 'LINE Contact' },
+    { id: 'twitch', label: 'Twitch', icon: PlayCircle, hint: 'Twitch Channel' },
+    { id: 'bereal', label: 'BeReal', icon: Camera, hint: 'BeReal Profile' },
+    { id: 'clubhouse', label: 'Clubhouse', icon: Mic, hint: 'Clubhouse Profile' },
+    { id: 'odysee', label: 'Odysee', icon: PlayCircle, hint: 'Odysee Channel' },
   ];
 
   // ─── State ─────────────────────────────────────────────────────────────────────
@@ -333,6 +387,58 @@
               <BitcoinTab bind:content />
             {:else if activeTab === 'gps'}
               <GpsTab bind:content />
+                        {:else if activeTab === 'facebook'}
+              <FacebookTab bind:content />
+            {:else if activeTab === 'instagram'}
+              <InstagramTab bind:content />
+            {:else if activeTab === 'snapchat'}
+              <SnapchatTab bind:content />
+            {:else if activeTab === 'linkedin'}
+              <LinkedinTab bind:content />
+            {:else if activeTab === 'bluesky'}
+              <BlueskyTab bind:content />
+            {:else if activeTab === 'mastodon'}
+              <MastodonTab bind:content />
+            {:else if activeTab === 'x-twitter'}
+              <XTwitterTab bind:content />
+            {:else if activeTab === 'pinterest'}
+              <PinterestTab bind:content />
+            {:else if activeTab === 'telegram'}
+              <TelegramTab bind:content />
+            {:else if activeTab === 'discord'}
+              <DiscordTab bind:content />
+            {:else if activeTab === 'kakaotalk'}
+              <KakaotalkTab bind:content />
+            {:else if activeTab === 'youtube'}
+              <YoutubeTab bind:content />
+            {:else if activeTab === 'spotify'}
+              <SpotifyTab bind:content />
+            {:else if activeTab === 'tiktok'}
+              <TiktokTab bind:content />
+            {:else if activeTab === 'threads'}
+              <ThreadsTab bind:content />
+            {:else if activeTab === 'reddit'}
+              <RedditTab bind:content />
+            {:else if activeTab === 'github'}
+              <GithubTab bind:content />
+            {:else if activeTab === 'gitlab'}
+              <GitlabTab bind:content />
+            {:else if activeTab === 'wechat'}
+              <WechatTab bind:content />
+            {:else if activeTab === 'signal'}
+              <SignalTab bind:content />
+            {:else if activeTab === 'viber'}
+              <ViberTab bind:content />
+            {:else if activeTab === 'line'}
+              <LineTab bind:content />
+            {:else if activeTab === 'twitch'}
+              <TwitchTab bind:content />
+            {:else if activeTab === 'bereal'}
+              <BerealTab bind:content />
+            {:else if activeTab === 'clubhouse'}
+              <ClubhouseTab bind:content />
+            {:else if activeTab === 'odysee'}
+              <OdyseeTab bind:content />
             {:else}
               <CalendarTab bind:content />
             {/if}
