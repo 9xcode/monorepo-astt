@@ -8,7 +8,7 @@
     Link, Type, Mail, Phone, MessageSquare, MessageCircle,
     Contact, Wifi, Bitcoin, Download, Copy, Check, RefreshCw, MapPin, CalendarDays,
     Globe, Share2, Camera, Cloud, Pin, Send, Headphones, Music, Video, AtSign,
-    PhoneCall, Mic, PlayCircle,
+    PhoneCall, Mic, PlayCircle, ChevronDown, ChevronUp,
   } from '@lucide/svelte';
 
   import UrlTab       from './tabs/UrlTab.svelte';
@@ -104,6 +104,8 @@
   // ─── State ─────────────────────────────────────────────────────────────────────
   // svelte-ignore state_referenced_locally
   let activeTab    = $state<TabId>(initialMode);
+  // Auto-expand if the pre-selected initialMode tab is beyond the first 12 default tabs
+  let isExpanded   = $state(tabs.findIndex(t => t.id === initialMode) >= 12);
   let content      = $state('');
   let qrDataUrl    = $state('');   // PNG data URL (also used for SVG preview via data URI)
   let qrSvgString  = $state('');   // Raw SVG markup for download
@@ -317,19 +319,44 @@
 
   <!-- ─── Step 1: Type Selector ──────────────────────────────────────────────── -->
   <div class="space-y-3">
-    <div class="flex items-center gap-2.5">
-      <span class="step-badge">1</span>
-      <span class="text-sm font-semibold text-foreground">Choose QR Type</span>
+    <div class="flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2.5">
+        <span class="step-badge">1</span>
+        <span class="text-sm font-semibold text-foreground">Choose QR Type</span>
+      </div>
+
+      <button
+        onclick={() => isExpanded = !isExpanded}
+        class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all cursor-pointer"
+      >
+        {#if isExpanded}
+          <span>Show Less Types</span>
+          <ChevronUp class="w-3.5 h-3.5" />
+        {:else}
+          <span>Show More Types</span>
+          <ChevronDown class="w-3.5 h-3.5" />
+        {/if}
+      </button>
     </div>
 
     <div class="flex flex-wrap gap-2">
-      {#each tabs as tab (tab.id)}
+      {#each tabs as tab, i (tab.id)}
         {@const Icon = tab.icon}
+        {@const visClass = isExpanded
+          ? 'flex'
+          : i < 6
+            ? 'flex'
+            : i < 9
+              ? 'hidden sm:flex'
+              : i < 12
+                ? 'hidden lg:flex'
+                : 'hidden'}
         <button
           onclick={() => setTab(tab.id)}
           title={tab.hint}
           class={cn(
-            "group flex items-center gap-2 px-3.5 py-2 rounded-xl text-sm font-medium transition-all duration-200 border",
+            visClass,
+            "group items-center gap-2 px-3.5 py-2 rounded-xl text-sm font-medium transition-all duration-200 border",
             activeTab === tab.id
               ? "bg-emerald-600 text-white border-emerald-600 shadow-sm shadow-emerald-500/20"
               : "bg-card text-muted-foreground border-border/80 hover:border-emerald-500/40 hover:text-foreground hover:bg-accent/50"
