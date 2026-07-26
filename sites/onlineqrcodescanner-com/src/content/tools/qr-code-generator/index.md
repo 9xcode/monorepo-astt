@@ -8,6 +8,8 @@ tags: ["qr-generator", "generator", "url-qr", "wifi-qr", "vcard-qr", "email-qr",
 icon: "QrCode"
 featured: true
 order: 2
+publishedAt: "2026-06-10T13:18:56Z"
+updatedAt: "2026-06-27T10:41:44Z"
 ---
 
 ## What is an online QR code generator?

@@ -8,6 +8,8 @@ tags: ["qr-scanner", "scanner", "reader"]
 icon: "Camera"
 featured: true
 order: 1
+publishedAt: "2026-06-09T09:47:39Z"
+updatedAt: "2026-06-27T10:41:44Z"
 ---
 
 The Online QR Code Scanner can reads any QR codes. You point your camera at one, upload a photo or paste from clipboard, and the tool tells you what is inside.

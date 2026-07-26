@@ -73,5 +73,135 @@
     "hash": "394b9109b406345c3a4644cd01b2955b",
     "version": "v1.0.0",
     "locale": null
+  },
+  "tools/bereal-qr-code-generator": {
+    "hash": "c6ef1be50ebfee8d7719748513ba8e44",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/bluesky-qr-code-generator": {
+    "hash": "cf45bab005babd5b5acdac46278f59c9",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/clubhouse-qr-code-generator": {
+    "hash": "e95a65fca8b88a1a462aef10cbb188d8",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/discord-qr-code-generator": {
+    "hash": "2b1281e8871858a157fb79d2e5730a4c",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/facebook-qr-code-generator": {
+    "hash": "20a1abf2d6ff2285ff7b56895c5ad7c3",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/github-qr-code-generator": {
+    "hash": "ab04e4b1891ab7a21834d86312902710",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/gitlab-qr-code-generator": {
+    "hash": "fb00be06fc296f661ac3d6fe06e0c9c1",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/instagram-qr-code-generator": {
+    "hash": "7b05da6c85fbfc3d30a3913d817c6c5e",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/kakaotalk-qr-code-generator": {
+    "hash": "a39762ccbf8860c68d30680411334c22",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/line-qr-code-generator": {
+    "hash": "6afad9ec31f41f9b79216c97265f2ccc",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/linkedin-qr-code-generator": {
+    "hash": "411c0093707cf941f1619643710f0b56",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/mastodon-qr-code-generator": {
+    "hash": "9b839ae3e07d5b18998c26f5e7c1ebaa",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/odysee-qr-code-generator": {
+    "hash": "f153e0b0243e78ed8b4f1a480eaceba8",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/pinterest-qr-code-generator": {
+    "hash": "1e16e8f8d604389073e088a78f80e907",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/reddit-qr-code-generator": {
+    "hash": "bf7d04778fc7c77fba9fb7d764b6531a",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/signal-qr-code-generator": {
+    "hash": "5fd42d7897c6c08221efb6e8e512fef2",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/snapchat-qr-code-generator": {
+    "hash": "ffa0a718da238cf8ad6cacfd43898b41",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/spotify-qr-code-generator": {
+    "hash": "707a85cbfac180bdd49fd1e387b0cd7f",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/telegram-qr-code-generator": {
+    "hash": "c39b693d73ada8dd1eac345e86c6cee7",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/threads-qr-code-generator": {
+    "hash": "7b4058174179c9a9ab5898fdca09ecb9",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/tiktok-qr-code-generator": {
+    "hash": "9e4b95f4243e4ce241ed87ff63e409b2",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/twitch-qr-code-generator": {
+    "hash": "beade55de89911635dda758de2eb45e7",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/viber-qr-code-generator": {
+    "hash": "8c9e4750555f597a28b8d6fdbf5b2e38",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/wechat-qr-code-generator": {
+    "hash": "f8377dc7caa154d2cb1b1ce703c93770",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/x-twitter-qr-code-generator": {
+    "hash": "43cde7aba134ac9aa8feeafcc67d520f",
+    "version": "v1.0.0",
+    "locale": null
+  },
+  "tools/youtube-qr-code-generator": {
+    "hash": "b322a72f5431b9b9605561958ec59c1e",
+    "version": "v1.0.0",
+    "locale": null
   }
 }

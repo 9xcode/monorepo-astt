@@ -6,6 +6,8 @@ shortDescription: "Convert any URL or website link into a downloadable QR code"
 category: "QR Generator"
 tags: ["qr-generator", "url-qr", "generator"]
 icon: "Link"
+publishedAt: "2026-06-10T22:57:22Z"
+updatedAt: "2026-06-27T10:41:44Z"
 ---
 
 ## What is a URL QR Code?

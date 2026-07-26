@@ -60,9 +60,47 @@ letter do ad this : https://www.google.com/preferences/source?q=https://redeemco
 - qr scanner and barcode scanner doing same work so if code is same and if possiblity of create ceterlize tool and use then try it.
 - create more content about all the possible barcode scanners
 
-
+- do some fix for the lastUpdate andpublish date of git
 
 ---------
 - animation: a "Rolling Slide Swap" (or Vertical Scroll Reveal).
 - animation: the "Offset Ghost Shadow" effect.
 - "Jelly Squish & Bounce" animation.
+
+
+--------
+
+Social Media & Networking
+Facebook QR Code Generator: 
+Instagram QR Code Generator: 
+Snapchat QR Code Generator: 
+LinkedIn QR Code Generator: 
+Bluesky QR Code Generator: 
+Mastodon QR Code Generator: 
+X (Twitter) QR Code Generator: 
+Pinterest QR Code Generator: 
+Threads QR Code Generator: 
+Reddit QR Code Generator: 
+BeReal QR Code Generator: 
+Clubhouse QR Code Generator: 
+
+Messaging & Communication
+Telegram QR Code Generator: 
+Discord QR Code Generator: 
+KakaoTalk QR Code Generator: 
+WeChat QR Code Generator: 
+Signal QR Code Generator: 
+Viber QR Code Generator: 
+LINE QR Code Generator: 
+
+Media, Video & Audio
+YouTube QR Code Generator: 
+Spotify QR Code Generator: 
+TikTok QR Code Generator: 
+Twitch QR Code Generator: 
+Odysee QR Code Generator: 
+
+Developer & Technical
+GitHub QR Code Generator: 
+GitLab QR Code Generator: 
+

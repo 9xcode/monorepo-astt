@@ -6,6 +6,8 @@ shortDescription: "Turn any GPS location into a scannable QR code"
 category: "QR Generator"
 tags: ["qr-generator", "gps-qr", "location-qr", "generator"]
 icon: "MapPin"
+publishedAt: "2026-07-11T20:43:32Z"
+updatedAt: "2026-07-11T20:43:32Z"
 ---
 
 ## What is a GPS location QR code?

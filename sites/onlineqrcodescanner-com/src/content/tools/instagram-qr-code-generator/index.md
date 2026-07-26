@@ -6,6 +6,8 @@ shortDescription: "Create a QR code for your Instagram profile"
 category: "QR Generator"
 tags: ["qr-generator", "generator", "utility", "instagram-qr", "social-qr"]
 icon: "Globe"
+publishedAt: "2026-07-25T22:23:43Z"
+updatedAt: "2026-07-25T22:23:43Z"
 ---
 
 ## Instagram QR Code Generator

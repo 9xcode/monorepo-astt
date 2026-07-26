@@ -6,6 +6,8 @@ shortDescription: "Create a QR code that opens a pre-filled SMS text message"
 category: "QR Generator"
 tags: ["qr-generator", "generator", "utility"]
 icon: "MessageSquare"
+publishedAt: "2026-06-10T22:57:22Z"
+updatedAt: "2026-06-27T10:41:44Z"
 ---
 
 ## What is an SMS QR Code?

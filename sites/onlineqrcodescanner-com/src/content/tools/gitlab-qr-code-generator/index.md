@@ -6,6 +6,8 @@ shortDescription: "Create a QR code for your GitLab profile"
 category: "QR Generator"
 tags: ["qr-generator", "generator", "utility", "gitlab-qr", "social-qr"]
 icon: "Globe"
+publishedAt: "2026-07-25T22:23:43Z"
+updatedAt: "2026-07-25T22:23:43Z"
 ---
 
 ## GitLab QR Code Generator

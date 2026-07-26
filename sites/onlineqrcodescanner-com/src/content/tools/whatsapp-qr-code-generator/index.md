@@ -6,6 +6,8 @@ shortDescription: "Create a QR code that opens a WhatsApp chat with a pre-filled
 category: "QR Generator"
 tags: ["qr-generator", "generator", "utility"]
 icon: "MessageCircle"
+publishedAt: "2026-06-10T22:57:22Z"
+updatedAt: "2026-06-27T10:41:44Z"
 ---
 
 ## What is a WhatsApp QR code?

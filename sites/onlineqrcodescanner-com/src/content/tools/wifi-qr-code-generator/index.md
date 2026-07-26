@@ -6,6 +6,8 @@ shortDescription: "Let guests connect to your Wi-Fi by scanning a QR code"
 category: "QR Generator"
 tags: ["qr-generator", "wifi-qr", "generator"]
 icon: "Wifi"
+publishedAt: "2026-06-10T22:57:22Z"
+updatedAt: "2026-06-27T10:41:44Z"
 ---
 
 ## What is a Wi-Fi QR code?
