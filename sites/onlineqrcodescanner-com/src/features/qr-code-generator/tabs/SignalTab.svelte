@@ -6,7 +6,8 @@
   let username = $state('');
 
   const computed = $derived.by(() => {
-    return buildSocialUrl(username, 'https://signal.me/#p/');
+    // allowDots=true: Signal usernames have a number suffix (e.g. john.123)
+    return buildSocialUrl(username, 'https://signal.me/#p/', true);
   });
 
   $effect(() => { content = computed; });
@@ -28,7 +29,7 @@
       spellcheck={false}
     />
     <p class="text-[11px] text-muted-foreground/60 leading-relaxed">
-      You can enter just the username or paste the full profile URL.
+      Enter your Signal username (e.g. <span class="font-mono">john.123</span>) or paste the full signal.me link.
     </p>
   </div>
 

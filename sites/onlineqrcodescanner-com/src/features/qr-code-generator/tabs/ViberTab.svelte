@@ -28,7 +28,7 @@
       spellcheck={false}
     />
     <p class="text-[11px] text-muted-foreground/60 leading-relaxed">
-      You can enter just the username or paste the full profile URL.
+      Enter your phone number with country code (e.g. <span class="font-mono">+1234567890</span>).
     </p>
   </div>
 
