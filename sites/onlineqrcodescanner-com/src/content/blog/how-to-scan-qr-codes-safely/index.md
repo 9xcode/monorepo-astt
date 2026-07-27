@@ -3,6 +3,7 @@ title: "How to Scan QR Codes Safely: A Complete Guide to QR Security"
 description: "QR codes are everywhere, but they aren't always safe. Learn how QR code scams work and how you can scan QR codes securely without compromising your privacy."
 publishedAt: 2026-06-08
 updatedAt: 2026-06-08
+isDraft: true
 category: Guides
 tags: [qr-codes, scanning]
 featured: true

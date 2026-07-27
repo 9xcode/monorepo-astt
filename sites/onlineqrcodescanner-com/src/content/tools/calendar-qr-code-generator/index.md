@@ -6,6 +6,8 @@ shortDescription: "Generate a QR code that adds an event straight to any calenda
 category: "QR Generator"
 tags: ["qr-generator", "calendar-qr", "generator"]
 icon: "CalendarDays"
+publishedAt: "2026-07-11T20:59:25Z"
+updatedAt: "2026-07-11T20:59:25Z"
 ---
 
 ## What is a calendar event QR code?

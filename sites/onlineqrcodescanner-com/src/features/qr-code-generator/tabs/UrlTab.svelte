@@ -1,12 +1,12 @@
 <script lang="ts">
+  import { formatUrl } from './utils';
+
   let { content = $bindable('') }: { content: string } = $props();
 
   let url = $state('');
 
   const computed = $derived.by(() => {
-    const t = url.trim();
-    if (!t || t === 'https://' || t === 'http://') return '';
-    return t;
+    return formatUrl(url);
   });
 
   $effect(() => { content = computed; });

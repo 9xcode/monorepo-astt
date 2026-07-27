@@ -8,6 +8,8 @@ tags: ["barcode-scanner", "scanner", "reader"]
 icon: "ScanBarcode"
 featured: true
 order: 3
+publishedAt: "2026-06-11T13:15:19Z"
+updatedAt: "2026-06-27T17:48:00Z"
 ---
 
 An online barcode scanner reads standard 1D and 2D barcodes directly through your web browser. You point your device camera at a label or upload an image file, and the tool decodes the information locally. No data goes to an external server.

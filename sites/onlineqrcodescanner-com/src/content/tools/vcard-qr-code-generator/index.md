@@ -6,6 +6,8 @@ shortDescription: "Share your contact details with anyone by letting them scan a
 category: "QR Generator"
 tags: ["qr-generator", "vcard-qr", "generator"]
 icon: "Contact"
+publishedAt: "2026-06-10T22:57:22Z"
+updatedAt: "2026-06-27T10:41:44Z"
 ---
 
 ## What is a vCard QR code?

@@ -6,6 +6,8 @@ shortDescription: "Create a Bitcoin wallet payment request QR code"
 category: "QR Generator"
 tags: ["qr-generator", "generator", "utility"]
 icon: "Bitcoin"
+publishedAt: "2026-06-10T22:57:22Z"
+updatedAt: "2026-06-27T10:41:44Z"
 ---
 
 ## What is a Bitcoin QR Code?

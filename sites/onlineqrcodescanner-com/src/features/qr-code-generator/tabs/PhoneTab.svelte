@@ -1,22 +1,32 @@
 <script lang="ts">
   let { content = $bindable('') }: { content: string } = $props();
 
+  let countryCode = $state('');
   let phone = $state('');
 
-  function cleanPhone(raw: string): string {
-    // Keep +, digits, spaces, hyphens for display — strip to digits + leading + for tel:
-    const stripped = raw.replace(/[^\d+]/g, '');
-    return stripped.startsWith('+') ? stripped : stripped ? '+' + stripped : '';
+  function cleanPhone(cc: string, num: string): string {
+    const raw = (cc + num).replace(/[^\d]/g, '');
+    return raw ? '+' + raw : '';
   }
 
+  $effect(() => {
+    if (/[^\d+]/.test(countryCode)) {
+      countryCode = countryCode.replace(/[^\d+]/g, '');
+    }
+    if (/[^\d\s-]/.test(phone)) {
+      phone = phone.replace(/[^\d\s-]/g, '');
+    }
+  });
+
   const computed = $derived.by(() => {
-    const cleaned = cleanPhone(phone.trim());
+    if (!countryCode.replace(/[^\d]/g, '') || !phone.replace(/[^\d]/g, '')) return '';
+    const cleaned = cleanPhone(countryCode, phone);
     return cleaned.length >= 7 ? `tel:${cleaned}` : '';
   });
 
   $effect(() => { content = computed; });
 
-  const I = 'w-full px-3.5 py-2.5 rounded-xl border border-border/80 bg-background text-foreground placeholder:text-muted-foreground/40 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500/50 transition-all duration-200 font-mono tracking-wider';
+  const I = 'px-3.5 py-2.5 rounded-xl border border-border/80 bg-background text-foreground placeholder:text-muted-foreground/40 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500/50 transition-all duration-200 font-mono tracking-wider';
   const L = 'block text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1.5';
 </script>
 
@@ -25,16 +35,24 @@
     <label for="phone-input" class={L}>
       Phone Number <span class="text-emerald-500 normal-case tracking-normal font-medium ml-0.5">*</span>
     </label>
-    <input
-      id="phone-input"
-      type="tel"
-      bind:value={phone}
-      placeholder="+1 555 000 0000"
-      class={I}
-      autocomplete="tel"
-    />
+    <div class="flex gap-2">
+      <input
+        type="tel"
+        bind:value={countryCode}
+        placeholder="+1"
+        class="{I} w-24 text-center"
+      />
+      <input
+        id="phone-input"
+        type="tel"
+        bind:value={phone}
+        placeholder="555 000 0000"
+        class="{I} flex-1"
+        autocomplete="tel"
+      />
+    </div>
     <p class="text-[11px] text-muted-foreground/60 mt-1.5 leading-relaxed">
-      Include country code (e.g. +1 for US, +44 for UK). Scanning will prompt a phone call.
+      Include country code (e.g. +1 for US). Scanning will prompt a phone call.
     </p>
   </div>
 
@@ -44,7 +62,7 @@
     <div class="flex flex-wrap gap-2">
       {#each [['+1', '🇺🇸 US/CA'], ['+44', '🇬🇧 UK'], ['+91', '🇮🇳 IN'], ['+61', '🇦🇺 AU'], ['+49', '🇩🇪 DE']] as [code, label] (code)}
         <button
-          onclick={() => { if (!phone.startsWith(code!)) phone = code! + ' '; }}
+          onclick={() => { countryCode = code!; }}
           class="flex items-center gap-1 px-2.5 py-1 rounded-lg border border-border/80 text-xs text-muted-foreground hover:border-emerald-500/50 hover:text-foreground transition-all duration-200 active:scale-95"
         >
           <span class="font-mono font-semibold">{code}</span>
