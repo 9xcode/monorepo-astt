@@ -62,6 +62,10 @@ letter do ad this : https://www.google.com/preferences/source?q=https://redeemco
 
 - do some fix for the lastUpdate andpublish date of git
 
+- fix the issue of og image from public to folder specific 
+    - also fix the cover image /public to colocate them in folder specific
+    - we may use any fixed word in evey .png image file that is og image for exampel og9x at the end of file name so we can know that this ifle is auto generated so we will not git them
+
 ---------
 - animation: a "Rolling Slide Swap" (or Vertical Scroll Reveal).
 - animation: the "Offset Ghost Shadow" effect.
@@ -74,6 +78,7 @@ Social Media & Networking
 Facebook QR Code Generator: 
 Instagram QR Code Generator: 
 Snapchat QR Code Generator: 
+
 LinkedIn QR Code Generator: 
 Bluesky QR Code Generator: 
 Mastodon QR Code Generator: 
