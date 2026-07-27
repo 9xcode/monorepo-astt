@@ -8,6 +8,7 @@ tags: ["qr-generator", "generator", "utility", "gitlab-qr", "social-qr"]
 icon: "Globe"
 publishedAt: "2026-07-25T22:23:43Z"
 updatedAt: "2026-07-25T22:23:43Z"
+isDraft: true
 ---
 
 ## GitLab QR Code Generator

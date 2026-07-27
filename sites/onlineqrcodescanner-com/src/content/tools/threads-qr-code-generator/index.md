@@ -8,6 +8,7 @@ tags: ["qr-generator", "generator", "utility", "threads-qr", "social-qr"]
 icon: "Globe"
 publishedAt: "2026-07-25T22:23:43Z"
 updatedAt: "2026-07-25T22:23:43Z"
+isDraft: true
 ---
 
 ## Threads QR Code Generator

@@ -1,13 +1,13 @@
 ---
 title: "Facebook QR Code Generator"
 seoTitle: "Free Facebook QR Code Generator Online"
-description: "Generate a QR code that links directly to your Facebook profile or page. Free, browser-based, no sign-up required."
+description: "Generate a QR code that links directly to your Facebook profile or fb page and fb group."
 shortDescription: "Create a QR code for your Facebook profile"
 category: "QR Generator"
 tags: ["qr-generator", "generator", "utility", "facebook-qr", "social-qr"]
 icon: "Globe"
-publishedAt: "2026-07-25T22:23:43Z"
-updatedAt: "2026-07-27T09:00:00Z"
+publishedAt: "2026-07-22T12:23:43Z"
+updatedAt: "2026-07-27T07:00:00Z"
 ---
 
 A Facebook QR code is a scannable image that encodes the URL of your Facebook profile, page, group, or event. When someone scans it, their phone opens that Facebook URL directly in a browser or the Facebook app. That is the entire mechanism: your Facebook link, converted into a pattern a phone camera can read.
@@ -100,7 +100,7 @@ What this tool creates is simpler: a QR code for any Facebook URL you provide. Y
 - [QR Code Generator](/tools/qr-code-generator) - create QR codes for URLs, text, Wi-Fi, email, phone, vCard, and more in one place
 - [URL QR Code Generator](/tools/url-qr-code-generator) - turn any website link into a scannable QR code
 - [Instagram QR Code Generator](/tools/instagram-qr-code-generator) - create a QR code for your Instagram profile
-- [LinkedIn QR Code Generator](/tools/linkedin-qr-code-generator) - create a QR code for your LinkedIn profile or company page
+- [Snapchat QR Code Generator](/tools/snapchat-qr-code-generator) - create a QR code for your Snapchat profile
 - [WhatsApp QR Code Generator](/tools/whatsapp-qr-code-generator) - generate a QR code that opens a WhatsApp chat with your number
 - [QR Code Scanner](/tools/qr-code-scanner) - decode any QR code in your browser using your camera
 

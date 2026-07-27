@@ -72,6 +72,25 @@ letter do ad this : https://www.google.com/preferences/source?q=https://redeemco
 - "Jelly Squish & Bounce" animation.
 
 
+
+-----
+more tools to create in qr code scanner
+
+dinaraour qr code
+discord server qr code generator
+amazon qr code generator /scanner
+etsy qr generator / scanner
+bank qr
+
+
+
+# competitors 
+qr-stock.com	2025-05-09 02:53:21	1 Years 2 Month 17 Days	2026-04-23 16:31:37	2027-05-09 02:53:21
+qrplify.com	2023-07-30 10:13:28	2 Years 11 Month 26 Days	2026-06-30 04:05:02	2027-07-30 10:13:28
+qrlynx.com	2024-10-20 19:39:57	1 Years 9 Month 6 Days	2025-10-20 09:57:02	2026-10-20 19:39:57
+useqrkit.com	2024-11-07 19:30:58	1 Years 8 Month 19 Days	2025-10-08 19:55:48	2026-11-07 19:30:58
+recodeqr.com	2024-12-04 20:27:09	1 Years 7 Month 22 Days	2025-11-04 04:25:54	2026-12-04 20:27:09
+imqrscan.com	2024-03-23 11:16:12	2 Years 4 Month 3 Days	2026-02-27 20:57:09	2028-03-23 11:16:12
 --------
 
 Social Media & Networking

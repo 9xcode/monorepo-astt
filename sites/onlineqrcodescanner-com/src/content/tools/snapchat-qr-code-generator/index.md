@@ -1,13 +1,13 @@
 ---
 title: "Snapchat QR Code Generator"
 seoTitle: "Free Snapchat QR Code Generator Online"
-description: "Generate a QR code that links directly to your Snapchat profile or page. Free, browser-based, no sign-up required."
+description: "Create a QR code that links directly to your Snapchat profile or page, when user scan that qr they will redirect to your snap profile directly."
 shortDescription: "Create a QR code for your Snapchat profile"
 category: "QR Generator"
 tags: ["qr-generator", "generator", "utility", "snapchat-qr", "social-qr"]
 icon: "Globe"
-publishedAt: "2026-07-25T22:23:43Z"
-updatedAt: "2026-07-27T09:00:00Z"
+publishedAt: "2026-07-24T22:23:43Z"
+updatedAt: "2026-07-27T04:00:00Z"
 ---
 
 This tool generates a QR code that links to your Snapchat profile using the `snapchat.com/add/yourusername` URL. When someone scans it on a phone with Snapchat installed, the app opens a prompt to add you as a friend. On a phone without Snapchat, the link opens in a browser and shows your public profile.
@@ -65,7 +65,7 @@ If you are putting a code somewhere where you know your audience uses Snapchat (
 
 - [QR Code Generator](/tools/qr-code-generator) - create QR codes for URLs, text, Wi-Fi, email, phone, and more
 - [Instagram QR Code Generator](/tools/instagram-qr-code-generator) - QR code for your Instagram profile
-- [TikTok QR Code Generator](/tools/tiktok-qr-code-generator) - QR code that links to your TikTok profile
+- [WhatsApp QR Code Generator](/tools/whatsapp-qr-code-generator) - QR code that opens a WhatsApp chat
 - [Facebook QR Code Generator](/tools/facebook-qr-code-generator) - QR code for your Facebook profile or page
 - [URL QR Code Generator](/tools/url-qr-code-generator) - encode any website link as a QR code
 - [QR Code Scanner](/tools/qr-code-scanner) - scan and decode any QR code in your browser

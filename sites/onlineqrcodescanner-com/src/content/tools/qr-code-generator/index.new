@@ -16,23 +16,39 @@ updatedAt: "2026-06-27T10:41:44Z"
 
 A QR code generator is a tool that takes whatever data you give it and encodes it into a scannable image. The image itself is nothing exotic. It is a grid of black and white squares with a specific pattern the camera can read. What matters is the data inside.
 
-This tool covers many types of QR codes formats:
+This tool covers a wide range of QR code types. The core formats:
 
 - **URL**: any website link, social media links, domain links, product links, event links, etc.
 - **Plain text**: a message, coupon code, anything you want typed into someone's phone
 - **E-mail**: a `mailto:` link that pre-fills recipient, subject, and body for any email service like gmail, outlook, yahoo, protonmail or your own hosted email.
 - **Phone**: a `tel:` link that opens the dialer with a number ready to call
+- **SMS**: a pre-written text message ready to send
+- **WhatsApp**: a `wa.me` link that opens a WhatsApp chat with an optional pre-written message
+- **vCard**: a full contact entry that saves directly to the phone's contacts
+- **Wi-Fi**: network credentials that let someone join without typing a password
+- **Bitcoin**: a BIP-21 payment request with address, optional amount, and label
+- **GPS**: a geographic coordinate that opens in the phone's maps app
+- **Calendar**: an event entry that adds directly to the phone's calendar
+
+
 - **SMS**: a pre-written text message ready to send, also work with google RCS message.
 - **WhatsApp**: a `wa.me` link that opens a WhatsApp chat along with pre-written message.
 - **vCard**: a full contact entry that saves directly to the phone's contacts.
 - **Wi-Fi**: network credentials that let someone join without typing a password.
 - **Bitcoin**: a BIP-21 payment request with address, optional amount, and label.
 
+
+Social and messaging platforms (enter a username or handle, the tool builds the profile URL):
+
+- **Facebook**, **Instagram**, **Snapchat**, **LinkedIn**, **X (Twitter)**, **Pinterest**, **Threads**, **Reddit**, **Bluesky**, **Mastodon**, **BeReal**, **Clubhouse**
+- **YouTube**, **TikTok**, **Twitch**, **Spotify**, **Odysee**, **GitHub**, **GitLab**
+- **Telegram**, **Discord**, **KakaoTalk**, **WeChat**, **Signal**, **Viber**, **LINE**
+
 All processing runs in your browser. Nothing you enter is sent to a server, stored, or logged anywhere.
 
 ## How to create a QR code
 
-1. **Choose a type**: click one of the nine tabs at the top of the widget (URL, Text, E-mail, Phone, SMS, WhatsApp, vCard, Wi-Fi, Bitcoin).
+1. **Choose a type**: click the tab for the QR type you need. Core types (URL, Text, E-mail, Phone, SMS, WhatsApp, vCard, Wi-Fi, Bitcoin, GPS, Calendar) are listed first. Social and messaging platform tabs follow.
 2. **Enter your data**: fill in the fields. The QR code generates and updates automatically as you type.
 3. **Customize the colors**: pick from the preset swatches or enter any hex value for the QR pattern and background.
 4. **Set the size and format**: choose the output size (128px to 1600px) and format (PNG, WEBP, or SVG). SVG for print, PNG for everything else.
@@ -106,6 +122,37 @@ Bitcoin addresses are 26 to 62 characters of mixed letters and numbers depending
 
 Used by merchants accepting in-person payments, freelancers and creators putting a donation address on a page or video, and developers testing payment integrations. For the full technical breakdown, see the [Bitcoin QR Code Generator](/tools/bitcoin-qr-code-generator) page.
 
+### GPS QR codes
+
+Encodes a geographic coordinate as a `geo:latitude,longitude` URI. When scanned, the phone opens the location in its default maps app (Google Maps on Android, Apple Maps on iPhone).
+
+Useful on printed directions, event invitations, real estate listings, or anywhere you want to drop someone directly onto a specific location without expecting them to search for it.
+
+### Calendar QR codes
+
+Encodes a calendar event (title, location, start time, end time, description) in iCalendar format. When scanned, the phone prompts the user to add the event to their calendar.
+
+Useful on event flyers, conference badges, and invitations. The person scans, taps Add, and the event is in their calendar with all the details. For the full field breakdown, see the [Calendar Event QR Code Generator](/tools/calendar-qr-code-generator) page.
+
+### Social media QR codes
+
+All social and platform tabs work the same way: enter a username and the tool builds the correct profile URL for that platform, then encodes it as a QR code. You can also paste a full profile URL directly if you prefer.
+
+Each platform uses its own URL format:
+
+- **Instagram** and **Snapchat** (friend-add link): `snapchat.com/add/username`
+- **X (Twitter)**, **TikTok**, **Pinterest**, **Threads**, **Reddit**, **GitHub**, **GitLab**, **Twitch**, **BeReal**, **Clubhouse**, **Odysee**: `platform.com/username`
+- **LinkedIn**: `linkedin.com/in/username`
+- **YouTube**: `youtube.com/@username`
+- **Spotify**: `open.spotify.com/user/username`
+- **Bluesky**: `bsky.app/profile/username`
+- **Mastodon**: full handle required (e.g. `@user@instance.social`)
+- **Telegram**: `t.me/username`
+- **Discord**: invite link URL
+- **Signal**, **Viber**, **WeChat**, **KakaoTalk**, **LINE**: varies by platform
+
+For platforms where the encoded URL depends on how you find your own profile link, check the dedicated generator page for that platform. Each one has a short explanation of where to find the right URL or handle.
+
 ## How the customization options work
 
 ### Colors
@@ -173,18 +220,53 @@ This takes ten seconds and catches typos, wrong URLs, and the occasional encodin
 
 ## Related tools
 
-This tool covers all nine QR types in one place. If you need more detail on any specific type, each has its own dedicated generator with a full explanation:
+Each QR type has its own dedicated generator page with a full explanation of how it works. Use this hub for everything in one place, or go to the specific tool for more detail.
 
-- [URL QR Code Generator](/tools/url-qr-code-generator) - turn any website link into a QR code, with notes on static vs dynamic, URL length, and error correction
-- [vCard QR Code Generator](/tools/vcard-qr-code-generator) - share your full contact details with one scan
-- [Wi-Fi QR Code Generator](/tools/wifi-qr-code-generator) - let guests join your network without typing the password
-- [Email QR Code Generator](/tools/email-qr-code-generator) - pre-fill a draft email for the person scanning
-- [Phone QR Code Generator](/tools/phone-qr-code-generator) - open a phone dialer with a number ready to call
-- [SMS QR Code Generator](/tools/sms-qr-code-generator) - send a pre-written text message from a QR scan
-- [WhatsApp QR Code Generator](/tools/whatsapp-qr-code-generator) - open a WhatsApp chat directly from a scan
-- [Bitcoin QR Code Generator](/tools/bitcoin-qr-code-generator) - create a BIP-21 payment request for any Bitcoin wallet
-- [Text QR Code Generator](/tools/text-qr-code-generator) - encode any plain text without a URL
-- [QR Code Scanner](/tools/qr-code-scanner) - decode any QR code in your browser using your camera
+**Core types**
+- [URL QR Code Generator](/tools/url-qr-code-generator) - any website link into a QR code
+- [Text QR Code Generator](/tools/text-qr-code-generator) - encode plain text without a URL
+- [Email QR Code Generator](/tools/email-qr-code-generator) - pre-fill a draft email
+- [Phone QR Code Generator](/tools/phone-qr-code-generator) - open a dialer with a number ready to call
+- [SMS QR Code Generator](/tools/sms-qr-code-generator) - send a pre-written text message
+- [WhatsApp QR Code Generator](/tools/whatsapp-qr-code-generator) - open a WhatsApp chat from a scan
+- [vCard QR Code Generator](/tools/vcard-qr-code-generator) - share full contact details in one scan
+- [Wi-Fi QR Code Generator](/tools/wifi-qr-code-generator) - join a network without typing the password
+- [Bitcoin QR Code Generator](/tools/bitcoin-qr-code-generator) - BIP-21 payment request for any Bitcoin wallet
+- [GPS QR Code Generator](/tools/gps-qr-code-generator) - drop a pin to a specific location
+- [Calendar Event QR Code Generator](/tools/calendar-qr-code-generator) - add an event directly to someone's calendar
+
+**Social media**
+- [Facebook QR Code Generator](/tools/facebook-qr-code-generator)
+- [Instagram QR Code Generator](/tools/instagram-qr-code-generator)
+- [Snapchat QR Code Generator](/tools/snapchat-qr-code-generator)
+- [LinkedIn QR Code Generator](/tools/linkedin-qr-code-generator)
+- [X (Twitter) QR Code Generator](/tools/x-twitter-qr-code-generator)
+- [Pinterest QR Code Generator](/tools/pinterest-qr-code-generator)
+- [Threads QR Code Generator](/tools/threads-qr-code-generator)
+- [Reddit QR Code Generator](/tools/reddit-qr-code-generator)
+- [Bluesky QR Code Generator](/tools/bluesky-qr-code-generator)
+- [Mastodon QR Code Generator](/tools/mastodon-qr-code-generator)
+- [TikTok QR Code Generator](/tools/tiktok-qr-code-generator)
+- [YouTube QR Code Generator](/tools/youtube-qr-code-generator)
+- [Twitch QR Code Generator](/tools/twitch-qr-code-generator)
+- [Spotify QR Code Generator](/tools/spotify-qr-code-generator)
+- [BeReal QR Code Generator](/tools/bereal-qr-code-generator)
+- [Clubhouse QR Code Generator](/tools/clubhouse-qr-code-generator)
+- [Odysee QR Code Generator](/tools/odysee-qr-code-generator)
+- [GitHub QR Code Generator](/tools/github-qr-code-generator)
+- [GitLab QR Code Generator](/tools/gitlab-qr-code-generator)
+
+**Messaging**
+- [Telegram QR Code Generator](/tools/telegram-qr-code-generator)
+- [Discord QR Code Generator](/tools/discord-qr-code-generator)
+- [Signal QR Code Generator](/tools/signal-qr-code-generator)
+- [Viber QR Code Generator](/tools/viber-qr-code-generator)
+- [KakaoTalk QR Code Generator](/tools/kakaotalk-qr-code-generator)
+- [WeChat QR Code Generator](/tools/wechat-qr-code-generator)
+- [LINE QR Code Generator](/tools/line-qr-code-generator)
+
+**Scanner**
+- [QR Code Scanner](/tools/qr-code-scanner) - decode any QR code in your browser
 
 ## Frequently Asked Questions (FAQ)
 
