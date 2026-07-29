@@ -80,7 +80,7 @@
     "locale": null
   },
   "tools/bluesky-qr-code-generator": {
-    "hash": "cf45bab005babd5b5acdac46278f59c9",
+    "hash": "c1f930bb50fb296518e832ce14b7a87a",
     "version": "v1.0.0",
     "locale": null
   },
@@ -125,12 +125,12 @@
     "locale": null
   },
   "tools/linkedin-qr-code-generator": {
-    "hash": "411c0093707cf941f1619643710f0b56",
+    "hash": "4d7505ba58c7a02db56a472bcd12b0e0",
     "version": "v1.0.0",
     "locale": null
   },
   "tools/mastodon-qr-code-generator": {
-    "hash": "9b839ae3e07d5b18998c26f5e7c1ebaa",
+    "hash": "855fbc57132c418210e6ea221b35bede",
     "version": "v1.0.0",
     "locale": null
   },
