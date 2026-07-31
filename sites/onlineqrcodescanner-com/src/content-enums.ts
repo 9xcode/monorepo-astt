@@ -48,6 +48,7 @@ export const TOOL_TAGS = [
   'linkedin-qr',
   'bluesky-qr',
   'mastodon-qr',
+  'fediverse-qr',
   'x-twitter-qr',
   'pinterest-qr',
   'telegram-qr',
