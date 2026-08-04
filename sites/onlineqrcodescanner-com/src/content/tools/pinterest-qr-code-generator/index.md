@@ -6,9 +6,8 @@ shortDescription: "Create a QR code for your Pinterest profile or board"
 category: "QR Generator"
 tags: ["qr-generator", "generator", "utility", "pinterest-qr", "social-qr"]
 icon: "Globe"
-publishedAt: "2026-07-25T22:23:43Z"
-updatedAt: "2026-07-30T00:00:00Z"
-isDraft: true
+publishedAt: "2026-08-04T02:23:43Z"
+updatedAt: "2026-08-04T02:23:43Z"
 ---
 
 A Pinterest QR code encodes a Pinterest URL into a scannable image. Scan it and the link opens directly in a browser or the Pinterest app. This works for any Pinterest URL: a profile page, a specific board, or an individual pin.
@@ -107,10 +106,10 @@ Test the code at the actual size you plan to print it before committing to a ful
 ## Related tools on this site
 
 - [QR Code Generator](/tools/qr-code-generator) - create QR codes for URLs, text, Wi-Fi, email, phone, and more in one place
-- [URL QR Code Generator](/tools/url-qr-code-generator) - turn any website link into a scannable QR code
+- [Bluesky QR Code Generator](/tools/bluesky-qr-code-generator) - create a QR code for your bluesky social handle
 - [Instagram QR Code Generator](/tools/instagram-qr-code-generator) - create a QR code for your Instagram profile
 - [Facebook QR Code Generator](/tools/facebook-qr-code-generator) - create a QR code for your Facebook profile or page
-- [YouTube QR Code Generator](/tools/youtube-qr-code-generator) - create a QR code for your YouTube channel
+- [X (Twitter) QR Code Generator](/tools/x-twitter-qr-code-generator) - create a QR code for your X (Twitter) profile
 - [QR Code Scanner](/tools/qr-code-scanner) - decode any QR code in your browser using your camera
 
 ## Frequently Asked Questions (FAQ)
