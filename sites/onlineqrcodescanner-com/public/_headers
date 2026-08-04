@@ -1,3 +1,9 @@
+# Block indexing of the .pages.dev production subdomain
+https://onlineqrcodescanner-com.pages.dev/*
+  X-Robots-Tag: noindex
+
+
+# Security headers for all domains (canonical + pages.dev)
 /*
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff

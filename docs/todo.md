@@ -79,8 +79,6 @@ letter do ad this : https://www.google.com/preferences/source?q=https://redeemco
 
 # created but not yet published
 
-X (Twitter) QR Code Generator
-pintrest
 threads
 reddit
 bereal
