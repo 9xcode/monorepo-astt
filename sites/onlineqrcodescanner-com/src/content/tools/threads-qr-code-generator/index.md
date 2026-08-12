@@ -1,14 +1,13 @@
 ---
 title: "Threads QR Code Generator"
-seoTitle: "Free Threads QR Code Generator | Create QR for Threads Profile"
-description: "Generate a downloadable QR code for your Threads profile. Paste your threads.net URL and download as PNG, WEBP, or SVG."
+seoTitle: "Threads QR Code Generator | Create QR for Threads Profile"
+description: "Create a scannable QR code for your Threads profile URL. Easily download your high-resolution QR code as PNG, WEBP, or vector SVG format."
 shortDescription: "Create a QR code for your Threads profile"
 category: "QR Generator"
 tags: ["qr-generator", "generator", "utility", "threads-qr", "social-qr"]
 icon: "Globe"
-publishedAt: "2026-07-25T22:23:43Z"
-updatedAt: "2026-07-30T00:00:00Z"
-isDraft: true
+publishedAt: "2026-08-07T06:23:43Z"
+updatedAt: "2026-08-07T06:23:43Z"
 ---
 
 A Threads QR code encodes your Threads profile URL into a scannable image. Anyone who scans it lands directly on your Threads profile without having to search for your handle. This tool takes your Threads profile URL, converts it into a QR code image, and lets you download it as PNG, WEBP, or SVG.
@@ -95,12 +94,13 @@ Do not use JPEG. JPEG compression blurs QR module edges. That blurring is the mo
 
 ## Related tools on this site
 
-- [QR Code Generator](/tools/qr-code-generator) - create QR codes for URLs, text, Wi-Fi, email, phone, and more in one place
+- [Discord QR Code Generator](/tools/discord-qr-code-generator) - create a QR code for a Discord server invite or profile
+- [Reddit QR Code Generator](/tools/reddit-qr-code-generator) - create a QR code for any Reddit URL or subreddit
+- [BeReal QR Code Generator](/tools/bereal-qr-code-generator) - create a scannable QR code for your BeReal profile
+- [Clubhouse QR Code Generator](/tools/clubhouse-qr-code-generator) - create a QR code for your Clubhouse profile or room
 - [Instagram QR Code Generator](/tools/instagram-qr-code-generator) - create a QR code for your Instagram profile
 - [X (Twitter) QR Code Generator](/tools/x-twitter-qr-code-generator) - create a QR code for your X profile
 - [Bluesky QR Code Generator](/tools/bluesky-qr-code-generator) - create a QR code for your Bluesky profile
-- [URL QR Code Generator](/tools/url-qr-code-generator) - turn any website link into a scannable QR code
-- [QR Code Scanner](/tools/qr-code-scanner) - decode any QR code in your browser using your camera
 
 ## Frequently Asked Questions (FAQ)
 

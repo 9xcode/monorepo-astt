@@ -1,14 +1,13 @@
 ---
 title: "Reddit QR Code Generator"
 seoTitle: "Free Reddit QR Code Generator | Create QR for Reddit"
-description: "Generate a permanent QR code for any Reddit profile, subreddit, or post and download as PNG, WEBP, or SVG"
+description: "Generate a permanent QR code for any Reddit subreddit, post, or user profile URL. Download scannable images in PNG, WEBP, or vector SVG."
 shortDescription: "Create a QR code for any Reddit URL"
 category: "QR Generator"
 tags: ["qr-generator", "generator", "utility", "reddit-qr", "social-qr"]
 icon: "Globe"
-publishedAt: "2026-07-25T22:23:43Z"
-updatedAt: "2026-07-30T00:00:00Z"
-isDraft: true
+publishedAt: "2026-08-05T02:23:43Z"
+updatedAt: "2026-08-12T02:23:43Z"
 ---
 
 Reddit links are awkward to share in print. A subreddit name like r/DIY is short enough to type, but a full URL to a specific post, a user profile, or a community wiki page is not. This QR code generator tool solves that.
@@ -89,12 +88,11 @@ If you are testing a code you just generated, point the camera at the screen fro
 
 ## Related tools on this site
 
-- [QR Code Generator](/tools/qr-code-generator) - create QR codes for URLs, text, Wi-Fi, email, phone, and more
-- [URL QR Code Generator](/tools/url-qr-code-generator) - turn any link into a scannable QR code
-- [Facebook QR Code Generator](/tools/facebook-qr-code-generator) - create a QR code for your Facebook profile or page
+- [Threads QR Code Generator](/tools/threads-qr-code-generator) - create a QR code for your Threads profile
 - [Discord QR Code Generator](/tools/discord-qr-code-generator) - create a QR code for a Discord server invite or profile
-- [GitHub QR Code Generator](/tools/github-qr-code-generator) - create a QR code for your GitHub profile or repository
-- [QR Code Scanner](/tools/qr-code-scanner) - scan and decode any QR code in your browser
+- [BeReal QR Code Generator](/tools/bereal-qr-code-generator) - create a QR code for your BeReal profile
+- [Clubhouse QR Code Generator](/tools/clubhouse-qr-code-generator) - create a QR code for your Clubhouse profile or room
+- [Facebook QR Code Generator](/tools/facebook-qr-code-generator) - create a QR code for your Facebook profile or page
 
 ## Frequently Asked Questions
 

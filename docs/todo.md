@@ -77,10 +77,15 @@ letter do ad this : https://www.google.com/preferences/source?q=https://redeemco
 
 -----
 
-# created but not yet published
-
 threads
 reddit
 bereal
 clubhouse
+discord
 
+# created but not yet published
+
+github
+gitlab
+kakaotalk
+telegram

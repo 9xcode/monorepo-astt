@@ -1,14 +1,13 @@
 ---
 title: "Clubhouse QR Code Generator"
 seoTitle: "Free Clubhouse QR Code Generator Online"
-description: "Create a QR code for your Clubhouse profile or room, and download it as PNG, WEBP, or SVG."
+description: "Convert your Clubhouse profile or room link into a scannable QR code. Export high-resolution PNG, WEBP, or vector SVG files for slides."
 shortDescription: "Create a QR code for your Clubhouse profile"
 category: "QR Generator"
 tags: ["qr-generator", "generator", "utility", "clubhouse-qr", "social-qr"]
 icon: "Globe"
-publishedAt: "2026-07-25T22:23:43Z"
-updatedAt: "2026-07-30T00:00:00Z"
-isDraft: true
+publishedAt: "2026-08-11T08:43:43Z"
+updatedAt: "2026-08-11T08:43:43Z"
 ---
 
 Clubhouse is an audio platform. People talk in rooms, not scroll through feeds. That creates a specific problem: if you are hosting a room or speaking at an audio event, there is no natural moment to share a link. You are talking. The audience is listening. A QR code on a slide, a printed schedule, or a virtual event backdrop solves exactly that.
@@ -63,11 +62,12 @@ Do not use JPEG. The compression blurs the QR pattern's edges, which is the main
 
 ## Related tools on this site
 
-- [QR Code Generator](/tools/qr-code-generator) - create QR codes for URLs, text, Wi-Fi, email, and more
+- [Threads QR Code Generator](/tools/threads-qr-code-generator) - create a QR code for your Threads profile
+- [Discord QR Code Generator](/tools/discord-qr-code-generator) - create a QR code for a Discord server invite or profile
+- [Reddit QR Code Generator](/tools/reddit-qr-code-generator) - create a QR code for any Reddit URL or subreddit
+- [BeReal QR Code Generator](/tools/bereal-qr-code-generator) - create a scannable QR code for your BeReal profile
 - [Twitter / X QR Code Generator](/tools/x-twitter-qr-code-generator) - create a QR code for your X profile
 - [LinkedIn QR Code Generator](/tools/linkedin-qr-code-generator) - create a QR code for your LinkedIn profile
-- [URL QR Code Generator](/tools/url-qr-code-generator) - turn any link into a scannable QR code
-- [QR Code Scanner](/tools/qr-code-scanner) - scan and decode any QR code in your browser
 
 ## Frequently Asked Questions
 
