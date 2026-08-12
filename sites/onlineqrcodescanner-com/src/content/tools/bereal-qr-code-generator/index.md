@@ -1,14 +1,13 @@
 ---
 title: "BeReal QR Code Generator"
 seoTitle: "Free BeReal QR Code Generator Online"
-description: "Create a QR code for your BeReal profile link and Download as PNG, WEBP, or SVG."
+description: "Create a custom QR code for your BeReal profile link in seconds. Download your scannable QR code in PNG, WEBP, or vector SVG format."
 shortDescription: "Create a QR code for your BeReal profile"
 category: "QR Generator"
 tags: ["qr-generator", "generator", "utility", "bereal-qr", "social-qr"]
 icon: "Globe"
-publishedAt: "2026-07-25T22:23:43Z"
-updatedAt: "2026-07-30T00:00:00Z"
-isDraft: true
+publishedAt: "2026-08-09T08:23:43Z"
+updatedAt: "2026-08-09T08:23:43Z"
 ---
 
 BeReal lets you share your profile through a link. This tool takes that link and encodes it into a QR code image you can download and use wherever you want.
@@ -65,10 +64,12 @@ Do not use JPEG. JPEG compression softens the QR pattern edges and is the most c
 
 ## Related tools on this site
 
-- [QR Code Generator](/tools/qr-code-generator) - create QR codes for URLs, text, Wi-Fi, email, and more
+- [Threads QR Code Generator](/tools/threads-qr-code-generator) - create a QR code for your Threads profile
+- [Discord QR Code Generator](/tools/discord-qr-code-generator) - create a QR code for a Discord server invite or profile
+- [Reddit QR Code Generator](/tools/reddit-qr-code-generator) - create a QR code for any Reddit URL or subreddit
+- [Clubhouse QR Code Generator](/tools/clubhouse-qr-code-generator) - create a QR code for your Clubhouse profile or room
 - [Instagram QR Code Generator](/tools/instagram-qr-code-generator) - create a QR code for your Instagram profile
 - [Snapchat QR Code Generator](/tools/snapchat-qr-code-generator) - create a QR code for your Snapchat profile
-- [URL QR Code Generator](/tools/url-qr-code-generator) - turn any link into a QR code
 
 ## Frequently Asked Questions
 

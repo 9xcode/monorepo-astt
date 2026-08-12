@@ -75,7 +75,7 @@
     "locale": null
   },
   "tools/bereal-qr-code-generator": {
-    "hash": "c6ef1be50ebfee8d7719748513ba8e44",
+    "hash": "d18d96eefdc0bad5de038f84009d2760",
     "version": "v1.0.0",
     "locale": null
   },
@@ -85,12 +85,12 @@
     "locale": null
   },
   "tools/clubhouse-qr-code-generator": {
-    "hash": "e95a65fca8b88a1a462aef10cbb188d8",
+    "hash": "71efaa290943aae53b784b701c352f02",
     "version": "v1.0.0",
     "locale": null
   },
   "tools/discord-qr-code-generator": {
-    "hash": "2b1281e8871858a157fb79d2e5730a4c",
+    "hash": "5745459091c9a7f04dee070eb419155c",
     "version": "v1.0.0",
     "locale": null
   },
@@ -145,7 +145,7 @@
     "locale": null
   },
   "tools/reddit-qr-code-generator": {
-    "hash": "bf7d04778fc7c77fba9fb7d764b6531a",
+    "hash": "91843bebd25ba299e1a5b6e60b9403f6",
     "version": "v1.0.0",
     "locale": null
   },
@@ -170,7 +170,7 @@
     "locale": null
   },
   "tools/threads-qr-code-generator": {
-    "hash": "7b4058174179c9a9ab5898fdca09ecb9",
+    "hash": "859fd3513290b6719782c64f1873d9fa",
     "version": "v1.0.0",
     "locale": null
   },
