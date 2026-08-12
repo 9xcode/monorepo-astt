@@ -4,36 +4,36 @@ export const coreConfig: CoreConfig = {
   version: "1.0.1",
   support: {
     buyMeACoffee: {
-      url: "https://buymeacoffee.com/yourusername",
+      url: "",
     },
     kofi: {
       url: "https://ko-fi.com/yourusername",
     },
     paypal: {
-      url: "https://paypal.me/yourusername",
+      url: "https://paypal.me/ox41414141",
     },
     githubSponsors: {
-      url: "https://github.com/sponsors/yourusername",
+      url: "",
     },
     patreon: {
-      url: "https://patreon.com/yourusername",
+      url: "https://www.patreon.com/cw/0x41414141",
     },
     wishlist: {
-      url: "https://www.amazon.in/hz/wishlist/ls/XXXXXXXXXXXXXXXXX",
+      url: "",
     },
     upi: {
-      id: "yourname@upi",
+      id: "", //yourname@upi
       qrImagePath: "",  // eg: ../assets/images/user-1.jpg
     },
     xmrchat: {
-      url: "https://xmrchat.com/yourusername",
+      url: "", // https://xmrchat.com/yourusername
     },
     cointree: {
-      url: "https://cointr.ee/yourusername",
+      url: "", // https://cointr.ee/yourusername
     },
     crypto: {
-      eth: "0x0000000000000000000000000000000000000000",
-      btc: "bc1qyouradresshere",
+      eth: "0x80Be54E3a334Cf7A8483EA7021FE412cB8B90c58",
+      btc: "bc1qz7xnry0eazsemle7z6ttz6sqc2kdy2mj6fch7p",
     },
   },
 };
