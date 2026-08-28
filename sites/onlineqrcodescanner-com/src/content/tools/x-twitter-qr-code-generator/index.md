@@ -7,7 +7,7 @@ category: "QR Generator"
 tags: ["qr-generator", "generator", "utility", "x-twitter-qr", "social-qr"]
 icon: "Globe"
 publishedAt: "2026-08-02T22:23:43Z"
-updatedAt: "2026-08-02T22:23:43Z"
+updatedAt: "2026-08-28T00:00:00Z"
 ---
 
 An X (Twitter) QR code encodes your profile URL into a scannable image. When someone scans it, their phone opens your X profile directly. This tool takes the profile URL you paste in, converts it into a QR code, and lets you download it as PNG, WEBP, or SVG. Your URL never leaves your browser.
@@ -90,11 +90,11 @@ Do not use JPEG. JPEG compression blurs the sharp edges of QR modules, which is 
 
 ## Related tools on this site
 
-- [URL QR Code Generator](/tools/url-qr-code-generator) - turn any website link into a scannable QR code
+- [GitHub QR Code Generator](/tools/github-qr-code-generator) - create a QR code for your GitHub profile or repository
+- [Telegram QR Code Generator](/tools/telegram-qr-code-generator) - create a QR code for a Telegram channel, group, or account
 - [Instagram QR Code Generator](/tools/instagram-qr-code-generator) - create a QR code for your Instagram profile
-- [Pinterest QR Code Generator](/tools/pinterest-qr-code-generator) - create a QR code for your pinterest profile
+- [Pinterest QR Code Generator](/tools/pinterest-qr-code-generator) - create a QR code for your Pinterest profile
 - [Bluesky QR Code Generator](/tools/bluesky-qr-code-generator) - create a QR code for your Bluesky profile
-- [QR Code Scanner](/tools/qr-code-scanner) - decode any QR code in your browser using your camera
 
 ## Frequently Asked Questions (FAQ)
 

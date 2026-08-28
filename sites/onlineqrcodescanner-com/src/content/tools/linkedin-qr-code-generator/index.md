@@ -7,7 +7,7 @@ category: "QR Generator"
 tags: ["qr-generator", "generator", "utility", "linkedin-qr", "social-qr"]
 icon: "Globe"
 publishedAt: "2026-07-28T12:23:43Z"
-updatedAt: "2026-07-31T00:00:00Z"
+updatedAt: "2026-08-21T00:00:00Z"
 ---
 
 A LinkedIn QR code encodes your LinkedIn profile URL into a scannable image. When someone scans it, their phone opens your LinkedIn profile directly in a browser or the LinkedIn app, that is the whole mechanism.
@@ -92,10 +92,11 @@ Both codes point to your LinkedIn profile when scanned. The difference is that t
 
 ## Related tools on this site
 
-- [QR Code Generator](/tools/qr-code-generator) - create QR codes for URLs, text, Wi-Fi, email, phone, vCard, and more in one place
-- [URL QR Code Generator](/tools/url-qr-code-generator) - turn any website link into a scannable QR code
+- [GitHub QR Code Generator](/tools/github-qr-code-generator) - create a QR code for your GitHub profile or repository
+- [GitLab QR Code Generator](/tools/gitlab-qr-code-generator) - create a QR code for your GitLab profile or project
 - [Facebook QR Code Generator](/tools/facebook-qr-code-generator) - create a QR code for your Facebook profile or page
 - [Instagram QR Code Generator](/tools/instagram-qr-code-generator) - create a QR code for your Instagram profile
+- [QR Code Generator](/tools/qr-code-generator) - create QR codes for URLs, text, Wi-Fi, email, phone, vCard, and more in one place
 - [QR Code Scanner](/tools/qr-code-scanner) - decode any QR code in your browser using your camera
 
 ## Frequently Asked Questions (FAQ)

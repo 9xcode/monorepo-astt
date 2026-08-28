@@ -1,14 +1,13 @@
 ---
 title: "KakaoTalk QR Code Generator"
-seoTitle: "Free KakaoTalk QR Code Generator - Open Chat & Channel"
-description: "Generate a QR code for a KakaoTalk Open Chat, Channel, or profile link. Free, browser-based, download as PNG, WEBP, or SVG. No sign-up needed."
+seoTitle: "Free KakaoTalk QR Code Generator | Create KakaoTalk Open Chat Link Qr"
+description: "Generate a QR code for KakaoTalk Open Chat link (open.kakao.com), Channel (pf.kakao.com), or profile URL and download as PNG, WEBP, or SVG."
 shortDescription: "Create a QR code for KakaoTalk Open Chat or Channel"
 category: "QR Generator"
 tags: ["qr-generator", "generator", "utility", "kakaotalk-qr", "social-qr"]
 icon: "Globe"
-publishedAt: "2026-07-25T22:23:43Z"
-updatedAt: "2026-08-05T00:00:00Z"
-isDraft: true
+publishedAt: "2026-08-25T10:00:00Z"
+updatedAt: "2026-08-25T10:00:00Z"
 ---
 
 KakaoTalk has three separate QR systems and they do three different things. That is worth understanding before creating any QR code related to KakaoTalk.
@@ -104,12 +103,11 @@ Open Chat links (`open.kakao.com`) are moderately long URLs. Test the code at th
 
 ## Related tools on this site
 
-- [QR Code Generator](/tools/qr-code-generator) - create QR codes for URLs, text, Wi-Fi, email, phone, and more
-- [WeChat QR Code Generator](/tools/wechat-qr-code-generator) - create a QR code for WeChat contact sharing
 - [Telegram QR Code Generator](/tools/telegram-qr-code-generator) - create a QR code for a Telegram channel, group, or account
 - [WhatsApp QR Code Generator](/tools/whatsapp-qr-code-generator) - create a QR code that opens a WhatsApp chat
-- [LINE QR Code Generator](/tools/line-qr-code-generator) - create a QR code for a LINE account or group
-- [QR Code Scanner](/tools/qr-code-scanner) - scan and decode any QR code in your browser
+- [Discord QR Code Generator](/tools/discord-qr-code-generator) - create a QR code for a Discord server invite or community
+- [Bluesky QR Code Generator](/tools/bluesky-qr-code-generator) - create a QR code for your Bluesky profile
+- [Mastodon QR Code Generator](/tools/mastodon-qr-code-generator) - create a QR code for your Mastodon profile on any instance
 
 ## Frequently asked questions
 

@@ -7,7 +7,7 @@ category: "QR Generator"
 tags: ["qr-generator", "generator", "utility", "discord-qr", "social-qr"]
 icon: "Globe"
 publishedAt: "2026-08-13T00:03:43Z"
-updatedAt: "2026-08-13T00:03:43Z"
+updatedAt: "2026-08-28T00:00:00Z"
 ---
 
 Before getting into how to use this tool, there is something worth clarifying upfront. Discord has its own QR code built into the app. That QR is for logging in, not for sharing servers. If you have ever opened the Discord desktop app and seen a QR code on the login screen, that is what it is. Scanning it with your phone logs you into Discord on that device.
@@ -89,12 +89,12 @@ Discord.gg links are short, so the QR pattern is not overly dense. You can print
 
 ## Related tools on this site
 
+- [Telegram QR Code Generator](/tools/telegram-qr-code-generator) - create a QR code for a Telegram channel or group
+- [GitHub QR Code Generator](/tools/github-qr-code-generator) - create a QR code for your GitHub profile or repository
 - [Threads QR Code Generator](/tools/threads-qr-code-generator) - create a scannable QR code for your Threads profile
 - [Reddit QR Code Generator](/tools/reddit-qr-code-generator) - create a QR code for a subreddit or Reddit profile
 - [BeReal QR Code Generator](/tools/bereal-qr-code-generator) - create a QR code for your BeReal profile
 - [Clubhouse QR Code Generator](/tools/clubhouse-qr-code-generator) - create a QR code for your Clubhouse profile or room
-- [Telegram QR Code Generator](/tools/telegram-qr-code-generator) - create a QR code for a Telegram channel or group
-- [WhatsApp QR Code Generator](/tools/whatsapp-qr-code-generator) - create a QR code that opens a WhatsApp chat
 
 ## Frequently asked questions
 
