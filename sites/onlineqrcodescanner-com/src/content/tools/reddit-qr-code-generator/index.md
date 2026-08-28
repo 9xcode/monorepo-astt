@@ -7,7 +7,7 @@ category: "QR Generator"
 tags: ["qr-generator", "generator", "utility", "reddit-qr", "social-qr"]
 icon: "Globe"
 publishedAt: "2026-08-05T02:23:43Z"
-updatedAt: "2026-08-12T02:23:43Z"
+updatedAt: "2026-08-29T00:00:00Z"
 ---
 
 Reddit links are awkward to share in print. A subreddit name like r/DIY is short enough to type, but a full URL to a specific post, a user profile, or a community wiki page is not. This QR code generator tool solves that.
@@ -93,6 +93,7 @@ If you are testing a code you just generated, point the camera at the screen fro
 - [BeReal QR Code Generator](/tools/bereal-qr-code-generator) - create a QR code for your BeReal profile
 - [Clubhouse QR Code Generator](/tools/clubhouse-qr-code-generator) - create a QR code for your Clubhouse profile or room
 - [Facebook QR Code Generator](/tools/facebook-qr-code-generator) - create a QR code for your Facebook profile or page
+- [Telegram QR Code Generator](/tools/telegram-qr-code-generator) - create a QR code for a Telegram channel, group, or account
 
 ## Frequently Asked Questions
 

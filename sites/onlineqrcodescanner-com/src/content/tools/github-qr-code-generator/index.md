@@ -1,14 +1,13 @@
 ---
 title: "GitHub QR Code Generator"
-seoTitle: "Free GitHub QR Code Generator - Profile, Repo & More"
-description: "Generate a QR code for any GitHub profile, repository, release, or gist. Free, browser-based, no account needed. Download as PNG, WEBP, or SVG."
+seoTitle: "Free GitHub QR Code Generator | Create Github Repo Link Qr"
+description: "Generate a QR code for any GitHub URL: profile, repository, release tag, wiki, or gist in seconds and download as PNG, WEBP, or SVG."
 shortDescription: "Create a QR code for your GitHub profile or repository"
 category: "QR Generator"
 tags: ["qr-generator", "generator", "utility", "github-qr", "social-qr"]
 icon: "Globe"
-publishedAt: "2026-07-25T22:23:43Z"
-updatedAt: "2026-08-05T00:00:00Z"
-isDraft: true
+publishedAt: "2026-08-17T10:00:00Z"
+updatedAt: "2026-08-18T10:00:00Z"
 ---
 
 Sharing a GitHub URL in person is awkward. You can say your username out loud, but a full repository path is not something anyone types from memory. A QR code fixes that gap between physical and digital.
@@ -82,12 +81,11 @@ If you are printing at a small size, test first. A code that reads easily at ful
 
 ## Related tools on this site
 
-- [QR Code Generator](/tools/qr-code-generator) - create QR codes for URLs, text, Wi-Fi, email, phone, and more
-- [URL QR Code Generator](/tools/url-qr-code-generator) - turn any web link into a scannable QR code
 - [GitLab QR Code Generator](/tools/gitlab-qr-code-generator) - create a QR code for your GitLab profile or project
-- [LinkedIn QR Code Generator](/tools/linkedin-qr-code-generator) - create a QR code for your LinkedIn profile
+- [LinkedIn QR Code Generator](/tools/linkedin-qr-code-generator) - share your developer portfolio with a LinkedIn QR code
+- [Discord QR Code Generator](/tools/discord-qr-code-generator) - create a QR code for a Discord server invite or community
 - [Reddit QR Code Generator](/tools/reddit-qr-code-generator) - create a QR code for a subreddit or Reddit profile
-- [QR Code Scanner](/tools/qr-code-scanner) - scan and decode any QR code in your browser
+- [Mastodon QR Code Generator](/tools/mastodon-qr-code-generator) - create a QR code for your Mastodon profile on any instance
 
 ## Frequently asked questions
 

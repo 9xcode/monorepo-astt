@@ -7,7 +7,7 @@ category: "QR Generator"
 tags: ["qr-generator", "generator", "utility", "threads-qr", "social-qr"]
 icon: "Globe"
 publishedAt: "2026-08-07T06:23:43Z"
-updatedAt: "2026-08-07T06:23:43Z"
+updatedAt: "2026-08-27T00:00:00Z"
 ---
 
 A Threads QR code encodes your Threads profile URL into a scannable image. Anyone who scans it lands directly on your Threads profile without having to search for your handle. This tool takes your Threads profile URL, converts it into a QR code image, and lets you download it as PNG, WEBP, or SVG.
@@ -94,13 +94,13 @@ Do not use JPEG. JPEG compression blurs QR module edges. That blurring is the mo
 
 ## Related tools on this site
 
-- [Discord QR Code Generator](/tools/discord-qr-code-generator) - create a QR code for a Discord server invite or profile
+- [Telegram QR Code Generator](/tools/telegram-qr-code-generator) - create a QR code for a Telegram channel, group, or account
 - [Reddit QR Code Generator](/tools/reddit-qr-code-generator) - create a QR code for any Reddit URL or subreddit
 - [BeReal QR Code Generator](/tools/bereal-qr-code-generator) - create a scannable QR code for your BeReal profile
 - [Clubhouse QR Code Generator](/tools/clubhouse-qr-code-generator) - create a QR code for your Clubhouse profile or room
 - [Instagram QR Code Generator](/tools/instagram-qr-code-generator) - create a QR code for your Instagram profile
 - [X (Twitter) QR Code Generator](/tools/x-twitter-qr-code-generator) - create a QR code for your X profile
-- [Bluesky QR Code Generator](/tools/bluesky-qr-code-generator) - create a QR code for your Bluesky profile
+- [KakaoTalk QR Code Generator](/tools/kakaotalk-qr-code-generator) - create a QR code for a KakaoTalk Open Chat or Channel
 
 ## Frequently Asked Questions (FAQ)
 

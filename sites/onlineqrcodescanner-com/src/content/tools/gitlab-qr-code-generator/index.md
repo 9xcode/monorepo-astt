@@ -1,14 +1,13 @@
 ---
 title: "GitLab QR Code Generator"
-seoTitle: "Free GitLab QR Code Generator - Profile, Project & More"
-description: "Generate a QR code for any GitLab profile, project, group, or wiki. Works with gitlab.com and self-hosted instances. Free, no account needed."
+seoTitle: "Free GitLab QR Code Generator | Create Gitlab Repo Link Qr"
+description: "Generate a QR code for any GitLab URL: profile, project, group, wiki, or self-hosted instance and download as PNG, WEBP, or SVG."
 shortDescription: "Create a QR code for any GitLab URL"
 category: "QR Generator"
 tags: ["qr-generator", "generator", "utility", "gitlab-qr", "social-qr"]
 icon: "Globe"
-publishedAt: "2026-07-25T22:23:43Z"
-updatedAt: "2026-08-05T00:00:00Z"
-isDraft: true
+publishedAt: "2026-08-20T10:00:00Z"
+updatedAt: "2026-08-20T10:00:00Z"
 ---
 
 Most QR code tools are built with public social profiles in mind. GitLab is different. A large portion of GitLab usage happens on private self-hosted instances inside company networks, where linking physical infrastructure to internal documentation is a real, recurring problem.
@@ -73,11 +72,11 @@ If the code will be printed at a small size, such as on a rack label or equipmen
 
 ## Related tools on this site
 
-- [QR Code Generator](/tools/qr-code-generator) - create QR codes for any URL, text, Wi-Fi, email, or phone number
-- [URL QR Code Generator](/tools/url-qr-code-generator) - turn any web address into a scannable QR code
 - [GitHub QR Code Generator](/tools/github-qr-code-generator) - create a QR code for your GitHub profile or repository
-- [LinkedIn QR Code Generator](/tools/linkedin-qr-code-generator) - create a QR code for your LinkedIn profile
-- [QR Code Scanner](/tools/qr-code-scanner) - scan and decode any QR code in your browser
+- [LinkedIn QR Code Generator](/tools/linkedin-qr-code-generator) - share your professional profile with a LinkedIn QR code
+- [Discord QR Code Generator](/tools/discord-qr-code-generator) - create a QR code for a Discord server invite or community
+- [Telegram QR Code Generator](/tools/telegram-qr-code-generator) - create a QR code for a Telegram channel or group
+- [Mastodon QR Code Generator](/tools/mastodon-qr-code-generator) - create a QR code for your Mastodon profile on any instance
 
 ## Frequently asked questions
 

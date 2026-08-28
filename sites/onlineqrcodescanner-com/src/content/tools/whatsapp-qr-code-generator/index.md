@@ -7,7 +7,7 @@ category: "QR Generator"
 tags: ["qr-generator", "generator", "utility"]
 icon: "MessageCircle"
 publishedAt: "2026-06-10T22:57:22Z"
-updatedAt: "2026-06-27T10:41:44Z"
+updatedAt: "2026-08-26T00:00:00Z"
 ---
 
 ## What is a WhatsApp QR code?
@@ -89,8 +89,8 @@ Some people search for a "WhatsApp barcode generator" when they mean a QR code. 
 
 ## Related tools on this site
 
-- [QR Code Generator](/tools/qr-code-generator) - create QR codes for URLs, text, Wi-Fi, and vCard contacts in one place
-- [URL QR Code Generator](/tools/url-qr-code-generator) - turn any website link into a scannable QR code
+- [Telegram QR Code Generator](/tools/telegram-qr-code-generator) - create a QR code for a Telegram channel, group, or account
+- [KakaoTalk QR Code Generator](/tools/kakaotalk-qr-code-generator) - create a QR code for a KakaoTalk Open Chat or Channel
 - [Phone QR Code Generator](/tools/phone-qr-code-generator) - create a QR code that opens a phone dialer with your number pre-filled
 - [SMS QR Code Generator](/tools/sms-qr-code-generator) - generate a QR code that opens a pre-filled text message
 - [Email QR Code Generator](/tools/email-qr-code-generator) - create a QR code that opens a pre-filled email draft

@@ -1,14 +1,13 @@
 ---
 title: "Telegram QR Code Generator"
-seoTitle: "Free Telegram QR Code Generator - Channel, Group & Account"
-description: "Generate a QR code for your Telegram account, channel, group, or bot. Works with public and private invite links. Free, no sign-up, download as PNG or SVG."
+seoTitle: "Free Telegram QR Code Generator | Create Telegram Channel Link Qr"
+description: "Generate a QR code for any Telegram account, channel, group, or bot and make Telegram QR codes scan reliably even at small print sizes. Free, no sign-up, download as PNG, WEBP, or SVG."
 shortDescription: "Create a QR code for your Telegram account, channel, or group"
 category: "QR Generator"
 tags: ["qr-generator", "generator", "utility", "telegram-qr", "social-qr"]
 icon: "Globe"
-publishedAt: "2026-07-25T22:23:43Z"
-updatedAt: "2026-08-05T00:00:00Z"
-isDraft: true
+publishedAt: "2026-08-22T10:00:00Z"
+updatedAt: "2026-08-22T10:00:00Z"
 ---
 
 Telegram uses a link format that makes QR codes more practical than most other platforms. The `t.me` links are short by design, which means the QR pattern is less dense and scans reliably even when printed at smaller sizes. For channels and groups that are actively trying to grow an audience, a printable QR code is one of the more direct ways to pull people in from the physical world.
@@ -115,12 +114,11 @@ Because Telegram links are short, the QR pattern will be simpler than most other
 
 ## Related tools on this site
 
-- [QR Code Generator](/tools/qr-code-generator) - create QR codes for URLs, text, Wi-Fi, email, phone, and more
 - [WhatsApp QR Code Generator](/tools/whatsapp-qr-code-generator) - create a QR code that opens a WhatsApp chat
-- [Signal QR Code Generator](/tools/signal-qr-code-generator) - create a QR code for your Signal profile
+- [KakaoTalk QR Code Generator](/tools/kakaotalk-qr-code-generator) - create a QR code for a KakaoTalk Open Chat or Channel
 - [Discord QR Code Generator](/tools/discord-qr-code-generator) - create a QR code for a Discord server invite
-- [URL QR Code Generator](/tools/url-qr-code-generator) - turn any link into a scannable QR code
-- [QR Code Scanner](/tools/qr-code-scanner) - scan and decode any QR code in your browser
+- [Bluesky QR Code Generator](/tools/bluesky-qr-code-generator) - create a QR code for your Bluesky profile
+- [Mastodon QR Code Generator](/tools/mastodon-qr-code-generator) - create a QR code for your Mastodon profile on any instance
 
 ## Frequently asked questions
 
