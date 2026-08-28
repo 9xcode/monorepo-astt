@@ -267,9 +267,9 @@ export const siteConfig: SiteConfig<ToolCategory> = {
     },
 
     ads: {
-      enabled: false,
-      autoAds: false,
-      publisherId: "ca-pub-XXXXXXXXXXXXXXXX",
+      enabled: true,
+      autoAds: true,
+      publisherId: "ca-pub-4449981462175051",
       slots: {
         "home-hero-bottom": false,
         "home-grid-multiplex": false,
