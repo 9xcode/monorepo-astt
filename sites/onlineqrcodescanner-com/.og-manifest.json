@@ -100,12 +100,12 @@
     "locale": null
   },
   "tools/github-qr-code-generator": {
-    "hash": "ab04e4b1891ab7a21834d86312902710",
+    "hash": "2c76e2d62be153a81b43cba693d6d2ca",
     "version": "v1.0.0",
     "locale": null
   },
   "tools/gitlab-qr-code-generator": {
-    "hash": "fb00be06fc296f661ac3d6fe06e0c9c1",
+    "hash": "8eea52f21bbd845c7e93c3053bb03e22",
     "version": "v1.0.0",
     "locale": null
   },
@@ -115,7 +115,7 @@
     "locale": null
   },
   "tools/kakaotalk-qr-code-generator": {
-    "hash": "a39762ccbf8860c68d30680411334c22",
+    "hash": "fb69d55b6f593581c7cefdf0f3556aaa",
     "version": "v1.0.0",
     "locale": null
   },
@@ -165,7 +165,7 @@
     "locale": null
   },
   "tools/telegram-qr-code-generator": {
-    "hash": "c39b693d73ada8dd1eac345e86c6cee7",
+    "hash": "9ceca08b96cab34cd1fcc248f19b2e07",
     "version": "v1.0.0",
     "locale": null
   },
@@ -185,7 +185,7 @@
     "locale": null
   },
   "tools/viber-qr-code-generator": {
-    "hash": "8c9e4750555f597a28b8d6fdbf5b2e38",
+    "hash": "31b16a2a66902e9c721a20950b282e7d",
     "version": "v1.0.0",
     "locale": null
   },

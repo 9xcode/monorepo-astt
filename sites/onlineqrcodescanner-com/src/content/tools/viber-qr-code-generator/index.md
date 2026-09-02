@@ -4,7 +4,7 @@ seoTitle: "Free Viber QR Code Generator | Create & Scan Viber QR Codes Online"
 description: "Create a QR code for your Viber profile, public account, or community link. Free online Viber QR code generator and scanner. No sign-up. Download as PNG, WEBP, or SVG."
 shortDescription: "Create a QR code for your Viber profile or public account"
 category: "QR Generator"
-tags: ["qr-generator", "generator", "utility", "viber-qr", "social-qr", "messaging-qr"]
+tags: ["qr-generator", "generator", "utility", "viber-qr", "social-qr"]
 icon: "Globe"
 publishedAt: "2026-09-02T00:00:00Z"
 updatedAt: "2026-09-02T00:00:00Z"
