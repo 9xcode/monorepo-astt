@@ -77,16 +77,6 @@ letter do ad this : https://www.google.com/preferences/source?q=https://redeemco
 
 -----
 
-threads
-reddit
-bereal
-clubhouse
-discord
-
-github
-gitlab
-kakaotalk
-telegram
 
 # created but not yet published
 
