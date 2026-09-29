@@ -388,6 +388,8 @@ export interface FeaturesConfig {
     showRelatedTools: boolean;
     /** Show the author card below the tool article */
     showAuthorCard: boolean;
+    /** Show the "About this Tool" section title above the content */
+    showAboutSectionTitle: boolean;
   };
   favouriteTools: {
     enabled: boolean;
