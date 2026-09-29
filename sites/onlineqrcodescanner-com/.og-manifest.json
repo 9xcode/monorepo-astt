@@ -120,7 +120,7 @@
     "locale": null
   },
   "tools/line-qr-code-generator": {
-    "hash": "6afad9ec31f41f9b79216c97265f2ccc",
+    "hash": "15178862d84e0a90898bdcab81bcfd22",
     "version": "v1.0.0",
     "locale": null
   },
@@ -150,7 +150,7 @@
     "locale": null
   },
   "tools/signal-qr-code-generator": {
-    "hash": "5fd42d7897c6c08221efb6e8e512fef2",
+    "hash": "53637e6450ab22b681f400fae495ff08",
     "version": "v1.0.0",
     "locale": null
   },

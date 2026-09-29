@@ -68,11 +68,12 @@ letter do ad this : https://www.google.com/preferences/source?q=https://redeemco
     - also fix the cover image /public to colocate them in folder specific
     - we may use any fixed word in evey .png image file that is og image for exampel og9x at the end of file name so we can know that this ifle is auto generated so we will not git them
 
+
+- remove that "About this tool" heading below the tool page
 ---------
 - animation: a "Rolling Slide Swap" (or Vertical Scroll Reveal).
 - animation: the "Offset Ghost Shadow" effect.
 - "Jelly Squish & Bounce" animation.
-
 
 
 -----
