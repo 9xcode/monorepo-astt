@@ -218,6 +218,7 @@ export const siteConfig: SiteConfig<ToolCategory> = {
       },
       showRelatedTools: true,
       showAuthorCard: true,
+      showAboutSectionTitle: true,
     },
 
     favouriteTools: {

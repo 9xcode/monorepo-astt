@@ -111,6 +111,7 @@ const relatedTools = getRelatedTools(currentSlug, category, tags ?? [], tools);
 const showSidebarSupportCard = siteConfig.ui.sidebar.showSupportCard !== false;
 const showRelatedTools = siteConfig.features.toolPage.showRelatedTools !== false;
 const showAuthorCard = siteConfig.features.toolPage.showAuthorCard !== false;
+const showAboutSectionTitle = siteConfig.features.toolPage.showAboutSectionTitle !== false;
 ---
 
 <BaseLayout title={title} description={description} canonicalURL={seoUrl} image={ogImagePath}>
@@ -185,7 +186,7 @@ const showAuthorCard = siteConfig.features.toolPage.showAuthorCard !== false;
 				{/* Zone 2 — 3-col grid: article + sidebar */}
 				<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 					<div class="lg:col-span-2 space-y-6">
-						<ContentSection title={siteConfig.content.components.toolPage.aboutSectionTitle} category={category} tocHeadings={tocHeadings} tocTitle={tocTitle} tags={tags}>
+						<ContentSection title={showAboutSectionTitle ? siteConfig.content.components.toolPage.aboutSectionTitle : undefined} category={category} tocHeadings={tocHeadings} tocTitle={tocTitle} tags={tags}>
 							<ArticleProse>
 								<slot name="content" />
 							</ArticleProse>
@@ -247,7 +248,7 @@ const showAuthorCard = siteConfig.features.toolPage.showAuthorCard !== false;
 
 				<AdPlaceholder slotId="tool-content-top" label="Sponsored" className="min-h-[100px]" />
 
-				<ContentSection title={siteConfig.content.components.toolPage.aboutSectionTitle} category={category} tocHeadings={tocHeadings} tocTitle={tocTitle} tags={tags}>
+				<ContentSection title={showAboutSectionTitle ? siteConfig.content.components.toolPage.aboutSectionTitle : undefined} category={category} tocHeadings={tocHeadings} tocTitle={tocTitle} tags={tags}>
 					<ArticleProse>
 						<slot name="content" />
 					</ArticleProse>
